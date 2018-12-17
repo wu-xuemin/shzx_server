@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eservice.api.dao.NightLineMapper">
+  <resultMap id="BaseResultMap" type="com.eservice.api.model.night_line.NightLine">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="line_number" jdbcType="VARCHAR" property="lineNumber" />
+    <result column="stations" jdbcType="LONGVARCHAR" property="stations" />
+  </resultMap>
+</mapper>

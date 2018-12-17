@@ -1,0 +1,200 @@
+package com.eservice.api.model.user;
+
+import java.util.Date;
+import javax.persistence.*;
+
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String account;
+
+    private String name;
+
+    /**
+     * 微信unionId，在没授权前是空的。
+     */
+    @Column(name = "wechatUnionId")
+    private String wechatunionid;
+
+    @Column(name = "role_id")
+    private Integer roleId;
+
+    private String password;
+
+    /**
+     * 头像保存位置
+     */
+    @Column(name = "head_image")
+    private String headImage;
+
+    /**
+     * 电话
+     */
+    private String phone;
+
+    @Column(name = "create_time")
+    private Date createTime;
+
+    /**
+     * 是否在职 ， “1”:在职 “0”:离职
+     */
+    private String valid;
+
+    /**
+     * @return id
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * @param id
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * @return account
+     */
+    public String getAccount() {
+        return account;
+    }
+
+    /**
+     * @param account
+     */
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    /**
+     * @return name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * 获取微信unionId，在没授权前是空的。
+     *
+     * @return wechatUnionId - 微信unionId，在没授权前是空的。
+     */
+    public String getWechatunionid() {
+        return wechatunionid;
+    }
+
+    /**
+     * 设置微信unionId，在没授权前是空的。
+     *
+     * @param wechatunionid 微信unionId，在没授权前是空的。
+     */
+    public void setWechatunionid(String wechatunionid) {
+        this.wechatunionid = wechatunionid;
+    }
+
+    /**
+     * @return role_id
+     */
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    /**
+     * @param roleId
+     */
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    /**
+     * @return password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * 获取头像保存位置
+     *
+     * @return head_image - 头像保存位置
+     */
+    public String getHeadImage() {
+        return headImage;
+    }
+
+    /**
+     * 设置头像保存位置
+     *
+     * @param headImage 头像保存位置
+     */
+    public void setHeadImage(String headImage) {
+        this.headImage = headImage;
+    }
+
+    /**
+     * 获取电话
+     *
+     * @return phone - 电话
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * 设置电话
+     *
+     * @param phone 电话
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    /**
+     * @return create_time
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * @param createTime
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    /**
+     * 获取是否在职 ， “1”:在职 “0”:离职
+     *
+     * @return valid - 是否在职 ， “1”:在职 “0”:离职
+     */
+    public String getValid() {
+        return valid;
+    }
+
+    /**
+     * 设置是否在职 ， “1”:在职 “0”:离职
+     *
+     * @param valid 是否在职 ， “1”:在职 “0”:离职
+     */
+    public void setValid(String valid) {
+        this.valid = valid;
+    }
+}

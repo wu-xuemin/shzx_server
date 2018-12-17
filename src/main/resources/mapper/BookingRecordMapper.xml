@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eservice.api.dao.BookingRecordMapper">
+  <resultMap id="BaseResultMap" type="com.eservice.api.model.booking_record.BookingRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="change_date" jdbcType="DATE" property="changeDate" />
+    <result column="student" jdbcType="INTEGER" property="student" />
+    <result column="old_bus" jdbcType="INTEGER" property="oldBus" />
+    <result column="new_bus" jdbcType="INTEGER" property="newBus" />
+    <result column="new_station" jdbcType="INTEGER" property="newStation" />
+    <result column="change_content" jdbcType="VARCHAR" property="changeContent" />
+    <result column="confirm_status" jdbcType="VARCHAR" property="confirmStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+</mapper>

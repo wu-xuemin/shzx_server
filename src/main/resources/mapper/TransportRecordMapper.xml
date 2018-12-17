@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eservice.api.dao.TransportRecordMapper">
+  <resultMap id="BaseResultMap" type="com.eservice.api.model.transport_record.TransportRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="mode" jdbcType="VARCHAR" property="mode" />
+    <result column="bus" jdbcType="INTEGER" property="bus" />
+    <result column="current_station" jdbcType="INTEGER" property="currentStation" />
+  </resultMap>
+</mapper>
