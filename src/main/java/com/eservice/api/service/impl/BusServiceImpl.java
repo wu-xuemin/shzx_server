@@ -21,4 +21,7 @@ public class BusServiceImpl extends AbstractService<Bus> implements BusService {
     @Resource
     private BusMapper busMapper;
 
+    public Bus getBusByBusMomAccount(String busMomAccount){
+        return busMapper.getBusByBusMomAccount(busMomAccount);
+    }
 }
