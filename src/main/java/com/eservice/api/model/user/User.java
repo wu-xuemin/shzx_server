@@ -1,9 +1,15 @@
 package com.eservice.api.model.user;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -119,9 +125,9 @@ public class User {
     /**
      * @return password
      */
-    public String getPassword() {
-        return password;
-    }
+//    public String getPassword() {
+//        return password;
+//    }
 
     /**
      * @param password
@@ -197,4 +203,45 @@ public class User {
     public void setValid(String valid) {
         this.valid = valid;
     }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> auths = new ArrayList<>();
+//        List<SysRole> roles = this.getRoles();
+//        for (SysRole role : roles) {
+//            auths.add(new SimpleGrantedAuthority(role.getName()));
+//        }
+        return auths;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+    @Override
+    public String getUsername() {
+        return this.account;
+    }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-12-17 18:22:55
+Date: 2018-12-19 13:52:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -123,6 +123,22 @@ CREATE TABLE `bus_supplier` (
 -- ----------------------------
 -- Records of bus_supplier
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `device`
+-- ----------------------------
+DROP TABLE IF EXISTS `device`;
+CREATE TABLE `device` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL COMMENT '设备名称',
+  `meid` varchar(255) NOT NULL COMMENT 'MEID地址',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of device
+-- ----------------------------
+INSERT INTO `device` VALUES ('1', 'wxm', '111222aaaa');
 
 -- ----------------------------
 -- Table structure for `night_line`

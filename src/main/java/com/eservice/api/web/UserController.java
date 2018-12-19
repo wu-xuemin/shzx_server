@@ -2,15 +2,17 @@ package com.eservice.api.web;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.user.User;
+import com.eservice.api.model.user.UserDetail;
 import com.eservice.api.service.UserService;
+import com.eservice.api.service.impl.DeviceServiceImpl;
+import com.eservice.api.service.impl.UserServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,18 +24,46 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     @Resource
-    private UserService userService;
+    private UserServiceImpl userService;
+
+    @Resource
+    private DeviceServiceImpl deviceService;
+
+    /**
+     * 该值为default值， Android端传入的参数不能为“0”
+     */
+    private static String ZERO_STRING = "0";
 
     @PostMapping("/add")
-    public Result add(User user) {
+    public Result addStaff(@RequestBody @NotNull User user) {
+        if(userService.selectByAccount(user.getAccount()) != null) {
+            return ResultGenerator.genFailResult("用户名已存在！");
+        }
+        user.setPassword("password");
+        user.setValid("1");
+        user.setCreateTime(new Date());
         userService.save(user);
         return ResultGenerator.genSuccessResult();
     }
-
     @PostMapping("/delete")
     public Result delete(@RequestParam Integer id) {
         userService.deleteById(id);
         return ResultGenerator.genSuccessResult();
+    }
+    /**
+     * 更新用户密码
+     */
+    @PostMapping("/updatePassword")
+    public Result updatePassword(@RequestParam String account, @RequestParam String oldPassword,@RequestParam String newPassword) {
+
+        User user  = userService.requestLogin(account, oldPassword);
+        if(user == null) {
+            return ResultGenerator.genFailResult("账号/密码 不正确！");
+        }else {
+            user.setPassword(newPassword);
+            userService.update(user);
+            return ResultGenerator.genSuccessResult("密码更新成功");
+        }
     }
 
     @PostMapping("/update")
@@ -55,4 +85,30 @@ public class UserController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
+    @PostMapping("/requestLogin")
+    public Result requestLogin(@RequestParam String account, @RequestParam String password, @RequestParam(defaultValue = "0") String meid) {
+        boolean result = true;
+
+        if(account == null || "".equals(account)) {
+            return ResultGenerator.genFailResult("账号不能为空！");
+        } else if(password == null || "".equals(password)) {
+            return ResultGenerator.genFailResult("密码不能为空！");
+        }else {
+            //移动端MEID值需要传入，且不为“0”
+            if(!ZERO_STRING.equals(meid)) {
+                if(deviceService.findDeviceByMEID(meid) == null) {
+                    return ResultGenerator.genFailResult("设备没有登陆权限！");
+                }
+            }
+            User user = userService.requestLogin(account, password);
+            if(user == null) {
+                return ResultGenerator.genFailResult("账号或密码不正确！");
+            }else {
+                ///mqttMessageHelper.sendToClient("topic/client/2", JSON.toJSONString(userDetail));
+                return ResultGenerator.genSuccessResult(user);
+            }
+        }
+    }
+
 }

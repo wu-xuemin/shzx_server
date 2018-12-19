@@ -16,4 +16,14 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="valid" jdbcType="VARCHAR" property="valid" />
   </resultMap>
+
+  <select id="selectByAccount" resultMap="BaseResultMap">
+    select * from user  where account=#{account}
+  </select>
+
+  <select id="requestLogin" resultMap="BaseResultMap">
+    SELECT u.*
+    FROM user u
+    WHERE u.account = '${account}' AND u.password = '${password}'
+   </select>
 </mapper>

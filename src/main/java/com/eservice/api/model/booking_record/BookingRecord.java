@@ -15,7 +15,6 @@ public class BookingRecord {
     /**
      * 变更线路的日期
      */
-    @Id
     @Column(name = "change_date")
     private Date changeDate;
 

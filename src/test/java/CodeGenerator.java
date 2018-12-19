@@ -38,18 +38,19 @@ public class CodeGenerator {
     //数据库的Tables需要在这里添加，自动生成Springboot的整套逻辑（基本增删改查）
 
     private static String[] TABLES = {
-            "booking_record",
-            "bus",
-            "bus_stations",
-            "bus_supplier",
-            "banji",
-            "night_line",
-            "picked_students_info",
-            "role",
-            "student",
-            "transport_range",
-            "transport_record",
-            "user"
+//            "booking_record",
+//            "bus",
+//            "bus_stations",
+//            "bus_supplier",
+//            "banji",
+//            "night_line",
+//            "picked_students_info",
+//            "role",
+//            "student",
+//            "transport_range",
+//            "transport_record",
+//            "user"
+//            "device"
     };
     public static void main(String[] args) {
 //  在开发前期使用，可以使用TABLES的方式，后期可能会误操作导致自定义部分代码被flash掉
