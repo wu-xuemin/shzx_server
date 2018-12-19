@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : LocalDb
 Source Server Version : 50553
 Source Host           : localhost:3306
-Source Database       : shangzhong
+Source Database       : shangzhong_db
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-12-19 13:52:32
+Date: 2018-12-19 15:56:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,11 +27,15 @@ CREATE TABLE `banji` (
   PRIMARY KEY (`id`),
   KEY `fk_charge_teacher` (`charge_teacher`),
   CONSTRAINT `fk_charge_teacher` FOREIGN KEY (`charge_teacher`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of banji
 -- ----------------------------
+INSERT INTO `banji` VALUES ('1', '1', '1年级1班', '4');
+INSERT INTO `banji` VALUES ('2', '1', '1年级2班', '5');
+INSERT INTO `banji` VALUES ('3', '1', '1年级3班', '6');
+INSERT INTO `banji` VALUES ('4', '2', '2年级1班', '7');
 
 -- ----------------------------
 -- Table structure for `booking_record`
@@ -88,11 +92,13 @@ CREATE TABLE `bus` (
   CONSTRAINT `fk_bus_mom` FOREIGN KEY (`bus_mom`) REFERENCES `user` (`id`),
   CONSTRAINT `fk_bus_supplier` FOREIGN KEY (`bus_supplier`) REFERENCES `bus_supplier` (`id`),
   CONSTRAINT `fk_transport_range` FOREIGN KEY (`transport_range`) REFERENCES `transport_range` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus
 -- ----------------------------
+INSERT INTO `bus` VALUES ('1', 'XC001', 'HA001', '', '1', '1', '2', '8', '浦东', 'meid123', '1');
+INSERT INTO `bus` VALUES ('3', 'XC002', 'HA002', '', '2', '2', '3', '9', '浦西', 'meid333', '1');
 
 -- ----------------------------
 -- Table structure for `bus_stations`
@@ -118,11 +124,13 @@ CREATE TABLE `bus_supplier` (
   `name` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus_supplier
 -- ----------------------------
+INSERT INTO `bus_supplier` VALUES ('1', '港湾校车有限公司', '13000002222');
+INSERT INTO `bus_supplier` VALUES ('2', '小卫校车有限公司', '13066668888');
 
 -- ----------------------------
 -- Table structure for `device`
@@ -133,12 +141,14 @@ CREATE TABLE `device` (
   `name` varchar(255) NOT NULL COMMENT '设备名称',
   `meid` varchar(255) NOT NULL COMMENT 'MEID地址',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device
 -- ----------------------------
-INSERT INTO `device` VALUES ('1', 'wxm', '111222aaaa');
+INSERT INTO `device` VALUES ('1', 'wxm', '111222');
+INSERT INTO `device` VALUES ('2', 'ipad2', '222333');
+INSERT INTO `device` VALUES ('3', 'ipad3', '3333aaa');
 
 -- ----------------------------
 -- Table structure for `night_line`
@@ -149,11 +159,13 @@ CREATE TABLE `night_line` (
   `line_number` varchar(255) NOT NULL COMMENT '线路号',
   `stations` text NOT NULL COMMENT '站点名称，JSON',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of night_line
 -- ----------------------------
+INSERT INTO `night_line` VALUES ('1', '夜班线路1', '[{\"station_name\": \"44路口\"} ,{ \"station_name\": \"1133B口\"},{ \"station_name\": \"xx路口\"},{ \"station_name\": \"CC口\"}]');
+INSERT INTO `night_line` VALUES ('2', '夜班线路2', '[{\"station_name\": \"22路口\"} ,{ \"station_name\": \"33B口\"},{ \"station_name\": \"xx路口\"},{ \"station_name\": \"CC口\"}]');
 
 -- ----------------------------
 -- Table structure for `picked_students_info`
@@ -230,11 +242,15 @@ CREATE TABLE `transport_range` (
   `stations` text NOT NULL COMMENT '区间的站点名称，JSON\r\n\r\n[{"station_name": "AA路口"} ,\r\n{ "station_name": "BB口"},\r\n{ "station_name": "CC口"}\r\n]\r\n',
   `mode` varchar(255) NOT NULL COMMENT '早班；下午班；晚班',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of transport_range
 -- ----------------------------
+INSERT INTO `transport_range` VALUES ('1', '[{\"station_name\": \"AA路口\"} ,{ \"station_name\": \"BB口\"},{ \"station_name\": \"CC口\"}]', '早班');
+INSERT INTO `transport_range` VALUES ('2', '[{\"station_name\": \"11路口\"} ,{ \"station_name\": \"22口\"},{ \"station_name\": \"33路口\"}]', '早班');
+INSERT INTO `transport_range` VALUES ('3', '[{\"station_name\": \"33路口\"} ,{ \"station_name\": \"44口\"},{ \"station_name\": \"ff口\"}]', '下午班');
+INSERT INTO `transport_range` VALUES ('4', '[{\"station_name\": \"44路口\"} ,{ \"station_name\": \"33B口\"},{ \"station_name\": \"xx路口\"},{ \"station_name\": \"CC口\"}]', '晚班');
 
 -- ----------------------------
 -- Table structure for `transport_record`
@@ -275,9 +291,18 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   KEY `fk_u_role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'admin', 'admin', 'wechat222', '1', 'sinsim', '', '13188888888', '2018-07-11 10:03:43', '1');
+INSERT INTO `user` VALUES ('1', 'admin', 'admin', 'wechat222', '1', '1', '', '13188888888', '2018-07-11 10:03:43', '1');
+INSERT INTO `user` VALUES ('2', 'busMom1', 'xiaozhang', null, '3', '1', null, '13588027825', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('3', 'busMom2', 'lily', null, '3', '1', null, '13033332222', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('4', 'bzr1', 'bzr_tom', null, '4', '1', null, '13600003333', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('5', 'bzr2', 'bzr_tim', null, '4', '1', null, '13600004444', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('6', 'bzr3', 'bzr_jack', null, '4', '1', null, '13033332211', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('7', 'bzr4', 'bzr_peter', null, '4', '1', null, '13622223333', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('8', 'sj1', 'sj_liusan', null, '5', '1', null, '13699990000', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('9', 'sj2', 'sj2_zhangsan', null, '5', '1', null, '13055550000', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('10', 'sj3', 'sj3_xiaowu', null, '5', '1', null, '13600022222', '0000-00-00 00:00:00', '1');

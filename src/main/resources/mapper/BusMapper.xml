@@ -17,4 +17,13 @@
     <result column="ipad_meid" jdbcType="VARCHAR" property="ipadMeid" />
     <result column="valid" jdbcType="TINYINT" property="valid" />
   </resultMap>
+  <select id="getBusByBusMomAccount" resultMap="BaseResultMap">
+   SELECT
+	*
+	FROM
+	bus
+    LEFT JOIN `user` AS u ON bus.bus_mom = u.id
+    WHERE
+	u.account = #{busMomAccount};
+  </select>
 </mapper>

@@ -3,6 +3,7 @@ import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.bus.Bus;
 import com.eservice.api.service.BusService;
+import com.eservice.api.service.impl.BusServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequestMapping("/bus")
 public class BusController {
     @Resource
-    private BusService busService;
+    private BusServiceImpl busService;
 
     @PostMapping("/add")
     public Result add(Bus bus) {
@@ -54,5 +55,16 @@ public class BusController {
         List<Bus> list = busService.findAll();
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    /**
+     * 根据巴士妈妈账号来获得巴士妈妈所在的巴士
+     * @param busMomAccount
+     * @return
+     */
+    @PostMapping("/getBusByBusMomAccount")
+    public Result getBusByBusMomAccount(@RequestParam String busMomAccount) {
+        Bus bus = busService.getBusByBusMomAccount(busMomAccount);
+        return ResultGenerator.genSuccessResult(bus);
     }
 }
