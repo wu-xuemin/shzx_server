@@ -38,7 +38,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/wechat/user/info/loginGetUnionIdAndSave").permitAll()
                 .antMatchers(HttpMethod.GET, "/wechat/user/info/wechatMessageVerify").permitAll()
                 .antMatchers(HttpMethod.GET, "/wechat/user/info/wechatRedirect").permitAll()
-
+//                .antMatchers(HttpMethod.POST, "/*/*").permitAll()
+                .antMatchers("/v2/api-docs/**").permitAll()
+                .antMatchers("/swagger.json").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // We filter the api/login requests

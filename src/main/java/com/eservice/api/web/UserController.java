@@ -8,6 +8,8 @@ import com.eservice.api.service.impl.DeviceServiceImpl;
 import com.eservice.api.service.impl.UserServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,8 +22,9 @@ import java.util.List;
 * @author Wilson Hu
 * @date 2018/12/17.
 */
-@RestController
 @RequestMapping("/user")
+@Api("用户信息管理")
+@RestController
 public class UserController {
     @Resource
     private UserServiceImpl userService;
@@ -34,6 +37,7 @@ public class UserController {
      */
     private static String ZERO_STRING = "0";
 
+    @ApiOperation("新增用户")
     @PostMapping("/add")
     public Result addStaff(@RequestBody @NotNull User user) {
         if(userService.selectByAccount(user.getAccount()) != null) {
@@ -53,6 +57,7 @@ public class UserController {
     /**
      * 更新用户密码
      */
+    @ApiOperation("更新用户密码")
     @PostMapping("/updatePassword")
     public Result updatePassword(@RequestParam String account, @RequestParam String oldPassword,@RequestParam String newPassword) {
 
@@ -65,7 +70,7 @@ public class UserController {
             return ResultGenerator.genSuccessResult("密码更新成功");
         }
     }
-
+    @ApiOperation("更新用户")
     @PostMapping("/update")
     public Result update(User user) {
         userService.update(user);
@@ -77,7 +82,7 @@ public class UserController {
         User user = userService.findById(id);
         return ResultGenerator.genSuccessResult(user);
     }
-
+    @ApiOperation("获取列表")
     @PostMapping("/list")
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
@@ -86,6 +91,7 @@ public class UserController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
+    @ApiOperation("带meid登陆")
     @PostMapping("/requestLogin")
     public Result requestLogin(@RequestParam String account, @RequestParam String password, @RequestParam(defaultValue = "0") String meid) {
         boolean result = true;
