@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-12-19 15:56:41
+Date: 2018-12-20 13:23:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -92,13 +92,14 @@ CREATE TABLE `bus` (
   CONSTRAINT `fk_bus_mom` FOREIGN KEY (`bus_mom`) REFERENCES `user` (`id`),
   CONSTRAINT `fk_bus_supplier` FOREIGN KEY (`bus_supplier`) REFERENCES `bus_supplier` (`id`),
   CONSTRAINT `fk_transport_range` FOREIGN KEY (`transport_range`) REFERENCES `transport_range` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus
 -- ----------------------------
 INSERT INTO `bus` VALUES ('1', 'XC001', 'HA001', '', '1', '1', '2', '8', '浦东', 'meid123', '1');
-INSERT INTO `bus` VALUES ('3', 'XC002', 'HA002', '', '2', '2', '3', '9', '浦西', 'meid333', '1');
+INSERT INTO `bus` VALUES ('2', 'XC002', 'HA002', '', '2', '2', '3', '9', '浦西', 'meid333', '1');
+INSERT INTO `bus` VALUES ('3', 'XC003', 'HA003', '', '1', '3', '11', '10', '浦东', 'meid200', '1');
 
 -- ----------------------------
 -- Table structure for `bus_stations`
@@ -108,12 +109,23 @@ CREATE TABLE `bus_stations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `station_name` varchar(255) NOT NULL COMMENT '站点名称',
   `gps_info` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  PRIMARY KEY (`id`),
+  KEY `station_name` (`station_name`(191))
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus_stations
 -- ----------------------------
+INSERT INTO `bus_stations` VALUES ('1', '11路口', '');
+INSERT INTO `bus_stations` VALUES ('2', '22路口', '');
+INSERT INTO `bus_stations` VALUES ('3', '33路口', '');
+INSERT INTO `bus_stations` VALUES ('4', '44路口', '');
+INSERT INTO `bus_stations` VALUES ('5', 'AA路口', '');
+INSERT INTO `bus_stations` VALUES ('6', 'bb路口', '');
+INSERT INTO `bus_stations` VALUES ('7', 'CC路口', '');
+INSERT INTO `bus_stations` VALUES ('8', '人民广场北', '');
+INSERT INTO `bus_stations` VALUES ('9', '上海中学南门', '');
+INSERT INTO `bus_stations` VALUES ('10', '机场路XX路口', '');
 
 -- ----------------------------
 -- Table structure for `bus_supplier`
@@ -181,11 +193,23 @@ CREATE TABLE `picked_students_info` (
   KEY `fk_transport_record_id` (`transport_record_id`),
   CONSTRAINT `fk_transport_record_id` FOREIGN KEY (`transport_record_id`) REFERENCES `transport_record` (`id`),
   CONSTRAINT `fk_student_id` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of picked_students_info
 -- ----------------------------
+INSERT INTO `picked_students_info` VALUES ('1', '1', '2018-12-19 10:11:04', '1');
+INSERT INTO `picked_students_info` VALUES ('2', '1', '2018-12-19 10:16:36', '2');
+INSERT INTO `picked_students_info` VALUES ('3', '1', '2018-12-19 10:16:57', '5');
+INSERT INTO `picked_students_info` VALUES ('4', '1', '2018-12-19 10:00:19', '6');
+INSERT INTO `picked_students_info` VALUES ('5', '2', '2018-12-19 16:17:52', '1');
+INSERT INTO `picked_students_info` VALUES ('6', '2', '2018-12-19 16:11:52', '2');
+INSERT INTO `picked_students_info` VALUES ('7', '2', '2018-12-19 16:07:52', '5');
+INSERT INTO `picked_students_info` VALUES ('8', '2', '2018-12-19 16:37:52', '6');
+INSERT INTO `picked_students_info` VALUES ('9', '5', '2018-12-20 08:20:02', '1');
+INSERT INTO `picked_students_info` VALUES ('10', '5', '2018-12-20 10:20:42', '2');
+INSERT INTO `picked_students_info` VALUES ('11', '6', '2018-12-20 17:21:58', '3');
+INSERT INTO `picked_students_info` VALUES ('12', '6', '2018-12-20 16:22:28', '1');
 
 -- ----------------------------
 -- Table structure for `role`
@@ -219,19 +243,29 @@ CREATE TABLE `student` (
   `name` varchar(255) NOT NULL COMMENT '姓名',
   `banji` int(10) unsigned NOT NULL COMMENT '班级,外键',
   `bus` int(10) unsigned NOT NULL COMMENT '乘坐车的ID，外键',
-  `board_station_morning` varchar(255) NOT NULL COMMENT '上午班车上车站点',
-  `board_station_afternoon` varchar(255) NOT NULL COMMENT '下午班车下车站点',
+  `board_station_morning` int(10) unsigned NOT NULL COMMENT '上午班车上车站点',
+  `board_station_afternoon` int(10) unsigned NOT NULL COMMENT '下午班车下车站点',
   `family_info` text NOT NULL COMMENT '家庭信息 JSON',
   PRIMARY KEY (`id`),
   KEY `fk_bus` (`bus`),
   KEY `fk_banji` (`banji`),
+  KEY `fk_board_station_morning` (`board_station_morning`),
+  KEY `fk_board_station_afternoon` (`board_station_afternoon`),
+  CONSTRAINT `fk_board_station_afternoon` FOREIGN KEY (`board_station_afternoon`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_banji` FOREIGN KEY (`banji`) REFERENCES `banji` (`id`),
+  CONSTRAINT `fk_board_station_morning` FOREIGN KEY (`board_station_morning`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_bus` FOREIGN KEY (`bus`) REFERENCES `bus` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
+INSERT INTO `student` VALUES ('1', 'XH-2018-001', '', '小明', '1', '1', '1', '3', '');
+INSERT INTO `student` VALUES ('2', 'XH-2018-002', '', '王小强', '1', '2', '4', '3', '');
+INSERT INTO `student` VALUES ('3', 'XH-2018-003', '', '张小山', '2', '3', '6', '7', '');
+INSERT INTO `student` VALUES ('4', 'XH-2018-004', '', '刘看山', '3', '3', '5', '2', '');
+INSERT INTO `student` VALUES ('5', 'XH-2018-005汉', '', '王小芳', '2', '1', '1', '3', '');
+INSERT INTO `student` VALUES ('6', 'XH-2018-006中', '', '钟小文', '4', '2', '10', '8', '');
 
 -- ----------------------------
 -- Table structure for `transport_range`
@@ -259,19 +293,27 @@ DROP TABLE IF EXISTS `transport_record`;
 CREATE TABLE `transport_record` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '接送信息',
   `date` date NOT NULL COMMENT '接送日期',
-  `mode` varchar(255) NOT NULL COMMENT '接送模式，分为“上午接”，“下午送”，“晚班”',
+  `mode` varchar(255) NOT NULL COMMENT '接送模式，分为“上午接送”，“下午接送”，“晚班”',
   `bus` int(10) unsigned NOT NULL COMMENT '校车，外键，可以根据校车去查应乘学生',
-  `current_station` int(10) unsigned NOT NULL COMMENT '校车所处的当前站点',
+  `current_station` int(10) unsigned DEFAULT NULL COMMENT '校车所处的当前站点',
   PRIMARY KEY (`id`),
   KEY `fk_tr_bus` (`bus`),
   KEY `fk_current_station` (`current_station`),
   CONSTRAINT `fk_current_station` FOREIGN KEY (`current_station`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_tr_bus` FOREIGN KEY (`bus`) REFERENCES `bus` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of transport_record
 -- ----------------------------
+INSERT INTO `transport_record` VALUES ('1', '2018-12-19', '上午接送', '1', null);
+INSERT INTO `transport_record` VALUES ('2', '2018-12-19', '下午接送', '1', null);
+INSERT INTO `transport_record` VALUES ('3', '2018-12-19', '上午接送', '2', null);
+INSERT INTO `transport_record` VALUES ('4', '2018-12-19', '下午接送', '2', null);
+INSERT INTO `transport_record` VALUES ('5', '2018-12-20', '上午接送', '1', null);
+INSERT INTO `transport_record` VALUES ('6', '2018-12-20', '下午接送', '1', null);
+INSERT INTO `transport_record` VALUES ('7', '2018-12-20', '上午接送', '3', null);
+INSERT INTO `transport_record` VALUES ('8', '2018-12-20', '下午接送', '3', null);
 
 -- ----------------------------
 -- Table structure for `user`
@@ -291,7 +333,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   KEY `fk_u_role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of user
@@ -306,3 +348,4 @@ INSERT INTO `user` VALUES ('7', 'bzr4', 'bzr_peter', null, '4', '1', null, '1362
 INSERT INTO `user` VALUES ('8', 'sj1', 'sj_liusan', null, '5', '1', null, '13699990000', '0000-00-00 00:00:00', '1');
 INSERT INTO `user` VALUES ('9', 'sj2', 'sj2_zhangsan', null, '5', '1', null, '13055550000', '0000-00-00 00:00:00', '1');
 INSERT INTO `user` VALUES ('10', 'sj3', 'sj3_xiaowu', null, '5', '1', null, '13600022222', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('11', 'busMom3', 'busmm11', null, '3', '1', null, '13800009999', '0000-00-00 00:00:00', '1');

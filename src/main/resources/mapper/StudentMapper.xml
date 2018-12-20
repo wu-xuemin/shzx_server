@@ -15,4 +15,13 @@
     <result column="board_station_afternoon" jdbcType="VARCHAR" property="boardStationAfternoon" />
     <result column="family_info" jdbcType="LONGVARCHAR" property="familyInfo" />
   </resultMap>
+  <select id="getStudentsByBusNumber" resultMap="BaseResultMap">
+    SELECT
+      *
+    FROM
+	  student
+    LEFT JOIN bus AS b ON student.bus = b.id
+    WHERE
+	  b.number =#{busNumber}
+  </select>
 </mapper>

@@ -3,6 +3,7 @@ import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.student.Student;
 import com.eservice.api.service.StudentService;
+import com.eservice.api.service.impl.StudentServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentController {
     @Resource
-    private StudentService studentService;
+    private StudentServiceImpl studentService;
 
     @PostMapping("/add")
     public Result add(Student student) {
@@ -55,4 +56,21 @@ public class StudentController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
+    /**
+     * 根据校车编号，返回该校车的学生
+     * @param page
+     * @param size
+     * @param busNumber
+     * @return
+     */
+    @PostMapping("/getStudentsByBusNumber")
+    public Result getStudentsByBusNumber(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                        @RequestParam(defaultValue = "0") String busNumber) {
+        PageHelper.startPage(page, size);
+        List<Student> list = studentService.getStudentsByBusNumber(busNumber);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
 }
