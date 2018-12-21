@@ -26,4 +26,12 @@
     WHERE
 	u.account = #{busMomAccount};
   </select>
+  <select id="getBusesBySchoolPartion" resultMap="BaseResultMap">
+   SELECT
+	*
+	FROM
+	bus
+  where
+  bus.school_partition = #{schoolPartion}
+  </select>
 </mapper>

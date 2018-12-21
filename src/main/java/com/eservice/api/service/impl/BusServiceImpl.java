@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -23,5 +24,8 @@ public class BusServiceImpl extends AbstractService<Bus> implements BusService {
 
     public Bus getBusByBusMomAccount(String busMomAccount){
         return busMapper.getBusByBusMomAccount(busMomAccount);
+    }
+    public List<Bus> getBusesBySchoolPartion(String schoolPartion){
+        return busMapper.getBusesBySchoolPartion(schoolPartion);
     }
 }

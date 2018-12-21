@@ -6,6 +6,7 @@ import com.eservice.api.service.BusService;
 import com.eservice.api.service.impl.BusServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,9 +63,29 @@ public class BusController {
      * @param busMomAccount
      * @return
      */
+
+    @ApiOperation("根据巴士妈妈账号来获得巴士妈妈所在的巴士")
     @PostMapping("/getBusByBusMomAccount")
     public Result getBusByBusMomAccount(@RequestParam String busMomAccount) {
         Bus bus = busService.getBusByBusMomAccount(busMomAccount);
         return ResultGenerator.genSuccessResult(bus);
     }
+
+
+    /**
+     * 根据校区来获得该校区的所有巴士的信息
+     * @param schoolPartion
+     * @return
+     */
+
+    @ApiOperation("根据校区来获得该校区的所有巴士的信息")
+    @PostMapping("/getBusesBySchoolPartion")
+    public Result getBusesBySchoolPartion(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                          @RequestParam String schoolPartion) {
+        PageHelper.startPage(page, size);
+        List<Bus> list = busService.getBusesBySchoolPartion(schoolPartion);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
 }
