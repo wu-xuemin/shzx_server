@@ -38,13 +38,13 @@ public class Student {
      * 上午班车上车站点
      */
     @Column(name = "board_station_morning")
-    private String boardStationMorning;
+    private Integer boardStationMorning;
 
     /**
      * 下午班车下车站点
      */
     @Column(name = "board_station_afternoon")
-    private String boardStationAfternoon;
+    private Integer boardStationAfternoon;
 
     /**
      * 家庭信息 JSON
@@ -161,7 +161,7 @@ public class Student {
      *
      * @return board_station_morning - 上午班车上车站点
      */
-    public String getBoardStationMorning() {
+    public Integer getBoardStationMorning() {
         return boardStationMorning;
     }
 
@@ -170,7 +170,7 @@ public class Student {
      *
      * @param boardStationMorning 上午班车上车站点
      */
-    public void setBoardStationMorning(String boardStationMorning) {
+    public void setBoardStationMorning(Integer boardStationMorning) {
         this.boardStationMorning = boardStationMorning;
     }
 
@@ -179,7 +179,7 @@ public class Student {
      *
      * @return board_station_afternoon - 下午班车下车站点
      */
-    public String getBoardStationAfternoon() {
+    public Integer getBoardStationAfternoon() {
         return boardStationAfternoon;
     }
 
@@ -188,7 +188,7 @@ public class Student {
      *
      * @param boardStationAfternoon 下午班车下车站点
      */
-    public void setBoardStationAfternoon(String boardStationAfternoon) {
+    public void setBoardStationAfternoon(Integer boardStationAfternoon) {
         this.boardStationAfternoon = boardStationAfternoon;
     }
 

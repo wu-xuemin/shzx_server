@@ -3,6 +3,7 @@ import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.bus.Bus;
 import com.eservice.api.model.student.Student;
+import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.service.BusService;
 import com.eservice.api.service.impl.BusServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -95,7 +96,7 @@ public class BusController {
     public Result getStudentsByBusNumber(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                                           @RequestParam String busNumber) {
         PageHelper.startPage(page, size);
-        List<Student> list = busService.getStudentsByBusNumber(busNumber);
+        List<StudentInfo> list = busService.getStudentsByBusNumber(busNumber);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

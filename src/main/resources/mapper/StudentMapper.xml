@@ -11,8 +11,8 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="banji" jdbcType="INTEGER" property="banji" />
     <result column="bus" jdbcType="INTEGER" property="bus" />
-    <result column="board_station_morning" jdbcType="VARCHAR" property="boardStationMorning" />
-    <result column="board_station_afternoon" jdbcType="VARCHAR" property="boardStationAfternoon" />
+    <result column="board_station_morning" jdbcType="INTEGER" property="boardStationMorning" />
+    <result column="board_station_afternoon" jdbcType="INTEGER" property="boardStationAfternoon" />
     <result column="family_info" jdbcType="LONGVARCHAR" property="familyInfo" />
   </resultMap>
   <select id="getStudentsByBusNumber" resultMap="BaseResultMap">
