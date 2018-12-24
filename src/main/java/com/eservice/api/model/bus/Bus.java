@@ -31,10 +31,16 @@ public class Bus {
     private Integer busSupplier;
 
     /**
-     * 区间，
+     * 早班区间，
      */
-    @Column(name = "transport_range")
-    private Integer transportRange;
+    @Column(name = "transport_range_morning")
+    private Integer transportRangeMorning;
+
+    /**
+     * 午班区间，
+     */
+    @Column(name = "transport_range_afternoon")
+    private Integer transportRangeAfternoon;
 
     /**
      * 巴士妈妈，外键
@@ -149,22 +155,43 @@ public class Bus {
     }
 
     /**
-     * 获取区间，
+     * 获取早班区间，
      *
-     * @return transport_range - 区间，
+     * @return transport_range - 早班区间，
      */
-    public Integer getTransportRange() {
-        return transportRange;
+    public Integer getTransportRangeMorning() {
+        return transportRangeMorning;
     }
 
     /**
-     * 设置区间，
+     * 设置早班区间，
      *
-     * @param transportRange 区间，
+     * @param transportRangeMorning 早班区间，
      */
-    public void setTransportRange(Integer transportRange) {
-        this.transportRange = transportRange;
+    public void setTransportRangeMorning(Integer transportRangeMorning) {
+        this.transportRangeMorning = transportRangeMorning;
     }
+
+    /**
+     * 获取午班区间，
+     *
+     * @return transport_range - 午班区间，
+     */
+    public Integer getTransportRangeAfternoon() {
+        return transportRangeAfternoon;
+    }
+
+    /**
+     * 设置午班区间，
+     *
+     * @param transportRangeMorningAfternoon 午班区间，
+     */
+    public void setTransportRangeAfternoon(Integer transportRangeMorningAfternoon) {
+        this.transportRangeAfternoon = transportRangeMorningAfternoon;
+    }
+
+
+
 
     /**
      * 获取巴士妈妈，外键

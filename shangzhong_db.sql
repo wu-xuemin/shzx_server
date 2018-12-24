@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-12-20 13:23:15
+Date: 2018-12-24 16:23:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -77,7 +77,8 @@ CREATE TABLE `bus` (
   `plate_number` varchar(255) NOT NULL COMMENT '车牌号',
   `plate_number_pic` varchar(255) NOT NULL COMMENT '牌照照片存放路径',
   `bus_supplier` int(10) unsigned NOT NULL COMMENT '供应商，外键',
-  `transport_range` int(10) unsigned NOT NULL COMMENT '区间，',
+  `transport_range_morning` int(10) unsigned NOT NULL COMMENT '早班区间，',
+  `transport_range_afternoon` int(10) unsigned NOT NULL COMMENT '午班区间，',
   `bus_mom` int(10) unsigned NOT NULL COMMENT '巴士妈妈，外键',
   `bus_driver` int(10) unsigned NOT NULL COMMENT '司机',
   `school_partition` varchar(255) NOT NULL COMMENT '浦东校区；浦西校区',
@@ -87,19 +88,21 @@ CREATE TABLE `bus` (
   KEY `fk_bus_supplier` (`bus_supplier`),
   KEY `fk_bus_mom` (`bus_mom`),
   KEY `fk_bus_driver` (`bus_driver`),
-  KEY `fk_transport_range` (`transport_range`),
+  KEY `fk_transport_range_morning` (`transport_range_morning`),
+  KEY `fk_transport_range_afternoon` (`transport_range_afternoon`),
   CONSTRAINT `fk_bus_driver` FOREIGN KEY (`bus_driver`) REFERENCES `user` (`id`),
   CONSTRAINT `fk_bus_mom` FOREIGN KEY (`bus_mom`) REFERENCES `user` (`id`),
   CONSTRAINT `fk_bus_supplier` FOREIGN KEY (`bus_supplier`) REFERENCES `bus_supplier` (`id`),
-  CONSTRAINT `fk_transport_range` FOREIGN KEY (`transport_range`) REFERENCES `transport_range` (`id`)
+  CONSTRAINT `fk_transport_range_morning` FOREIGN KEY (`transport_range_morning`) REFERENCES `transport_range` (`id`),
+  CONSTRAINT `fk_transport_range_afternoon` FOREIGN KEY (`transport_range_afternoon`) REFERENCES `transport_range` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus
 -- ----------------------------
-INSERT INTO `bus` VALUES ('1', 'XC001', 'HA001', '', '1', '1', '2', '8', '浦东', 'meid123', '1');
-INSERT INTO `bus` VALUES ('2', 'XC002', 'HA002', '', '2', '2', '3', '9', '浦西', 'meid333', '1');
-INSERT INTO `bus` VALUES ('3', 'XC003', 'HA003', '', '1', '3', '11', '10', '浦东', 'meid200', '1');
+INSERT INTO `bus` VALUES ('1', 'XC001', 'HA001', '', '1', '1', '1', '2', '8', '浦东', 'meid123', '1');
+INSERT INTO `bus` VALUES ('2', 'XC002', 'HA002', '', '2', '2', '1', '3', '9', '浦西', 'meid333', '1');
+INSERT INTO `bus` VALUES ('3', 'XC003', 'HA003', '', '1', '3', '1', '11', '10', '浦东', 'meid200', '1');
 
 -- ----------------------------
 -- Table structure for `bus_stations`

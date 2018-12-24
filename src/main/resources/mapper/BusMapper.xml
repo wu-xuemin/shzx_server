@@ -10,7 +10,8 @@
     <result column="plate_number" jdbcType="VARCHAR" property="plateNumber" />
     <result column="plate_number_pic" jdbcType="VARCHAR" property="plateNumberPic" />
     <result column="bus_supplier" jdbcType="INTEGER" property="busSupplier" />
-    <result column="transport_range" jdbcType="INTEGER" property="transportRange" />
+    <result column="transport_range_morning" jdbcType="INTEGER" property="transportRangeMorning" />
+      <result column="transport_range_afternoon" jdbcType="INTEGER" property="transportRangeAfternoon" />
     <result column="bus_mom" jdbcType="INTEGER" property="busMom" />
     <result column="bus_driver" jdbcType="INTEGER" property="busDriver" />
     <result column="school_partition" jdbcType="VARCHAR" property="schoolPartition" />
