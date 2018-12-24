@@ -2,6 +2,7 @@ package com.eservice.api.service.impl;
 
 import com.eservice.api.dao.BusMapper;
 import com.eservice.api.model.bus.Bus;
+import com.eservice.api.model.student.Student;
 import com.eservice.api.service.BusService;
 import com.eservice.api.core.AbstractService;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,11 @@ public class BusServiceImpl extends AbstractService<Bus> implements BusService {
     public Bus getBusByBusMomAccount(String busMomAccount){
         return busMapper.getBusByBusMomAccount(busMomAccount);
     }
-    public List<Bus> getBusesBySchoolPartion(String schoolPartion){
-        return busMapper.getBusesBySchoolPartion(schoolPartion);
+    public List<Bus> getBusesBySchoolPartition(String schoolPartition){
+        return busMapper.getBusesBySchoolPartition(schoolPartition);
+    }
+
+    public List<Student> getStudentsByBusNumber(String busNumber){
+        return busMapper.getStudentsByBusNumber(busNumber);
     }
 }

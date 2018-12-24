@@ -26,12 +26,22 @@
     WHERE
 	u.account = #{busMomAccount};
   </select>
-  <select id="getBusesBySchoolPartion" resultMap="BaseResultMap">
-   SELECT
+  <select id="getBusesBySchoolPartition" resultMap="BaseResultMap">
+    SELECT
 	*
 	FROM
-	bus
-  where
-  bus.school_partition = #{schoolPartion}
+	  bus
+    where
+      bus.school_partition = #{schoolPartition}
   </select>
+
+   <select id="getStudentsByBusNumber" resultMap="com.eservice.api.dao.StudentMapper.BaseResultMap" >
+    SELECT
+        *
+    FROM
+        student
+    LEFT JOIN bus ON student.bus = bus.id
+    WHERE
+        bus.number = #{busNumber}
+   </select>
 </mapper>

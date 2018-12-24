@@ -2,6 +2,7 @@ package com.eservice.api.web;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.bus.Bus;
+import com.eservice.api.model.student.Student;
 import com.eservice.api.service.BusService;
 import com.eservice.api.service.impl.BusServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -74,16 +75,27 @@ public class BusController {
 
     /**
      * 根据校区来获得该校区的所有巴士的信息
-     * @param schoolPartion
+     * @param schoolPartition
      * @return
      */
 
     @ApiOperation("根据校区来获得该校区的所有巴士的信息")
-    @PostMapping("/getBusesBySchoolPartion")
-    public Result getBusesBySchoolPartion(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
-                                          @RequestParam String schoolPartion) {
+    @PostMapping("/getBusesBySchoolPartition")
+    public Result getBusesBySchoolPartition(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                          @RequestParam String schoolPartition) {
         PageHelper.startPage(page, size);
-        List<Bus> list = busService.getBusesBySchoolPartion(schoolPartion);
+        List<Bus> list = busService.getBusesBySchoolPartition(schoolPartition);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+
+    @ApiOperation("根据校车编号来获得该校车的所有学生")
+    @PostMapping("/getStudentsByBusNumber")
+    public Result getStudentsByBusNumber(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                          @RequestParam String busNumber) {
+        PageHelper.startPage(page, size);
+        List<Student> list = busService.getStudentsByBusNumber(busNumber);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
