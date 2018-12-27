@@ -1,5 +1,6 @@
 package com.eservice.api;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -13,6 +14,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration //标记配置类
 @EnableSwagger2 //开启在线接口文档
 public class Swagger2Config {
+
+    @Value("${swagger.enable}")
+    private boolean enableSwagger;
+
     /**
      * 添加摘要信息(Docket)
      */
@@ -28,6 +33,7 @@ public class Swagger2Config {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.eservice.api.web"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .enable(enableSwagger);
     }
 }
