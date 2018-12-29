@@ -5,6 +5,7 @@ import com.eservice.api.model.role.Role;
 import com.eservice.api.service.RoleService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/role")
+@Api("用户角色管理")
 public class RoleController {
     @Resource
     private RoleService roleService;

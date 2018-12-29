@@ -5,6 +5,7 @@ import com.eservice.api.model.bus_stations.BusStations;
 import com.eservice.api.service.BusStationsService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/bus/stations")
+@Api("校车站点管理")
 public class BusStationsController {
     @Resource
     private BusStationsService busStationsService;

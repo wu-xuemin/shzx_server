@@ -6,6 +6,7 @@ import com.eservice.api.service.StudentService;
 import com.eservice.api.service.impl.StudentServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/student")
+@Api("学生信息管理")
 public class StudentController {
     @Resource
     private StudentServiceImpl studentService;

@@ -5,12 +5,11 @@ import com.eservice.api.model.banji.Banji;
 import com.eservice.api.service.BanjiService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.Api;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -20,6 +19,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/banji")
+@Api("班级信息管理")
 public class BanjiController {
     @Resource
     private BanjiService banjiService;

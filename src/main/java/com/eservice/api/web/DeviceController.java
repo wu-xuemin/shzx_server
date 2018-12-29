@@ -5,6 +5,7 @@ import com.eservice.api.model.device.Device;
 import com.eservice.api.service.DeviceService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/device")
+@Api("Ipad绑定设备号管理")
 public class DeviceController {
     @Resource
     private DeviceService deviceService;

@@ -8,6 +8,7 @@ import com.eservice.api.service.BusService;
 import com.eservice.api.service.impl.BusServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/bus")
+@Api("校车信息管理")
 public class BusController {
     @Resource
     private BusServiceImpl busService;

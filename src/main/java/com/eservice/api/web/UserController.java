@@ -23,8 +23,8 @@ import java.util.List;
 * @date 2018/12/17.
 */
 @RequestMapping("/user")
-@Api("用户信息管理")
 @RestController
+@Api("用户信息管理")
 public class UserController {
     @Resource
     private UserServiceImpl userService;

@@ -5,6 +5,7 @@ import com.eservice.api.model.picked_students_info.PickedStudentsInfo;
 import com.eservice.api.service.PickedStudentsInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/picked/students/info")
+@Api("已接到的学生的接送信息")
 public class PickedStudentsInfoController {
     @Resource
     private PickedStudentsInfoService pickedStudentsInfoService;

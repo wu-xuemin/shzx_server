@@ -5,6 +5,7 @@ import com.eservice.api.model.transport_record.TransportRecord;
 import com.eservice.api.service.TransportRecordService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/transport/record")
+@Api("接送记录管理")
 public class TransportRecordController {
     @Resource
     private TransportRecordService transportRecordService;

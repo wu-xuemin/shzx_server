@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : LocalDb
-Source Server Version : 50553
-Source Host           : localhost:3306
+Source Server         : aliyunDocker_shzx_bus
+Source Server Version : 50721
+Source Host           : 172.22.0.2:3306
 Source Database       : shangzhong_db
 
 Target Server Type    : MYSQL
-Target Server Version : 50553
+Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2018-12-24 16:23:15
+Date: 2018-12-29 17:30:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,7 +27,7 @@ CREATE TABLE `banji` (
   PRIMARY KEY (`id`),
   KEY `fk_charge_teacher` (`charge_teacher`),
   CONSTRAINT `fk_charge_teacher` FOREIGN KEY (`charge_teacher`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of banji
@@ -36,6 +36,7 @@ INSERT INTO `banji` VALUES ('1', '1', '1年级1班', '4');
 INSERT INTO `banji` VALUES ('2', '1', '1年级2班', '5');
 INSERT INTO `banji` VALUES ('3', '1', '1年级3班', '6');
 INSERT INTO `banji` VALUES ('4', '2', '2年级1班', '7');
+INSERT INTO `banji` VALUES ('5', '2', '班级-add-by-swagger', '3');
 
 -- ----------------------------
 -- Table structure for `booking_record`
@@ -57,8 +58,8 @@ CREATE TABLE `booking_record` (
   KEY `fk_old_bus` (`old_bus`),
   KEY `fk_new_bus` (`new_bus`),
   KEY `fk_new_station` (`new_station`),
-  CONSTRAINT `fk_new_station` FOREIGN KEY (`new_station`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_new_bus` FOREIGN KEY (`new_bus`) REFERENCES `bus` (`id`),
+  CONSTRAINT `fk_new_station` FOREIGN KEY (`new_station`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_old_bus` FOREIGN KEY (`old_bus`) REFERENCES `bus` (`id`),
   CONSTRAINT `fk_student` FOREIGN KEY (`student`) REFERENCES `student` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -93,8 +94,8 @@ CREATE TABLE `bus` (
   CONSTRAINT `fk_bus_driver` FOREIGN KEY (`bus_driver`) REFERENCES `user` (`id`),
   CONSTRAINT `fk_bus_mom` FOREIGN KEY (`bus_mom`) REFERENCES `user` (`id`),
   CONSTRAINT `fk_bus_supplier` FOREIGN KEY (`bus_supplier`) REFERENCES `bus_supplier` (`id`),
-  CONSTRAINT `fk_transport_range_morning` FOREIGN KEY (`transport_range_morning`) REFERENCES `transport_range` (`id`),
-  CONSTRAINT `fk_transport_range_afternoon` FOREIGN KEY (`transport_range_afternoon`) REFERENCES `transport_range` (`id`)
+  CONSTRAINT `fk_transport_range_afternoon` FOREIGN KEY (`transport_range_afternoon`) REFERENCES `transport_range` (`id`),
+  CONSTRAINT `fk_transport_range_morning` FOREIGN KEY (`transport_range_morning`) REFERENCES `transport_range` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
@@ -139,13 +140,14 @@ CREATE TABLE `bus_supplier` (
   `name` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus_supplier
 -- ----------------------------
 INSERT INTO `bus_supplier` VALUES ('1', '港湾校车有限公司', '13000002222');
 INSERT INTO `bus_supplier` VALUES ('2', '小卫校车有限公司', '13066668888');
+INSERT INTO `bus_supplier` VALUES ('3', '星空校车有限公司--add-by-swagger-online', '13400003333');
 
 -- ----------------------------
 -- Table structure for `device`
@@ -194,8 +196,8 @@ CREATE TABLE `picked_students_info` (
   PRIMARY KEY (`id`),
   KEY `fk_student_id` (`student_id`),
   KEY `fk_transport_record_id` (`transport_record_id`),
-  CONSTRAINT `fk_transport_record_id` FOREIGN KEY (`transport_record_id`) REFERENCES `transport_record` (`id`),
-  CONSTRAINT `fk_student_id` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`)
+  CONSTRAINT `fk_student_id` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
+  CONSTRAINT `fk_transport_record_id` FOREIGN KEY (`transport_record_id`) REFERENCES `transport_record` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
@@ -254,8 +256,8 @@ CREATE TABLE `student` (
   KEY `fk_banji` (`banji`),
   KEY `fk_board_station_morning` (`board_station_morning`),
   KEY `fk_board_station_afternoon` (`board_station_afternoon`),
-  CONSTRAINT `fk_board_station_afternoon` FOREIGN KEY (`board_station_afternoon`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_banji` FOREIGN KEY (`banji`) REFERENCES `banji` (`id`),
+  CONSTRAINT `fk_board_station_afternoon` FOREIGN KEY (`board_station_afternoon`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_board_station_morning` FOREIGN KEY (`board_station_morning`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_bus` FOREIGN KEY (`bus`) REFERENCES `bus` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;

@@ -5,6 +5,7 @@ import com.eservice.api.model.night_line.NightLine;
 import com.eservice.api.service.NightLineService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/night/line")
+@Api("晚班线路信息管理")
 public class NightLineController {
     @Resource
     private NightLineService nightLineService;

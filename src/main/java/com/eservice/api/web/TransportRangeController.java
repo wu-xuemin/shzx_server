@@ -5,6 +5,7 @@ import com.eservice.api.model.transport_range.TransportRange;
 import com.eservice.api.service.TransportRangeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/transport/range")
+@Api("校车区间管理")
 public class TransportRangeController {
     @Resource
     private TransportRangeService transportRangeService;

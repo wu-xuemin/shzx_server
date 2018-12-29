@@ -5,6 +5,7 @@ import com.eservice.api.model.booking_record.BookingRecord;
 import com.eservice.api.service.BookingRecordService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/booking/record")
+@Api("学生的班车预约变更")
 public class BookingRecordController {
     @Resource
     private BookingRecordService bookingRecordService;
