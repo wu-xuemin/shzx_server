@@ -11,4 +11,71 @@
     <result column="bus" jdbcType="INTEGER" property="bus" />
     <result column="current_station" jdbcType="INTEGER" property="currentStation" />
   </resultMap>
+  <resultMap id="TransportRecordInfoResultMap" type="com.eservice.api.model.transport_record.TransportRecordInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="mode" jdbcType="VARCHAR" property="mode" />
+    <result column="bus" jdbcType="INTEGER" property="bus" />
+    <result column="current_station" jdbcType="INTEGER" property="currentStation" />
+
+    <result column="bus_number" jdbcType="VARCHAR" property="busNumber" />
+    <result column="board_station_name_morning" jdbcType="VARCHAR" property="boardStationNameMorning" />
+    <result column="board_station_name_afternoon" jdbcType="VARCHAR" property="boardStationNameAfternoon" />
+    <result column="board_time" jdbcType="VARCHAR" property="boardTime" />
+    <result column="student_banji" jdbcType="VARCHAR" property="studentBanji" />
+    <result column="student_grade" jdbcType="VARCHAR" property="studentGrade" />
+    <result column="student_name" jdbcType="VARCHAR" property="studentName" />
+  </resultMap>
+
+  <select id="selectTransportRecord" resultMap="TransportRecordInfoResultMap">
+  SELECT
+    tr.*,
+    bus.number as bus_number,
+    bs_m.station_name as board_station_name_morning,
+    bs_a.station_name as board_station_name_afternoon,
+    psi.*,
+    banji.class_name as student_banji,
+    banji.grade as student_grade,
+    student.`name` as student_name
+  FROM
+    transport_record AS tr
+  LEFT JOIN bus ON tr.bus = bus.id
+  LEFT JOIN picked_students_info AS psi ON tr.id = psi.transport_record_id
+  LEFT JOIN student ON psi.student_id = student.id
+  LEFT JOIN bus_stations AS bs_m ON student.board_station_morning = bs_m.id
+  LEFT JOIN bus_stations AS bs_a ON student.board_station_afternoon = bs_a.id
+  LEFT JOIN banji ON student.banji = banji.id
+  WHERE
+    1 = 1
+    <if test="queryStartTime != null and queryStartTime != ''">
+      AND DATE_FORMAT(  psi.board_time,  '%Y-%m-%d %T'  ) >= #{queryStartTime}
+    </if>
+    <if test="queryFinishTime != null and queryFinishTime != ''">
+      AND DATE_FORMAT(  psi.board_time,  '%Y-%m-%d %T'  ) &lt;= #{queryFinishTime}
+    </if>
+
+    <if test="studentName != null and studentName != ''">
+      AND student.`name` LIKE CONCAT('%', '${studentName}', '%')
+    </if>
+
+    <if test="busNumber != null and busNumber != ''">
+      AND bus.number = #{busNumber}
+    </if>
+
+    <if test="busStationName != null and busStationName != ''">
+      AND ( bs_a.station_name = #{busStationName}  OR bs_m.station_name = #{busStationName} )
+    </if>
+
+    <if test="grade != null and grade != ''">
+      AND banji.grade = #{grade}
+    </if>
+
+    <if test="className != null and className != ''">
+      AND banji.class_name = #{className}
+    </if>
+</select>
+
 </mapper>

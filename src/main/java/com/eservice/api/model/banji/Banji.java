@@ -10,7 +10,7 @@ public class Banji {
     /**
      * 年级
      */
-    private Byte grade;
+    private String grade;
 
     /**
      * 班级名称
@@ -43,7 +43,7 @@ public class Banji {
      *
      * @return grade - 年级
      */
-    public Byte getGrade() {
+    public String getGrade() {
         return grade;
     }
 
@@ -52,7 +52,7 @@ public class Banji {
      *
      * @param grade 年级
      */
-    public void setGrade(Byte grade) {
+    public void setGrade(String grade) {
         this.grade = grade;
     }
 

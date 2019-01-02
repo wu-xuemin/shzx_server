@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2018-12-29 17:30:57
+Date: 2019-01-02 16:35:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,7 +21,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `banji`;
 CREATE TABLE `banji` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `grade` tinyint(3) unsigned NOT NULL COMMENT '年级',
+  `grade` varchar(255) NOT NULL COMMENT '年级',
   `class_name` varchar(255) NOT NULL COMMENT '班级名称',
   `charge_teacher` int(10) unsigned NOT NULL COMMENT '班主任',
   PRIMARY KEY (`id`),
