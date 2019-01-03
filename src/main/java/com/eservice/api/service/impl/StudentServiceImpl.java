@@ -2,6 +2,7 @@ package com.eservice.api.service.impl;
 
 import com.eservice.api.dao.StudentMapper;
 import com.eservice.api.model.student.Student;
+import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.service.StudentService;
 import com.eservice.api.core.AbstractService;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,8 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
     @Resource
     private StudentMapper studentMapper;
 
-    public List<Student> getStudentsByBusNumber(String busNumber) {
-        return studentMapper.getStudentsByBusNumber(busNumber);
+    public List<StudentInfo> getStudentsByBusNumberAndBusMode(String busNumber, String busMode) {
+        return studentMapper.getStudentsByBusNumberAndBusMode(busNumber,busMode);
     }
+
 }

@@ -20,7 +20,7 @@ public class TransportRecord {
     /**
      * 接送模式，分为“上午接”，“下午送”，“晚班”
      */
-    private String mode;
+//    private String mode;
 
     /**
      * 校车，外键，可以根据校车去查应乘学生
@@ -69,23 +69,23 @@ public class TransportRecord {
         this.date = date;
     }
 
-    /**
-     * 获取接送模式，分为“上午接”，“下午送”，“晚班”
-     *
-     * @return mode - 接送模式，分为“上午接”，“下午送”，“晚班”
-     */
-    public String getMode() {
-        return mode;
-    }
+//    /**
+//     * 获取接送模式，分为“上午接”，“下午送”，“晚班”
+//     *
+//     * @return mode - 接送模式，分为“上午接”，“下午送”，“晚班”
+//     */
+//    public String getMode() {
+//        return mode;
+//    }
 
     /**
      * 设置接送模式，分为“上午接”，“下午送”，“晚班”
      *
      * @param mode 接送模式，分为“上午接”，“下午送”，“晚班”
      */
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
+//    public void setMode(String mode) {
+//        this.mode = mode;
+//    }
 
     /**
      * 获取校车，外键，可以根据校车去查应乘学生

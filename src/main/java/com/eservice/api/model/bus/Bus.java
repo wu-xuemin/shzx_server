@@ -278,4 +278,19 @@ public class Bus {
     public void setValid(Byte valid) {
         this.valid = valid;
     }
+
+    /**
+     * 接送模式，分为“上午接送”，“下午接送”，“晚班” 这个字段如果放在transport_record里，则无法统计某车该乘车的学生列表，也就无法统计缺乘列表.
+     * 特别注意：同一辆车，接送模式不同，就当作不同的车。也就是说，实际上这个表格的车辆数是实际车数的3倍（一辆车分为上午接送，下午接送，晚班）。
+     */
+    @Column(name = "mode")
+    private String mode;
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
 }
