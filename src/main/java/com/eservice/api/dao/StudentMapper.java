@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface StudentMapper extends Mapper<Student> {
 
-    List<StudentInfo> getStudentsByBusNumberAndBusMode(@Param("busNumber") String busNumber,
+    List<StudentInfo> getPlannedStudentsByBusNumberAndBusMode(@Param("busNumber") String busNumber,
                                                    @Param("busMode") String busMode);
 }

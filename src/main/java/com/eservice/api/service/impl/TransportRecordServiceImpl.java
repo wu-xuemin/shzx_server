@@ -27,6 +27,7 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
                                                              String queryFinishTime,
                                                              String studentName,
                                                              String busNumber,
+                                                             String busMode,
                                                              String busStationName,
                                                              String grade,
                                                              String className) {
@@ -34,6 +35,7 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
                                                             queryFinishTime,
                                                             studentName,
                                                             busNumber,
+                                                            busMode,
                                                             busStationName,
                                                             grade,
                                                             className);

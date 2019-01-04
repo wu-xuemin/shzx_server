@@ -70,17 +70,17 @@ public class StudentController {
      * @param busNumber
      * @return
      */
-    @ApiOperation("根据校车编号和模式（班次），返回该校车的学生")
+    @ApiOperation("根据校车编号和模式（班次），返回该校车的计划乘坐的学生")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号，比如 xc001"),
             @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，内容限于上午接送、下午接送两种，晚班不支持")
     })
-    @PostMapping("/getStudentsByBusNumberAndBusMode")
-    public Result getStudentsByBusNumberAndBusMode(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+    @PostMapping("/getPlannedStudentsByBusNumberAndBusMode")
+    public Result getPlannedStudentsByBusNumberAndBusMode(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                                                     @RequestParam() String busNumber,
                                                     @RequestParam() String busMode) {
         PageHelper.startPage(page, size);
-        List<StudentInfo> list = studentService.getStudentsByBusNumberAndBusMode(busNumber, busMode);
+        List<StudentInfo> list = studentService.getPlannedStudentsByBusNumberAndBusMode(busNumber, busMode);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

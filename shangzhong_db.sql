@@ -208,7 +208,7 @@ CREATE TABLE `picked_students_info` (
   KEY `fk_transport_record_id` (`transport_record_id`),
   CONSTRAINT `fk_student_id` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   CONSTRAINT `fk_transport_record_id` FOREIGN KEY (`transport_record_id`) REFERENCES `transport_record` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of picked_students_info
@@ -216,16 +216,20 @@ CREATE TABLE `picked_students_info` (
 INSERT INTO `picked_students_info` VALUES ('1', '1', '2018-12-19 10:11:04', '1');
 INSERT INTO `picked_students_info` VALUES ('2', '1', '2018-12-19 10:16:36', '2');
 INSERT INTO `picked_students_info` VALUES ('3', '1', '2018-12-19 10:16:57', '5');
-INSERT INTO `picked_students_info` VALUES ('4', '1', '2018-12-19 10:00:19', '6');
+INSERT INTO `picked_students_info` VALUES ('4', '1', '2018-12-19 10:00:19', '7');
 INSERT INTO `picked_students_info` VALUES ('5', '2', '2018-12-19 16:17:52', '1');
 INSERT INTO `picked_students_info` VALUES ('6', '2', '2018-12-19 16:11:52', '2');
-INSERT INTO `picked_students_info` VALUES ('7', '2', '2018-12-19 16:07:52', '5');
+INSERT INTO `picked_students_info` VALUES ('7', '9', '2018-12-19 16:07:52', '5');
 INSERT INTO `picked_students_info` VALUES ('8', '2', '2018-12-19 16:37:52', '6');
 INSERT INTO `picked_students_info` VALUES ('9', '5', '2018-12-20 08:20:02', '1');
 INSERT INTO `picked_students_info` VALUES ('10', '5', '2018-12-20 10:20:42', '2');
 INSERT INTO `picked_students_info` VALUES ('11', '6', '2018-12-20 17:21:58', '3');
 INSERT INTO `picked_students_info` VALUES ('12', '6', '2018-12-20 16:22:28', '1');
 INSERT INTO `picked_students_info` VALUES ('15', '1', '2018-12-19 08:02:00', '3');
+INSERT INTO `picked_students_info` VALUES ('17', '3', '2018-12-19 11:45:28', '15');
+INSERT INTO `picked_students_info` VALUES ('18', '3', '2018-12-19 11:46:48', '4');
+INSERT INTO `picked_students_info` VALUES ('20', '10', '2018-12-19 11:46:48', '3');
+INSERT INTO `picked_students_info` VALUES ('22', '1', '2018-12-19 11:30:21', '1');
 
 -- ----------------------------
 -- Table structure for `role`
@@ -274,19 +278,21 @@ CREATE TABLE `student` (
   CONSTRAINT `fk_board_station_afternoon` FOREIGN KEY (`board_station_afternoon`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_board_station_morning` FOREIGN KEY (`board_station_morning`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_bus_morning` FOREIGN KEY (`bus_morning`) REFERENCES `bus` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES ('1', 'XH-2018-001', '', '小明', '1', '1','1', '1', '3', '');
-INSERT INTO `student` VALUES ('2', 'XH-2018-002', '', '王小强', '1', '2','1', '4', '3', '');
-INSERT INTO `student` VALUES ('3', 'XH-2018-003', '', '张小山', '2', '3', '1','6', '7', '');
-INSERT INTO `student` VALUES ('4', 'XH-2018-004', '', '刘看山', '3', '3', '1','5', '2', '');
-INSERT INTO `student` VALUES ('5', 'XH-2018-005汉', '', '王小芳', '2', '1','1', '1', '3', '');
-INSERT INTO `student` VALUES ('6', 'XH-2018-006中', '', '钟小文', '4', '2', '2','10', '8', '');
-INSERT INTO `student` VALUES ('7', 'XH-2018-007', '', '校车1学生名JACK', '1', '1','3', '2', '2', '');
-INSERT INTO `student` VALUES ('10', 'XH-2018-008', '', '校车1学生名TOM', '4', '1','2', '4', '6', '');
+INSERT INTO `student` VALUES ('1', 'XH-2018-001', '', '小明', '1', '1', '5', '1', '3', '');
+INSERT INTO `student` VALUES ('2', 'XH-2018-002', '', '王小强', '1', '2', '5', '4', '3', '');
+INSERT INTO `student` VALUES ('3', 'XH-2018-003', '', '张小山', '2', '3', '6', '6', '7', '');
+INSERT INTO `student` VALUES ('4', 'XH-2018-004', '', '刘看山', '3', '3', '6', '5', '2', '');
+INSERT INTO `student` VALUES ('5', 'XH-2018-005汉', '', '王小芳', '2', '1', '6', '1', '3', '');
+INSERT INTO `student` VALUES ('6', 'XH-2018-006中', '', '钟小文', '4', '2', '7', '10', '8', '');
+INSERT INTO `student` VALUES ('7', 'XH-2018-007', '', '校车1和7学生名JACK', '1', '1', '7', '2', '2', '');
+INSERT INTO `student` VALUES ('10', 'XH-2018-008', '', '校车3和8学生名TOM', '4', '3', '8', '4', '6', '');
+INSERT INTO `student` VALUES ('14', 'xxhao234', '', '校车4和8学生TIM', '2', '4', '8', '3', '6', '');
+INSERT INTO `student` VALUES ('15', 'xhOfPeter', '', '校车2和6peter', '1', '2', '7', '2', '2', '');
 
 -- ----------------------------
 -- Table structure for `transport_range`
@@ -321,7 +327,7 @@ CREATE TABLE `transport_record` (
   KEY `fk_current_station` (`current_station`),
   CONSTRAINT `fk_current_station` FOREIGN KEY (`current_station`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_tr_bus` FOREIGN KEY (`bus`) REFERENCES `bus` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of transport_record
@@ -335,6 +341,7 @@ INSERT INTO `transport_record` VALUES ('6', '2018-12-20', '1', null);
 INSERT INTO `transport_record` VALUES ('7', '2018-12-20', '3', null);
 INSERT INTO `transport_record` VALUES ('8', '2018-12-20', '3', null);
 INSERT INTO `transport_record` VALUES ('9', '2019-01-03', '2', null);
+INSERT INTO `transport_record` VALUES ('10', '2018-12-19', '6', null);
 
 -- ----------------------------
 -- Table structure for `user`

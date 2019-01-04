@@ -72,6 +72,19 @@ public class TransportRecordInfo extends  TransportRecord {
     }
 
     /**
+     * 学生的学号
+     */
+    private String studentNumber;
+
+    public String getStudentNumber() {
+        return studentNumber;
+    }
+
+    public void setStudentNumber(String studentNumber) {
+        this.studentNumber = studentNumber;
+    }
+
+    /**
      * 学生姓名
      */
     private String studentName;

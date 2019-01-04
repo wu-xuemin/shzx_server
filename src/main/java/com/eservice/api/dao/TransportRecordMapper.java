@@ -13,8 +13,9 @@ public interface TransportRecordMapper extends Mapper<TransportRecord> {
                                                     @Param("queryFinishTime") String queryFinishTime,
                                                     @Param("studentName") String studentName,
                                                     @Param("busNumber") String busNumber,
+                                                    @Param("busMode") String busMode,
                                                     @Param("busStationName") String busStationName,
                                                     @Param("grade") String grade,
-                                                    @Param("className") String className
-    );
+                                                    @Param("className") String className );
+
 }

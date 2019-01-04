@@ -23,8 +23,8 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
     @Resource
     private StudentMapper studentMapper;
 
-    public List<StudentInfo> getStudentsByBusNumberAndBusMode(String busNumber, String busMode) {
-        return studentMapper.getStudentsByBusNumberAndBusMode(busNumber,busMode);
+    public List<StudentInfo> getPlannedStudentsByBusNumberAndBusMode(String busNumber, String busMode) {
+        return studentMapper.getPlannedStudentsByBusNumberAndBusMode(busNumber,busMode);
     }
 
 }

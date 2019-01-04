@@ -7,7 +7,6 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="date" jdbcType="DATE" property="date" />
-    <result column="mode" jdbcType="VARCHAR" property="mode" />
     <result column="bus" jdbcType="INTEGER" property="bus" />
     <result column="current_station" jdbcType="INTEGER" property="currentStation" />
   </resultMap>
@@ -17,7 +16,6 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="date" jdbcType="DATE" property="date" />
-    <result column="mode" jdbcType="VARCHAR" property="mode" />
     <result column="bus" jdbcType="INTEGER" property="bus" />
     <result column="current_station" jdbcType="INTEGER" property="currentStation" />
 
@@ -26,6 +24,7 @@
     <result column="board_station_name_afternoon" jdbcType="VARCHAR" property="boardStationNameAfternoon" />
     <result column="board_time" jdbcType="VARCHAR" property="boardTime" />
     <result column="student_banji" jdbcType="VARCHAR" property="studentBanji" />
+    <result column="student_number" jdbcType="VARCHAR" property="studentNumber" />
     <result column="student_grade" jdbcType="VARCHAR" property="studentGrade" />
     <result column="student_name" jdbcType="VARCHAR" property="studentName" />
   </resultMap>
@@ -39,7 +38,8 @@
     psi.*,
     banji.class_name as student_banji,
     banji.grade as student_grade,
-    student.`name` as student_name
+    student.`name` as student_name,
+    student.student_number
   FROM
     transport_record AS tr
   LEFT JOIN bus ON tr.bus = bus.id
@@ -63,6 +63,10 @@
 
     <if test="busNumber != null and busNumber != ''">
       AND bus.number = #{busNumber}
+    </if>
+
+    <if test="busMode != null and busMode != ''">
+      AND bus.`mode` = #{busMode}
     </if>
 
     <if test="busStationName != null and busStationName != ''">

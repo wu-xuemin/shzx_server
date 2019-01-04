@@ -10,7 +10,8 @@
     <result column="head_img" jdbcType="VARCHAR" property="headImg" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="banji" jdbcType="INTEGER" property="banji" />
-    <result column="bus" jdbcType="INTEGER" property="bus" />
+    <result column="bus_morning" jdbcType="INTEGER" property="busMorning" />
+    <result column="bus_afternoon" jdbcType="INTEGER" property="busAfternoon" />
     <result column="board_station_morning" jdbcType="INTEGER" property="boardStationMorning" />
     <result column="board_station_afternoon" jdbcType="INTEGER" property="boardStationAfternoon" />
     <result column="family_info" jdbcType="LONGVARCHAR" property="familyInfo" />
@@ -24,7 +25,8 @@
     <result column="head_img" jdbcType="VARCHAR" property="headImg" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="banji" jdbcType="INTEGER" property="banji" />
-    <result column="bus" jdbcType="INTEGER" property="bus" />
+    <result column="bus_morning" jdbcType="INTEGER" property="busMorning" />
+    <result column="bus_afternoon" jdbcType="INTEGER" property="busAfternoon" />
     <result column="board_station_morning" jdbcType="INTEGER" property="boardStationMorning" />
     <result column="board_station_afternoon" jdbcType="INTEGER" property="boardStationAfternoon" />
     <result column="family_info" jdbcType="LONGVARCHAR" property="familyInfo" />
@@ -35,8 +37,7 @@
     <result column="board_station_afternoon_name" jdbcType="VARCHAR" property="boardStationAfternoonName" />
   </resultMap>
 
-
-  <select id="getStudentsByBusNumberAndBusMode" resultMap="StudentInfoResultMap">
+  <select id="getPlannedStudentsByBusNumberAndBusMode" resultMap="StudentInfoResultMap">
     SELECT
       student.*,
       bus.number as bus_number

@@ -9,6 +9,8 @@ import com.eservice.api.service.impl.BusServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,10 +95,13 @@ public class BusController {
     }
 
 
-    @ApiOperation("根据校车编号来获得该校车的所有学生")
+    @ApiOperation("根据校车编号 来获得该校车的所有学生")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号，比如 xc001"),
+    })
     @PostMapping("/getStudentsByBusNumber")
     public Result getStudentsByBusNumber(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
-                                          @RequestParam String busNumber) {
+                                         @RequestParam String busNumber ) {
         PageHelper.startPage(page, size);
         List<StudentInfo> list = busService.getStudentsByBusNumber(busNumber);
         PageInfo pageInfo = new PageInfo(list);
