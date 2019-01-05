@@ -8,5 +8,6 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="mode" jdbcType="VARCHAR" property="mode" />
     <result column="stations" jdbcType="LONGVARCHAR" property="stations" />
+    <result column="range_name" jdbcType="VARCHAR" property="rangeName" />
   </resultMap>
 </mapper>

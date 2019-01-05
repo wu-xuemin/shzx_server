@@ -2,6 +2,7 @@ package com.eservice.api.service.impl;
 
 import com.eservice.api.dao.BusMapper;
 import com.eservice.api.model.bus.Bus;
+import com.eservice.api.model.bus.BusInfo;
 import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.service.BusService;
 import com.eservice.api.core.AbstractService;
@@ -26,7 +27,7 @@ public class BusServiceImpl extends AbstractService<Bus> implements BusService {
     public Bus getBusByBusMomAccount(String busMomAccount){
         return busMapper.getBusByBusMomAccount(busMomAccount);
     }
-    public List<Bus> getBusesBySchoolPartition(String schoolPartition){
+    public List<BusInfo> getBusesBySchoolPartition(String schoolPartition){
         return busMapper.getBusesBySchoolPartition(schoolPartition);
     }
 

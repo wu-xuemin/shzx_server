@@ -39,6 +39,30 @@
       <result column="board_station_morning_name" jdbcType="VARCHAR" property="boardStationMorningName"/>
       <result column="board_station_afternoon_name" jdbcType="VARCHAR" property="boardStationAfternoonName"/>
   </resultMap>
+    <resultMap id="BusInfoResultMap" type="com.eservice.api.model.bus.BusInfo">
+        <!--
+        WARNING - @mbg.generated
+      -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="number" jdbcType="VARCHAR" property="number" />
+        <result column="plate_number" jdbcType="VARCHAR" property="plateNumber" />
+        <result column="plate_number_pic" jdbcType="VARCHAR" property="plateNumberPic" />
+        <result column="bus_supplier" jdbcType="INTEGER" property="busSupplier" />
+        <result column="transport_range_morning" jdbcType="INTEGER" property="transportRangeMorning" />
+        <result column="transport_range_afternoon" jdbcType="INTEGER" property="transportRangeAfternoon" />
+        <result column="bus_mom" jdbcType="INTEGER" property="busMom" />
+        <result column="bus_driver" jdbcType="INTEGER" property="busDriver" />
+        <result column="school_partition" jdbcType="VARCHAR" property="schoolPartition" />
+        <result column="ipad_meid" jdbcType="VARCHAR" property="ipadMeid" />
+        <result column="valid" jdbcType="TINYINT" property="valid" />
+        <result column="mode" jdbcType="VARCHAR" property="mode" />
+
+        <result column="bus_supplier_name" jdbcType="VARCHAR" property="busSupplierName" />
+        <result column="transport_range_morning_name" jdbcType="VARCHAR" property="transportRangeMorningName" />
+        <result column="transport_range_afternoon_name" jdbcType="VARCHAR" property="transportRangeAfternoonName" />
+        <result column="bus_mom_name" jdbcType="VARCHAR" property="busMomName" />
+        <result column="bus_driver_name" jdbcType="VARCHAR" property="busDriverName" />
+    </resultMap>
   <select id="getBusByBusMomAccount" resultMap="BaseResultMap">
    SELECT
 	*
@@ -48,12 +72,19 @@
     WHERE
 	u.account = #{busMomAccount};
   </select>
-  <select id="getBusesBySchoolPartition" resultMap="BaseResultMap">
+  <select id="getBusesBySchoolPartition" resultMap="BusInfoResultMap">
     SELECT
-	*
-	FROM
-	  bus
-    where
+        bus.*, bus_supplier.`name` AS bus_supplier_name,
+        ts_range_m.range_name AS transport_range_morning_name,
+        ts_range_a.range_name AS transport_range_afternoon_name,
+        `user`.`name` AS bus_mom_name
+    FROM
+        bus
+    LEFT JOIN transport_range AS ts_range_a ON bus.transport_range_afternoon = ts_range_a.id
+    LEFT JOIN transport_range AS ts_range_m ON bus.transport_range_morning = ts_range_m.id
+    LEFT JOIN bus_supplier ON bus_supplier.id = bus.bus_supplier
+    LEFT JOIN USER ON `user`.id = bus.bus_mom
+    WHERE
       bus.school_partition = #{schoolPartition}
   </select>
 

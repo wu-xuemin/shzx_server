@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2019-01-03 16:02:43
+Date: 2019-01-05 14:30:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -97,7 +97,7 @@ CREATE TABLE `bus` (
   CONSTRAINT `fk_bus_supplier` FOREIGN KEY (`bus_supplier`) REFERENCES `bus_supplier` (`id`),
   CONSTRAINT `fk_transport_range_afternoon` FOREIGN KEY (`transport_range_afternoon`) REFERENCES `transport_range` (`id`),
   CONSTRAINT `fk_transport_range_morning` FOREIGN KEY (`transport_range_morning`) REFERENCES `transport_range` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus
@@ -105,15 +105,16 @@ CREATE TABLE `bus` (
 INSERT INTO `bus` VALUES ('1', 'XC001', 'HA001', '', '1', '1', '1', '2', '8', '浦东', 'meid111', '1', '上午接送');
 INSERT INTO `bus` VALUES ('2', 'XC002', 'HA002', '', '2', '2', '1', '3', '9', '浦西', 'meid222', '1', '上午接送');
 INSERT INTO `bus` VALUES ('3', 'XC003', 'HA003', '', '1', '3', '1', '11', '10', '浦东', 'meid333', '1', '上午接送');
-INSERT INTO `bus` VALUES ('4', 'XC004', 'HA004', '', '1', '1', '1', '2', '8', '浦东', 'meid444', '1', '上午接送'); 
+INSERT INTO `bus` VALUES ('4', 'XC004', 'HA004', '', '1', '1', '1', '2', '8', '浦东', 'meid444', '1', '上午接送');
 INSERT INTO `bus` VALUES ('5', 'XC001', 'HA001', '', '1', '1', '1', '2', '8', '浦东', 'meid111', '1', '下午接送');
 INSERT INTO `bus` VALUES ('6', 'XC002', 'HA002', '', '2', '2', '1', '3', '9', '浦西', 'meid222', '1', '下午接送');
 INSERT INTO `bus` VALUES ('7', 'XC003', 'HA003', '', '1', '3', '1', '11', '10', '浦东', 'meid333', '1', '下午接送');
-INSERT INTO `bus` VALUES ('8', 'XC004', 'HA004', '', '1', '1', '1', '2', '8', '浦东', 'meid444', '1', '下午接送'); 
+INSERT INTO `bus` VALUES ('8', 'XC004', 'HA004', '', '1', '1', '1', '2', '8', '浦东', 'meid444', '1', '下午接送');
 INSERT INTO `bus` VALUES ('9', 'XC001', 'HA001', '', '1', '1', '1', '2', '8', '浦东', 'meid111', '1', '晚班');
 INSERT INTO `bus` VALUES ('10', 'XC002', 'HA002', '', '2', '2', '1', '3', '9', '浦西', 'meid222', '1', '晚班');
 INSERT INTO `bus` VALUES ('11', 'XC003', 'HA003', '', '1', '3', '1', '11', '10', '浦东', 'meid333', '1', '晚班');
-INSERT INTO `bus` VALUES ('12', 'XC004', 'HA004', '', '1', '1', '1', '2', '8', '浦东', 'meid444', '1', '晚班'); 
+INSERT INTO `bus` VALUES ('12', 'XC004', 'HA004', '', '1', '1', '1', '2', '8', '浦东', 'meid444', '1', '晚班');
+INSERT INTO `bus` VALUES ('32', 'bus0number999', 'plateNumber999', 'plateNumberPic999', '1', '2', '2', '3', '8', 'ppp', 'ipadMeid999', '1', '上午接送');
 
 -- ----------------------------
 -- Table structure for `bus_stations`
@@ -302,16 +303,17 @@ CREATE TABLE `transport_range` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `stations` text NOT NULL COMMENT '区间的站点名称，JSON\r\n\r\n[{"station_name": "AA路口"} ,\r\n{ "station_name": "BB口"},\r\n{ "station_name": "CC口"}\r\n]\r\n',
   `mode` varchar(255) NOT NULL COMMENT '早班；下午班；晚班',
+  `range_name` varchar(255) NOT NULL COMMENT '区间名字（通常是首尾站点名称）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of transport_range
 -- ----------------------------
-INSERT INTO `transport_range` VALUES ('1', '[{\"station_name\": \"AA路口\"} ,{ \"station_name\": \"BB口\"},{ \"station_name\": \"CC口\"}]', '早班');
-INSERT INTO `transport_range` VALUES ('2', '[{\"station_name\": \"11路口\"} ,{ \"station_name\": \"22口\"},{ \"station_name\": \"33路口\"}]', '早班');
-INSERT INTO `transport_range` VALUES ('3', '[{\"station_name\": \"33路口\"} ,{ \"station_name\": \"44口\"},{ \"station_name\": \"ff口\"}]', '下午班');
-INSERT INTO `transport_range` VALUES ('4', '[{\"station_name\": \"44路口\"} ,{ \"station_name\": \"33B口\"},{ \"station_name\": \"xx路口\"},{ \"station_name\": \"CC口\"}]', '晚班');
+INSERT INTO `transport_range` VALUES ('1', '[{\"station_name\": \"AA路口\"} ,{ \"station_name\": \"BB口\"},{ \"station_name\": \"CC口\"}]', '早班', 'AACC线');
+INSERT INTO `transport_range` VALUES ('2', '[{\"station_name\": \"11路口\"} ,{ \"station_name\": \"22口\"},{ \"station_name\": \"33路口\"}]', '早班', '1133线');
+INSERT INTO `transport_range` VALUES ('3', '[{\"station_name\": \"33路口\"} ,{ \"station_name\": \"44口\"},{ \"station_name\": \"ff口\"}]', '下午班', '33ff线');
+INSERT INTO `transport_range` VALUES ('4', '[{\"station_name\": \"44路口\"} ,{ \"station_name\": \"33B口\"},{ \"station_name\": \"xx路口\"},{ \"station_name\": \"CC口\"}]', '晚班', '44cc线');
 
 -- ----------------------------
 -- Table structure for `transport_record`

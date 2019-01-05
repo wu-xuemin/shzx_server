@@ -97,4 +97,17 @@ public class TransportRange {
     public void setStations(String stations) {
         this.stations = stations;
     }
+
+    /**
+     * 区间名称
+     */
+    private String rangeName;
+
+    public String getRangeName() {
+        return rangeName;
+    }
+
+    public void setRangeName(String rangeName) {
+        this.rangeName = rangeName;
+    }
 }

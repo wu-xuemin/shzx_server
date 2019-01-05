@@ -25,8 +25,9 @@ public class Swagger2Config {
     public Docket controllerApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
-                        .title("上海中学校车通行管理系统_后端接口文档")
-                        .description("上海中学校车通行管理系统_后端接口文档")
+                        .title("上海中学校车通行管理系统_后端接口文档_2019-01-05")
+                        .description(" 新增了 查询缺乘人员的接口/transport/record/selectAbsenceStudentInfo等 \n\r " +
+                                "一些注意事项没有一一标明，比如在add时，id号留空间好，不要填写；比如有外键的参数，在新增或更新时，如果填写了不存在的值会导致错误。 ")
                         .contact(new Contact("wuxuemin", "https://eservice-tech.cn/", "wuxuemin2000@126.com"))
                         .version("版本号:0.1")
                         .build())
