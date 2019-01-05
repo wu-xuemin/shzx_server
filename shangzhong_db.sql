@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2019-01-05 14:30:54
+Date: 2019-01-05 15:43:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -177,6 +177,26 @@ CREATE TABLE `device` (
 INSERT INTO `device` VALUES ('1', 'wxm', '111222');
 INSERT INTO `device` VALUES ('2', 'ipad2', '222333');
 INSERT INTO `device` VALUES ('3', 'ipad3', '3333aaa');
+
+-- ----------------------------
+-- Table structure for `messages`
+-- ----------------------------
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE `messages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `send_time` datetime NOT NULL COMMENT '发布时间',
+  `title` varchar(255) NOT NULL COMMENT '标题',
+  `publisher` varchar(255) NOT NULL COMMENT '发布人',
+  `read_count` int(10) unsigned NOT NULL COMMENT '阅读次数',
+  `content` text NOT NULL COMMENT '消息的内容',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of messages
+-- ----------------------------
+INSERT INTO `messages` VALUES ('1', '2019-01-05 15:41:53', '标题1111', '校车办', '1', '内容：本周3，18:00集中开会啦啦啦啦啦');
+INSERT INTO `messages` VALUES ('2', '2019-01-05 15:43:09', '不同222', 'xcb', '2', 'n内容啦啦啦啦啦');
 
 -- ----------------------------
 -- Table structure for `night_line`

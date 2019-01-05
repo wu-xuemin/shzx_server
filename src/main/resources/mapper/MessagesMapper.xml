@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eservice.api.dao.MessagesMapper">
+  <resultMap id="BaseResultMap" type="com.eservice.api.model.messages.Messages">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="publisher" jdbcType="VARCHAR" property="publisher" />
+    <result column="read_count" jdbcType="INTEGER" property="readCount" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+</mapper>
