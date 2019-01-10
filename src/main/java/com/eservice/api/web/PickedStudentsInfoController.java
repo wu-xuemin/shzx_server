@@ -21,7 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/picked/students/info")
-@Api("已接到的学生的接送信息")
+@Api(description = "已接到的学生的接送信息")
 public class PickedStudentsInfoController {
     @Resource
     private PickedStudentsInfoService pickedStudentsInfoService;

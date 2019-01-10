@@ -21,7 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/transport/range")
-@Api("校车区间管理")
+@Api(description = "校车区间管理")
 public class TransportRangeController {
     @Resource
     private TransportRangeService transportRangeService;

@@ -29,7 +29,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/transport/record")
-@Api("接送记录管理")
+@Api(description = "接送记录管理")
 public class TransportRecordController {
 
     private final Logger logger = LoggerFactory.getLogger(TransportRecordController.class);

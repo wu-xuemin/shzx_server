@@ -21,7 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/bus/supplier")
-@Api("校车供应商管理")
+@Api(description = "校车供应商管理")
 public class BusSupplierController {
     @Resource
     private BusSupplierService busSupplierService;

@@ -21,7 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/role")
-@Api("用户角色管理")
+@Api(description = "用户角色管理")
 public class RoleController {
     @Resource
     private RoleService roleService;

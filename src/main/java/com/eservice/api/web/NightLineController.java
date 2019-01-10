@@ -21,7 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/night/line")
-@Api("晚班线路信息管理")
+@Api(description = "晚班线路信息管理")
 public class NightLineController {
     @Resource
     private NightLineService nightLineService;

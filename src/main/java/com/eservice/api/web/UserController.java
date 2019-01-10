@@ -24,7 +24,7 @@ import java.util.List;
 */
 @RequestMapping("/user")
 @RestController
-@Api("用户信息管理")
+@Api(description = "用户信息管理")
 public class UserController {
     @Resource
     private UserServiceImpl userService;

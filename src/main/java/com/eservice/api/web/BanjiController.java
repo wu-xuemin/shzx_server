@@ -19,7 +19,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/banji")
-@Api("班级信息管理")
+@Api(description = "班级信息管理")
 public class BanjiController {
     @Resource
     private BanjiService banjiService;

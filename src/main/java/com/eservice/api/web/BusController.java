@@ -27,7 +27,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/bus")
-@Api("校车信息管理")
+@Api(description = "校车信息管理")
 public class BusController {
     @Resource
     private BusServiceImpl busService;

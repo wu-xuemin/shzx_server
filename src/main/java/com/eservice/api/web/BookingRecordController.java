@@ -21,7 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/booking/record")
-@Api("学生的班车预约变更")
+@Api(description = "学生的班车预约变更")
 public class BookingRecordController {
     @Resource
     private BookingRecordService bookingRecordService;

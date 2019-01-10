@@ -21,7 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/device")
-@Api("Ipad绑定设备号管理")
+@Api(description = "Ipad绑定设备号管理")
 public class DeviceController {
     @Resource
     private DeviceService deviceService;

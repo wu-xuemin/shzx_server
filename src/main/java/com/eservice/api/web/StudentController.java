@@ -26,7 +26,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/student")
-@Api("学生信息管理")
+@Api(description = "学生信息管理")
 public class StudentController {
     @Resource
     private StudentServiceImpl studentService;

@@ -5,6 +5,7 @@ import com.eservice.api.model.messages.Messages;
 import com.eservice.api.service.MessagesService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/messages")
+@Api(description = "推送消息的管理")
 public class MessagesController {
     @Resource
     private MessagesService messagesService;
