@@ -7,7 +7,7 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="date" jdbcType="DATE" property="date" />
-    <result column="bus" jdbcType="INTEGER" property="bus" />
+    <result column="bus_line" jdbcType="INTEGER" property="busLine" />
     <result column="current_station" jdbcType="INTEGER" property="currentStation" />
   </resultMap>
   <resultMap id="TransportRecordInfoResultMap" type="com.eservice.api.model.transport_record.TransportRecordInfo">
@@ -16,38 +16,41 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="date" jdbcType="DATE" property="date" />
-    <result column="bus" jdbcType="INTEGER" property="bus" />
+    <result column="bus_line" jdbcType="INTEGER" property="busLine" />
     <result column="current_station" jdbcType="INTEGER" property="currentStation" />
 
     <result column="bus_number" jdbcType="VARCHAR" property="busNumber" />
     <result column="board_station_name_morning" jdbcType="VARCHAR" property="boardStationNameMorning" />
     <result column="board_station_name_afternoon" jdbcType="VARCHAR" property="boardStationNameAfternoon" />
     <result column="board_time" jdbcType="VARCHAR" property="boardTime" />
+    <result column="student_grade" jdbcType="VARCHAR" property="studentGrade" />
     <result column="student_banji" jdbcType="VARCHAR" property="studentBanji" />
     <result column="student_number" jdbcType="VARCHAR" property="studentNumber" />
-    <result column="student_grade" jdbcType="VARCHAR" property="studentGrade" />
     <result column="student_name" jdbcType="VARCHAR" property="studentName" />
   </resultMap>
 
   <select id="selectTransportRecord" resultMap="TransportRecordInfoResultMap">
-  SELECT
+    SELECT
     tr.*,
-    bus.number as bus_number,
-    bs_m.station_name as board_station_name_morning,
-    bs_a.station_name as board_station_name_afternoon,
-    psi.*,
-    banji.class_name as student_banji,
+    bbi.number as bus_number ,
+    bus_stations_m.station_name as  board_station_name_morning,
+    bus_stations_a.station_name as board_station_name_afternoon,
+    psi.board_time,
     banji.grade as student_grade,
+    banji.class_name as student_banji,
+    student.student_number,
     student.`name` as student_name,
-    student.student_number
-  FROM
-    transport_record AS tr
-  LEFT JOIN bus ON tr.bus = bus.id
-  LEFT JOIN picked_students_info AS psi ON tr.id = psi.transport_record_id
-  LEFT JOIN student ON psi.student_id = student.id
-  LEFT JOIN bus_stations AS bs_m ON student.board_station_morning = bs_m.id
-  LEFT JOIN bus_stations AS bs_a ON student.board_station_afternoon = bs_a.id
-  LEFT JOIN banji ON student.banji = banji.id
+    bus_line.`mode`
+
+    FROM transport_record AS tr
+    LEFT JOIN bus_line on tr.bus_line = bus_line.id
+    LEFT JOIN bus_base_info as bbi on bus_line.bus_base_info=bbi.id
+    LEFT JOIN transport_range on bus_line.transport_range = transport_range.id
+    LEFT JOIN picked_students_info as psi on psi.transport_record_id = tr.id
+    LEFT JOIN student on psi.student_id = student.id
+    LEFT JOIN bus_stations as bus_stations_m on bus_stations_m.id = student.board_station_morning
+    LEFT JOIN bus_stations as bus_stations_a on bus_stations_a.id = student.board_station_afternoon
+    LEFT JOIN banji on banji.id = student.banji
   WHERE
     1 = 1
     <if test="queryStartTime != null and queryStartTime != ''">
@@ -62,15 +65,15 @@
     </if>
 
     <if test="busNumber != null and busNumber != ''">
-      AND bus.number = #{busNumber}
+      AND bbi.number = #{busNumber}
     </if>
 
     <if test="busMode != null and busMode != ''">
-      AND bus.`mode` = #{busMode}
+      AND bus_line.`mode` = #{busMode}
     </if>
 
     <if test="busStationName != null and busStationName != ''">
-      AND ( bs_a.station_name = #{busStationName}  OR bs_m.station_name = #{busStationName} )
+      AND ( bus_stations_a.station_name = #{busStationName}  OR bus_stations_m.station_name = #{busStationName} )
     </if>
 
     <if test="grade != null and grade != ''">

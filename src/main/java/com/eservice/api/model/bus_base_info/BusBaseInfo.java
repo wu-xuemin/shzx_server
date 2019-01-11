@@ -1,8 +1,9 @@
-package com.eservice.api.model.bus;
+package com.eservice.api.model.bus_base_info;
 
 import javax.persistence.*;
 
-public class Bus {
+@Table(name = "bus_base_info")
+public class BusBaseInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -29,18 +30,6 @@ public class Bus {
      */
     @Column(name = "bus_supplier")
     private Integer busSupplier;
-
-    /**
-     * 早班区间，
-     */
-    @Column(name = "transport_range_morning")
-    private Integer transportRangeMorning;
-
-    /**
-     * 午班区间，
-     */
-    @Column(name = "transport_range_afternoon")
-    private Integer transportRangeAfternoon;
 
     /**
      * 巴士妈妈，外键
@@ -155,45 +144,6 @@ public class Bus {
     }
 
     /**
-     * 获取早班区间，
-     *
-     * @return transport_range - 早班区间，
-     */
-    public Integer getTransportRangeMorning() {
-        return transportRangeMorning;
-    }
-
-    /**
-     * 设置早班区间，
-     *
-     * @param transportRangeMorning 早班区间，
-     */
-    public void setTransportRangeMorning(Integer transportRangeMorning) {
-        this.transportRangeMorning = transportRangeMorning;
-    }
-
-    /**
-     * 获取午班区间，
-     *
-     * @return transport_range - 午班区间，
-     */
-    public Integer getTransportRangeAfternoon() {
-        return transportRangeAfternoon;
-    }
-
-    /**
-     * 设置午班区间，
-     *
-     * @param transportRangeMorningAfternoon 午班区间，
-     */
-    public void setTransportRangeAfternoon(Integer transportRangeMorningAfternoon) {
-        this.transportRangeAfternoon = transportRangeMorningAfternoon;
-    }
-
-
-
-
-    /**
      * 获取巴士妈妈，外键
      *
      * @return bus_mom - 巴士妈妈，外键
@@ -277,20 +227,5 @@ public class Bus {
      */
     public void setValid(Byte valid) {
         this.valid = valid;
-    }
-
-    /**
-     * 接送模式，分为“上午接送”，“下午接送”，“晚班” 这个字段如果放在transport_record里，则无法统计某车该乘车的学生列表，也就无法统计缺乘列表.
-     * 特别注意：同一辆车，接送模式不同，就当作不同的车。也就是说，实际上这个表格的车辆数是实际车数的3倍（一辆车分为上午接送，下午接送，晚班）。
-     */
-    @Column(name = "mode")
-    private String mode;
-
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
     }
 }

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eservice.api.dao.BusLineMapper">
+  <resultMap id="BaseResultMap" type="com.eservice.api.model.bus_line.BusLine">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bus_base_info" jdbcType="INTEGER" property="busBaseInfo" />
+    <result column="transport_range" jdbcType="INTEGER" property="transportRange" />
+    <result column="mode" jdbcType="VARCHAR" property="mode" />
+  </resultMap>
+
+  <resultMap id="BusLineInfoResultMap" type="com.eservice.api.model.bus_line.BusLineInfo">
+    <!--
+  WARNING - @mbg.generated
+-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bus_base_info" jdbcType="INTEGER" property="busBaseInfo" />
+    <result column="transport_range" jdbcType="INTEGER" property="transportRange" />
+    <result column="mode" jdbcType="VARCHAR" property="mode" />
+
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="plate_number" jdbcType="VARCHAR" property="plateNumber" />
+    <result column="plate_number_pic" jdbcType="VARCHAR" property="plateNumberPic" />
+    <result column="bus_supplier_name" jdbcType="VARCHAR" property="busSupplierName" />
+    <result column="bus_mom_account" jdbcType="VARCHAR" property="busMomAccount" />
+    <result column="bus_driver_account" jdbcType="VARCHAR" property="busDriverAccount" />
+    <result column="school_partition" jdbcType="VARCHAR" property="schoolPartition" />
+    <result column="ipad_meid" jdbcType="VARCHAR" property="ipadMeid" />
+    <result column="valid" jdbcType="TINYINT" property="valid" />
+  </resultMap>
+  <resultMap id="StudentInfoResultMap" type="com.eservice.api.model.student.StudentInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="student_number" jdbcType="VARCHAR" property="studentNumber" />
+    <result column="head_img" jdbcType="VARCHAR" property="headImg" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="banji" jdbcType="INTEGER" property="banji" />
+    <result column="bus_line_morning" jdbcType="INTEGER" property="busLineMorning" />
+    <result column="bus_line_afternoon" jdbcType="INTEGER" property="busLineAfternoon" />
+    <result column="board_station_morning" jdbcType="INTEGER" property="boardStationMorning" />
+    <result column="board_station_afternoon" jdbcType="INTEGER" property="boardStationAfternoon" />
+    <result column="family_info" jdbcType="LONGVARCHAR" property="familyInfo" />
+
+    <result column="banji_name" jdbcType="VARCHAR" property="banjiName"/>
+    <result column="bus_number" jdbcType="VARCHAR" property="busNumber"/>
+    <result column="board_station_morning_name" jdbcType="VARCHAR" property="boardStationMorningName"/>
+    <result column="board_station_afternoon_name" jdbcType="VARCHAR" property="boardStationAfternoonName"/>
+  </resultMap>
+
+  <select id="getBusByBusMomAccount" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    bus_base_info
+    LEFT JOIN `user` AS u ON bus_base_info.bus_mom = u.id
+    WHERE
+    u.account = #{busMomAccount};
+  </select>
+  <select id="getBusesBySchoolPartition" resultMap="BusLineInfoResultMap">
+    SELECT
+      *
+    FROM
+        bus_base_info
+    LEFT JOIN bus_supplier ON bus_supplier.id = bus_base_info.bus_supplier
+    LEFT JOIN USER ON `user`.id = bus_base_info.bus_mom
+    LEFT JOIN USER AS user_bus_mom ON bus_base_info.bus_mom = user_bus_mom.id
+    WHERE
+        bus_base_info.school_partition =  #{schoolPartition}
+        -- todo
+  </select>
+
+  <select id="getStudentsByBusNumber" resultMap="StudentInfoResultMap" >
+-- todo
+  </select>
+</mapper>

@@ -32,19 +32,19 @@ public class Student {
     /**
      * 早班乘坐车的ID，外键
      */
-    private Integer busMorning;
+    private Integer busLineMorning;
 
     /**
      * 午班乘坐车的ID，外键
      */
-    private Integer busAfternoon;
+    private Integer busLineAfternoon;
 
-    public Integer getBusAfternoon() {
-        return busAfternoon;
+    public Integer getBusLineAfternoon() {
+        return busLineAfternoon;
     }
 
-    public void setBusAfternoon(Integer busAfternoon) {
-        this.busAfternoon = busAfternoon;
+    public void setBusLineAfternoon(Integer busLineAfternoon) {
+        this.busLineAfternoon = busLineAfternoon;
     }
 
     /**
@@ -156,17 +156,17 @@ public class Student {
      *
      * @return bus - 乘坐车的ID，外键
      */
-    public Integer getBusMorning() {
-        return busMorning;
+    public Integer getBusLineMorning() {
+        return busLineMorning;
     }
 
     /**
      * 设置乘坐车的ID，外键
      *
-     * @param busMorning 乘坐车的ID，外键
+     * @param busLineMorning 乘坐车的ID，外键
      */
-    public void setBusMorning(Integer busMorning) {
-        this.busMorning = busMorning;
+    public void setBusLineMorning(Integer busLineMorning) {
+        this.busLineMorning = busLineMorning;
     }
 
     /**

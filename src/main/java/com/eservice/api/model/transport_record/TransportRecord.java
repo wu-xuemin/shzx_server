@@ -13,7 +13,7 @@ public class TransportRecord {
     private Integer id;
 
     /**
-     * 接送日期
+     * 接送日期  TODO,这个可以删掉
      */
     private Date date;
 
@@ -23,9 +23,9 @@ public class TransportRecord {
 //    private String mode;
 
     /**
-     * 校车，外键，可以根据校车去查应乘学生
+     * 校车线路，外键，可以根据校车去查应乘学生
      */
-    private Integer bus;
+    private Integer busLine;
 
     /**
      * 校车所处的当前站点
@@ -92,17 +92,17 @@ public class TransportRecord {
      *
      * @return bus - 校车，外键，可以根据校车去查应乘学生
      */
-    public Integer getBus() {
-        return bus;
+    public Integer getBusLine() {
+        return busLine;
     }
 
     /**
      * 设置校车，外键，可以根据校车去查应乘学生
      *
-     * @param bus 校车，外键，可以根据校车去查应乘学生
+     * @param busLine 校车，外键，可以根据校车去查应乘学生
      */
-    public void setBus(Integer bus) {
-        this.bus = bus;
+    public void setBusLine(Integer busLine) {
+        this.busLine = busLine;
     }
 
     /**

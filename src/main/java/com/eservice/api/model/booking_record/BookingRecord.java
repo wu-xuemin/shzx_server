@@ -24,16 +24,16 @@ public class BookingRecord {
     private Integer student;
 
     /**
-     * 原校车
+     * 原路线
      */
-    @Column(name = "old_bus")
-    private Integer oldBus;
+    @Column(name = "old_bus_line")
+    private Integer oldBusLine;
 
     /**
-     * 新校车
+     * 新路线
      */
-    @Column(name = "new_bus")
-    private Integer newBus;
+    @Column(name = "new_bus_line")
+    private Integer newBusLine;
 
     /**
      * 新站点
@@ -120,39 +120,39 @@ public class BookingRecord {
     }
 
     /**
-     * 获取原校车
+     * 获取原校车路线
      *
-     * @return old_bus - 原校车
+     * @return old_bus_line - 原校车路线
      */
-    public Integer getOldBus() {
-        return oldBus;
+    public Integer getOldBusLine() {
+        return oldBusLine;
     }
 
     /**
-     * 设置原校车
+     * 设置原校车路线路线
      *
-     * @param oldBus 原校车
+     * @param oldBusLine 原校车路线
      */
-    public void setOldBus(Integer oldBus) {
-        this.oldBus = oldBus;
+    public void setOldBusLine(Integer oldBusLine) {
+        this.oldBusLine = oldBusLine;
     }
 
     /**
-     * 获取新校车
+     * 获取新校车路线
      *
-     * @return new_bus - 新校车
+     * @return new_bus_line - 新校车路线
      */
-    public Integer getNewBus() {
-        return newBus;
+    public Integer getNewBusLine() {
+        return newBusLine;
     }
 
     /**
-     * 设置新校车
+     * 设置新校车路线
      *
-     * @param newBus 新校车
+     * @param newBusLine 新校车路线
      */
-    public void setNewBus(Integer newBus) {
-        this.newBus = newBus;
+    public void setNewBusLine(Integer newBusLine) {
+        this.newBusLine = newBusLine;
     }
 
     /**

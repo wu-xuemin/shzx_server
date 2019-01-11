@@ -8,8 +8,8 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <id column="change_date" jdbcType="DATE" property="changeDate" />
     <result column="student" jdbcType="INTEGER" property="student" />
-    <result column="old_bus" jdbcType="INTEGER" property="oldBus" />
-    <result column="new_bus" jdbcType="INTEGER" property="newBus" />
+    <result column="old_bus_line" jdbcType="INTEGER" property="oldBusLine" />
+    <result column="new_bus_line" jdbcType="INTEGER" property="newBusLine" />
     <result column="new_station" jdbcType="INTEGER" property="newStation" />
     <result column="change_content" jdbcType="VARCHAR" property="changeContent" />
     <result column="confirm_status" jdbcType="VARCHAR" property="confirmStatus" />

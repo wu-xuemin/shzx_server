@@ -1,11 +1,11 @@
 package com.eservice.api.web;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
-import com.eservice.api.model.bus.Bus;
-import com.eservice.api.model.bus.BusInfo;
+import com.eservice.api.model.bus_line.BusLine;
+import com.eservice.api.model.bus_line.BusLineInfo;
 import com.eservice.api.model.student.StudentInfo;
-import com.eservice.api.service.common.Constant;
-import com.eservice.api.service.impl.BusServiceImpl;
+import com.eservice.api.service.BusLineService;
+import com.eservice.api.service.impl.BusLineServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -23,56 +23,47 @@ import java.util.List;
 /**
 * Class Description: xxx
 * @author Wilson Hu
-* @date 2018/12/17.
+* @date 2019/01/11.
 */
 @RestController
-@RequestMapping("/bus")
-@Api(description = "校车信息管理")
-public class BusController {
+@RequestMapping("/bus/line")
+@Api(description = "校车线路信息")
+public class BusLineController {
     @Resource
-    private BusServiceImpl busService;
+    private BusLineServiceImpl busLineService;
 
     @PostMapping("/add")
-    @ApiOperation("增加校车， 校车班次(mode)，限于 \"上午接送\"、\"下午接送两种\" ")
-    public Result add(Bus bus) {
-        if(bus.getMode().equals(Constant.BUS_MODE_MORNING) || bus.getMode().equals(Constant.BUS_MODE_AFTERNOON)){
-        } else {
-            return ResultGenerator.genFailResult("busMode 只能是 " +  Constant.BUS_MODE_MORNING + " / " + Constant.BUS_MODE_AFTERNOON );
-        }
-        busService.save(bus);
+    public Result add(BusLine busLine) {
+        busLineService.save(busLine);
         return ResultGenerator.genSuccessResult();
     }
 
     @PostMapping("/delete")
     public Result delete(@RequestParam Integer id) {
-        busService.deleteById(id);
+        busLineService.deleteById(id);
         return ResultGenerator.genSuccessResult();
     }
 
     @PostMapping("/update")
-    @ApiOperation("更新校车信息， 校车班次(mode)，限于 \"上午接送\"、\"下午接送两种\" ")
-    public Result update(Bus bus) {
-        if(bus.getMode().equals(Constant.BUS_MODE_MORNING) || bus.getMode().equals(Constant.BUS_MODE_AFTERNOON)){
-        } else {
-            return ResultGenerator.genFailResult("busMode 只能是 " +  Constant.BUS_MODE_MORNING + " / " + Constant.BUS_MODE_AFTERNOON );
-        }
-        busService.update(bus);
+    public Result update(BusLine busLine) {
+        busLineService.update(busLine);
         return ResultGenerator.genSuccessResult();
     }
 
     @PostMapping("/detail")
     public Result detail(@RequestParam Integer id) {
-        Bus bus = busService.findById(id);
-        return ResultGenerator.genSuccessResult(bus);
+        BusLine busLine = busLineService.findById(id);
+        return ResultGenerator.genSuccessResult(busLine);
     }
 
     @PostMapping("/list")
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
-        List<Bus> list = busService.findAll();
+        List<BusLine> list = busLineService.findAll();
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
 
     /**
      * 根据巴士妈妈账号来获得巴士妈妈所在的巴士
@@ -83,7 +74,7 @@ public class BusController {
     @ApiOperation("根据巴士妈妈账号来获得巴士妈妈所在的巴士")
     @PostMapping("/getBusByBusMomAccount")
     public Result getBusByBusMomAccount(@RequestParam String busMomAccount) {
-        Bus bus = busService.getBusByBusMomAccount(busMomAccount);
+        BusLineInfo bus = busLineService.getBusByBusMomAccount(busMomAccount);
         return ResultGenerator.genSuccessResult(bus);
     }
 
@@ -99,7 +90,7 @@ public class BusController {
     public Result getBusesBySchoolPartition(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                                           @RequestParam String schoolPartition) {
         PageHelper.startPage(page, size);
-        List<BusInfo> list = busService.getBusesBySchoolPartition(schoolPartition);
+        List<BusLineInfo> list = busLineService.getBusesBySchoolPartition(schoolPartition);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
@@ -113,9 +104,8 @@ public class BusController {
     public Result getStudentsByBusNumber(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                                          @RequestParam String busNumber ) {
         PageHelper.startPage(page, size);
-        List<StudentInfo> list = busService.getStudentsByBusNumber(busNumber);
+        List<StudentInfo> list = busLineService.getStudentsByBusNumber(busNumber);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
-
 }

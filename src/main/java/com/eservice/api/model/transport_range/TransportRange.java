@@ -9,11 +9,6 @@ public class TransportRange {
     private Integer id;
 
     /**
-     * 早班；下午班；晚班
-     */
-    private String mode;
-
-    /**
      * 区间的站点名称，JSON
 
 [{"station_name": "AA路口"} ,
@@ -36,24 +31,6 @@ public class TransportRange {
      */
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    /**
-     * 获取早班；下午班；晚班
-     *
-     * @return mode - 早班；下午班；晚班
-     */
-    public String getMode() {
-        return mode;
-    }
-
-    /**
-     * 设置早班；下午班；晚班
-     *
-     * @param mode 早班；下午班；晚班
-     */
-    public void setMode(String mode) {
-        this.mode = mode;
     }
 
     /**
@@ -109,5 +86,18 @@ public class TransportRange {
 
     public void setRangeName(String rangeName) {
         this.rangeName = rangeName;
+    }
+
+    /**
+     * ”非晚班“、”晚班“， 用于指明是否晚班线路
+     */
+    private String nightLineFlag;
+
+    public String getNightLineFlag() {
+        return nightLineFlag;
+    }
+
+    public void setNightLineFlag(String nightLineFlag) {
+        this.nightLineFlag = nightLineFlag;
     }
 }

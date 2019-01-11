@@ -10,8 +10,8 @@
     <result column="head_img" jdbcType="VARCHAR" property="headImg" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="banji" jdbcType="INTEGER" property="banji" />
-    <result column="bus_morning" jdbcType="INTEGER" property="busMorning" />
-    <result column="bus_afternoon" jdbcType="INTEGER" property="busAfternoon" />
+    <result column="bus_line_morning" jdbcType="INTEGER" property="busLineMorning" />
+    <result column="bus_line_afternoon" jdbcType="INTEGER" property="busLineAfternoon" />
     <result column="board_station_morning" jdbcType="INTEGER" property="boardStationMorning" />
     <result column="board_station_afternoon" jdbcType="INTEGER" property="boardStationAfternoon" />
     <result column="family_info" jdbcType="LONGVARCHAR" property="familyInfo" />
@@ -25,8 +25,8 @@
     <result column="head_img" jdbcType="VARCHAR" property="headImg" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="banji" jdbcType="INTEGER" property="banji" />
-    <result column="bus_morning" jdbcType="INTEGER" property="busMorning" />
-    <result column="bus_afternoon" jdbcType="INTEGER" property="busAfternoon" />
+    <result column="bus_line_morning" jdbcType="INTEGER" property="busLineMorning" />
+    <result column="bus_line_afternoon" jdbcType="INTEGER" property="busLineAfternoon" />
     <result column="board_station_morning" jdbcType="INTEGER" property="boardStationMorning" />
     <result column="board_station_afternoon" jdbcType="INTEGER" property="boardStationAfternoon" />
     <result column="family_info" jdbcType="LONGVARCHAR" property="familyInfo" />
@@ -38,21 +38,7 @@
   </resultMap>
 
   <select id="getPlannedStudentsByBusNumberAndBusMode" resultMap="StudentInfoResultMap">
-    SELECT
-      student.*,
-      bus.number as bus_number
-    FROM
-	  student
-    <if test="busMode != null and busMode != '' and busMode == '上午接送'">
-      LEFT JOIN bus ON student.bus_morning = bus.id
-      WHERE
-      bus.number =#{busNumber}
-    </if>
-    <if test="busMode != null and busMode != '' and busMode == '下午接送'">
-      LEFT JOIN bus ON student.bus_afternoon = bus.id
-      WHERE
-      bus.number =#{busNumber}
-    </if>
+-- todo
   </select>
 
 </mapper>
