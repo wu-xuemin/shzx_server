@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface BusLineMapper extends Mapper<BusLine> {
 
-    BusLineInfo getBusByBusMomAccount(@Param("busMomAccount")String busMomAccount);
+    List<BusLineInfo> getBusLinIfnoByBusMomAccount(@Param("busMomAccount")String busMomAccount);
     List<BusLineInfo> getBusesBySchoolPartition(@Param("schoolPartition")String schoolPartition);
     List<StudentInfo> getStudentsByBusNumber(@Param("busNumber")String busNumber);
 }

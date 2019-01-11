@@ -24,8 +24,8 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
     @Resource
     private BusLineMapper busLineMapper;
 
-    public BusLineInfo getBusByBusMomAccount(String busMomAccount){
-        return busLineMapper.getBusByBusMomAccount(busMomAccount);
+    public List<BusLineInfo> getBusLinIfnoByBusMomAccount(String busMomAccount){
+        return busLineMapper.getBusLinIfnoByBusMomAccount(busMomAccount);
     }
     public List<BusLineInfo> getBusesBySchoolPartition(String schoolPartition){
         return busLineMapper.getBusesBySchoolPartition(schoolPartition);

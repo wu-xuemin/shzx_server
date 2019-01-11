@@ -66,16 +66,19 @@ public class BusLineController {
 
 
     /**
-     * 根据巴士妈妈账号来获得巴士妈妈所在的巴士
+     * 根据巴士妈妈账号来获得巴士妈妈所在的巴士, 允许多条线都是同个bus妈妈，比如早午班
      * @param busMomAccount
      * @return
      */
 
-    @ApiOperation("根据巴士妈妈账号来获得巴士妈妈所在的巴士")
-    @PostMapping("/getBusByBusMomAccount")
-    public Result getBusByBusMomAccount(@RequestParam String busMomAccount) {
-        BusLineInfo bus = busLineService.getBusByBusMomAccount(busMomAccount);
-        return ResultGenerator.genSuccessResult(bus);
+    @ApiOperation("根据巴士妈妈账号来获得巴士妈妈所在的巴士班次信息,不同班次允许同个巴士妈妈")
+    @PostMapping("/getBusLinIfnoByBusMomAccount")
+    public Result getBusLinIfnoByBusMomAccount(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                        @RequestParam String busMomAccount) {
+        PageHelper.startPage(page, size);
+        List<BusLineInfo> list = busLineService.getBusLinIfnoByBusMomAccount(busMomAccount);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
     }
 
 
