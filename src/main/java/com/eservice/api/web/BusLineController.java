@@ -64,36 +64,29 @@ public class BusLineController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-
     /**
      * 根据巴士妈妈账号来获得巴士妈妈所在的巴士, 允许多条线都是同个bus妈妈，比如早午班
      * @param busMomAccount
      * @return
      */
-
     @ApiOperation("根据巴士妈妈账号来获得巴士妈妈所在的巴士班次信息,不同班次允许同个巴士妈妈")
-    @PostMapping("/getBusLinIfnoByBusMomAccount")
-    public Result getBusLinIfnoByBusMomAccount(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "busMomAccount", value = "巴士妈妈账号，具有唯一性")})
+    @PostMapping("/getBusLineInfoByBusMomAccount")
+    public Result getBusLineInfoByBusMomAccount(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                                         @RequestParam String busMomAccount) {
         PageHelper.startPage(page, size);
-        List<BusLineInfo> list = busLineService.getBusLinIfnoByBusMomAccount(busMomAccount);
+        List<BusLineInfo> list = busLineService.getBusLineInfoByBusMomAccount(busMomAccount);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-
-    /**
-     * 根据校区来获得该校区的所有巴士的信息
-     * @param schoolPartition
-     * @return
-     */
-
-    @ApiOperation("根据校区来获得该校区的所有巴士的相关信息")
-    @PostMapping("/getBusesBySchoolPartition")
-    public Result getBusesBySchoolPartition(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+    @ApiOperation("根据校区来获得该校区的所有巴士线路相关信息")
+    @PostMapping("/getBusLineInfoBySchoolPartition")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "schoolPartition", value = "校区，目前只有“浦东”、“浦西” ")})
+    public Result getBusLineInfoBySchoolPartition(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                                           @RequestParam String schoolPartition) {
         PageHelper.startPage(page, size);
-        List<BusLineInfo> list = busLineService.getBusesBySchoolPartition(schoolPartition);
+        List<BusLineInfo> list = busLineService.getBusLineInfoBySchoolPartition(schoolPartition);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

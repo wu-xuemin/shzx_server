@@ -51,31 +51,43 @@
     <result column="board_station_afternoon_name" jdbcType="VARCHAR" property="boardStationAfternoonName"/>
   </resultMap>
 
-  <select id="getBusLinIfnoByBusMomAccount" resultMap="BusLineInfoResultMap">
+  <select id="getBusLineInfoByBusMomAccount" resultMap="BusLineInfoResultMap">
     SELECT
         bus_line.*, bus_base_info.number,
         bus_base_info.plate_number,
         bus_base_info.plate_number_pic,
         bus_supplier.`name` AS bus_supplier_name,
         user_bus_mom.account AS bus_mom_account,
-        bus_base_info.school_partition
+        user_bus_driver.account AS bus_driver_account,
+        bus_base_info.school_partition,
+	    bus_base_info.ipad_meid
     FROM
         bus_line
     LEFT JOIN bus_base_info ON bus_line.bus_base_info = bus_base_info.id
     LEFT JOIN `user` AS u ON bus_base_info.bus_mom = u.id
     LEFT JOIN bus_supplier ON bus_supplier.id = bus_base_info.bus_supplier
     LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bus_base_info.bus_mom
+    LEFT JOIN `user` AS user_bus_driver ON user_bus_driver.id = bus_base_info.bus_driver
     WHERE
     user_bus_mom.account = #{busMomAccount};
   </select>
-  <select id="getBusesBySchoolPartition" resultMap="BusLineInfoResultMap">
+  <select id="getBusLineInfoBySchoolPartition" resultMap="BusLineInfoResultMap">
     SELECT
-      *
+        bus_line.*, bus_base_info.number,
+        bus_base_info.plate_number,
+        bus_base_info.plate_number_pic,
+        bus_supplier.`name` AS bus_supplier_name,
+        user_bus_mom.account AS bus_mom_account,
+        user_bus_driver.account AS bus_driver_account,
+        bus_base_info.school_partition,
+	    bus_base_info.ipad_meid
     FROM
-        bus_base_info
+        bus_line
+    LEFT JOIN bus_base_info ON bus_line.bus_base_info = bus_base_info.id
+    LEFT JOIN `user` AS u ON bus_base_info.bus_mom = u.id
     LEFT JOIN bus_supplier ON bus_supplier.id = bus_base_info.bus_supplier
-    LEFT JOIN USER ON `user`.id = bus_base_info.bus_mom
-    LEFT JOIN USER AS user_bus_mom ON bus_base_info.bus_mom = user_bus_mom.id
+    LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bus_base_info.bus_mom
+    LEFT JOIN `user` AS user_bus_driver ON user_bus_driver.id = bus_base_info.bus_driver
     WHERE
         bus_base_info.school_partition =  #{schoolPartition}
         -- todo
