@@ -289,17 +289,19 @@ CREATE TABLE `student` (
   CONSTRAINT `fk_board_station_morning` FOREIGN KEY (`board_station_morning`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_bus_line_afternoon` FOREIGN KEY (`bus_line_afternoon`) REFERENCES `bus_line` (`id`),
   CONSTRAINT `fk_bus_line_morning` FOREIGN KEY (`bus_line_morning`) REFERENCES `bus_line` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES ('16', 'xh001', '', '张小名', '1', '34', '34', '11', '11', '');
-INSERT INTO `student` VALUES ('17', 'xh002', '', '王小明', '1', '38', '38', '12', '12', '');
-INSERT INTO `student` VALUES ('18', 'XH003', '', '王小丫', '1', '39', '39', '17', '14', '');
-INSERT INTO `student` VALUES ('19', 'xh021', '', '张晓婷', '9', '39', '39', '16', '19', '');
+INSERT INTO `student` VALUES ('16', 'xh001', '', '张小名', '1', '34', '47', '11', '11', '');
+INSERT INTO `student` VALUES ('17', 'xh002', '', '王小明', '1', '38', '42', '12', '12', '');
+INSERT INTO `student` VALUES ('18', 'XH003', '', '王小丫', '1', '39', '41', '17', '14', '');
+INSERT INTO `student` VALUES ('19', 'xh021', '', '张晓婷', '9', '39', '42', '16', '19', '');
 INSERT INTO `student` VALUES ('20', 'xh022', '', '黄丽', '10', '46', '46', '19', '19', '');
 INSERT INTO `student` VALUES ('21', 'xh023', '', '王语嫣', '10', '43', '43', '11', '12', '');
+INSERT INTO `student` VALUES ('23', 'XH022', '', '王笑笑', '2', '34', '48', '17', '17', '');
+INSERT INTO `student` VALUES ('24', 'xh0023', '', '张成', '3', '38', '47', '12', '13', '');
 
 -- ----------------------------
 -- Table structure for `transport_range`
