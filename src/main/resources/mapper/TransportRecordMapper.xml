@@ -27,6 +27,7 @@
     <result column="student_banji" jdbcType="VARCHAR" property="studentBanji" />
     <result column="student_number" jdbcType="VARCHAR" property="studentNumber" />
     <result column="student_name" jdbcType="VARCHAR" property="studentName" />
+    <result column="mode" jdbcType="VARCHAR" property="mode" />
   </resultMap>
 
   <select id="selectTransportRecord" resultMap="TransportRecordInfoResultMap">

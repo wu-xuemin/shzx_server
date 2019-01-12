@@ -230,7 +230,7 @@ CREATE TABLE `picked_students_info` (
   KEY `fk_transport_record_id` (`transport_record_id`),
   CONSTRAINT `fk_student_id` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   CONSTRAINT `fk_transport_record_id` FOREIGN KEY (`transport_record_id`) REFERENCES `transport_record` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of picked_students_info
@@ -241,6 +241,12 @@ INSERT INTO `picked_students_info` VALUES ('25', '12', '2019-01-01 14:14:40', '1
 INSERT INTO `picked_students_info` VALUES ('26', '14', '2019-01-11 14:16:38', '16');
 INSERT INTO `picked_students_info` VALUES ('27', '14', '2019-01-11 14:16:50', '17');
 INSERT INTO `picked_students_info` VALUES ('28', '14', '2019-01-11 15:17:00', '18');
+INSERT INTO `picked_students_info` VALUES ('29', '21', '2019-01-12 11:06:03', '16');
+INSERT INTO `picked_students_info` VALUES ('30', '21', '2019-01-12 11:06:24', '24');
+INSERT INTO `picked_students_info` VALUES ('31', '22', '2019-01-12 11:06:43', '16');
+INSERT INTO `picked_students_info` VALUES ('33', '22', '2019-01-12 11:07:00', '17');
+INSERT INTO `picked_students_info` VALUES ('34', '23', '2019-01-12 11:07:36', '24');
+INSERT INTO `picked_students_info` VALUES ('35', '23', '2019-01-12 11:07:54', '20');
 
 -- ----------------------------
 -- Table structure for `role`
@@ -341,7 +347,7 @@ CREATE TABLE `transport_record` (
   KEY `fk_current_station` (`current_station`),
   CONSTRAINT `fk_bus_line` FOREIGN KEY (`bus_line`) REFERENCES `bus_line` (`id`),
   CONSTRAINT `fk_current_station` FOREIGN KEY (`current_station`) REFERENCES `bus_stations` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of transport_record
@@ -356,6 +362,9 @@ INSERT INTO `transport_record` VALUES ('17', '2019-01-11', '40', null);
 INSERT INTO `transport_record` VALUES ('18', '2019-01-11', '41', null);
 INSERT INTO `transport_record` VALUES ('19', '2019-01-12', '34', null);
 INSERT INTO `transport_record` VALUES ('20', '2019-01-12', '38', null);
+INSERT INTO `transport_record` VALUES ('21', '2019-01-12', '42', null);
+INSERT INTO `transport_record` VALUES ('22', '2019-01-12', '43', null);
+INSERT INTO `transport_record` VALUES ('23', '2019-01-12', '43', null);
 
 -- ----------------------------
 -- Table structure for `user`
