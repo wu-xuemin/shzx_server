@@ -12,4 +12,6 @@ public interface StudentMapper extends Mapper<Student> {
     List<StudentInfo> getPlannedStudentsMorningByBusNumber(@Param("busNumber") String busNumber);
 
     List<StudentInfo> getPlannedStudentsAfternoonByBusNumber(@Param("busNumber") String busNumber);
+
+    StudentInfo getSutdentInfo(@Param("studentNumber") String studentNumber);
 }

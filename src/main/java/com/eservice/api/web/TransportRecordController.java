@@ -113,7 +113,7 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "要查询的起始时间，比如 2018-12-19 00:00:00 "),
             @ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "要查询的结束时间，比如 2018-12-20 00:00:00 "),
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号，比如 xc001"),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于上午接送、下午接送两种，晚班不支持 ")
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“早班”、“午班”两种，晚班不支持 ")
     })
     @PostMapping("/selectAbsenceStudentInfo")
     public Result selectAbsenceStudentInfo(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,

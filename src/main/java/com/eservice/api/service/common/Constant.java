@@ -9,10 +9,10 @@ package com.eservice.api.service.common;
 public class Constant {
 
     /**
-     * 校车接送模式，分为“上午接送”，“下午接送”，“晚班”
+     * 校车接送模式，分为“早班”，“午班”，“晚班”
      * 注意 Mapper.xml 里也有这些字符串
      */
-    public static final String BUS_MODE_MORNING = "上午接送";
-    public static final String BUS_MODE_AFTERNOON = "下午接送";
+    public static final String BUS_MODE_MORNING = "早班";
+    public static final String BUS_MODE_AFTERNOON = "午班";
     public static final String BUS_MODE_NIGHT = "晚班";
   }

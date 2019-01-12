@@ -34,4 +34,8 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         }
     }
 
+    public StudentInfo getSutdentInfo(String studentNumber){
+        return studentMapper.getSutdentInfo(studentNumber);
+    }
+
 }
