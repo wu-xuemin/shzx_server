@@ -62,4 +62,15 @@ public class UserMsgStatusInfoController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
+    @ApiOperation("根据账号获取该用户的message信息，包括已读未读状态")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "userAccount", value = "用户账号") })
+    @PostMapping("/getMessageInfo")
+    public Result getMessageInfo(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                 @RequestParam String userAccount) {
+        PageHelper.startPage(page, size);
+        List<MessagesInfo> list = userMsgStatusInfoService.getMessageInfo(userAccount);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
 }
