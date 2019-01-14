@@ -12,21 +12,4 @@
     <result column="read_count" jdbcType="INTEGER" property="readCount" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
-
-
-  <resultMap id="MessagesInfoResultMap" type="com.eservice.api.model.messages.MessagesInfo">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="publisher" jdbcType="VARCHAR" property="publisher" />
-    <result column="read_count" jdbcType="INTEGER" property="readCount" />
-    <result column="content" jdbcType="LONGVARCHAR" property="content" />
-
-    <result column="message_status" jdbcType="VARCHAR" property="messageStatus" />
-    <result column="message_user_account" jdbcType="VARCHAR" property="messageUserAccount" />
-
-  </resultMap>
 </mapper>

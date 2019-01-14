@@ -1,16 +1,11 @@
 package com.eservice.api.web;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
-import com.eservice.api.model.messages.MessagesInfo;
 import com.eservice.api.model.user_msg_status_info.UserMsgStatusInfo;
 import com.eservice.api.service.UserMsgStatusInfoService;
-import com.eservice.api.service.impl.UserMsgStatusInfoServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +24,7 @@ import java.util.List;
 @Api(description = "用户的消息管理（已读未读）")
 public class UserMsgStatusInfoController {
     @Resource
-    private UserMsgStatusInfoServiceImpl userMsgStatusInfoService;
+    private UserMsgStatusInfoService userMsgStatusInfoService;
 
     @PostMapping("/add")
     public Result add(UserMsgStatusInfo userMsgStatusInfo) {
