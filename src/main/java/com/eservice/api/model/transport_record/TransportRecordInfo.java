@@ -1,5 +1,7 @@
 package com.eservice.api.model.transport_record;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 public class TransportRecordInfo extends  TransportRecord {
@@ -48,6 +50,7 @@ public class TransportRecordInfo extends  TransportRecord {
     /**
      * 上或下车时间
      */
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date boardTime;
 
     public Date getBoardTime() {

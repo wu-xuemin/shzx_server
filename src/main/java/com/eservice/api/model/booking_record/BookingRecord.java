@@ -1,5 +1,7 @@
 package com.eservice.api.model.booking_record;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -15,6 +17,7 @@ public class BookingRecord {
     /**
      * 变更线路的日期
      */
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "change_date")
     private Date changeDate;
 
@@ -56,12 +59,14 @@ public class BookingRecord {
     /**
      * 该条记录的创建时间
      */
+    @JSONField (format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "create_time")
     private Date createTime;
 
     /**
      * 该条记录的更新时间
      */
+    @JSONField (format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "update_time")
     private Date updateTime;
 

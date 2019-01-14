@@ -1,5 +1,7 @@
 package com.eservice.api.model.transport_record;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -15,6 +17,7 @@ public class TransportRecord {
     /**
      * 接送日期  TODO,这个可以删掉?
      */
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date date;
 
     /**

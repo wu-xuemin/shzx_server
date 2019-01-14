@@ -1,5 +1,6 @@
 package com.eservice.api.model.user;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -39,7 +40,7 @@ public class User implements UserDetails {
      * 电话
      */
     private String phone;
-
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "create_time")
     private Date createTime;
 

@@ -1,5 +1,7 @@
 package com.eservice.api.model.picked_students_info;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -15,6 +17,7 @@ public class PickedStudentsInfo {
     /**
      * 上下车时间
      */
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "board_time")
     private Date boardTime;
 

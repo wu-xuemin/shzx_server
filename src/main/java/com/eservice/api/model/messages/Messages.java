@@ -1,8 +1,10 @@
 package com.eservice.api.model.messages;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import javax.persistence.*;
-
 public class Messages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,6 +13,7 @@ public class Messages {
     /**
      * 发布时间
      */
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "send_time")
     private Date sendTime;
 
