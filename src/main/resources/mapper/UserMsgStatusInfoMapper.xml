@@ -10,4 +10,16 @@
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="user" jdbcType="INTEGER" property="user" />
   </resultMap>
+
+  <select id="getMessageInfo" resultMap="com.eservice.api.dao.MessagesMapper.MessagesInfoResultMap" >
+    SELECT
+    messages.*,
+    umsi.`status` as message_status,
+    `user`.account as message_user_account
+    FROM
+    messages
+    LEFT JOIN user_msg_status_info as umsi ON umsi.message_id = messages.id
+    LEFT JOIN `user` ON `user`.id = umsi.`user`
+    WHERE `user`.account = #{userAccount}
+  </select>
 </mapper>
