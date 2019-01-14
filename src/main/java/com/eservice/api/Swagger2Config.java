@@ -25,9 +25,9 @@ public class Swagger2Config {
     public Docket controllerApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
-                        .title("上海中学校车通行管理系统_后端接口文档_2019-01-07")
-                        .description(" 对各个controller增加说明\n\r " +
-                                "新增了 查询缺乘人员的接口/transport/record/selectAbsenceStudentInfo等 \n\r " +
+                        .title("上海中学校车通行管理系统_后端接口文档_2019-01-14")
+                        .description("完善了/picked/students/info/add等 、增加了getMessageInfo等\n\r " +
+                                "部分旧接口有变化，请注意更新使用  \n\r " +
                                 "一些注意事项没有一一标明，\n\r" +
                                 "比如，在add时，id号留空就好，不要填写；\n\r" +
                                 "比如，在add时参数未填写，导致\"内部错误\"。\n\r " +
