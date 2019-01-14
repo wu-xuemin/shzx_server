@@ -6,14 +6,14 @@ import javax.persistence.*;
 @Table(name = "transport_record")
 public class TransportRecord {
     /**
-     * 接送信息
+     * 接送班次信息，一趟对应一条记录，一趟可以对应多条学生接送信息 pickedStudentInfo
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
-     * 接送日期  TODO,这个可以删掉
+     * 接送日期  TODO,这个可以删掉?
      */
     private Date date;
 

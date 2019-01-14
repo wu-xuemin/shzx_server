@@ -39,8 +39,9 @@
 
   <select id="getPlannedStudentsMorningByBusNumber" resultMap="StudentInfoResultMap">
     SELECT
-        student.*, banji.class_name,
-        bus_base_info.number,
+        student.*,
+        banji.class_name as banji_name,
+        bus_base_info.number as bus_number,
         bus_stations.station_name AS board_station_morning_name
     FROM
         student
@@ -54,8 +55,9 @@
 
   <select id="getPlannedStudentsAfternoonByBusNumber" resultMap="StudentInfoResultMap">
     SELECT
-      student.*, banji.class_name,
-      bus_base_info.number,
+      student.*,
+      banji.class_name as banji_name,
+      bus_base_info.number as bus_number,
       bus_stations.station_name AS board_station_afternoon_name
     FROM
         student

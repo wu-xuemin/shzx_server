@@ -9,6 +9,8 @@ import com.eservice.api.service.impl.UserServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +45,7 @@ public class UserController {
         if(userService.selectByAccount(user.getAccount()) != null) {
             return ResultGenerator.genFailResult("用户名已存在！");
         }
-        user.setPassword("password");
+      //  user.setPassword("password");
         user.setValid("1");
         user.setCreateTime(new Date());
         userService.save(user);
@@ -91,7 +93,8 @@ public class UserController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    @ApiOperation("带meid登陆")
+    @ApiOperation("带meid登陆，如果参数meid号为空则不验证meid")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "meid", value = "设备的meid号") })
     @PostMapping("/requestLogin")
     public Result requestLogin(@RequestParam String account, @RequestParam String password, @RequestParam(defaultValue = "0") String meid) {
         boolean result = true;

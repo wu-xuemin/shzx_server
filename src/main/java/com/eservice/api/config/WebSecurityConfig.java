@@ -41,8 +41,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 /**
                  *  JWT On/Off
                  */
+                .antMatchers(HttpMethod.POST, "/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/*/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/*/*/*").permitAll()
+                .antMatchers(HttpMethod.POST, "/*/*/*/*").permitAll()
 
                 .antMatchers("/v2/api-docs/**").permitAll()
                 .antMatchers("/swagger.json").permitAll()

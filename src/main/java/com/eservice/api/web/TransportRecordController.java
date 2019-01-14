@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/transport/record")
-@Api(description = "接送记录管理")
+@Api(description = "接送班次信息，一趟车对应一条记录，一趟可以对应多条学生接送信息 pickedStudentInfo")
 public class TransportRecordController {
 
     private final Logger logger = LoggerFactory.getLogger(TransportRecordController.class);
@@ -41,9 +42,15 @@ public class TransportRecordController {
     @Value("${debug.flag}")
     private String debugFlag;
 
-
+    @ApiOperation("增加接送班次记录，一趟车对应一条记录，比如在开始行程时调用该接口, 注意参数中的日期会在服务端重置，即以服务端时间为准")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "date", value = " 时间，留空")})
     @PostMapping("/add")
     public Result add(TransportRecord transportRecord) {
+        if(transportRecord == null) {
+            return ResultGenerator.genFailResult("transportRecord 不能为空");
+        }
+        transportRecord.setDate(new Date());
         transportRecordService.save(transportRecord);
         return ResultGenerator.genSuccessResult();
     }
