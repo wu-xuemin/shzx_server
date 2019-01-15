@@ -10,4 +10,8 @@
     <result column="stations" jdbcType="LONGVARCHAR" property="stations" />
     <result column="range_name" jdbcType="VARCHAR" property="rangeName" />
   </resultMap>
+
+  <select id="getTransportRangeByBusNumberAndBusMode" resultMap="BaseResultMap">
+
+  </select>
 </mapper>
