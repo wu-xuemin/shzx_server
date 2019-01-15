@@ -70,12 +70,15 @@ public class BusLineController {
      * @return
      */
     @ApiOperation("根据巴士妈妈账号来获得巴士妈妈所在的巴士班次信息,不同班次允许同个巴士妈妈")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "busMomAccount", value = "巴士妈妈账号，具有唯一性")})
-    @PostMapping("/getBusLineInfoByBusMomAccount")
-    public Result getBusLineInfoByBusMomAccount(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
-                                        @RequestParam String busMomAccount) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "busMomAccount", value = "巴士妈妈账号，具有唯一性",required = true),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“早班”、“午班”两种，晚班不支持",required = true)})
+    @PostMapping("/getBusLineInfoByBusMomAccountAndBusMode")
+    public Result getBusLineInfoByBusMomAccountAndBusMode(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                        @RequestParam String busMomAccount,
+                                        @RequestParam String busMode ) {
         PageHelper.startPage(page, size);
-        List<BusLineInfo> list = busLineService.getBusLineInfoByBusMomAccount(busMomAccount);
+        List<BusLineInfo> list = busLineService.getBusLineInfoByBusMomAccountAndBusMode(busMomAccount,busMode);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

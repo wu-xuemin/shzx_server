@@ -51,7 +51,7 @@
     <result column="board_station_afternoon_name" jdbcType="VARCHAR" property="boardStationAfternoonName"/>
   </resultMap>
 
-  <select id="getBusLineInfoByBusMomAccount" resultMap="BusLineInfoResultMap">
+  <select id="getBusLineInfoByBusMomAccountAndBusMode" resultMap="BusLineInfoResultMap">
     SELECT
         bus_line.*, bus_base_info.number,
         bus_base_info.plate_number,
@@ -69,7 +69,10 @@
     LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bus_base_info.bus_mom
     LEFT JOIN `user` AS user_bus_driver ON user_bus_driver.id = bus_base_info.bus_driver
     WHERE
-    user_bus_mom.account = #{busMomAccount};
+      user_bus_mom.account = #{busMomAccount}
+      <if test="busMode != null and busMode != ''">
+      AND bus_line.`mode` = #{busMode}
+      </if>
   </select>
   <select id="getBusLineInfoBySchoolPartition" resultMap="BusLineInfoResultMap">
     SELECT

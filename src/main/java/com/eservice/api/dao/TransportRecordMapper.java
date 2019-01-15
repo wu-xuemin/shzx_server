@@ -1,6 +1,7 @@
 package com.eservice.api.dao;
 
 import com.eservice.api.core.Mapper;
+import com.eservice.api.model.student.Student;
 import com.eservice.api.model.transport_record.TransportRecord;
 import com.eservice.api.model.transport_record.TransportRecordInfo;
 import org.apache.ibatis.annotations.Param;
@@ -17,5 +18,13 @@ public interface TransportRecordMapper extends Mapper<TransportRecord> {
                                                     @Param("busStationName") String busStationName,
                                                     @Param("grade") String grade,
                                                     @Param("className") String className );
+
+    List<Student> getUnplannedStudentsMorning(@Param("busNumber") String busNumber,
+                                       @Param("queryStartTime") String queryStartTime,
+                                       @Param("queryFinishTime") String queryFinishTime);
+
+    List<Student> getUnplannedStudentsAfternoon(@Param("busNumber") String busNumber,
+                                              @Param("queryStartTime") String queryStartTime,
+                                              @Param("queryFinishTime") String queryFinishTime);
 
 }

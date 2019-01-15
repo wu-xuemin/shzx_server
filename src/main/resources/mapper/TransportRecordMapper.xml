@@ -86,4 +86,36 @@
     </if>
 </select>
 
+  <select id="getUnplannedStudentsMorning" resultMap="com.eservice.api.dao.StudentMapper.BaseResultMap">
+    SELECT
+    bbi.*, tr.*, student.*
+    FROM
+    transport_record AS tr
+    LEFT JOIN picked_students_info AS psi ON psi.transport_record_id = tr.id
+    LEFT JOIN student ON student.id = psi.student_id
+    LEFT JOIN bus_line ON bus_line.id = tr.bus_line
+    LEFT JOIN bus_base_info AS bbi ON bbi.id = bus_line.bus_base_info
+    WHERE
+      DATE_FORMAT(  tr.date,  '%Y-%m-%d %T'  ) >= #{queryStartTime}
+      AND DATE_FORMAT(  tr.date,  '%Y-%m-%d %T'  ) &lt;= #{queryFinishTime}
+      AND bbi.number = #{busNumber}
+      AND student.bus_line_morning != tr.bus_line
+  </select>
+
+  <select id="getUnplannedStudentsAfternoon" resultMap="com.eservice.api.dao.StudentMapper.BaseResultMap">
+    SELECT
+      bbi.*,tr.*, student.*
+    FROM
+      transport_record AS tr
+    LEFT JOIN picked_students_info AS psi ON psi.transport_record_id = tr.id
+    LEFT JOIN student ON student.id = psi.student_id
+    LEFT JOIN bus_line ON bus_line.id = tr.bus_line
+    LEFT JOIN bus_base_info AS bbi ON bbi.id = bus_line.bus_base_info
+    WHERE
+      DATE_FORMAT(  tr.date,  '%Y-%m-%d %T'  ) >= #{queryStartTime}
+      AND DATE_FORMAT(  tr.date,  '%Y-%m-%d %T'  ) &lt;= #{queryFinishTime}
+      AND bbi.number = #{busNumber}
+      AND student.bus_line_afternoon != tr.bus_line
+  </select>
+
 </mapper>
