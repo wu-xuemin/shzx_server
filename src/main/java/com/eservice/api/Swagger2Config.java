@@ -27,8 +27,8 @@ public class Swagger2Config {
                 .apiInfo(new ApiInfoBuilder()
                         .title("上海中学校车通行管理系统_后端接口文档_2019-01-15")
                         .description("请多查看swagger，比如 实时接送记录可以用/transport/record/selectTransportRecord 按条件查询\n\r " +
-                                "getBusLineInfoByBusMomAccount()改为getBusLineInfoByBusMomAccountAndBusMode（） \n\r " +
-                                "getUnplannedStudents 获取乘坐计划外的学生（临时乘坐）信息" +
+                                "/bus/line/getBusLineInfoByBusMomAccount()改为getBusLineInfoByBusMomAccountAndBusMode（） \n\r " +
+                                "/transport/record/getUnplannedStudents 获取乘坐计划外的学生（临时乘坐）信息 \n\r" +
                                 "一些注意事项没有一一标明，\n\r" +
                                 "比如，在add时，id号留空就好，不要填写；\n\r" +
                                 "比如，在add时参数未填写，导致\"内部错误\"。\n\r " +

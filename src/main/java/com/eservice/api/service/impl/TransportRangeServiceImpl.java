@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -20,5 +21,9 @@ import javax.annotation.Resource;
 public class TransportRangeServiceImpl extends AbstractService<TransportRange> implements TransportRangeService {
     @Resource
     private TransportRangeMapper transportRangeMapper;
+
+    public List<TransportRange> getTransportRangeByBusNumberAndBusMode(String busNumber,String busMode){
+     return transportRangeMapper.getTransportRangeByBusNumberAndBusMode(busNumber,busMode);
+    }
 
 }
