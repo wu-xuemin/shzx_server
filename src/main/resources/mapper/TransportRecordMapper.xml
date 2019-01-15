@@ -131,4 +131,11 @@
     AND tr.date = #{queryDate}
   </select>
 
+  <insert id="saveAndGetID" useGeneratedKeys="true" parameterType="com.eservice.api.model.transport_record.TransportRecord"
+          keyProperty="id">
+    insert into
+    transport_record(date, bus_line, current_station)
+    values( #{date}, #{busLine}, #{currentStation})
+  </insert>
+
 </mapper>

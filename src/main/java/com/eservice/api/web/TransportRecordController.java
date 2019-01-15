@@ -52,8 +52,8 @@ public class TransportRecordController {
             return ResultGenerator.genFailResult("transportRecord 不能为空");
         }
         transportRecord.setDate(new Date());
-        transportRecordService.save(transportRecord);
-        return ResultGenerator.genSuccessResult();
+        transportRecordService.saveAndGetID(transportRecord);
+        return ResultGenerator.genSuccessResult(transportRecord.getId());
     }
 
     @PostMapping("/delete")
