@@ -97,6 +97,22 @@
   </select>
 
   <select id="getStudentsByBusNumber" resultMap="StudentInfoResultMap" >
--- todo
+    SELECT 
+    banji.class_name as banjiName,
+    bbi.number as busNumber,
+    bs_m.station_name as boardStationMorningName,
+    bs_a.station_name as boardStationAfternoonName,
+    student.*,
+    bl.*,
+    bbi.*
+
+    FROM
+    student
+    LEFT JOIN banji on banji.id = student.banji
+    LEFT JOIN bus_stations as bs_m on bs_m.id = student.board_station_morning
+    LEFT JOIN bus_stations as bs_a on bs_a.id = student.board_station_afternoon
+    LEFT JOIN bus_line as bl on ( bl.id = student.bus_line_afternoon or bl.id = student.bus_line_morning)
+    LEFT JOIN bus_base_info as bbi on bbi.id = bl.bus_base_info
+    WHERE bbi.number = #{busNumber}
   </select>
 </mapper>
