@@ -86,4 +86,19 @@ public class StudentController {
         return ResultGenerator.genSuccessResult(student);
     }
 
+    @ApiOperation("根据校车编号+模式（早班午班）+站点 查找学生列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "studentNumber", value = "校车编号"),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，内容限于“早班”、“午班”两种 "),
+            @ApiImplicitParam(paramType = "query",name = "busStation", value = "校车站点")})
+    @PostMapping("/getPlannedStudents")
+    public Result getPlannedStudents(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                     @RequestParam() String busNumber,
+                                     @RequestParam() String busMode,
+                                     @RequestParam() String busStation) {
+        PageHelper.startPage(page, size);
+        List<StudentInfo> list = studentService.getPlannedStudents(busNumber, busMode,busStation);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
 }

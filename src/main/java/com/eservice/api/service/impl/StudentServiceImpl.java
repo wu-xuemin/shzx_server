@@ -38,4 +38,14 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         return studentMapper.getSutdentInfo(studentNumber);
     }
 
+    public List<StudentInfo> getPlannedStudents(String busNumber, String busMode,String busStation){
+        if(busMode.equals(Constant.BUS_MODE_MORNING)){
+            return studentMapper.getPlannedStudentsMorning(busNumber,busStation);
+        } else if(busMode.equals(Constant.BUS_MODE_AFTERNOON)){
+            return studentMapper.getPlannedStudentsAfternoon(busNumber,busStation);
+        } else {
+            return null;
+        }
+
+    }
 }
