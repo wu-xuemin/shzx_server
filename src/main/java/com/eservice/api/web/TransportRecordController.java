@@ -31,7 +31,7 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/transport/record")
-@Api(description = "接送班次信息，一趟车对应一条记录，一趟可以对应多条学生接送信息 pickedStudentInfo")
+@Api(description = "接送车次记录，一趟车对应一条记录，一趟可以对应多条学生接送信息 pickedStudentInfo")
 public class TransportRecordController {
 
     private final Logger logger = LoggerFactory.getLogger(TransportRecordController.class);
@@ -219,6 +219,24 @@ public class TransportRecordController {
                                        @RequestParam String queryFinishTime) {
         PageHelper.startPage(page, size);
         List<Student> list = transportRecordService.getUnplannedStudents(busNumber,busMode,queryStartTime,queryFinishTime);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+
+    @ApiOperation("根据校车编号 + 模式（早班、午班）+日期 获取车次记录信息（包括了当前站点等）")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号", required = true),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“早班”、“午班”两种，晚班不支持 ", required = true),
+            @ApiImplicitParam(paramType = "query",name = "queryDate", value = "要查询的日期，比如 2018-12-19", required = true)})
+            //@ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "要查询的结束时间，比如 2018-12-20 00:00:00 ", required = true)
+    @PostMapping("/getTransportRecord")
+    public Result getTransportRecord(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                       @RequestParam() String busNumber,
+                                       @RequestParam String busMode,
+                                       @RequestParam String queryDate) {
+        PageHelper.startPage(page, size);
+        List<TransportRecord> list = transportRecordService.getTransportRecord(busNumber,busMode,queryDate);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

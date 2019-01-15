@@ -118,4 +118,17 @@
       AND student.bus_line_afternoon != tr.bus_line
   </select>
 
+  <select id="getTransportRecord" resultMap="BaseResultMap">
+    SELECT
+	*
+    FROM
+        transport_record AS tr
+    LEFT JOIN bus_line AS bl ON bl.id = tr.bus_line
+    LEFT JOIN bus_base_info AS bbi ON bbi.id = bl.bus_base_info
+    WHERE
+        bbi.number = #{busNumber}
+    AND bl.`mode` = #{busMode}
+    AND tr.date = #{queryDate}
+  </select>
+
 </mapper>

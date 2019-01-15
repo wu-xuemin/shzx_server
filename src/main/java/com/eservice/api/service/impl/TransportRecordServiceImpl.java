@@ -54,4 +54,8 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
         }
      }
 
+    public List<TransportRecord> getTransportRecord(String busNumber,String busMode,String queryDate){
+         return transportRecordMapper.getTransportRecord(busNumber, busMode, queryDate);
+
+    }
 }
