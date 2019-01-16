@@ -6,6 +6,7 @@ import com.eservice.api.model.bus_line.BusLineInfo;
 import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.service.BusLineService;
 import com.eservice.api.core.AbstractService;
+import com.eservice.api.service.common.Constant;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,8 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
         return busLineMapper.getBusLineInfoBySchoolPartition(schoolPartition);
     }
 
-    public List<StudentInfo> getStudentsByBusNumber(String busNumber){
-        return busLineMapper.getStudentsByBusNumber(busNumber);
+    public List<StudentInfo> getStudents(String busNumber,String busMode){
+        return busLineMapper.getStudents(busNumber,busMode);
     }
+
 }

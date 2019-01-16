@@ -96,16 +96,15 @@
         -- todo
   </select>
 
-  <select id="getStudentsByBusNumber" resultMap="StudentInfoResultMap" >
-    SELECT 
-    banji.class_name as banjiName,
-    bbi.number as busNumber,
-    bs_m.station_name as boardStationMorningName,
-    bs_a.station_name as boardStationAfternoonName,
+  <select id="getStudents" resultMap="StudentInfoResultMap" >
+    SELECT
+    banji.class_name as banji_name,
+    bbi.number as bus_number,
+    bs_m.station_name as board_station_morning_name,
+    bs_a.station_name as board_station_afternoon_name,
     student.*,
     bl.*,
     bbi.*
-
     FROM
     student
     LEFT JOIN banji on banji.id = student.banji
@@ -114,5 +113,9 @@
     LEFT JOIN bus_line as bl on ( bl.id = student.bus_line_afternoon or bl.id = student.bus_line_morning)
     LEFT JOIN bus_base_info as bbi on bbi.id = bl.bus_base_info
     WHERE bbi.number = #{busNumber}
+      <if test="busMode != null and busMode != ''">
+          AND bl.`mode` = #{busMode}
+      </if>
   </select>
+
 </mapper>
