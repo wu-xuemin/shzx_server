@@ -128,7 +128,7 @@
     WHERE
         bbi.number = #{busNumber}
     AND bl.`mode` = #{busMode}
-    AND tr.date = #{queryDate}
+    AND DATE_FORMAT( tr.date,  '%Y-%m-%d' ) = #{queryDate}
   </select>
 
   <insert id="saveAndGetID" useGeneratedKeys="true" parameterType="com.eservice.api.model.transport_record.TransportRecord"

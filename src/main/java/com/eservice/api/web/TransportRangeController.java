@@ -64,8 +64,8 @@ public class TransportRangeController {
 
     @ApiOperation("根据校车编号+班次 去查询站点列表（包含在transport_range信息中）")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",name = "busNumber", value = " 校车编号"),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = " 班次，限于 “早班”、“午班”")})
+            @ApiImplicitParam(paramType = "query",name = "busNumber", value = " 校车编号",required = true),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = " 班次，限于 “早班”、“午班”",required = true)})
     @PostMapping("/getTransportRangeByBusNumberAndBusMode")
     public Result getTransportRangeByBusNumberAndBusMode(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                                                @RequestParam String busNumber,

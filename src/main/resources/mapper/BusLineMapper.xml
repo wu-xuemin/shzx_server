@@ -93,7 +93,6 @@
     LEFT JOIN `user` AS user_bus_driver ON user_bus_driver.id = bus_base_info.bus_driver
     WHERE
         bus_base_info.school_partition =  #{schoolPartition}
-        -- todo
   </select>
 
   <select id="getStudents" resultMap="StudentInfoResultMap" >

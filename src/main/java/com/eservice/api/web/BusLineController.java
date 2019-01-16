@@ -85,7 +85,7 @@ public class BusLineController {
 
     @ApiOperation("根据校区来获得该校区的所有巴士线路相关信息")
     @PostMapping("/getBusLineInfoBySchoolPartition")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "schoolPartition", value = "校区，目前只有“浦东”、“浦西” ")})
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "schoolPartition", value = "校区，目前只有“浦东”、“浦西” ",required = true)})
     public Result getBusLineInfoBySchoolPartition(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                                           @RequestParam String schoolPartition) {
         PageHelper.startPage(page, size);

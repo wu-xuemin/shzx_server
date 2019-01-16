@@ -12,6 +12,16 @@
   </resultMap>
 
   <select id="getTransportRangeByBusNumberAndBusMode" resultMap="BaseResultMap">
-
+    SELECT
+      transport_range.*,
+      bl.*,
+      bbi.*
+    FROM
+        transport_range
+    LEFT JOIN bus_line AS bl ON transport_range.id = bl.transport_range
+    LEFT JOIN bus_base_info AS bbi ON bbi.id = bl.bus_base_info
+    WHERE
+        bbi.number = #{busNumber}
+    AND bl.`mode` = #{busMode}
   </select>
 </mapper>
