@@ -104,5 +104,22 @@
     AND bus_stations.station_name = #{busStation}
     AND bus_line.`mode` = '早班'
   </select>
+  <select id="getPlannedStudentsAfternoon" resultMap="StudentInfoResultMap">
+    SELECT
+      student.*,
+      banji.class_name as banji_name,
+      bus_base_info.number as bus_number,
+      bus_stations.station_name AS board_station_afternoon_name
+    FROM
+      student
+    LEFT JOIN banji ON banji.id = student.banji
+    LEFT JOIN bus_line ON bus_line.id = student.bus_line_afternoon
+    LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
+    LEFT JOIN bus_stations ON bus_stations.id = student.board_station_afternoon
+    WHERE
+      bus_base_info.number = #{busNumber}
+      AND bus_stations.station_name = #{busStation}
+      AND bus_line.`mode` = '午班'
+  </select>
 
 </mapper>

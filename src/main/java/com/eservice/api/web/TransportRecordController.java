@@ -223,7 +223,6 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-
     @ApiOperation("根据校车编号 + 模式（早班、午班）+日期 获取车次记录信息（包括了当前站点等）")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号", required = true),
