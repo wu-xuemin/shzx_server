@@ -16,4 +16,62 @@
     <result column="ipad_meid" jdbcType="VARCHAR" property="ipadMeid" />
     <result column="valid" jdbcType="TINYINT" property="valid" />
   </resultMap>
+  <resultMap id="BusBaseFullInfoResultMap" type="com.eservice.api.model.bus_base_info.BusBaseFullInfo">
+    <!--
+  WARNING - @mbg.generated
+-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="plate_number" jdbcType="VARCHAR" property="plateNumber" />
+    <result column="plate_number_pic" jdbcType="VARCHAR" property="plateNumberPic" />
+    <result column="bus_supplier" jdbcType="INTEGER" property="busSupplier" />
+    <result column="bus_mom" jdbcType="INTEGER" property="busMom" />
+    <result column="bus_driver" jdbcType="INTEGER" property="busDriver" />
+    <result column="school_partition" jdbcType="VARCHAR" property="schoolPartition" />
+    <result column="ipad_meid" jdbcType="VARCHAR" property="ipadMeid" />
+    <result column="valid" jdbcType="TINYINT" property="valid" />
+
+    <result column="bus_range_name" jdbcType="VARCHAR" property="busRangeName" />
+    <result column="bus_supplier_name" jdbcType="VARCHAR" property="busSupplierName" />
+    <result column="bus_mom_name" jdbcType="VARCHAR" property="busMomName" />
+    <result column="bus_mom_account" jdbcType="VARCHAR" property="busMomAccount" />
+
+  </resultMap>
+  <select id="getBusBaseInfo" resultMap="BusBaseFullInfoResultMap">
+    SELECT
+        bbi.*, transport_range.range_name AS bus_range_name,
+        bus_supplier.`name` AS bus_supplier_name,
+        user_bus_mom.`name` AS bus_mom_name,
+        user_bus_mom.account AS bus_mom_account,
+        user_bus_mom.*,
+        user_driver.*
+    FROM
+        bus_base_info AS bbi
+    LEFT JOIN bus_supplier ON bus_supplier.id = bbi.bus_supplier
+    LEFT JOIN `user` AS user_driver ON user_driver.id = bbi.bus_driver
+    LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bbi.bus_mom
+    LEFT JOIN bus_line AS bl ON bl.bus_base_info = bbi.id
+    LEFT JOIN transport_range ON transport_range.id = bl.transport_range
+    WHERE
+        1 = 1
+    <if test="busNumber != null and busNumber != ''">
+      AND bbi.number = #{busNumber}
+    </if>
+
+    <if test="rangeName != null and rangeName != ''">
+      AND transport_range.range_name =  #{rangeName}
+    </if>
+
+    <if test="busDriverAccount != null and busDriverAccount != ''">
+      AND user_driver.account = #{busDriverAccount}
+    </if>
+
+    <if test="busMomAccount != null and busMomAccount != ''">
+      AND user_bus_mom.account = #{busMomAccount}
+    </if>
+
+    <if test="busSupplierName != null and busSupplierName != ''">
+      AND bus_supplier.`name` LIKE  CONCAT('%', '${busSupplierName}', '%')
+    </if>
+  </select>
 </mapper>

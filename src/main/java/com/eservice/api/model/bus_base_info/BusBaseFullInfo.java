@@ -1,0 +1,46 @@
+package com.eservice.api.model.bus_base_info;
+
+import javax.persistence.*;
+
+public class BusBaseFullInfo extends BusBaseInfo {
+
+    private String busRangeName;
+
+    public String getBusRangeName() {
+        return busRangeName;
+    }
+
+    public void setBusRangeName(String busRangeName) {
+        this.busRangeName = busRangeName;
+    }
+
+    private String busSupplierName;
+
+    public String getBusSupplierName() {
+        return busSupplierName;
+    }
+
+    public void setBusSupplierName(String busSupplierName) {
+        this.busSupplierName = busSupplierName;
+    }
+
+    private String busMomName;
+
+    public void setBusMomName(String busMomName) {
+        this.busMomName = busMomName;
+    }
+
+    public String getBusMomName() {
+        return busMomName;
+    }
+
+    private String busMomAccount;
+
+    public String getBusMomAccount() {
+        return busMomAccount;
+    }
+
+    public void setBusMomAccount(String busMomAccount) {
+        this.busMomAccount = busMomAccount;
+    }
+}
