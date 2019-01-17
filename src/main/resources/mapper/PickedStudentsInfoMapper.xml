@@ -1,13 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eservice.api.dao.PickedStudentsInfoMapper">
-  <resultMap id="BaseResultMap" type="com.eservice.api.model.picked_students_info.PickedStudentsInfo">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="transport_record_id" jdbcType="INTEGER" property="transportRecordId" />
-    <result column="board_time" jdbcType="TIMESTAMP" property="boardTime" />
-    <result column="student_id" jdbcType="INTEGER" property="studentId" />
-  </resultMap>
+	<resultMap id="BaseResultMap" type="com.eservice.api.model.picked_students_info.PickedStudentsInfo">
+		<!--
+		  WARNING - @mbg.generated
+		-->
+		<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="transport_record_id" jdbcType="INTEGER" property="transportRecordId"/>
+		<result column="board_time" jdbcType="TIMESTAMP" property="boardTime"/>
+		<result column="student_id" jdbcType="INTEGER" property="studentId"/>
+	</resultMap>
+
+	<resultMap id="StudentBusViewMap" type="com.eservice.api.model.picked_students_info.PickedStudentsBusView">
+		<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="transport_record_id" jdbcType="INTEGER" property="transportRecordId"/>
+		<result column="board_time" jdbcType="TIMESTAMP" property="boardTime"/>
+		<result column="student_id" jdbcType="INTEGER" property="studentId"/>
+		<result column="bus_line" jdbcType="INTEGER" property="busLine"/>
+		<result column="current_station" jdbcType="INTEGER" property="currentStation"/>
+		<result column="station_name" jdbcType="VARCHAR" property="stationName"/>
+		<result column="mode_name" jdbcType="VARCHAR" property="modeName"/>
+		<result column="transport_range" jdbcType="INTEGER" property="transportRange"/>
+		<result column="range_name" jdbcType="VARCHAR" property="rangeName"/>
+		<result column="student_name" jdbcType="VARCHAR" property="studentName"/>
+		<result column="student_number" jdbcType="VARCHAR" property="studentNumber"/>
+		<result column="head_img" jdbcType="VARCHAR" property="headImg"/>
+		<result column="grade" jdbcType="VARCHAR" property="grade"/>
+		<result column="class_name" jdbcType="VARCHAR" property="className"/>
+		<result column="bus_number" jdbcType="VARCHAR" property="busNumber"/>
+		<result column="bus_valid" jdbcType="VARCHAR" property="busValid"/>
+	</resultMap>
+
+	<select id="selectStudentBus" resultMap="StudentBusViewMap">
+		SELECT
+		*
+		FROM
+		(
+		SELECT
+		psi.*, tr.bus_line,
+		tr.current_station,
+		bs.station_name,
+		bl.`mode` AS mode_name,
+		bl.transport_range,
+		tra.range_name,
+		s.`name` AS student_name,
+		s.student_number,
+		s.head_img,
+		bj.grade,
+		bj.class_name,
+		bbi.number AS bus_number,
+		bbi.valid AS bus_valid
+		FROM
+		`picked_students_info` AS psi
+		LEFT JOIN transport_record AS tr ON psi.transport_record_id = tr.id
+		LEFT JOIN bus_stations AS bs ON tr.current_station = bs.id
+		LEFT JOIN bus_line AS bl ON tr.bus_line = bl.id
+		LEFT JOIN transport_range AS tra ON bl.transport_range = tra.id
+		LEFT JOIN bus_base_info AS bbi ON `bl`.bus_base_info = bbi.id
+		LEFT JOIN student AS s ON psi.student_id = s.id
+		LEFT JOIN banji AS bj ON s.banji = bj.id
+		) AS V
+		WHERE bus_valid > 0
+		<if test="busNumber != null and busNumber != ''">
+			AND bus_number ='${busNumber}'
+		</if>
+		<if test="busStation != null and busStation != ''">
+			AND station_name = '${busStation}'
+		</if>
+		<if test="gradeName != null and gradeName != ''">
+			AND grade = '${gradeName}'
+		</if>
+		<if test="className != null and className != ''">
+			AND class_name = '${className}'
+		</if>
+		<if test="queryStartTime!=null and queryStartTime != '' ">
+			and DATE_FORMAT(board_time,'%Y-%m-%d') &gt;= #{queryStartTime}
+		</if>
+		<if test="queryFinishTime!=null and queryFinishTime != '' ">
+			and DATE_FORMAT(board_time,'%Y-%m-%d') &lt;= #{queryFinishTime}
+		</if>
+		ORDER By board_time DESC, bus_number ASC
+	</select>
 </mapper>

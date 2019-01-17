@@ -1,8 +1,11 @@
 package com.eservice.api.web;
+
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
+import com.eservice.api.model.picked_students_info.PickedStudentsBusView;
 import com.eservice.api.model.picked_students_info.PickedStudentsInfo;
 import com.eservice.api.service.PickedStudentsInfoService;
+import com.eservice.api.service.impl.PickedStudentsInfoServiceImpl;
 import com.eservice.api.service.impl.StudentServiceImpl;
 import com.eservice.api.service.impl.TransportRecordServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -21,16 +24,17 @@ import java.util.Date;
 import java.util.List;
 
 /**
-* Class Description: xxx
-* @author Wilson Hu
-* @date 2018/12/17.
-*/
+ * Class Description: xxx
+ *
+ * @author Wilson Hu
+ * @date 2018/12/17.
+ */
 @RestController
 @RequestMapping("/picked/students/info")
 @Api(description = "已接到的学生的接送信息")
 public class PickedStudentsInfoController {
     @Resource
-    private PickedStudentsInfoService pickedStudentsInfoService;
+    private PickedStudentsInfoServiceImpl pickedStudentsInfoService;
     @Resource
     private TransportRecordServiceImpl transportRecordService;
     @Resource
@@ -38,16 +42,16 @@ public class PickedStudentsInfoController {
 
     @ApiOperation("增加一次学生乘车记录（比如每次刷脸成功时）")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",name = "boardTime", value = " board_time参数留空，在后台会重置，以服务器时间为准")})
+            @ApiImplicitParam(paramType = "query", name = "boardTime", value = " board_time参数留空，在后台会重置，以服务器时间为准")})
     @PostMapping("/add")
-    public Result add( PickedStudentsInfo pickedStudentsInfo ) {
-        if(pickedStudentsInfo == null){
+    public Result add(PickedStudentsInfo pickedStudentsInfo) {
+        if (pickedStudentsInfo == null) {
             return ResultGenerator.genFailResult("pickedStudentsInfo 不能为空");
         }
-        if(transportRecordService.findById( pickedStudentsInfo.getTransportRecordId() ) == null){
+        if (transportRecordService.findById(pickedStudentsInfo.getTransportRecordId()) == null) {
             return ResultGenerator.genFailResult("请检查 pickedStudentsInfo的TransportRecordId参数，是否实际已创建对应的TransportRecord");
         }
-        if(studentService.findById( pickedStudentsInfo.getStudentId() ) == null){
+        if (studentService.findById(pickedStudentsInfo.getStudentId()) == null) {
             return ResultGenerator.genFailResult("请检查 pickedStudentsInfo的studentId参数，是否实际已创建对应的Student");
         }
 
@@ -78,6 +82,21 @@ public class PickedStudentsInfoController {
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
         List<PickedStudentsInfo> list = pickedStudentsInfoService.findAll();
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    @PostMapping("/selectStudentBus")
+    public Result selectStudentBus(@RequestParam(defaultValue = "0") Integer page,
+                                   @RequestParam(defaultValue = "0") Integer size,
+                                   @RequestParam(defaultValue = "") String busNumber,
+                                   @RequestParam(defaultValue = "") String busStation,
+                                   @RequestParam(defaultValue = "") String gradeName,
+                                   @RequestParam(defaultValue = "") String className,
+                                   String queryStartTime,
+                                   String queryFinishTime) {
+        PageHelper.startPage(page, size);
+        List<PickedStudentsBusView> list = pickedStudentsInfoService.selectStudentBus(busNumber, busStation, gradeName, className,queryStartTime,queryFinishTime);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
