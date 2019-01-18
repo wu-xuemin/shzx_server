@@ -79,6 +79,11 @@
 		<if test="queryFinishTime!=null and queryFinishTime != '' ">
 			and DATE_FORMAT(board_time,'%Y-%m-%d') &lt;= #{queryFinishTime}
 		</if>
+		<if test="keyWord != null and keyWord != ''">
+			OR bus_number LIKE CONCAT('%', '${keyWord}', '%')
+			OR station_name LIKE CONCAT('%', '${keyWord}', '%')
+			OR range_name LIKE  CONCAT('%', '${keyWord}', '%')
+		</if>
 		ORDER By board_time DESC, bus_number ASC
 	</select>
 </mapper>

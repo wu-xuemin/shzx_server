@@ -12,5 +12,8 @@ public interface BusBaseInfoMapper extends Mapper<BusBaseInfo> {
                                          @Param("rangeName") String rangeName,
                                          @Param("busDriverAccount") String busDriverAccount,
                                          @Param("busMomAccount") String busMomAccount,
-                                         @Param("busSupplierName") String busSupplierName);
+                                         @Param("busSupplierName") String busSupplierName,
+                                         @Param("schoolPartition") String schoolPartition,
+                                         @Param("keyWord") String keyWord
+    );
 }

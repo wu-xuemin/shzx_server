@@ -94,9 +94,11 @@ public class PickedStudentsInfoController {
                                    @RequestParam(defaultValue = "") String gradeName,
                                    @RequestParam(defaultValue = "") String className,
                                    String queryStartTime,
-                                   String queryFinishTime) {
+                                   String queryFinishTime,
+                                   String keyWord
+    ) {
         PageHelper.startPage(page, size);
-        List<PickedStudentsBusView> list = pickedStudentsInfoService.selectStudentBus(busNumber, busStation, gradeName, className,queryStartTime,queryFinishTime);
+        List<PickedStudentsBusView> list = pickedStudentsInfoService.selectStudentBus(busNumber, busStation, gradeName, className, queryStartTime, queryFinishTime,keyWord);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

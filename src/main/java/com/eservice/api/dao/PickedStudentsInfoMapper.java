@@ -14,6 +14,7 @@ public interface PickedStudentsInfoMapper extends Mapper<PickedStudentsInfo> {
                                                  @Param("gradeName")String gradeName,
                                                  @Param("className")String className,
                                                  @Param("queryStartTime")String queryStartTime,
-                                                 @Param("queryFinishTime")String queryFinishTime
+                                                 @Param("queryFinishTime")String queryFinishTime,
+                                                 @Param("keyWord")String keyWord
     );
 }

@@ -1,4 +1,5 @@
 package com.eservice.api.web;
+
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.bus_base_info.BusBaseFullInfo;
@@ -20,10 +21,11 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
-* Class Description: xxx
-* @author Wilson Hu
-* @date 2019/01/11.
-*/
+ * Class Description: xxx
+ *
+ * @author Wilson Hu
+ * @date 2019/01/11.
+ */
 @RestController
 @RequestMapping("/bus/base/info")
 @Api(description = "校车基础信息")
@@ -65,20 +67,25 @@ public class BusBaseInfoController {
 
     @ApiOperation("根据校车编号等 去查询校车详情包括巴士妈妈名字等")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",name = "busNumber", value = " 校车编号" ),
-            @ApiImplicitParam(paramType = "query",name = "rangeName", value = " 区间名称" ),
-            @ApiImplicitParam(paramType = "query",name = "busDriverAccount", value = " 司机账号" ),
-            @ApiImplicitParam(paramType = "query",name = "busMomAccount", value = " 巴士妈妈账号" ),
-            @ApiImplicitParam(paramType = "query",name = "busSupplierName", value = " 供应商名称" )})
+            @ApiImplicitParam(paramType = "query", name = "busNumber", value = " 校车编号"),
+            @ApiImplicitParam(paramType = "query", name = "rangeName", value = " 区间名称"),
+            @ApiImplicitParam(paramType = "query", name = "busDriverAccount", value = " 司机账号"),
+            @ApiImplicitParam(paramType = "query", name = "busMomAccount", value = " 巴士妈妈账号"),
+            @ApiImplicitParam(paramType = "query", name = "busSupplierName", value = " 供应商名称"),
+            @ApiImplicitParam(paramType = "query", name = "keyWord", value = " 关键字")
+    })
     @PostMapping("/getBusBaseInfo")
     public Result getBusBaseInfo(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
-                                     String busNumber,
-                                     String rangeName,
-                                     String busDriverAccount,
-                                     String busMomAccount,
-                                     String busSupplierName) {
+                                 String busNumber,
+                                 String rangeName,
+                                 String busDriverAccount,
+                                 String busMomAccount,
+                                 String busSupplierName,
+                                 String schoolPartition,
+                                 String keyWord
+                                 ) {
         PageHelper.startPage(page, size);
-        List<BusBaseFullInfo> list = busBaseInfoService.getBusBaseInfo(busNumber,rangeName,busDriverAccount,busMomAccount,busSupplierName);
+        List<BusBaseFullInfo> list = busBaseInfoService.getBusBaseInfo(busNumber, rangeName, busDriverAccount, busMomAccount, busSupplierName,schoolPartition,keyWord);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

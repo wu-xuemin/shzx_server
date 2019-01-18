@@ -54,24 +54,37 @@
     LEFT JOIN transport_range ON transport_range.id = bl.transport_range
     WHERE
         1 = 1
-    <if test="busNumber != null and busNumber != ''">
-      AND bbi.number = #{busNumber}
+    <if test="schoolPartition != null and schoolPartition != ''">
+      AND bbi.school_partition =  #{schoolPartition}
     </if>
 
-    <if test="rangeName != null and rangeName != ''">
-      AND transport_range.range_name =  #{rangeName}
+    <if test="keyWord == null and keyWord == ''">
+      <if test="rangeName != null and rangeName != ''">
+        AND bus_range_name = #{rangeName}
+      </if>
+
+      <if test="busNumber != null and busNumber != ''">
+        AND bbi.number = #{busNumber}
+      </if>
+
+      <if test="busDriverAccount != null and busDriverAccount != ''">
+        AND user_driver.account = #{busDriverAccount}
+      </if>
+
+      <if test="busMomAccount != null and busMomAccount != ''">
+        AND user_bus_mom.account = #{busMomAccount}
+      </if>
+
+      <if test="busSupplierName != null and busSupplierName != ''">
+        AND bus_supplier.`name` LIKE  CONCAT('%', '${busSupplierName}', '%')
+      </if>
+    </if>
+    <if test="keyWord != null and keyWord != ''">
+      OR bus_range_name LIKE CONCAT('%', '${keyWord}', '%')
+      OR bbi.number LIKE CONCAT('%', '${keyWord}', '%')
+      OR user_bus_mom.account LIKE CONCAT('%', '${keyWord}', '%')
+      OR bus_supplier.`name` LIKE  CONCAT('%', '${keyWord}', '%')
     </if>
 
-    <if test="busDriverAccount != null and busDriverAccount != ''">
-      AND user_driver.account = #{busDriverAccount}
-    </if>
-
-    <if test="busMomAccount != null and busMomAccount != ''">
-      AND user_bus_mom.account = #{busMomAccount}
-    </if>
-
-    <if test="busSupplierName != null and busSupplierName != ''">
-      AND bus_supplier.`name` LIKE  CONCAT('%', '${busSupplierName}', '%')
-    </if>
   </select>
 </mapper>

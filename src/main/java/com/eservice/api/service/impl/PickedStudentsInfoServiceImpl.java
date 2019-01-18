@@ -31,9 +31,10 @@ public class PickedStudentsInfoServiceImpl extends AbstractService<PickedStudent
                                                         String gradeName,
                                                         String className,
                                                         String queryStartTime,
-                                                        String queryFinishTime
+                                                        String queryFinishTime,
+                                                        String keyWord
                                                         ) {
-        return pickedStudentsInfoMapper.selectStudentBus(busNumber, busStation, gradeName, className,queryStartTime,queryFinishTime);
+        return pickedStudentsInfoMapper.selectStudentBus(busNumber, busStation, gradeName, className,queryStartTime,queryFinishTime,keyWord);
     }
 
 }
