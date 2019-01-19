@@ -4,6 +4,7 @@ import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.picked_students_info.PickedStudentsBusView;
 import com.eservice.api.model.picked_students_info.PickedStudentsInfo;
+import com.eservice.api.model.student.Student;
 import com.eservice.api.service.PickedStudentsInfoService;
 import com.eservice.api.service.impl.PickedStudentsInfoServiceImpl;
 import com.eservice.api.service.impl.StudentServiceImpl;
@@ -42,19 +43,22 @@ public class PickedStudentsInfoController {
 
     @ApiOperation("增加一次学生乘车记录（比如每次刷脸成功时）")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "boardTime", value = " board_time参数留空，在后台会重置，以服务器时间为准")})
+            @ApiImplicitParam(paramType = "query", name = "boardTime", value = " board_time参数留空，在后台会重置，以服务器时间为准"),
+            @ApiImplicitParam(paramType = "query", name = "studentId", value = "这个studentId会被StudentNumber对应的studetnID替换，即以StudentNumber为准",required = false),
+            @ApiImplicitParam(paramType = "query", name = "studentNumber", value = "学号",required = true)})
     @PostMapping("/add")
-    public Result add(PickedStudentsInfo pickedStudentsInfo) {
+    public Result add(PickedStudentsInfo pickedStudentsInfo, String studentNumber) {
         if (pickedStudentsInfo == null) {
             return ResultGenerator.genFailResult("pickedStudentsInfo 不能为空");
         }
         if (transportRecordService.findById(pickedStudentsInfo.getTransportRecordId()) == null) {
             return ResultGenerator.genFailResult("请检查 pickedStudentsInfo的TransportRecordId参数，是否实际已创建对应的TransportRecord");
         }
-        if (studentService.findById(pickedStudentsInfo.getStudentId()) == null) {
-            return ResultGenerator.genFailResult("请检查 pickedStudentsInfo的studentId参数，是否实际已创建对应的Student");
+        Student student = studentService.getSutdentInfo(studentNumber);
+        if(student == null){
+            return ResultGenerator.genFailResult("请检查studentNumber参数");
         }
-
+        pickedStudentsInfo.setStudentId(student.getId());
         pickedStudentsInfo.setBoardTime(new Date());
         pickedStudentsInfoService.save(pickedStudentsInfo);
         return ResultGenerator.genSuccessResult();

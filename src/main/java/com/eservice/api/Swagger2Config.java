@@ -28,8 +28,13 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         .title("上海中学校车通行管理系统_后端接口文档_" + new Date())
-                        .description(" \n\r " +
-
+                        .description("补充了/transport/range/getTransportRangeByBusNumberAndBusMode；" +
+                                "修复/transport/record/getTransportRecord日期无效问题" +
+                                "/student/getPlannedStudents 根据校车编号+模式（早班午班）+站点 查找计划乘坐的学生列表 \n\r " +
+                                "/picked/students/info/add 学生签到时用学号替代StudentId " +
+                                "/bus/line/getStudentsByBusNumber改为 getStudents，根据校车编号/早午班 来获得该校车/早午班的所有学生，" +
+                                "/bus/base/Info/getBusBaseInfo 根据校车编号等 去查询校车详情包括巴士妈妈名字" +
+                                "添加后台的学生乘车记录查询功能 /picked/students/info/selectStudentBus/selectStudentBus" +
                                 "一些注意事项没有一一标明，\n\r" +
                                 "比如，在add时，id号留空就好，不要填写；\n\r" +
                                 "比如，在add时参数未填写，导致\"内部错误\"。\n\r " +
