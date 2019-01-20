@@ -62,7 +62,7 @@ public class TransportRangeController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    @ApiOperation("根据校车编号+班次 去查询站点列表（包含在transport_range信息中）")
+    @ApiOperation("根据校车编号+班次 去查询区间信息（包含了站点列表）")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = " 校车编号",required = true),
             @ApiImplicitParam(paramType = "query",name = "busMode", value = " 班次，限于 “早班”、“午班”",required = true)})
@@ -71,8 +71,11 @@ public class TransportRangeController {
                                                @RequestParam String busNumber,
                                                @RequestParam String busMode) {
         PageHelper.startPage(page, size);
-        List<TransportRange> list = transportRangeService.getTransportRangeByBusNumberAndBusMode(busNumber,busMode);
-        PageInfo pageInfo = new PageInfo(list);
-        return ResultGenerator.genSuccessResult(pageInfo);
+        /**
+         * 确定了校车编号和班次，就确定了唯一Bus_line
+         * （保持 线路 校车一一对应， 实际上遇到A-B-C-D-E-F线路有多量班车，线路按照AF1/AF2/AF3...方式处理。）
+         */
+        TransportRange  transportRange = transportRangeService.getTransportRangeByBusNumberAndBusMode(busNumber,busMode);
+        return ResultGenerator.genSuccessResult(transportRange);
     }
 }

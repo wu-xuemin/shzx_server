@@ -22,7 +22,7 @@ public class TransportRangeServiceImpl extends AbstractService<TransportRange> i
     @Resource
     private TransportRangeMapper transportRangeMapper;
 
-    public List<TransportRange> getTransportRangeByBusNumberAndBusMode(String busNumber,String busMode){
+    public TransportRange getTransportRangeByBusNumberAndBusMode(String busNumber,String busMode){
      return transportRangeMapper.getTransportRangeByBusNumberAndBusMode(busNumber,busMode);
     }
 

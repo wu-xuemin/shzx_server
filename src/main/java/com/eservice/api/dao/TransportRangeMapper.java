@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface TransportRangeMapper extends Mapper<TransportRange> {
 
-      List<TransportRange> getTransportRangeByBusNumberAndBusMode(@Param("busNumber")String busNumber, @Param("busMode")String busMode);
+      TransportRange getTransportRangeByBusNumberAndBusMode(@Param("busNumber")String busNumber, @Param("busMode")String busMode);
 }
