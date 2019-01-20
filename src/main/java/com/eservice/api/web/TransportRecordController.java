@@ -3,10 +3,13 @@ import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.student.Student;
 import com.eservice.api.model.student.StudentInfo;
+import com.eservice.api.model.transport_range.TransportRange;
 import com.eservice.api.model.transport_record.TransportRecord;
 import com.eservice.api.model.transport_record.TransportRecordInfo;
+import com.eservice.api.service.TransportRangeService;
 import com.eservice.api.service.common.Constant;
 import com.eservice.api.service.impl.StudentServiceImpl;
+import com.eservice.api.service.impl.TransportRangeServiceImpl;
 import com.eservice.api.service.impl.TransportRecordServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -39,6 +42,8 @@ public class TransportRecordController {
     private TransportRecordServiceImpl transportRecordService;
     @Resource
     private StudentServiceImpl studentService;
+    @Resource
+    private TransportRangeServiceImpl transportRangeService;
 
     @Value("${debug.flag}")
     private String debugFlag;
@@ -228,7 +233,6 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号", required = true),
             @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“早班”、“午班”两种，晚班不支持 ", required = true),
             @ApiImplicitParam(paramType = "query",name = "queryDate", value = "要查询的日期，比如 2018-12-19", required = true)})
-            //@ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "要查询的结束时间，比如 2018-12-20 00:00:00 ", required = true)
     @PostMapping("/getTransportRecord")
     public Result getTransportRecord(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                                        @RequestParam() String busNumber,
