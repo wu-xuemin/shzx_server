@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : aliyunDocker_shzx_bus
-Source Server Version : 50721
-Source Host           : 172.22.0.2:3306
+Source Server         : local
+Source Server Version : 50553
+Source Host           : localhost:3306
 Source Database       : shangzhong_db
 
 Target Server Type    : MYSQL
-Target Server Version : 50721
+Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-14 11:31:12
+Date: 2019-01-20 20:11:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -143,7 +143,7 @@ CREATE TABLE `bus_stations` (
   `gps_info` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `station_name` (`station_name`(191))
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus_stations
@@ -159,6 +159,9 @@ INSERT INTO `bus_stations` VALUES ('17', '晚霞路口', '');
 INSERT INTO `bus_stations` VALUES ('18', '人民广场', '');
 INSERT INTO `bus_stations` VALUES ('19', '44路口', '');
 INSERT INTO `bus_stations` VALUES ('20', '秋色路口', '');
+INSERT INTO `bus_stations` VALUES ('21', '新胜路口', '');
+INSERT INTO `bus_stations` VALUES ('22', '10路口', '');
+INSERT INTO `bus_stations` VALUES ('23', 'CC口', '');
 
 -- ----------------------------
 -- Table structure for `bus_supplier`
@@ -232,7 +235,7 @@ CREATE TABLE `picked_students_info` (
   KEY `fk_transport_record_id` (`transport_record_id`),
   CONSTRAINT `fk_student_id` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   CONSTRAINT `fk_transport_record_id` FOREIGN KEY (`transport_record_id`) REFERENCES `transport_record` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of picked_students_info
@@ -250,6 +253,7 @@ INSERT INTO `picked_students_info` VALUES ('33', '22', '2019-01-12 11:07:00', '1
 INSERT INTO `picked_students_info` VALUES ('34', '23', '2019-01-12 11:07:36', '24');
 INSERT INTO `picked_students_info` VALUES ('35', '23', '2019-01-12 11:07:54', '20');
 INSERT INTO `picked_students_info` VALUES ('37', '22', '2019-01-14 10:28:54', '1');
+INSERT INTO `picked_students_info` VALUES ('39', '19', '2019-01-12 08:37:26', '16');
 
 -- ----------------------------
 -- Table structure for `role`
@@ -299,20 +303,22 @@ CREATE TABLE `student` (
   CONSTRAINT `fk_board_station_morning` FOREIGN KEY (`board_station_morning`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_bus_line_afternoon` FOREIGN KEY (`bus_line_afternoon`) REFERENCES `bus_line` (`id`),
   CONSTRAINT `fk_bus_line_morning` FOREIGN KEY (`bus_line_morning`) REFERENCES `bus_line` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
 INSERT INTO `student` VALUES ('1', 'xh888', '', '武都头', '9', '50', '50', '13', '13', '');
-INSERT INTO `student` VALUES ('16', 'xh001', '', '张小名', '1', '34', '47', '11', '11', '');
+INSERT INTO `student` VALUES ('16', 'xh001', '', '张小名', '1', '34', '34', '21', '21', '');
 INSERT INTO `student` VALUES ('17', 'xh002', '', '王小明', '1', '38', '42', '12', '12', '');
-INSERT INTO `student` VALUES ('18', 'XH003', '', '王小丫', '1', '39', '41', '17', '14', '');
-INSERT INTO `student` VALUES ('19', 'xh021', '', '张晓婷', '9', '39', '42', '16', '19', '');
+INSERT INTO `student` VALUES ('18', 'XH003', '', '王小丫', '1', '39', '41', '14', '14', '');
+INSERT INTO `student` VALUES ('19', 'xh021', '', '张晓婷', '9', '39', '42', '16', '16', '');
 INSERT INTO `student` VALUES ('20', 'xh020', '', '黄丽', '10', '46', '46', '19', '19', '');
-INSERT INTO `student` VALUES ('21', 'xh023', '', '王语嫣', '10', '43', '43', '11', '12', '');
-INSERT INTO `student` VALUES ('23', 'XH022', '', '王笑笑', '2', '34', '48', '17', '17', '');
-INSERT INTO `student` VALUES ('24', 'xh0023', '', '张成', '3', '38', '47', '12', '13', '');
+INSERT INTO `student` VALUES ('21', 'xh023', '', '王语嫣', '10', '43', '43', '11', '19', '');
+INSERT INTO `student` VALUES ('23', 'XH022', '', '王笑笑', '2', '34', '34', '23', '23', '');
+INSERT INTO `student` VALUES ('24', 'xh0023', '', '张成', '3', '38', '47', '13', '13', '');
+INSERT INTO `student` VALUES ('25', 'xh222', '', 'xiaoming', '1', '34', '34', '22', '22', '');
+INSERT INTO `student` VALUES ('26', 'xh444', '', 'xioaa', '1', '34', '34', '23', '23', '');
 
 -- ----------------------------
 -- Table structure for `transport_range`

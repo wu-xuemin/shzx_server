@@ -86,7 +86,17 @@ public class StudentController {
         return ResultGenerator.genSuccessResult(student);
     }
 
-    // TODO  考虑合并为一个函数
+    @ApiOperation("根据班级名称获取学生列表")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "className", value = "班级名称") })
+    @PostMapping("/getStudents")
+    public Result getStudents(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,@RequestParam String className) {
+
+        PageHelper.startPage(page, size);
+        List<StudentInfo> students = studentService.getStudents(className);
+        PageInfo pageInfo = new PageInfo(students);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
     @ApiOperation("根据校车编号+模式（早班午班）+站点 查找计划乘坐的学生列表")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号",required = true),

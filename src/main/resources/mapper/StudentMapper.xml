@@ -69,6 +69,22 @@
         bus_base_info.number = #{busNumber}
   </select>
 
+  <select id="getStudents" resultMap="StudentInfoResultMap">
+    SELECT
+      student.*,
+      banji.class_name as banji_name,
+      bus_base_info.number as bus_number,
+      bus_stations.station_name AS board_station_afternoon_name
+    FROM
+        student
+    LEFT JOIN banji ON banji.id = student.banji
+    LEFT JOIN bus_line ON bus_line.id = student.bus_line_afternoon
+    LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
+    LEFT JOIN bus_stations ON bus_stations.id = student.board_station_afternoon
+    WHERE
+        banji.class_name = #{className}
+  </select>
+
   <select id="getSutdentInfo" resultMap="StudentInfoResultMap">
     SELECT
         student.*,
@@ -86,6 +102,7 @@
     WHERE
 	  student.student_number  = #{studentNumber}
   </select>
+
 
   <select id="getPlannedStudentsMorning" resultMap="StudentInfoResultMap">
     SELECT

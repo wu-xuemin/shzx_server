@@ -82,7 +82,7 @@
     </if>
 
     <if test="busStationName != null and busStationName != ''">
-      AND ( bus_stations_a.station_name = #{busStationName}  OR bus_stations_m.station_name = #{busStationName} )
+      AND ( bus_stations_a.station_name = #{busStationName}  and bus_stations_m.station_name = #{busStationName} )
     </if>
 
     <if test="grade != null and grade != ''">
