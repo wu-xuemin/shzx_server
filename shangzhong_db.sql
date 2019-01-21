@@ -77,29 +77,27 @@ CREATE TABLE `bus_base_info` (
   `number` varchar(255) NOT NULL COMMENT '校车编号',
   `plate_number` varchar(255) NOT NULL COMMENT '车牌号',
   `plate_number_pic` varchar(255) NOT NULL COMMENT '牌照照片存放路径',
-  `bus_supplier` int(10) unsigned NOT NULL COMMENT '供应商，外键',
+  `bus_supplier` varchar(255) NOT NULL COMMENT '供应商，外键',
   `bus_mom` int(10) unsigned NOT NULL COMMENT '巴士妈妈，外键',
   `bus_driver` int(10) unsigned NOT NULL COMMENT '司机',
   `school_partition` varchar(255) NOT NULL COMMENT '浦东校区；浦西校区',
   `ipad_meid` varchar(255) NOT NULL COMMENT 'ipad绑定的设备号',
   `valid` tinyint(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_bus_supplier` (`bus_supplier`),
   KEY `fk_bus_mom` (`bus_mom`),
   KEY `fk_bus_driver` (`bus_driver`),
   CONSTRAINT `bus_base_info_ibfk_1` FOREIGN KEY (`bus_driver`) REFERENCES `user` (`id`),
-  CONSTRAINT `bus_base_info_ibfk_2` FOREIGN KEY (`bus_mom`) REFERENCES `user` (`id`),
-  CONSTRAINT `bus_base_info_ibfk_3` FOREIGN KEY (`bus_supplier`) REFERENCES `bus_supplier` (`id`)
+  CONSTRAINT `bus_base_info_ibfk_2` FOREIGN KEY (`bus_mom`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus_base_info
 -- ----------------------------
-INSERT INTO `bus_base_info` VALUES ('1', 'XC001', '沪A1111', '', '1', '2', '21', '浦东', 'meid111', '1');
-INSERT INTO `bus_base_info` VALUES ('35', 'XC002', '沪A22222', '', '1', '3', '22', '浦东', 'meid222', '1');
-INSERT INTO `bus_base_info` VALUES ('36', 'XC003', '沪A33333', '', '1', '4', '23', '浦东', 'meid333', '1');
-INSERT INTO `bus_base_info` VALUES ('37', 'XC004', '沪A4444C', '', '2', '5', '24', '浦西', 'meid4444', '1');
-INSERT INTO `bus_base_info` VALUES ('38', 'XC005', '沪A55555', '', '3', '6', '25', '浦西', 'mdid5555', '1');
+INSERT INTO `bus_base_info` VALUES ('1', 'XC001', '沪A1111', '', '港湾校车有限公司', '2', '21', '浦东', 'meid111', '1');
+INSERT INTO `bus_base_info` VALUES ('35', 'XC002', '沪A22222', '', '港湾校车有限公司', '3', '22', '浦东', 'meid222', '1');
+INSERT INTO `bus_base_info` VALUES ('36', 'XC003', '沪A33333', '', '港湾校车有限公司', '4', '23', '浦东', 'meid333', '1');
+INSERT INTO `bus_base_info` VALUES ('37', 'XC004', '沪A4444C', '', '小卫校车有限公司', '5', '24', '浦西', 'meid4444', '1');
+INSERT INTO `bus_base_info` VALUES ('38', 'XC005', '沪A55555', '', '小卫校车有限公司', '6', '25', '浦西', 'mdid5555', '1');
 
 -- ----------------------------
 -- Table structure for `bus_line`
@@ -164,25 +162,7 @@ INSERT INTO `bus_stations` VALUES ('22', '10路口', '');
 INSERT INTO `bus_stations` VALUES ('23', 'CC口', '');
 
 -- ----------------------------
--- Table structure for `bus_supplier`
--- ----------------------------
-DROP TABLE IF EXISTS `bus_supplier`;
-CREATE TABLE `bus_supplier` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `phone` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of bus_supplier
--- ----------------------------
-INSERT INTO `bus_supplier` VALUES ('1', '港湾校车有限公司', '13000002222');
-INSERT INTO `bus_supplier` VALUES ('2', '小卫校车有限公司', '13066668888');
-INSERT INTO `bus_supplier` VALUES ('3', '星空校车有限公司--add-by-swagger-online', '13400003333');
-
--- ----------------------------
--- Table structure for `device`
+-- Table structure for device
 -- ----------------------------
 DROP TABLE IF EXISTS `device`;
 CREATE TABLE `device` (
@@ -308,15 +288,15 @@ CREATE TABLE `student` (
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES ('1', 'xh888', '', '武都头', '9', '34', '42', '13', '13', '');
-INSERT INTO `student` VALUES ('16', 'xh001', '', '张小名', '1', '34', '42', '21', '21', '');
-INSERT INTO `student` VALUES ('17', 'xh002', '', '王小明', '1', '34', '42', '12', '12', '');
-INSERT INTO `student` VALUES ('18', 'XH003', '', '王小丫', '1', '38', '43', '14', '14', '');
-INSERT INTO `student` VALUES ('19', 'xh021', '', '张晓婷', '9', '39', '46', '16', '16', '');
-INSERT INTO `student` VALUES ('20', 'xh020', '', '黄丽', '10', '40', '48', '19', '19', '');
-INSERT INTO `student` VALUES ('21', 'xh023', '', '王语嫣', '10', '41', '47', '11', '19', '');
-INSERT INTO `student` VALUES ('23', 'XH022', '', '王笑笑', '2', '34', '42', '23', '23', '');
-INSERT INTO `student` VALUES ('24', 'xh0023', '', '张成', '3', '38', '43', '13', '13', '');
+INSERT INTO `student` VALUES ('1', 'xh888', '/shzx/xh888.png', '武都头', '9', '34', '42', '13', '13', '');
+INSERT INTO `student` VALUES ('16', 'xh001', '/shzx/xh001.png', '张小名', '1', '34', '42', '21', '21', '');
+INSERT INTO `student` VALUES ('17', 'xh002', '/shzx/xh002.png', '王小明', '1', '34', '42', '12', '12', '');
+INSERT INTO `student` VALUES ('18', 'XH003', '/shzx/xh003.png', '王小丫', '1', '38', '43', '14', '14', '');
+INSERT INTO `student` VALUES ('19', 'xh021', '/shzx/xh021.png', '张晓婷', '9', '39', '46', '16', '16', '');
+INSERT INTO `student` VALUES ('20', 'xh020', '/shzx/xh020.png', '黄丽', '10', '40', '48', '19', '19', '');
+INSERT INTO `student` VALUES ('21', 'xh023', '/shzx/xh023.png', '王语嫣', '10', '41', '47', '11', '19', '');
+INSERT INTO `student` VALUES ('23', 'XH022', '/shzx/xh022.png', '王笑笑', '2', '34', '42', '23', '23', '');
+INSERT INTO `student` VALUES ('24', 'xh0023', '/shzx/xh000023.png', '张成', '3', '38', '43', '13', '13', '');
 INSERT INTO `student` VALUES ('25', 'xh222', '/shzx/xh222.png', '高圆圆', '1', '34', '42', '22', '22', '');
 INSERT INTO `student` VALUES ('26', 'xh444', '/shzx/xh444.png', '吴彦祖', '1', '34', '42', '23', '23', '');
 

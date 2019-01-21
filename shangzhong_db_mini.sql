@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-10 18:00:06
+Date: 2019-01-21 21:09:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -72,20 +72,18 @@ CREATE TABLE `bus_base_info` (
   `number` varchar(255) NOT NULL COMMENT '校车编号',
   `plate_number` varchar(255) NOT NULL COMMENT '车牌号',
   `plate_number_pic` varchar(255) NOT NULL COMMENT '牌照照片存放路径',
-  `bus_supplier` int(10) unsigned NOT NULL COMMENT '供应商，外键',
+  `bus_supplier` varchar(255) NOT NULL COMMENT '供应商，外键',
   `bus_mom` int(10) unsigned NOT NULL COMMENT '巴士妈妈，外键',
   `bus_driver` int(10) unsigned NOT NULL COMMENT '司机',
   `school_partition` varchar(255) NOT NULL COMMENT '浦东校区；浦西校区',
   `ipad_meid` varchar(255) NOT NULL COMMENT 'ipad绑定的设备号',
   `valid` tinyint(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_bus_supplier` (`bus_supplier`),
   KEY `fk_bus_mom` (`bus_mom`),
   KEY `fk_bus_driver` (`bus_driver`),
   CONSTRAINT `bus_base_info_ibfk_1` FOREIGN KEY (`bus_driver`) REFERENCES `user` (`id`),
-  CONSTRAINT `bus_base_info_ibfk_2` FOREIGN KEY (`bus_mom`) REFERENCES `user` (`id`),
-  CONSTRAINT `bus_base_info_ibfk_3` FOREIGN KEY (`bus_supplier`) REFERENCES `bus_supplier` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `bus_base_info_ibfk_2` FOREIGN KEY (`bus_mom`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus_base_info
@@ -126,24 +124,6 @@ CREATE TABLE `bus_stations` (
 -- ----------------------------
 -- Records of bus_stations
 -- ----------------------------
-
--- ----------------------------
--- Table structure for `bus_supplier`
--- ----------------------------
-DROP TABLE IF EXISTS `bus_supplier`;
-CREATE TABLE `bus_supplier` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `phone` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of bus_supplier
--- ----------------------------
-INSERT INTO `bus_supplier` VALUES ('1', '港湾校车有限公司', '13000002222');
-INSERT INTO `bus_supplier` VALUES ('2', '小卫校车有限公司', '13066668888');
-INSERT INTO `bus_supplier` VALUES ('3', '星空校车有限公司--add-by-swagger-online', '13400003333');
 
 -- ----------------------------
 -- Table structure for `device`
