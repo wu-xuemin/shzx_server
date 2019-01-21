@@ -283,16 +283,16 @@ INSERT INTO `role` VALUES ('6', 'test11', 'test11des', null);
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `student_number` varchar(255) NOT NULL COMMENT '学号',
-  `head_img` varchar(255) NOT NULL COMMENT '保存头像的URL',
+  `student_number` varchar(150) NOT NULL COMMENT '学号',
+  `head_img` varchar(255) DEFAULT NULL COMMENT '保存头像的URL',
   `name` varchar(255) NOT NULL COMMENT '姓名',
   `banji` int(10) unsigned NOT NULL COMMENT '班级,外键',
   `bus_line_morning` int(10) unsigned NOT NULL COMMENT '早班乘坐车的线路ID，外键',
   `bus_line_afternoon` int(10) unsigned NOT NULL COMMENT '午班乘坐车的线路ID，外键',
   `board_station_morning` int(10) unsigned NOT NULL COMMENT '上午班车上车站点',
   `board_station_afternoon` int(10) unsigned NOT NULL COMMENT '下午班车下车站点',
-  `family_info` text NOT NULL COMMENT '家庭信息 JSON',
-  PRIMARY KEY (`id`),
+  `family_info` text COMMENT '家庭信息 JSON',
+  PRIMARY KEY (`id`,`student_number`),
   KEY `fk_bus` (`bus_line_morning`),
   KEY `fk_banji` (`banji`),
   KEY `fk_board_station_morning` (`board_station_morning`),
@@ -317,8 +317,8 @@ INSERT INTO `student` VALUES ('20', 'xh020', '', '黄丽', '10', '46', '46', '19
 INSERT INTO `student` VALUES ('21', 'xh023', '', '王语嫣', '10', '43', '43', '11', '19', '');
 INSERT INTO `student` VALUES ('23', 'XH022', '', '王笑笑', '2', '34', '34', '23', '23', '');
 INSERT INTO `student` VALUES ('24', 'xh0023', '', '张成', '3', '38', '47', '13', '13', '');
-INSERT INTO `student` VALUES ('25', 'xh222', '', 'xiaoming', '1', '34', '34', '22', '22', '');
-INSERT INTO `student` VALUES ('26', 'xh444', '', 'xioaa', '1', '34', '34', '23', '23', '');
+INSERT INTO `student` VALUES ('25', 'xh222', '/shzx/xh222.png', '高圆圆', '1', '34', '34', '22', '22', '');
+INSERT INTO `student` VALUES ('26', 'xh444', '/shzx/xh444.png', '吴彦祖', '1', '34', '34', '23', '23', '');
 
 -- ----------------------------
 -- Table structure for `transport_range`
@@ -328,21 +328,20 @@ CREATE TABLE `transport_range` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `stations` text NOT NULL COMMENT '区间的站点名称，JSON\r\n\r\n[{"station_name": "AA路口"} ,\r\n{ "station_name": "BB口"},\r\n{ "station_name": "CC口"}\r\n]\r\n',
   `range_name` varchar(255) NOT NULL COMMENT '区间名字（通常是首尾站点名称）',
-  `night_line_flag` varchar(255) NOT NULL COMMENT '”非晚班“、”晚班“， 用于指明是否晚班线路',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of transport_range
 -- ----------------------------
-INSERT INTO `transport_range` VALUES ('1', '[{\"station_name\": \"新胜路口\"} ,{ \"station_name\": \"10路口\"},{ \"station_name\": \"CC口\"}]', '区间1线', '非晚班');
-INSERT INTO `transport_range` VALUES ('5', '[{\"station_name\": \"AA路口\"} ,{ \"station_name\": \"BB口\"},{ \"station_name\": \"CC口\"}]', '区间111', '非晚班');
-INSERT INTO `transport_range` VALUES ('6', '[{\"station_name\": \"11路口\"} ,{ \"station_name\": \"22口\"},{ \"station_name\": \"33路口\"}]', '区间2线', '非晚班');
-INSERT INTO `transport_range` VALUES ('7', '[{\"station_name\": \"33路口\"} ,{ \"station_name\": \"44口\"},{ \"station_name\": \"ff口\"}]', '区间3线', '非晚班');
-INSERT INTO `transport_range` VALUES ('8', '[{\"station_name\": \"44路口\"} ,{ \"station_name\": \"33B口\"},{ \"station_name\": \"xx路口\"},{ \"station_name\": \"CC口\"}]', '区间4线', '非晚班');
-INSERT INTO `transport_range` VALUES ('9', '[{\"station_name\": \"人民路口\"} ,{ \"station_name\": \"胜利路口\"},{ \"station_name\": \"xx路口\"},{ \"station_name\": \"CC口\"}]', '区间5线', '非晚班');
-INSERT INTO `transport_range` VALUES ('10', '[{\"station_name\": \"晚霞路口\"} ,{ \"station_name\": \"秋色路口\"},{ \"station_name\": \"枫林路口\"},{ \"station_name\": \"CC口\"}]', '区间6线', '晚班');
-INSERT INTO `transport_range` VALUES ('11', '[{\"station_name\": \"云上路口\"} ,{ \"station_name\": \"小港路口\"},{ \"station_name\": \"xx路口\"},{ \"station_name\": \"CC口\"}]', '区间7线', '晚班');
+INSERT INTO `transport_range` VALUES ('1', '[{\"station_name\": \"新胜路口\"} ,{ \"station_name\": \"10路口\"},{ \"station_name\": \"CC口\"}]', '区间1线');
+INSERT INTO `transport_range` VALUES ('5', '[{\"station_name\": \"AA路口\"} ,{ \"station_name\": \"BB口\"},{ \"station_name\": \"CC口\"}]', '区间111');
+INSERT INTO `transport_range` VALUES ('6', '[{\"station_name\": \"11路口\"} ,{ \"station_name\": \"22口\"},{ \"station_name\": \"33路口\"}]', '区间2线');
+INSERT INTO `transport_range` VALUES ('7', '[{\"station_name\": \"33路口\"} ,{ \"station_name\": \"44口\"},{ \"station_name\": \"ff口\"}]', '区间3线');
+INSERT INTO `transport_range` VALUES ('8', '[{\"station_name\": \"44路口\"} ,{ \"station_name\": \"33B口\"},{ \"station_name\": \"xx路口\"},{ \"station_name\": \"CC口\"}]', '区间4线');
+INSERT INTO `transport_range` VALUES ('9', '[{\"station_name\": \"人民路口\"} ,{ \"station_name\": \"胜利路口\"},{ \"station_name\": \"xx路口\"},{ \"station_name\": \"CC口\"}]', '区间5线');
+INSERT INTO `transport_range` VALUES ('10', '[{\"station_name\": \"晚霞路口\"} ,{ \"station_name\": \"秋色路口\"},{ \"station_name\": \"枫林路口\"},{ \"station_name\": \"CC口\"}]', '区间6线');
+INSERT INTO `transport_range` VALUES ('11', '[{\"station_name\": \"云上路口\"} ,{ \"station_name\": \"小港路口\"},{ \"station_name\": \"xx路口\"},{ \"station_name\": \"CC口\"}]', '区间7线');
 
 -- ----------------------------
 -- Table structure for `transport_record`
@@ -358,7 +357,7 @@ CREATE TABLE `transport_record` (
   KEY `fk_current_station` (`current_station`),
   CONSTRAINT `fk_bus_line` FOREIGN KEY (`bus_line`) REFERENCES `bus_line` (`id`),
   CONSTRAINT `fk_current_station` FOREIGN KEY (`current_station`) REFERENCES `bus_stations` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of transport_record

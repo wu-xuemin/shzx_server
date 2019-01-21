@@ -181,20 +181,6 @@ CREATE TABLE `messages` (
 -- Records of messages
 -- ----------------------------
 
--- ----------------------------
--- Table structure for `night_line`
--- ----------------------------
-DROP TABLE IF EXISTS `night_line`;
-CREATE TABLE `night_line` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `line_number` varchar(255) NOT NULL COMMENT '线路号',
-  `stations` text NOT NULL COMMENT '站点名称，JSON',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of night_line
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for `picked_students_info`
@@ -243,16 +229,16 @@ INSERT INTO `role` VALUES ('5', '司机', '司机', null);
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `student_number` varchar(255) NOT NULL COMMENT '学号',
-  `head_img` varchar(255) NOT NULL COMMENT '保存头像的URL',
+  `student_number` varchar(150) NOT NULL COMMENT '学号',
+  `head_img` varchar(255) DEFAULT NULL COMMENT '保存头像的URL',
   `name` varchar(255) NOT NULL COMMENT '姓名',
   `banji` int(10) unsigned NOT NULL COMMENT '班级,外键',
   `bus_line_morning` int(10) unsigned NOT NULL COMMENT '早班乘坐车的线路ID，外键',
   `bus_line_afternoon` int(10) unsigned NOT NULL COMMENT '午班乘坐车的线路ID，外键',
   `board_station_morning` int(10) unsigned NOT NULL COMMENT '上午班车上车站点',
   `board_station_afternoon` int(10) unsigned NOT NULL COMMENT '下午班车下车站点',
-  `family_info` text NOT NULL COMMENT '家庭信息 JSON',
-  PRIMARY KEY (`id`),
+  `family_info` text COMMENT '家庭信息 JSON',
+  PRIMARY KEY (`id`,`student_number`),
   KEY `fk_bus` (`bus_line_morning`),
   KEY `fk_banji` (`banji`),
   KEY `fk_board_station_morning` (`board_station_morning`),
@@ -277,7 +263,6 @@ CREATE TABLE `transport_range` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `stations` text NOT NULL COMMENT '区间的站点名称，JSON\r\n\r\n[{"station_name": "AA路口"} ,\r\n{ "station_name": "BB口"},\r\n{ "station_name": "CC口"}\r\n]\r\n',
   `range_name` varchar(255) NOT NULL COMMENT '区间名字（通常是首尾站点名称）',
-  `night_line_flag` varchar(255) NOT NULL COMMENT '”非晚班“、”晚班“， 用于指明是否晚班线路',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
@@ -290,7 +275,7 @@ CREATE TABLE `transport_range` (
 -- ----------------------------
 DROP TABLE IF EXISTS `transport_record`;
 CREATE TABLE `transport_record` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '接送信息',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '接送班次信息，一趟对应一条记录',
   `date` date NOT NULL COMMENT '接送日期',
   `bus_line` int(10) unsigned NOT NULL COMMENT '校车线路，外键，',
   `current_station` int(10) unsigned DEFAULT NULL COMMENT '校车所处的当前站点',
@@ -320,28 +305,31 @@ CREATE TABLE `user` (
   `phone` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '电话',
   `create_time` datetime NOT NULL,
   `valid` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '是否在职 ， “1”:在职 “0”:离职',
-  `msg_status_info` int(10) unsigned NOT NULL COMMENT '该用户的消息状态相关信息',
   PRIMARY KEY (`id`),
   KEY `fk_u_role_id` (`role_id`),
-  KEY `fk-msg_status_info` (`msg_status_info`),
-  CONSTRAINT `fk-msg_status_info` FOREIGN KEY (`msg_status_info`) REFERENCES `user_msg_status_info` (`id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'admin', 'admin', 'wechat222', '1', '1', '', '13188888888', '2018-07-11 10:03:43', '1', '0');
-INSERT INTO `user` VALUES ('2', 'busMom1', 'xiaozhang', null, '3', '1', null, '13588027825', '0000-00-00 00:00:00', '1', '0');
-INSERT INTO `user` VALUES ('3', 'busMom2', 'lily', null, '3', '1', null, '13033332222', '0000-00-00 00:00:00', '1', '0');
-INSERT INTO `user` VALUES ('4', 'bzr1', 'bzr_tom', null, '4', '1', null, '13600003333', '0000-00-00 00:00:00', '1', '0');
-INSERT INTO `user` VALUES ('5', 'bzr2', 'bzr_tim', null, '4', '1', null, '13600004444', '0000-00-00 00:00:00', '1', '0');
-INSERT INTO `user` VALUES ('6', 'bzr3', 'bzr_jack', null, '4', '1', null, '13033332211', '0000-00-00 00:00:00', '1', '0');
-INSERT INTO `user` VALUES ('7', 'bzr4', 'bzr_peter', null, '4', '1', null, '13622223333', '0000-00-00 00:00:00', '1', '0');
-INSERT INTO `user` VALUES ('8', 'sj1', 'sj_liusan', null, '5', '1', null, '13699990000', '0000-00-00 00:00:00', '1', '0');
-INSERT INTO `user` VALUES ('9', 'sj2', 'sj2_zhangsan', null, '5', '1', null, '13055550000', '0000-00-00 00:00:00', '1', '0');
-INSERT INTO `user` VALUES ('10', 'sj3', 'sj3_xiaowu', null, '5', '1', null, '13600022222', '0000-00-00 00:00:00', '1', '0');
-INSERT INTO `user` VALUES ('11', 'busMom3', 'busmm11', null, '3', '1', null, '13800009999', '0000-00-00 00:00:00', '1', '0');
+INSERT INTO `user` VALUES ('1', 'admin', 'admin', 'wechat222', '1', '1', '', '13188888888', '2018-07-11 10:03:43', '1');
+INSERT INTO `user` VALUES ('2', 'busMom1', 'xiaozhang', null, '3', '1', null, '13588027825', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('3', 'busMom2', 'lily', null, '3', '1', null, '13033332222', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('4', 'busMom4', 'busmm4', null, '3', '1', null, '13800009999', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('5', 'busMom5', 'busMom5', null, '3', '1', null, '13066663333', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('6', 'busMom6', 'busMom6', null, '3', '1', null, '13022223333', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('11', 'bzr1', 'bzr_tom', null, '4', '1', null, '13600003333', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('12', 'bzr2', 'bzr_tim', null, '4', '1', null, '13600004444', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('13', 'bzr3', 'bzr_jack', null, '4', '1', null, '13033332211', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('14', 'bzr4', 'bzr_peter', null, '4', '1', null, '13622223333', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('15', 'bzr5', 'bzr5', null, '4', '1', null, '12300006666', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('21', 'sj1', 'sj_liusan', null, '5', '1', null, '13699990000', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('22', 'sj2', 'sj2_zhangsan', null, '5', '1', null, '13055550000', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('23', 'sj3', 'sj3_xiaowu', null, '5', '1', null, '13600022222', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('24', 'sj4', 'sj_4', null, '5', '1', null, '13699990000', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('25', 'sj5', 'sj5小张', null, '5', '1', null, '13699995566', '0000-00-00 00:00:00', '1');
+INSERT INTO `user` VALUES ('26', 'busMom-swg', 'busmm-swg', '', '3', 'password', '', '13800009123', '2019-01-12 15:13:14', '1');
 
 -- ----------------------------
 -- Table structure for `user_msg_status_info`
@@ -351,10 +339,13 @@ CREATE TABLE `user_msg_status_info` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `message_id` int(10) unsigned NOT NULL COMMENT '消息ID，',
   `status` varchar(255) NOT NULL COMMENT '消息状态，比如”未读“、“已读”、“删除"',
+  `user` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_msg` (`message_id`),
-  CONSTRAINT `fk_msg` FOREIGN KEY (`message_id`) REFERENCES `messages` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  KEY `fk_msg_user` (`user`),
+  CONSTRAINT `fk_msg` FOREIGN KEY (`message_id`) REFERENCES `messages` (`id`),
+  CONSTRAINT `fk_msg_user` FOREIGN KEY (`user`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of user_msg_status_info

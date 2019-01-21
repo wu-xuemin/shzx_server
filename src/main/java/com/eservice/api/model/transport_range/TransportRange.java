@@ -88,16 +88,5 @@ public class TransportRange {
         this.rangeName = rangeName;
     }
 
-    /**
-     * ”非晚班“、”晚班“， 用于指明是否晚班线路
-     */
-    private String nightLineFlag;
 
-    public String getNightLineFlag() {
-        return nightLineFlag;
-    }
-
-    public void setNightLineFlag(String nightLineFlag) {
-        this.nightLineFlag = nightLineFlag;
-    }
 }

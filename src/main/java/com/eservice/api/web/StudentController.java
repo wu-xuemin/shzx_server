@@ -65,8 +65,8 @@ public class StudentController {
 
     @ApiOperation("根据校车编号和模式（班次），返回该校车班次的计划乘坐的学生")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号，比如 xc001"),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，内容限于“早班”、“午班”两种，晚班没有固定乘坐计划所以不支持")
+            @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号，比如 xc001",required = true),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，内容限于“早班”、“午班”两种，晚班没有固定乘坐计划所以不支持",required = true)
     })
     @PostMapping("/getPlannedStudentsByBusNumberAndBusMode")
     public Result getPlannedStudentsByBusNumberAndBusMode(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
