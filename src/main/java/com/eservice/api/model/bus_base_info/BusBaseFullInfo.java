@@ -14,16 +14,6 @@ public class BusBaseFullInfo extends BusBaseInfo {
         this.busRangeName = busRangeName;
     }
 
-    private String busSupplierName;
-
-    public String getBusSupplierName() {
-        return busSupplierName;
-    }
-
-    public void setBusSupplierName(String busSupplierName) {
-        this.busSupplierName = busSupplierName;
-    }
-
     private String busMomName;
 
     public void setBusMomName(String busMomName) {
@@ -42,5 +32,25 @@ public class BusBaseFullInfo extends BusBaseInfo {
 
     public void setBusMomAccount(String busMomAccount) {
         this.busMomAccount = busMomAccount;
+    }
+
+    private String busDriverName;
+
+    public String getBusDriverName() {
+        return busDriverName;
+    }
+
+    public void setBusDriverName(String busDriverName) {
+        this.busDriverName = busDriverName;
+    }
+
+    private String busDriverAccount;
+
+    public String getBusDriverAccount() {
+        return busDriverAccount;
+    }
+
+    public void setBusDriverAccount(String busDriverAccount) {
+        this.busDriverAccount = busDriverAccount;
     }
 }

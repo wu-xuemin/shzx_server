@@ -308,17 +308,17 @@ CREATE TABLE `student` (
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES ('1', 'xh888', '', '武都头', '9', '50', '50', '13', '13', '');
-INSERT INTO `student` VALUES ('16', 'xh001', '', '张小名', '1', '34', '34', '21', '21', '');
-INSERT INTO `student` VALUES ('17', 'xh002', '', '王小明', '1', '38', '42', '12', '12', '');
-INSERT INTO `student` VALUES ('18', 'XH003', '', '王小丫', '1', '39', '41', '14', '14', '');
-INSERT INTO `student` VALUES ('19', 'xh021', '', '张晓婷', '9', '39', '42', '16', '16', '');
-INSERT INTO `student` VALUES ('20', 'xh020', '', '黄丽', '10', '46', '46', '19', '19', '');
-INSERT INTO `student` VALUES ('21', 'xh023', '', '王语嫣', '10', '43', '43', '11', '19', '');
-INSERT INTO `student` VALUES ('23', 'XH022', '', '王笑笑', '2', '34', '34', '23', '23', '');
-INSERT INTO `student` VALUES ('24', 'xh0023', '', '张成', '3', '38', '47', '13', '13', '');
-INSERT INTO `student` VALUES ('25', 'xh222', '/shzx/xh222.png', '高圆圆', '1', '34', '34', '22', '22', '');
-INSERT INTO `student` VALUES ('26', 'xh444', '/shzx/xh444.png', '吴彦祖', '1', '34', '34', '23', '23', '');
+INSERT INTO `student` VALUES ('1', 'xh888', '', '武都头', '9', '34', '42', '13', '13', '');
+INSERT INTO `student` VALUES ('16', 'xh001', '', '张小名', '1', '34', '42', '21', '21', '');
+INSERT INTO `student` VALUES ('17', 'xh002', '', '王小明', '1', '34', '42', '12', '12', '');
+INSERT INTO `student` VALUES ('18', 'XH003', '', '王小丫', '1', '38', '43', '14', '14', '');
+INSERT INTO `student` VALUES ('19', 'xh021', '', '张晓婷', '9', '39', '46', '16', '16', '');
+INSERT INTO `student` VALUES ('20', 'xh020', '', '黄丽', '10', '40', '48', '19', '19', '');
+INSERT INTO `student` VALUES ('21', 'xh023', '', '王语嫣', '10', '41', '47', '11', '19', '');
+INSERT INTO `student` VALUES ('23', 'XH022', '', '王笑笑', '2', '34', '42', '23', '23', '');
+INSERT INTO `student` VALUES ('24', 'xh0023', '', '张成', '3', '38', '43', '13', '13', '');
+INSERT INTO `student` VALUES ('25', 'xh222', '/shzx/xh222.png', '高圆圆', '1', '34', '42', '22', '22', '');
+INSERT INTO `student` VALUES ('26', 'xh444', '/shzx/xh444.png', '吴彦祖', '1', '34', '42', '23', '23', '');
 
 -- ----------------------------
 -- Table structure for `transport_range`

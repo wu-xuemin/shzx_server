@@ -152,4 +152,15 @@ public class TransportRecordInfo extends  TransportRecord {
     public void setTransportRangeName(String transportRangeName) {
         this.transportRangeName = transportRangeName;
     }
+
+
+    private String studentHeadImg;
+
+    public String getStudentHeadImg() {
+        return studentHeadImg;
+    }
+
+    public void setStudentHeadImg(String studentHeadImg) {
+        this.studentHeadImg = studentHeadImg;
+    }
 }

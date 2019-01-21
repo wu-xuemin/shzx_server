@@ -287,56 +287,6 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult(transportRecordInfoCurrent);
     }
 
-//    @ApiOperation("根据日期+校车编号+班次+站点 查询该站点实际接送的学生）")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "查询的起始时间，比如 2019-01-14 00:00:00",required = true),
-//            @ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "查询的结束时间，比如2019-01-15 00:00:00",required = true),
-//            @ApiImplicitParam(paramType = "query",name = "busNumber", value = "查询的校车编号，比如 XC002",required = true),
-//            @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次，限于 “早班”、“午班”，如果指定了班次 ",required = true),
-//            @ApiImplicitParam(paramType = "query",name = "busStationName", value = "查询的班次站点，比如 33路口",required = true)
-//    })
-//    /**
-//     * 虽然站点分了早班站点和午班站点，但是在查询时指定了早班或午班
-//     */
-//    @PostMapping("/getActualPickedStudents")
-//    public Result getActualPickedStudents(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
-//                              @RequestParam String queryStartTime,
-//                              @RequestParam String queryFinishTime,
-//                              @RequestParam String busNumber,
-//                              @RequestParam String busMode ,
-//                              @RequestParam String busStationName ) {
-//        PageHelper.startPage(page, size);
-//
-//        List<TransportRecordInfo> listActualRecordInfo = transportRecordService.selectTransportRecord(queryStartTime,
-//                queryFinishTime,
-//                null,
-//                busNumber,
-//                busMode,
-//                busStationName,
-//                null,
-//                null);
-//        if(debugFlag.equalsIgnoreCase("true")) {
-//            logger.info("校车 " + busNumber + "在" + busMode + " " +  queryStartTime + " 实际乘坐人数 " + listActualRecordInfo.size());
-//            for (TransportRecordInfo tr: listActualRecordInfo) {
-//                logger.info(" 具体学号：" + tr.getStudentNumber());
-//            }
-//        }
-//
-//        List<StudentInfo> listActualStudents = new ArrayList<>();
-//        for (TransportRecordInfo tri:listActualRecordInfo) {
-//            StudentInfo studentInfo = new StudentInfo();
-//            studentInfo.setBoardStationAfternoonName(tri.getBoardStationNameAfternoon());
-//            studentInfo.setBanjiName(tri.getStudentBanji());
-//            studentInfo.setBoardStationMorningName(tri.getBoardStationNameMorning());
-//            studentInfo.setBusNumber(tri.getBusNumber());
-//            studentInfo.setName(tri.getStudentName());
-//            studentInfo.setStudentNumber(tri.getStudentNumber());
-//            listActualStudents.add(studentInfo);
-//        }
-//        PageInfo pageInfo = new PageInfo(listActualStudents);
-//        return ResultGenerator.genSuccessResult(pageInfo);
-//    }
-
     @ApiOperation("根据日期(如果不填则默认当前日期)+校车编号+班次  查询该实际接送信息（包括站点列表，各个站点实际接送学生和计划接送学生））")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "查询的起始时间，比如 2019-01-11"),
@@ -413,6 +363,7 @@ public class TransportRecordController {
                 studentInfo.setBusNumber(tri.getBusNumber());
                 studentInfo.setName(tri.getStudentName());
                 studentInfo.setStudentNumber(tri.getStudentNumber());
+                studentInfo.setHeadImg(tri.getStudentHeadImg());
                 listActualStudents.add(studentInfo);
             }
             stationPickingInfo.setPickedList(listActualStudents);

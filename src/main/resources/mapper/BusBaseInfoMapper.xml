@@ -9,7 +9,7 @@
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="plate_number" jdbcType="VARCHAR" property="plateNumber" />
     <result column="plate_number_pic" jdbcType="VARCHAR" property="plateNumberPic" />
-    <result column="bus_supplier" jdbcType="INTEGER" property="busSupplier" />
+    <result column="bus_supplier" jdbcType="VARCHAR" property="busSupplier" />
     <result column="bus_mom" jdbcType="INTEGER" property="busMom" />
     <result column="bus_driver" jdbcType="INTEGER" property="busDriver" />
     <result column="school_partition" jdbcType="VARCHAR" property="schoolPartition" />
@@ -24,7 +24,7 @@
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="plate_number" jdbcType="VARCHAR" property="plateNumber" />
     <result column="plate_number_pic" jdbcType="VARCHAR" property="plateNumberPic" />
-    <result column="bus_supplier" jdbcType="INTEGER" property="busSupplier" />
+    <result column="bus_supplier" jdbcType="VARCHAR" property="busSupplier" />
     <result column="bus_mom" jdbcType="INTEGER" property="busMom" />
     <result column="bus_driver" jdbcType="INTEGER" property="busDriver" />
     <result column="school_partition" jdbcType="VARCHAR" property="schoolPartition" />
@@ -32,22 +32,27 @@
     <result column="valid" jdbcType="TINYINT" property="valid" />
 
     <result column="bus_range_name" jdbcType="VARCHAR" property="busRangeName" />
-    <result column="bus_supplier_name" jdbcType="VARCHAR" property="busSupplierName" />
+    <!--<result column="bus_supplier_name" jdbcType="VARCHAR" property="busSupplierName" />-->
     <result column="bus_mom_name" jdbcType="VARCHAR" property="busMomName" />
     <result column="bus_mom_account" jdbcType="VARCHAR" property="busMomAccount" />
+    <result column="bus_driver_name" jdbcType="VARCHAR" property="busDriverName" />
+    <result column="bus_driver_account" jdbcType="VARCHAR" property="busDriverAccount" />
 
   </resultMap>
   <select id="getBusBaseInfo" resultMap="BusBaseFullInfoResultMap">
     SELECT
         bbi.*, transport_range.range_name AS bus_range_name,
-        bus_supplier.`name` AS bus_supplier_name,
+--         bus_supplier.`name` AS bus_supplier_name,
+        bbi.bus_supplier,
         user_bus_mom.`name` AS bus_mom_name,
         user_bus_mom.account AS bus_mom_account,
         user_bus_mom.*,
+        user_driver.`name` as bus_driver_name,
+        user_driver.account as bus_driver_account,
         user_driver.*
     FROM
         bus_base_info AS bbi
-    LEFT JOIN bus_supplier ON bus_supplier.id = bbi.bus_supplier
+--     LEFT JOIN bus_supplier ON bus_supplier.id = bbi.bus_supplier
     LEFT JOIN `user` AS user_driver ON user_driver.id = bbi.bus_driver
     LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bbi.bus_mom
     LEFT JOIN bus_line AS bl ON bl.bus_base_info = bbi.id
@@ -58,9 +63,9 @@
       AND bbi.school_partition =  #{schoolPartition}
     </if>
 
-    <if test="keyWord == null and keyWord == ''">
+    <if test="keyWord == null or keyWord == ''">
       <if test="rangeName != null and rangeName != ''">
-        AND bus_range_name = #{rangeName}
+        AND range_name = #{rangeName}
       </if>
 
       <if test="busNumber != null and busNumber != ''">
@@ -76,14 +81,16 @@
       </if>
 
       <if test="busSupplierName != null and busSupplierName != ''">
-        AND bus_supplier.`name` LIKE  CONCAT('%', '${busSupplierName}', '%')
+        AND bbi.`bus_supplier` LIKE  CONCAT('%', '${busSupplierName}', '%')
       </if>
     </if>
     <if test="keyWord != null and keyWord != ''">
-      OR bus_range_name LIKE CONCAT('%', '${keyWord}', '%')
+      and
+      (range_name LIKE CONCAT('%', '${keyWord}', '%')
       OR bbi.number LIKE CONCAT('%', '${keyWord}', '%')
       OR user_bus_mom.account LIKE CONCAT('%', '${keyWord}', '%')
-      OR bus_supplier.`name` LIKE  CONCAT('%', '${keyWord}', '%')
+      OR bbi.`bus_supplier` LIKE CONCAT('%', '${keyWord}', '%')
+      )
     </if>
 
   </select>

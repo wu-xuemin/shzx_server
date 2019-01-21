@@ -29,7 +29,7 @@ public class BusBaseInfo {
      * 供应商，外键
      */
     @Column(name = "bus_supplier")
-    private Integer busSupplier;
+    private String busSupplier;
 
     /**
      * 巴士妈妈，外键
@@ -130,7 +130,7 @@ public class BusBaseInfo {
      *
      * @return bus_supplier - 供应商，外键
      */
-    public Integer getBusSupplier() {
+    public String getBusSupplier() {
         return busSupplier;
     }
 
@@ -139,7 +139,7 @@ public class BusBaseInfo {
      *
      * @param busSupplier 供应商，外键
      */
-    public void setBusSupplier(Integer busSupplier) {
+    public void setBusSupplier(String busSupplier) {
         this.busSupplier = busSupplier;
     }
 

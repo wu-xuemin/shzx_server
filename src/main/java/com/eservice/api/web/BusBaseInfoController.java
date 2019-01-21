@@ -72,6 +72,7 @@ public class BusBaseInfoController {
             @ApiImplicitParam(paramType = "query", name = "busDriverAccount", value = " 司机账号"),
             @ApiImplicitParam(paramType = "query", name = "busMomAccount", value = " 巴士妈妈账号"),
             @ApiImplicitParam(paramType = "query", name = "busSupplierName", value = " 供应商名称"),
+            @ApiImplicitParam(paramType = "query", name = "schoolPartition", value = " 校区"),
             @ApiImplicitParam(paramType = "query", name = "keyWord", value = " 关键字")
     })
     @PostMapping("/getBusBaseInfo")
