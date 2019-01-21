@@ -24,6 +24,9 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
     @Resource
     private StudentMapper studentMapper;
 
+    /**
+     * 这个函数可以用后面的 getPlannedStudents 替代。
+     */
     public List<StudentInfo> getPlannedStudentsByBusNumberAndBusMode(String busNumber, String busMode) {
         if(busMode.equals(Constant.BUS_MODE_MORNING)){
             return studentMapper.getPlannedStudentsMorningByBusNumber(busNumber);
@@ -38,8 +41,15 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         return studentMapper.getSutdentInfo(studentNumber);
     }
 
+    /**
+     * @param busNumber
+     * @param busMode 早班午班每个学生都是同辆车，这个参数传不传都一样, 都返回相同的学生
+     * @param busStation
+     */
     public List<StudentInfo> getPlannedStudents(String busNumber, String busMode,String busStation){
-        if(busMode.equals(Constant.BUS_MODE_MORNING)){
+        if(busMode == null){
+            return studentMapper.getPlannedStudents(busNumber,busStation);
+        } else if(busMode.equals(Constant.BUS_MODE_MORNING)){
             return studentMapper.getPlannedStudentsMorning(busNumber,busStation);
         } else if(busMode.equals(Constant.BUS_MODE_AFTERNOON)){
             return studentMapper.getPlannedStudentsAfternoon(busNumber,busStation);
