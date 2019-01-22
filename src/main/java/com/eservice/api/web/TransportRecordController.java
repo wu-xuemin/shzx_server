@@ -13,6 +13,7 @@ import com.eservice.api.model.transport_record.TransportRecord;
 import com.eservice.api.model.transport_record.TransportRecordInfo;
 import com.eservice.api.service.TransportRangeService;
 import com.eservice.api.service.common.Constant;
+import com.eservice.api.service.impl.BusStationsServiceImpl;
 import com.eservice.api.service.impl.StudentServiceImpl;
 import com.eservice.api.service.impl.TransportRangeServiceImpl;
 import com.eservice.api.service.impl.TransportRecordServiceImpl;
@@ -51,6 +52,8 @@ public class TransportRecordController {
     private StudentServiceImpl studentService;
     @Resource
     private TransportRangeServiceImpl transportRangeService;
+    @Resource
+    private BusStationsServiceImpl busStationsService;
 
     @Value("${debug.flag}")
     private String debugFlag;
@@ -338,6 +341,8 @@ public class TransportRecordController {
             StationPickingInfo stationPickingInfo = new StationPickingInfo();
             //站点名
             stationPickingInfo.setStationName(stationsList.get(i).getStationName());
+            BusStations busStations = busStationsService.getBusStation(stationsList.get(i).getStationName());
+            stationPickingInfo.setStationId(busStations.getId());
             List<TransportRecordInfo> listActualRecordInfo = transportRecordService.selectTransportRecord(queryStartTime,
                     queryFinishTime,
                     null,

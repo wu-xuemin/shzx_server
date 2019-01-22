@@ -15,7 +15,7 @@ public class TransportRecord {
     private Integer id;
 
     /**
-     * 接送日期  TODO,这个可以删掉?
+     * 接送日期
      */
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date date;

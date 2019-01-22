@@ -21,4 +21,8 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
     @Resource
     private BusStationsMapper busStationsMapper;
 
+    public BusStations getBusStation(String stationName){
+        return busStationsMapper.getBusStation(stationName);
+    }
+
 }

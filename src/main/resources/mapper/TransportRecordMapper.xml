@@ -63,10 +63,10 @@
   WHERE
     1 = 1
     <if test="queryStartTime != null and queryStartTime != ''">
-      AND DATE_FORMAT(  psi.board_time,  '%Y-%m-%d'  ) &gt;= #{queryStartTime}
+      AND DATE_FORMAT(  psi.board_time,  '%Y-%m-%d %T'  ) >= #{queryStartTime}
     </if>
     <if test="queryFinishTime != null and queryFinishTime != ''">
-      AND DATE_FORMAT(  psi.board_time,  '%Y-%m-%d'  ) &lt;= #{queryFinishTime}
+      AND DATE_FORMAT(  psi.board_time,  '%Y-%m-%d %T'  ) &lt;= #{queryFinishTime}
     </if>
 
     <if test="studentName != null and studentName != ''">

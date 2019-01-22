@@ -3,9 +3,13 @@ import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.bus_stations.BusStations;
 import com.eservice.api.service.BusStationsService;
+import com.eservice.api.service.impl.BusStationsServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +28,7 @@ import java.util.List;
 @Api(description = "校车站点管理")
 public class BusStationsController {
     @Resource
-    private BusStationsService busStationsService;
+    private BusStationsServiceImpl busStationsService;
 
     @PostMapping("/add")
     public Result add(BusStations busStations) {
@@ -56,5 +60,13 @@ public class BusStationsController {
         List<BusStations> list = busStationsService.findAll();
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    @ApiOperation("根据站点名称 查找站点信息")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "stationName", value = "站点名称",required = true) })
+    @PostMapping("/getBusStation")
+    public Result getBusStation(@RequestParam String stationName) {
+        BusStations theBusStation = busStationsService.getBusStation(stationName);
+        return ResultGenerator.genSuccessResult(theBusStation);
     }
 }
