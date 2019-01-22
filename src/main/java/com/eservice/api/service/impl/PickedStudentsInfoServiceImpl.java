@@ -37,4 +37,8 @@ public class PickedStudentsInfoServiceImpl extends AbstractService<PickedStudent
         return pickedStudentsInfoMapper.selectStudentBus(busNumber, busStation, gradeName, className,queryStartTime,queryFinishTime,keyWord);
     }
 
+    public List<PickedStudentsInfo> getPickedStudentInfo(String studentNumber,Integer transportRecordId){
+        return pickedStudentsInfoMapper.getPickedStudentInfo(studentNumber,transportRecordId);
+    }
+
 }

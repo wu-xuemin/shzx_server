@@ -86,4 +86,15 @@
 		</if>
 		ORDER By board_time DESC, bus_number ASC
 	</select>
+
+	<select id="getPickedStudentInfo" resultMap="BaseResultMap">
+		SELECT *  -- 根据学号和 transport_record_id 查找该学生的上下车信息
+		FROM
+		picked_students_info as psi
+		LEFT JOIN student ON student.id = psi.student_id
+		where
+		  student.student_number = #{studentNumber}
+		  AND
+		  psi.transport_record_id = #{transportRecordId}
+		</select>
 </mapper>

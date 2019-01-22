@@ -58,6 +58,20 @@ public class PickedStudentsInfoController {
         if(student == null){
             return ResultGenerator.genFailResult("请检查studentNumber参数");
         }
+
+        //同一趟车，同一个人只保存签到1次
+        pickedStudentsInfo.getTransportRecordId();
+        getPickedStudentInfo(studentNumber,pickedStudentsInfo.getTransportRecordId());
+        /**
+         * 返回本来应该是只有一个，但是目前的数据库数据有多个，所以用list，只要取List第一个就好。
+         */
+        List<PickedStudentsInfo> list = pickedStudentsInfoService.getPickedStudentInfo(studentNumber,pickedStudentsInfo.getTransportRecordId());
+        if(list.size() != 0){
+            return ResultGenerator.genFailResult("该学生已签到： " + studentNumber
+                    + ", Date: " + transportRecordService.findById(pickedStudentsInfo.getTransportRecordId()).getDate()
+                    + ", BoardTime: " + list.get(0).getBoardTime());
+        }
+
         pickedStudentsInfo.setStudentId(student.getId());
         pickedStudentsInfo.setBoardTime(new Date());
         pickedStudentsInfoService.save(pickedStudentsInfo);
@@ -105,5 +119,24 @@ public class PickedStudentsInfoController {
         List<PickedStudentsBusView> list = pickedStudentsInfoService.selectStudentBus(busNumber, busStation, gradeName, className, queryStartTime, queryFinishTime,keyWord);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    @ApiOperation("根据学号和 transport_record_id 查找该学生的上下车信息（pickedStudentInfo） ")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "studentNumber", value = "校车编号", required = true),
+            @ApiImplicitParam(paramType = "query",name = "transportRecordId", value = "transportRecordId", required = true)})
+    @PostMapping("/getPickedStudentInfo")
+    public Result getPickedStudentInfo(@RequestParam String studentNumber, @RequestParam Integer transportRecordId) {
+        /**
+         * 返回本来应该是只有一个，但是目前的数据库数据有多个，所以用list，只要取List第一个就好。
+         */
+        List<PickedStudentsInfo> list = pickedStudentsInfoService.getPickedStudentInfo(studentNumber,transportRecordId);
+        if(list.isEmpty()){
+            return null;
+        } else {
+            PickedStudentsInfo pickedStudentsInfo = list.get(0);
+            return ResultGenerator.genSuccessResult(pickedStudentsInfo);
+        }
+
     }
 }

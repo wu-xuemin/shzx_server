@@ -342,7 +342,10 @@ public class TransportRecordController {
             //站点名
             stationPickingInfo.setStationName(stationsList.get(i).getStationName());
             BusStations busStations = busStationsService.getBusStation(stationsList.get(i).getStationName());
-            stationPickingInfo.setStationId(busStations.getId());
+            if(busStations != null){
+                // 站点都真实（即线路中的站点都来自站点列表中）之后，不会有查不到的，目前是为了防止假数据站点
+                stationPickingInfo.setStationId(busStations.getId());
+            }
             List<TransportRecordInfo> listActualRecordInfo = transportRecordService.selectTransportRecord(queryStartTime,
                     queryFinishTime,
                     null,

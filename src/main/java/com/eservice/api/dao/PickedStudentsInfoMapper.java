@@ -17,4 +17,5 @@ public interface PickedStudentsInfoMapper extends Mapper<PickedStudentsInfo> {
                                                  @Param("queryFinishTime")String queryFinishTime,
                                                  @Param("keyWord")String keyWord
     );
+    List<PickedStudentsInfo> getPickedStudentInfo(@Param("studentNumber")String studentNumber,@Param("transportRecordId")Integer transportRecordId);
 }
