@@ -4,6 +4,8 @@ import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.student.Student;
 import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.service.StudentService;
+import com.eservice.api.service.common.CommonService;
+import com.eservice.api.service.common.Constant;
 import com.eservice.api.service.impl.StudentServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -11,12 +13,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -30,9 +36,40 @@ import java.util.List;
 public class StudentController {
     @Resource
     private StudentServiceImpl studentService;
+    @Value("${student_img}")
+    private String studentImg;
 
+    @Resource
+    private CommonService commonService;
+
+    @ApiOperation("增加学生信息，同时保存学生头像")
+    // todo  这里参数是否改为具体的字符串而非外键比较方便前端？
     @PostMapping("/add")
-    public Result add(Student student) {
+    public Result add(Student student,
+                      MultipartFile file) {
+        File dir = new File(studentImg);
+        if(!dir.exists()){
+            dir.mkdir();
+        }
+        String message = null;
+        String fileNameWithPath;
+        String resultPathStudentImg = null;
+        if(file != null) {
+            try {
+                fileNameWithPath = commonService.saveFile(studentImg, file, student.getStudentNumber() + "_" + student.getName(), 0);
+
+                if (fileNameWithPath != null) {
+                    resultPathStudentImg = fileNameWithPath;
+                    student.setHeadImg(resultPathStudentImg);
+                } else {
+                    message = "failed to save file, no student added of " + student.getName();
+                    throw new RuntimeException();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResultGenerator.genFailResult(e.getMessage() + "," + message);
+            }
+        }
         studentService.save(student);
         return ResultGenerator.genSuccessResult();
     }
