@@ -36,8 +36,8 @@ import java.util.List;
 public class StudentController {
     @Resource
     private StudentServiceImpl studentService;
-    @Value("${student_img}")
-    private String studentImg;
+    @Value("${student_img_dir}")
+    private String studentImgDir;
 
     @Resource
     private CommonService commonService;
@@ -47,7 +47,7 @@ public class StudentController {
     @PostMapping("/add")
     public Result add(Student student,
                       MultipartFile file) {
-        File dir = new File(studentImg);
+        File dir = new File(studentImgDir);
         if(!dir.exists()){
             dir.mkdir();
         }
@@ -56,7 +56,7 @@ public class StudentController {
         String resultPathStudentImg = null;
         if(file != null) {
             try {
-                fileNameWithPath = commonService.saveFile(studentImg, file, student.getStudentNumber() + "_" + student.getName(), 0);
+                fileNameWithPath = commonService.saveFile(studentImgDir, file, student.getStudentNumber() , student.getName(), 0);
 
                 if (fileNameWithPath != null) {
                     resultPathStudentImg = fileNameWithPath;

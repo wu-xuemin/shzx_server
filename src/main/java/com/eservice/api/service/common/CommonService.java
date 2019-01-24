@@ -32,21 +32,23 @@ public class CommonService {
     /**
      * @param path      保存文件的总路径
      * @param file      文件
-     * @param tag，比如学号 + 姓名
+     * @param tag1，比如学号
+     * @param tag2  比如姓名
      * @param number    表示第几个文件
      * @return 文件路径
      * eg: xh333_zhangSan_2018-07-13-16-17-50_1.png
      */
     public String saveFile(String path,
                            MultipartFile file,
-                           @RequestParam(defaultValue = "") String tag,
+                           @RequestParam(defaultValue = "") String tag1,
+                           @RequestParam(defaultValue = "") String tag2,
                            @RequestParam(defaultValue = "0") int number) throws IOException {
         String targetFileName = null;
         try {
             if (path != null && !file.isEmpty()) {
 
                 String fileName = file.getOriginalFilename();
-                targetFileName = path + formatFileName(fileName.replaceAll("/", "-"), tag.replaceAll("/", "-"), number);
+                targetFileName = path + formatFileName(fileName.replaceAll("/", "-"), tag1.replaceAll("/", "-"), tag2.replaceAll("/", "-"), number);
                 if(debugFlag.equalsIgnoreCase("true")) {
                     logger.info("====CommonService.saveFile(): targetFileName  ========" + targetFileName);
                 }
@@ -68,7 +70,8 @@ public class CommonService {
 
     public String formatFileName(
                                  String fileName,
-                                 @RequestParam(defaultValue = "") String tag,
+                                 @RequestParam(defaultValue = "") String tag1,
+                                 @RequestParam(defaultValue = "") String tag2,
                                  @RequestParam(defaultValue = "0") int number) {
         String targetFileName = "";
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
@@ -78,10 +81,9 @@ public class CommonService {
         formatter.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         String dateStr = formatter.format(date);
 
-        targetFileName = tag + "_" + dateStr + "_" + number + suffixName;
+        targetFileName = tag1 + "_" + tag2 + "_"  + dateStr + "_" + number + suffixName;
         return targetFileName;
     }
-
 
     /**
      * 向指定 URL 发送POST方法的请求
