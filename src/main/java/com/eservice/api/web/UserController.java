@@ -1,4 +1,5 @@
 package com.eservice.api.web;
+import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.user.User;
@@ -74,8 +75,9 @@ public class UserController {
     }
     @ApiOperation("更新用户")
     @PostMapping("/update")
-    public Result update(User user) {
-        userService.update(user);
+    public Result update(String user) {
+        User userObj = JSONObject.parseObject(user, User.class);
+        userService.update(userObj);
         return ResultGenerator.genSuccessResult();
     }
 
@@ -89,6 +91,19 @@ public class UserController {
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
         List<User> list = userService.findAll();
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    @PostMapping("/selectUsers")
+    public Result selectUsers(@RequestParam(defaultValue = "0") Integer page,
+                              @RequestParam(defaultValue = "0") Integer size,
+                              String account,
+                              String name,
+                              Integer roleId,
+                              Integer valid) {
+        PageHelper.startPage(page, size);
+        List<User> list = userService.selectUsers(account,name,roleId,valid);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

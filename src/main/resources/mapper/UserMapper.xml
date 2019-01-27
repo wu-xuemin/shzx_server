@@ -26,4 +26,21 @@
     FROM user u
     WHERE u.account = '${account}' AND u.password = '${password}'
    </select>
+
+  <select id="selectUsers" resultMap="BaseResultMap">
+    SELECT u.* FROM user u where 1=1
+    <if test="account != null and account != ''">
+      and u.account like CONCAT('%','${account}','%' )
+    </if>
+    <if test="name != null and name != ''">
+      and u.name like CONCAT('%','${name}','%' )
+    </if>
+    <if test="roleId != null and roleId > 0">
+      and u.role_id = ${roleId}
+    </if>
+    <if test="valid != null">
+      and u.valid = ${valid}
+    </if>
+  </select>
+
 </mapper>
