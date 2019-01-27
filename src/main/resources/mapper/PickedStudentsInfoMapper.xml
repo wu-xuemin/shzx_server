@@ -20,8 +20,6 @@
 		<result column="current_station" jdbcType="INTEGER" property="currentStation"/>
 		<result column="station_name" jdbcType="VARCHAR" property="stationName"/>
 		<result column="mode_name" jdbcType="VARCHAR" property="modeName"/>
-		<result column="transport_range" jdbcType="INTEGER" property="transportRange"/>
-		<result column="range_name" jdbcType="VARCHAR" property="rangeName"/>
 		<result column="student_name" jdbcType="VARCHAR" property="studentName"/>
 		<result column="student_number" jdbcType="VARCHAR" property="studentNumber"/>
 		<result column="head_img" jdbcType="VARCHAR" property="headImg"/>
@@ -41,8 +39,8 @@
 		tr.current_station,
 		bs.station_name,
 		bl.`mode` AS mode_name,
-		bl.transport_range,
-		tra.range_name,
+-- 		bl.transport_range,
+-- 		tra.range_name,
 		s.`name` AS student_name,
 		s.student_number,
 		s.head_img,
@@ -55,7 +53,7 @@
 		LEFT JOIN transport_record AS tr ON psi.transport_record_id = tr.id
 		LEFT JOIN bus_stations AS bs ON tr.current_station = bs.id
 		LEFT JOIN bus_line AS bl ON tr.bus_line = bl.id
-		LEFT JOIN transport_range AS tra ON bl.transport_range = tra.id
+-- 		LEFT JOIN transport_range AS tra ON bl.transport_range = tra.id
 		LEFT JOIN bus_base_info AS bbi ON `bl`.bus_base_info = bbi.id
 		LEFT JOIN student AS s ON psi.student_id = s.id
 		LEFT JOIN banji AS bj ON s.banji = bj.id
@@ -82,7 +80,7 @@
 		<if test="keyWord != null and keyWord != ''">
 			OR bus_number LIKE CONCAT('%', '${keyWord}', '%')
 			OR station_name LIKE CONCAT('%', '${keyWord}', '%')
-			OR range_name LIKE  CONCAT('%', '${keyWord}', '%')
+-- 			OR range_name LIKE  CONCAT('%', '${keyWord}', '%')
 		</if>
 		ORDER By board_time DESC, bus_number ASC
 	</select>

@@ -4,16 +4,6 @@ import javax.persistence.*;
 
 public class BusBaseFullInfo extends BusBaseInfo {
 
-    private String busRangeName;
-
-    public String getBusRangeName() {
-        return busRangeName;
-    }
-
-    public void setBusRangeName(String busRangeName) {
-        this.busRangeName = busRangeName;
-    }
-
     private String busMomName;
 
     public void setBusMomName(String busMomName) {

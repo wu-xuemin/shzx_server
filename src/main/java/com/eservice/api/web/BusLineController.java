@@ -7,12 +7,10 @@ import com.eservice.api.model.bus_line.BusLineExcelHelper;
 import com.eservice.api.model.bus_line.BusLineInfo;
 import com.eservice.api.model.student.Student;
 import com.eservice.api.model.student.StudentInfo;
-import com.eservice.api.model.transport_range.TransportRange;
 import com.eservice.api.service.BusLineService;
 import com.eservice.api.service.impl.BusBaseInfoServiceImpl;
 import com.eservice.api.service.impl.BusLineServiceImpl;
 import com.eservice.api.service.impl.StudentServiceImpl;
-import com.eservice.api.service.impl.TransportRangeServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -52,8 +50,6 @@ public class BusLineController {
     private BusLineServiceImpl busLineService;
     @Resource
     private BusBaseInfoServiceImpl busBaseInfoService;
-    @Resource
-    private TransportRangeServiceImpl transportRangeService;
     @Resource
     private StudentServiceImpl studentService;
 
@@ -121,7 +117,6 @@ public class BusLineController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-
     @ApiOperation("根据校车编号/早午班 来获得该校车/早午班的所有学生")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号，比如 xc001",required = true),
@@ -147,7 +142,6 @@ public class BusLineController {
         BusLineExcelHelper busLineExcelHelper = null;
 
         BusLine busLine = new BusLine();
-        TransportRange transportRange = new TransportRange();
         Student student = new Student();
 
         File file =  new File(fileName);
@@ -197,20 +191,6 @@ public class BusLineController {
                         /**
                          * 同个车号的站点，保存到对应的线路区间去
                          */
-//                        String stationN =  busLineExcelHelper.getStationName();
-                        String oldStations = null;
-                        transportRange = transportRangeService.getTransportRangeByBusNumberAndBusMode(busLineExcelHelper.getBusNumber(),"早班");
-                        if(transportRange != null) {
-                            oldStations = transportRange.getStations();
-                            transportRange.setStations(oldStations + "/" + busLineExcelHelper.getStationName());
-                            // TODO： 按格式保存站点
-                            transportRangeService.update(transportRange);
-                        } else {
-                            transportRange = new TransportRange();
-                            transportRange.setStations(busLineExcelHelper.getStationName());
-                            // 新增
-                            transportRangeService.save(transportRange);
-                        }
 
                         /**
                          * 学生信息保存
@@ -261,5 +241,19 @@ public class BusLineController {
             // 返回字符串类型的值
             return String.valueOf(hssfCell.getStringCellValue());
         }
+    }
+
+    @ApiOperation("根据校车编号/早午班 来获得该校车的线路信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号，比如 xc001",required = true),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = " 早班 午班,不填则不限制")
+    })
+    @PostMapping("/getBusLineInfoByBusNumberAndBusMode")
+    public Result getBusLineInfoByBusNumberAndBusMode(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                                      @RequestParam String busNumber,
+                                                      @RequestParam String busMode ) {
+
+        BusLine busLine = busLineService.getBusLineInfoByBusNumberAndBusMode(busNumber,busMode);
+        return ResultGenerator.genSuccessResult(busLine);
     }
 }

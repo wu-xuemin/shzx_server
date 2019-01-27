@@ -7,8 +7,11 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="bus_base_info" jdbcType="INTEGER" property="busBaseInfo" />
-    <result column="transport_range" jdbcType="INTEGER" property="transportRange" />
     <result column="mode" jdbcType="VARCHAR" property="mode" />
+    <result column="stations" jdbcType="LONGVARCHAR" property="stations" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="valid" jdbcType="INTEGER" property="valid" />
+
   </resultMap>
 
   <resultMap id="BusLineInfoResultMap" type="com.eservice.api.model.bus_line.BusLineInfo">
@@ -17,10 +20,12 @@
 -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="bus_base_info" jdbcType="INTEGER" property="busBaseInfo" />
-    <result column="transport_range" jdbcType="INTEGER" property="transportRange" />
     <result column="mode" jdbcType="VARCHAR" property="mode" />
+    <result column="stations" jdbcType="LONGVARCHAR" property="stations" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="valid" jdbcType="INTEGER" property="valid" />
 
-    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="number" jdbcType="VARCHAR" property="busNumber" />
     <result column="plate_number" jdbcType="VARCHAR" property="plateNumber" />
     <result column="plate_number_pic" jdbcType="VARCHAR" property="plateNumberPic" />
     <result column="bus_supplier_name" jdbcType="VARCHAR" property="busSupplierName" />
@@ -115,6 +120,18 @@
       <if test="busMode != null and busMode != ''">
           AND bl.`mode` = #{busMode}
       </if>
+  </select>
+
+  <select id="getBusLineInfoByBusNumberAndBusMode" resultMap="BaseResultMap">
+    SELECT
+	*
+    FROM
+        bus_line AS bl
+    LEFT JOIN bus_base_info AS bbi ON bbi.id = bl.bus_base_info
+    WHERE
+        bbi.number = #{busNumber}
+    AND
+        bl.`mode` = #{busMode}
   </select>
 
 </mapper>

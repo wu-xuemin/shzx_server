@@ -133,26 +133,8 @@ public class TransportRecordInfo extends  TransportRecord {
         this.currentStationName = currentStationName;
     }
 
-    private String transportRangeStations;
-
-    public String getTransportRangeStations() {
-        return transportRangeStations;
-    }
-
-    public void setTransportRangeStations(String transportRangeStations) {
-        this.transportRangeStations = transportRangeStations;
-    }
-
-    private String transportRangeName;
-
-    public String getTransportRangeName() {
-        return transportRangeName;
-    }
-
-    public void setTransportRangeName(String transportRangeName) {
-        this.transportRangeName = transportRangeName;
-    }
-
+    //todo
+//    private String
 
     private String studentHeadImg;
 

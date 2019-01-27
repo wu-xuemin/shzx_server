@@ -30,8 +30,6 @@
     <result column="current_station_name" jdbcType="VARCHAR" property="currentStationName" />
 
     <result column="mode" jdbcType="VARCHAR" property="mode" />
-    <result column="transport_range_stations" jdbcType="VARCHAR" property="transportRangeStations" />
-    <result column="transport_range_name" jdbcType="VARCHAR" property="transportRangeName" />
 
   </resultMap>
 
@@ -47,13 +45,14 @@
     banji.class_name as student_banji,
     student.student_number,
     student.`name` as student_name,
-    bus_line.`mode`,
-    transport_range.stations as transport_range_stations,
-    transport_range.range_name as transport_range_name
+    bus_line.`mode`
+--     todo ,
+--     transport_range.stations as transport_range_stations,
+--     transport_range.range_name as transport_range_name
     FROM transport_record AS tr
     LEFT JOIN bus_line on tr.bus_line = bus_line.id
     LEFT JOIN bus_base_info as bbi on bus_line.bus_base_info=bbi.id
-    LEFT JOIN transport_range on bus_line.transport_range = transport_range.id
+--     LEFT JOIN transport_range on bus_line.transport_range = transport_range.id
     LEFT JOIN picked_students_info as psi on psi.transport_record_id = tr.id
     LEFT JOIN student on psi.student_id = student.id
     LEFT JOIN bus_stations as bus_stations_m on bus_stations_m.id = student.board_station_morning

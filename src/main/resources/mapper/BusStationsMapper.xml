@@ -8,6 +8,10 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="station_name" jdbcType="VARCHAR" property="stationName" />
     <result column="gps_info" jdbcType="VARCHAR" property="gpsInfo" />
+    <result column="fare_rate" jdbcType="VARCHAR" property="fareRate" />
+    <result column="remark" jdbcType="TIME" property="remark" />
+    <result column="valid" jdbcType="INTEGER" property="valid" />
+
   </resultMap>
   <select id="getBusStation" resultMap="BaseResultMap">
   SELECT *

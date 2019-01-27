@@ -3,19 +3,18 @@ import com.alibaba.fastjson.JSON;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.bus_base_info.BusBaseInfo;
+import com.eservice.api.model.bus_line.BusLine;
 import com.eservice.api.model.bus_stations.BusStations;
 import com.eservice.api.model.student.Student;
 import com.eservice.api.model.student.StudentInfo;
-import com.eservice.api.model.transport_range.TransportRange;
 import com.eservice.api.model.transport_record.AllPickingInfo;
 import com.eservice.api.model.transport_record.StationPickingInfo;
 import com.eservice.api.model.transport_record.TransportRecord;
 import com.eservice.api.model.transport_record.TransportRecordInfo;
-import com.eservice.api.service.TransportRangeService;
 import com.eservice.api.service.common.Constant;
+import com.eservice.api.service.impl.BusLineServiceImpl;
 import com.eservice.api.service.impl.BusStationsServiceImpl;
 import com.eservice.api.service.impl.StudentServiceImpl;
-import com.eservice.api.service.impl.TransportRangeServiceImpl;
 import com.eservice.api.service.impl.TransportRecordServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -51,9 +50,9 @@ public class TransportRecordController {
     @Resource
     private StudentServiceImpl studentService;
     @Resource
-    private TransportRangeServiceImpl transportRangeService;
-    @Resource
     private BusStationsServiceImpl busStationsService;
+    @Resource
+    private BusLineServiceImpl busLineService;
 
     @Value("${debug.flag}")
     private String debugFlag;
@@ -284,7 +283,6 @@ public class TransportRecordController {
 //        根据日期 +校车+班次  查询乘车记录信息，  获得站点列表，当前站点
 //        返回  List<TransportRecordInfo>取第一个或者任意个元素，
 //        因为 日期 +校车+班次定了，那站点列表和当前站点就都定了。
-//        getTransportRangeByBusNumberAndBusMode 不包含当前站点，所以还是要用 selectTransportRecord
         TransportRecordInfo transportRecordInfoCurrent = listTransportRecordInfo.get(0);
 
         return ResultGenerator.genSuccessResult(transportRecordInfoCurrent);
@@ -334,8 +332,9 @@ public class TransportRecordController {
         ArrayList<StationPickingInfo> list = new ArrayList<>();
 
         //获取全部站点名称
-        TransportRange  transportRange = transportRangeService.getTransportRangeByBusNumberAndBusMode(busNumber,busMode);
-        List<BusStations> stationsList = JSON.parseArray(transportRange.getStations(), BusStations.class);
+        BusLine busLine = busLineService.getBusLineInfoByBusNumberAndBusMode(busNumber,busMode);
+
+        List<BusStations> stationsList = JSON.parseArray(busLine.getStations(), BusStations.class);
         for (int i = 0; i < stationsList.size(); i++) {
 
             StationPickingInfo stationPickingInfo = new StationPickingInfo();

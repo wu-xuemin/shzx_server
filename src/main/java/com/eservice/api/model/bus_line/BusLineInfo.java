@@ -108,13 +108,13 @@ public class BusLineInfo extends BusLine{
         return ipadMeid;
     }
 
-    private Byte valid;
-
-    public void setValid(Byte valid) {
-        this.valid = valid;
-    }
-
-    public Byte getValid() {
-        return valid;
-    }
+//    private Byte valid;
+//
+//    public void setValid(Byte valid) {
+//        this.valid = valid;
+//    }
+//
+//    public Byte getValid() {
+//        return valid;
+//    }
 }

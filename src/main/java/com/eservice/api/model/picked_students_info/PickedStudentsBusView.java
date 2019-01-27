@@ -38,22 +38,6 @@ public class PickedStudentsBusView extends PickedStudentsInfo {
         this.modeName = modeName;
     }
 
-    public Integer getTransportRange() {
-        return transportRange;
-    }
-
-    public void setTransportRange(Integer transportRange) {
-        this.transportRange = transportRange;
-    }
-
-    public String getRangeName() {
-        return rangeName;
-    }
-
-    public void setRangeName(String rangeName) {
-        this.rangeName = rangeName;
-    }
-
     public String getStudentName() {
         return studentName;
     }
@@ -114,8 +98,9 @@ public class PickedStudentsBusView extends PickedStudentsInfo {
     private Integer currentStation;
     private String stationName;
     private String modeName;
-    private Integer transportRange;
-    private String rangeName;
+    //todo
+//    private Integer transportRange;
+//    private String rangeName;
     private String studentName;
     private String studentNumber;
     private String headImg;

@@ -1,6 +1,7 @@
 package com.eservice.api.model.bus_stations;
 
 import javax.persistence.*;
+import java.sql.Time;
 
 @Table(name = "bus_stations")
 public class BusStations {
@@ -61,5 +62,39 @@ public class BusStations {
      */
     public void setGpsInfo(String gpsInfo) {
         this.gpsInfo = gpsInfo;
+    }
+
+    /**
+     * 收费信息
+     */
+    private String fareRate;
+
+    // todo 时间类型是否合适
+    private Time remark;
+
+    private Integer valid;
+
+    public String getFareRate() {
+        return fareRate;
+    }
+
+    public void setFareRate(String fareRate) {
+        this.fareRate = fareRate;
+    }
+
+    public Time getRemark() {
+        return remark;
+    }
+
+    public void setRemark(Time remark) {
+        this.remark = remark;
+    }
+
+    public Integer getValid() {
+        return valid;
+    }
+
+    public void setValid(Integer valid) {
+        this.valid = valid;
     }
 }

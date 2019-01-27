@@ -15,12 +15,6 @@ public class BusLine {
     private Integer busBaseInfo;
 
     /**
-     * 班车区间，包含了夜班路线
-     */
-    @Column(name = "transport_range")
-    private Integer transportRange;
-
-    /**
      * "早班“、”午班“、”晚班“
      */
     private String mode;
@@ -58,24 +52,6 @@ public class BusLine {
     }
 
     /**
-     * 获取班车区间，包含了夜班路线
-     *
-     * @return transport_range - 班车区间，包含了夜班路线
-     */
-    public Integer getTransportRange() {
-        return transportRange;
-    }
-
-    /**
-     * 设置班车区间，包含了夜班路线
-     *
-     * @param transportRange 班车区间，包含了夜班路线
-     */
-    public void setTransportRange(Integer transportRange) {
-        this.transportRange = transportRange;
-    }
-
-    /**
      * 获取"早班“、”午班“、”晚班“
      *
      * @return mode - "早班“、”午班“、”晚班“
@@ -91,5 +67,35 @@ public class BusLine {
      */
     public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    private String stations;
+
+    private String name;
+
+    private Integer valid;
+
+    public String getStations() {
+        return stations;
+    }
+
+    public void setStations(String stations) {
+        this.stations = stations;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getValid() {
+        return valid;
+    }
+
+    public void setValid(Integer valid) {
+        this.valid = valid;
     }
 }
