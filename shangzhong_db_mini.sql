@@ -70,20 +70,20 @@ DROP TABLE IF EXISTS `bus_base_info`;
 CREATE TABLE `bus_base_info` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `number` varchar(255) NOT NULL COMMENT '校车编号',
-  `plate_number` varchar(255) NOT NULL COMMENT '车牌号',
-  `plate_number_pic` varchar(255) NOT NULL COMMENT '牌照照片存放路径',
-  `bus_supplier` varchar(255) NOT NULL COMMENT '供应商，外键',
-  `bus_mom` int(10) unsigned NOT NULL COMMENT '巴士妈妈，外键',
-  `bus_driver` int(10) unsigned NOT NULL COMMENT '司机',
-  `school_partition` varchar(255) NOT NULL COMMENT '浦东校区；浦西校区',
-  `ipad_meid` varchar(255) NOT NULL COMMENT 'ipad绑定的设备号',
-  `valid` tinyint(10) unsigned NOT NULL,
+  `plate_number` varchar(255) DEFAULT NULL COMMENT '车牌号',
+  `plate_number_pic` varchar(255) DEFAULT NULL COMMENT '牌照照片存放路径',
+  `bus_supplier` varchar(255) DEFAULT NULL COMMENT '供应商，外键',
+  `bus_mom` int(10) unsigned DEFAULT NULL COMMENT '巴士妈妈，外键',
+  `bus_driver` int(10) unsigned DEFAULT NULL COMMENT '司机',
+  `school_partition` varchar(255) DEFAULT NULL COMMENT '浦东校区；浦西校区',
+  `ipad_meid` varchar(255) DEFAULT NULL COMMENT 'ipad绑定的设备号',
+  `valid` tinyint(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_bus_mom` (`bus_mom`),
   KEY `fk_bus_driver` (`bus_driver`),
   CONSTRAINT `bus_base_info_ibfk_1` FOREIGN KEY (`bus_driver`) REFERENCES `user` (`id`),
   CONSTRAINT `bus_base_info_ibfk_2` FOREIGN KEY (`bus_mom`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus_base_info
@@ -96,14 +96,14 @@ DROP TABLE IF EXISTS `bus_line`;
 CREATE TABLE `bus_line` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `bus_base_info` int(10) unsigned NOT NULL COMMENT '校车基本信息',
-  `transport_range` int(10) unsigned NOT NULL COMMENT '班车区间，包含了夜班路线',
   `mode` varchar(255) NOT NULL COMMENT '"早班“、”午班“、”晚班“',
+  `stations` text,
+  `name` varchar(255) DEFAULT NULL,
+  `valid` int(10) unsigned DEFAULT '1' COMMENT '1表示有效，0表示无效',
   PRIMARY KEY (`id`),
   KEY `fk_bus_base_info` (`bus_base_info`),
-  KEY `fk_transport_range` (`transport_range`),
-  CONSTRAINT `fk_bus_base_info` FOREIGN KEY (`bus_base_info`) REFERENCES `bus_base_info` (`id`),
-  CONSTRAINT `fk_transport_range` FOREIGN KEY (`transport_range`) REFERENCES `transport_range` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `fk_bus_base_info` FOREIGN KEY (`bus_base_info`) REFERENCES `bus_base_info` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus_line
@@ -117,9 +117,12 @@ CREATE TABLE `bus_stations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `station_name` varchar(255) NOT NULL COMMENT '站点名称',
   `gps_info` varchar(255) NOT NULL,
+  `fare_rate` varchar(255) DEFAULT NULL COMMENT '收费信息',
+  `remark` time DEFAULT NULL COMMENT '站点的时间',
+  `valid` int(11) DEFAULT NULL COMMENT '1表示有效，0表示无效',
   PRIMARY KEY (`id`),
   KEY `station_name` (`station_name`(191))
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus_stations
@@ -211,12 +214,12 @@ CREATE TABLE `student` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `student_number` varchar(150) NOT NULL COMMENT '学号',
   `head_img` varchar(255) DEFAULT NULL COMMENT '保存头像的URL',
-  `name` varchar(255) NOT NULL COMMENT '姓名',
-  `banji` int(10) unsigned NOT NULL COMMENT '班级,外键',
-  `bus_line_morning` int(10) unsigned NOT NULL COMMENT '早班乘坐车的线路ID，外键',
-  `bus_line_afternoon` int(10) unsigned NOT NULL COMMENT '午班乘坐车的线路ID，外键',
-  `board_station_morning` int(10) unsigned NOT NULL COMMENT '上午班车上车站点',
-  `board_station_afternoon` int(10) unsigned NOT NULL COMMENT '下午班车下车站点',
+  `name` varchar(255) DEFAULT NULL COMMENT '姓名',
+  `banji` int(10) unsigned DEFAULT NULL COMMENT '班级,外键',
+  `bus_line_morning` int(10) unsigned DEFAULT NULL COMMENT '早班乘坐车的线路ID，外键',
+  `bus_line_afternoon` int(10) unsigned DEFAULT NULL COMMENT '午班乘坐车的线路ID，外键',
+  `board_station_morning` int(10) unsigned DEFAULT NULL COMMENT '上午班车上车站点',
+  `board_station_afternoon` int(10) unsigned DEFAULT NULL COMMENT '下午班车下车站点',
   `family_info` text COMMENT '家庭信息 JSON',
   PRIMARY KEY (`id`,`student_number`),
   KEY `fk_bus` (`bus_line_morning`),
@@ -238,13 +241,6 @@ CREATE TABLE `student` (
 -- ----------------------------
 -- Table structure for `transport_range`
 -- ----------------------------
-DROP TABLE IF EXISTS `transport_range`;
-CREATE TABLE `transport_range` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `stations` text NOT NULL COMMENT '区间的站点名称，JSON\r\n\r\n[{"station_name": "AA路口"} ,\r\n{ "station_name": "BB口"},\r\n{ "station_name": "CC口"}\r\n]\r\n',
-  `range_name` varchar(255) NOT NULL COMMENT '区间名字（通常是首尾站点名称）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of transport_range

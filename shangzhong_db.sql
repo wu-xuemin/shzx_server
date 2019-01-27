@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-20 20:11:34
+Date: 2019-01-27 19:47:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -75,14 +75,14 @@ DROP TABLE IF EXISTS `bus_base_info`;
 CREATE TABLE `bus_base_info` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `number` varchar(255) NOT NULL COMMENT '校车编号',
-  `plate_number` varchar(255) NOT NULL COMMENT '车牌号',
-  `plate_number_pic` varchar(255) NOT NULL COMMENT '牌照照片存放路径',
-  `bus_supplier` varchar(255) NOT NULL COMMENT '供应商，外键',
-  `bus_mom` int(10) unsigned NOT NULL COMMENT '巴士妈妈，外键',
-  `bus_driver` int(10) unsigned NOT NULL COMMENT '司机',
-  `school_partition` varchar(255) NOT NULL COMMENT '浦东校区；浦西校区',
-  `ipad_meid` varchar(255) NOT NULL COMMENT 'ipad绑定的设备号',
-  `valid` tinyint(10) unsigned NOT NULL,
+  `plate_number` varchar(255) DEFAULT NULL COMMENT '车牌号',
+  `plate_number_pic` varchar(255) DEFAULT NULL COMMENT '牌照照片存放路径',
+  `bus_supplier` varchar(255) DEFAULT NULL COMMENT '供应商，外键',
+  `bus_mom` int(10) unsigned DEFAULT NULL COMMENT '巴士妈妈，外键',
+  `bus_driver` int(10) unsigned DEFAULT NULL COMMENT '司机',
+  `school_partition` varchar(255) DEFAULT NULL COMMENT '浦东校区；浦西校区',
+  `ipad_meid` varchar(255) DEFAULT NULL COMMENT 'ipad绑定的设备号',
+  `valid` tinyint(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_bus_mom` (`bus_mom`),
   KEY `fk_bus_driver` (`bus_driver`),
@@ -106,13 +106,13 @@ DROP TABLE IF EXISTS `bus_line`;
 CREATE TABLE `bus_line` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `bus_base_info` int(10) unsigned NOT NULL COMMENT '校车基本信息',
-  `transport_range` int(10) unsigned NOT NULL COMMENT '班车区间，包含了夜班路线',
   `mode` varchar(255) NOT NULL COMMENT '"早班“、”午班“、”晚班“',
+  `stations` text,
+  `name` varchar(255) DEFAULT NULL,
+  `valid` int(10) unsigned DEFAULT '1' COMMENT '1表示有效，0表示无效',
   PRIMARY KEY (`id`),
   KEY `fk_bus_base_info` (`bus_base_info`),
-  KEY `fk_transport_range` (`transport_range`),
-  CONSTRAINT `fk_bus_base_info` FOREIGN KEY (`bus_base_info`) REFERENCES `bus_base_info` (`id`),
-  CONSTRAINT `fk_transport_range` FOREIGN KEY (`transport_range`) REFERENCES `transport_range` (`id`)
+  CONSTRAINT `fk_bus_base_info` FOREIGN KEY (`bus_base_info`) REFERENCES `bus_base_info` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
@@ -139,7 +139,7 @@ CREATE TABLE `bus_stations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `station_name` varchar(255) NOT NULL COMMENT '站点名称',
   `gps_info` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`,`station_name`),
   KEY `station_name` (`station_name`(191))
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
 
@@ -215,7 +215,7 @@ CREATE TABLE `picked_students_info` (
   KEY `fk_transport_record_id` (`transport_record_id`),
   CONSTRAINT `fk_student_id` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   CONSTRAINT `fk_transport_record_id` FOREIGN KEY (`transport_record_id`) REFERENCES `transport_record` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of picked_students_info
@@ -234,6 +234,45 @@ INSERT INTO `picked_students_info` VALUES ('34', '23', '2019-01-12 11:07:36', '2
 INSERT INTO `picked_students_info` VALUES ('35', '23', '2019-01-12 11:07:54', '20');
 INSERT INTO `picked_students_info` VALUES ('37', '22', '2019-01-14 10:28:54', '1');
 INSERT INTO `picked_students_info` VALUES ('39', '19', '2019-01-12 08:37:26', '16');
+INSERT INTO `picked_students_info` VALUES ('40', '46', '2019-01-22 00:30:42', '25');
+INSERT INTO `picked_students_info` VALUES ('41', '46', '2019-01-22 00:31:48', '25');
+INSERT INTO `picked_students_info` VALUES ('42', '47', '2019-01-22 00:33:09', '25');
+INSERT INTO `picked_students_info` VALUES ('43', '47', '2019-01-22 00:33:43', '25');
+INSERT INTO `picked_students_info` VALUES ('44', '48', '2019-01-22 00:39:42', '25');
+INSERT INTO `picked_students_info` VALUES ('45', '48', '2019-01-22 00:40:02', '25');
+INSERT INTO `picked_students_info` VALUES ('46', '48', '2019-01-22 00:42:20', '25');
+INSERT INTO `picked_students_info` VALUES ('47', '49', '2019-01-22 00:45:02', '25');
+INSERT INTO `picked_students_info` VALUES ('48', '51', '2019-01-22 01:05:15', '25');
+INSERT INTO `picked_students_info` VALUES ('49', '52', '2019-01-22 01:49:48', '1');
+INSERT INTO `picked_students_info` VALUES ('50', '52', '2019-01-22 01:51:17', '1');
+INSERT INTO `picked_students_info` VALUES ('51', '52', '2019-01-22 01:51:40', '1');
+INSERT INTO `picked_students_info` VALUES ('52', '52', '2019-01-22 01:52:04', '1');
+INSERT INTO `picked_students_info` VALUES ('53', '52', '2019-01-22 01:52:10', '1');
+INSERT INTO `picked_students_info` VALUES ('54', '53', '2019-01-22 01:53:24', '25');
+INSERT INTO `picked_students_info` VALUES ('55', '53', '2019-01-22 01:53:32', '26');
+INSERT INTO `picked_students_info` VALUES ('56', '54', '2019-01-22 08:11:15', '25');
+INSERT INTO `picked_students_info` VALUES ('57', '54', '2019-01-22 08:12:23', '25');
+INSERT INTO `picked_students_info` VALUES ('58', '55', '2019-01-22 08:17:28', '25');
+INSERT INTO `picked_students_info` VALUES ('59', '55', '2019-01-22 08:21:16', '25');
+INSERT INTO `picked_students_info` VALUES ('60', '55', '2019-01-22 08:21:59', '25');
+INSERT INTO `picked_students_info` VALUES ('61', '56', '2019-01-22 08:25:54', '25');
+INSERT INTO `picked_students_info` VALUES ('62', '57', '2019-01-22 08:30:07', '25');
+INSERT INTO `picked_students_info` VALUES ('63', '58', '2019-01-22 11:22:53', '1');
+INSERT INTO `picked_students_info` VALUES ('64', '59', '2019-01-22 11:28:52', '1');
+INSERT INTO `picked_students_info` VALUES ('65', '59', '2019-01-22 11:29:21', '25');
+INSERT INTO `picked_students_info` VALUES ('66', '59', '2019-01-22 11:32:08', '1');
+INSERT INTO `picked_students_info` VALUES ('67', '59', '2019-01-22 11:35:20', '25');
+INSERT INTO `picked_students_info` VALUES ('68', '60', '2019-01-22 11:40:49', '1');
+INSERT INTO `picked_students_info` VALUES ('69', '60', '2019-01-22 11:41:11', '25');
+INSERT INTO `picked_students_info` VALUES ('70', '60', '2019-01-22 20:23:11', '16');
+INSERT INTO `picked_students_info` VALUES ('71', '60', '2019-01-22 20:41:17', '17');
+INSERT INTO `picked_students_info` VALUES ('72', '60', '2019-01-22 20:43:45', '18');
+INSERT INTO `picked_students_info` VALUES ('73', '57', '2019-01-22 20:46:01', '18');
+INSERT INTO `picked_students_info` VALUES ('74', '57', '2019-01-22 20:49:14', '16');
+INSERT INTO `picked_students_info` VALUES ('75', '57', '2019-01-22 20:49:44', '17');
+INSERT INTO `picked_students_info` VALUES ('76', '57', '2019-01-22 20:52:13', '19');
+INSERT INTO `picked_students_info` VALUES ('77', '61', '2019-01-22 21:01:12', '21');
+INSERT INTO `picked_students_info` VALUES ('78', '58', '2019-01-22 21:20:13', '23');
 
 -- ----------------------------
 -- Table structure for `role`
@@ -295,7 +334,7 @@ INSERT INTO `student` VALUES ('18', 'XH003', '/shzx/xh003.png', '王小丫', '1'
 INSERT INTO `student` VALUES ('19', 'xh021', '/shzx/xh021.png', '张晓婷', '9', '39', '46', '16', '16', '');
 INSERT INTO `student` VALUES ('20', 'xh020', '/shzx/xh020.png', '黄丽', '10', '40', '48', '19', '19', '');
 INSERT INTO `student` VALUES ('21', 'xh023', '/shzx/xh023.png', '王语嫣', '10', '41', '47', '11', '19', '');
-INSERT INTO `student` VALUES ('23', 'XH022', '/shzx/xh022.png', '王笑笑', '2', '34', '42', '23', '23', '');
+INSERT INTO `student` VALUES ('23', '4321', '/shzx/xh022.png', '刘亦菲', '2', '34', '42', '23', '23', '');
 INSERT INTO `student` VALUES ('24', 'xh0023', '/shzx/xh000023.png', '张成', '3', '38', '43', '13', '13', '');
 INSERT INTO `student` VALUES ('25', 'xh222', '/shzx/xh222.png', '高圆圆', '1', '34', '42', '22', '22', '');
 INSERT INTO `student` VALUES ('26', 'xh444', '/shzx/xh444.png', '吴彦祖', '1', '34', '42', '23', '23', '');
@@ -337,7 +376,7 @@ CREATE TABLE `transport_record` (
   KEY `fk_current_station` (`current_station`),
   CONSTRAINT `fk_bus_line` FOREIGN KEY (`bus_line`) REFERENCES `bus_line` (`id`),
   CONSTRAINT `fk_current_station` FOREIGN KEY (`current_station`) REFERENCES `bus_stations` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of transport_record
@@ -359,6 +398,25 @@ INSERT INTO `transport_record` VALUES ('25', '2019-01-14', '38', '11');
 INSERT INTO `transport_record` VALUES ('26', '2019-01-14', '38', '12');
 INSERT INTO `transport_record` VALUES ('27', '2019-01-14', '38', '12');
 INSERT INTO `transport_record` VALUES ('28', '2019-01-14', '38', '12');
+INSERT INTO `transport_record` VALUES ('43', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('44', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('45', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('46', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('47', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('48', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('49', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('50', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('51', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('52', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('53', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('54', '2019-01-22', '34', '21');
+INSERT INTO `transport_record` VALUES ('55', '2019-01-22', '34', '21');
+INSERT INTO `transport_record` VALUES ('56', '2019-01-22', '34', '21');
+INSERT INTO `transport_record` VALUES ('57', '2019-01-22', '34', '21');
+INSERT INTO `transport_record` VALUES ('58', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('59', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('60', '2019-01-22', '42', '21');
+INSERT INTO `transport_record` VALUES ('61', '2019-01-22', '41', null);
 
 -- ----------------------------
 -- Table structure for `user`

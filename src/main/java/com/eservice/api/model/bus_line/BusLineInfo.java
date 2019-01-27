@@ -7,14 +7,14 @@ public class BusLineInfo extends BusLine{
     /**
      * 校车编号
      */
-    private String number;
+    private String busNumber;
 
-    public String getNumber() {
-        return number;
+    public String getBusNumber() {
+        return busNumber;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setBusNumber(String busNumber) {
+        this.busNumber = busNumber;
     }
 
     /**

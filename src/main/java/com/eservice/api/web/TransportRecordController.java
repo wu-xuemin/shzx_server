@@ -58,7 +58,7 @@ public class TransportRecordController {
     @Value("${debug.flag}")
     private String debugFlag;
 
-    @ApiOperation("增加接送班次记录，一趟车对应一条记录，比如在开始行程时调用该接口, 注意参数中的日期会在服务端重置，即以服务端时间为准")
+    @ApiOperation("增加接送班次记录，一趟车对应一条记录（午班一趟车算两次，学生上车刷脸到开始行程前算一次，行程开始后算一次），比如在开始行程时调用该接口, 注意参数中的日期会在服务端重置，即以服务端时间为准")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "date", value = " 时间，留空")})
     @PostMapping("/add")
