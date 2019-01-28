@@ -133,8 +133,31 @@ public class TransportRecordInfo extends  TransportRecord {
         this.currentStationName = currentStationName;
     }
 
-    //todo
-//    private String
+    /**
+     * 该线路的各个站点
+     */
+    private String busLineStations;
+
+    public String getBusLineStations() {
+        return busLineStations;
+    }
+
+    public void setBusLineStations(String busLineStations) {
+        this.busLineStations = busLineStations;
+    }
+
+    /**
+     * 该线路的名称
+     */
+    private String busLineName;
+
+    public String getBusLineName() {
+        return busLineName;
+    }
+
+    public void setBusLineName(String busLineName) {
+        this.busLineName = busLineName;
+    }
 
     private String studentHeadImg;
 
