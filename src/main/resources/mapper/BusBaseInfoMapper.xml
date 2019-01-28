@@ -36,28 +36,25 @@
     <result column="bus_mom_account" jdbcType="VARCHAR" property="busMomAccount" />
     <result column="bus_driver_name" jdbcType="VARCHAR" property="busDriverName" />
     <result column="bus_driver_account" jdbcType="VARCHAR" property="busDriverAccount" />
+    <result column="bus_line_name" jdbcType="VARCHAR" property="busLineName" />
 
   </resultMap>
   <select id="getBusBaseInfo" resultMap="BusBaseFullInfoResultMap">
-    SELECT
-        bbi.*,
-      // todo
---       transport_range.range_name AS bus_range_name,
---         bus_supplier.`name` AS bus_supplier_name,
-        bbi.bus_supplier,
-        user_bus_mom.`name` AS bus_mom_name,
-        user_bus_mom.account AS bus_mom_account,
-        user_bus_mom.*,
-        user_driver.`name` as bus_driver_name,
-        user_driver.account as bus_driver_account,
-        user_driver.*
-    FROM
-        bus_base_info AS bbi
---     LEFT JOIN bus_supplier ON bus_supplier.id = bbi.bus_supplier
-    LEFT JOIN `user` AS user_driver ON user_driver.id = bbi.bus_driver
-    LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bbi.bus_mom
-    LEFT JOIN bus_line AS bl ON bl.bus_base_info = bbi.id
---     LEFT JOIN transport_range ON transport_range.id = bl.transport_range
+      SELECT
+      bbi.*,
+      bl.`name` as bus_line_name,
+      bl.*,
+      user_bus_mom.`name` AS bus_mom_name,
+      user_bus_mom.account AS bus_mom_account,
+      user_bus_mom.*,
+      user_driver.`name` as bus_driver_name,
+      user_driver.account as bus_driver_account,
+      user_driver.*
+      FROM
+      bus_base_info AS bbi
+      LEFT JOIN `user` AS user_driver ON user_driver.id = bbi.bus_driver
+      LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bbi.bus_mom
+      LEFT JOIN bus_line AS bl ON bl.bus_base_info = bbi.id
     WHERE
         1 = 1
     <if test="schoolPartition != null and schoolPartition != ''">
@@ -65,8 +62,8 @@
     </if>
 
     <if test="keyWord == null or keyWord == ''">
-      <if test="rangeName != null and rangeName != ''">
-        AND range_name = #{rangeName}
+      <if test="busLineName != null and busLineName != ''">
+        AND  bl.`name` = #{busLineName}
       </if>
 
       <if test="busNumber != null and busNumber != ''">
@@ -87,10 +84,10 @@
     </if>
     <if test="keyWord != null and keyWord != ''">
       and
---       (range_name LIKE CONCAT('%', '${keyWord}', '%')
+       (bl.`name`  LIKE CONCAT('%', '${keyWord}', '%')
       OR bbi.number LIKE CONCAT('%', '${keyWord}', '%')
       OR user_bus_mom.account LIKE CONCAT('%', '${keyWord}', '%')
-      OR bbi.`bus_supplier` LIKE CONCAT('%', '${keyWord}', '%')
+      OR bbi.`bus_supplier` LIKE  CONCAT('%', '${keyWord}', '%')
       )
     </if>
 

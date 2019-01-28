@@ -43,4 +43,14 @@ public class BusBaseFullInfo extends BusBaseInfo {
     public void setBusDriverAccount(String busDriverAccount) {
         this.busDriverAccount = busDriverAccount;
     }
+
+    private String busLineName;
+
+    public String getBusLineName() {
+        return busLineName;
+    }
+
+    public void setBusLineName(String busLineName) {
+        this.busLineName = busLineName;
+    }
 }

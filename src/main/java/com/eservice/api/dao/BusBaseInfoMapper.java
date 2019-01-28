@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BusBaseInfoMapper extends Mapper<BusBaseInfo> {
     List<BusBaseFullInfo> getBusBaseInfo(@Param("busNumber") String busNumber,
-                                         @Param("rangeName") String rangeName,
+                                         @Param("busLineName") String busLineName,
                                          @Param("busDriverAccount") String busDriverAccount,
                                          @Param("busMomAccount") String busMomAccount,
                                          @Param("busSupplierName") String busSupplierName,

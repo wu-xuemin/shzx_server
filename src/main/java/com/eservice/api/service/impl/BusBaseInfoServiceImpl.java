@@ -23,8 +23,8 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
     @Resource
     private BusBaseInfoMapper busBaseInfoMapper;
 
-    public List<BusBaseFullInfo> getBusBaseInfo(String busNumber,String rangeName,String busDriverAccount,String busMomAccount,String busSupplierName, String schoolPartition,String keyWord){
-        return busBaseInfoMapper.getBusBaseInfo(busNumber,rangeName,busDriverAccount,busMomAccount,busSupplierName,schoolPartition,keyWord);
+    public List<BusBaseFullInfo> getBusBaseInfo(String busNumber,String busLineName,String busDriverAccount,String busMomAccount,String busSupplierName, String schoolPartition,String keyWord){
+        return busBaseInfoMapper.getBusBaseInfo(busNumber,busLineName,busDriverAccount,busMomAccount,busSupplierName,schoolPartition,keyWord);
     }
 
 

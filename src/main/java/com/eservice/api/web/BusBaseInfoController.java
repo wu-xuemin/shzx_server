@@ -68,7 +68,7 @@ public class BusBaseInfoController {
     @ApiOperation("根据校车编号等 去查询校车详情包括巴士妈妈名字等")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "busNumber", value = " 校车编号"),
-            @ApiImplicitParam(paramType = "query", name = "rangeName", value = " 区间名称"),
+            @ApiImplicitParam(paramType = "query", name = "busLineName", value = " 线路名称"),
             @ApiImplicitParam(paramType = "query", name = "busDriverAccount", value = " 司机账号"),
             @ApiImplicitParam(paramType = "query", name = "busMomAccount", value = " 巴士妈妈账号"),
             @ApiImplicitParam(paramType = "query", name = "busSupplierName", value = " 供应商名称"),
@@ -78,7 +78,7 @@ public class BusBaseInfoController {
     @PostMapping("/getBusBaseInfo")
     public Result getBusBaseInfo(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                                  String busNumber,
-                                 String rangeName,
+                                 String busLineName,
                                  String busDriverAccount,
                                  String busMomAccount,
                                  String busSupplierName,
@@ -86,7 +86,7 @@ public class BusBaseInfoController {
                                  String keyWord
                                  ) {
         PageHelper.startPage(page, size);
-        List<BusBaseFullInfo> list = busBaseInfoService.getBusBaseInfo(busNumber, rangeName, busDriverAccount, busMomAccount, busSupplierName,schoolPartition,keyWord);
+        List<BusBaseFullInfo> list = busBaseInfoService.getBusBaseInfo(busNumber, busLineName, busDriverAccount, busMomAccount, busSupplierName,schoolPartition,keyWord);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
