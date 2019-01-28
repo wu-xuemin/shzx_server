@@ -22,12 +22,12 @@ public class PickedStudentsBusView extends PickedStudentsInfo {
         this.currentStation = currentStation;
     }
 
-    public String getStationName() {
-        return stationName;
+    public String getCurrentStationName() {
+        return currentStationName;
     }
 
-    public void setStationName(String stationName) {
-        this.stationName = stationName;
+    public void setCurrentStationName(String currentStationName) {
+        this.currentStationName = currentStationName;
     }
 
     public String getModeName() {
@@ -96,11 +96,29 @@ public class PickedStudentsBusView extends PickedStudentsInfo {
 
     private Integer busLine;
     private Integer currentStation;
-    private String stationName;
+//    private String stationName;
+    private String currentStationName;
     private String modeName;
-    //todo
-//    private Integer transportRange;
-//    private String rangeName;
+
+    private String busLineStations;
+    private String busLineName;
+
+    public String getBusLineStations() {
+        return busLineStations;
+    }
+
+    public void setBusLineStations(String busLineStations) {
+        this.busLineStations = busLineStations;
+    }
+
+    public String getBusLineName() {
+        return busLineName;
+    }
+
+    public void setBusLineName(String busLineName) {
+        this.busLineName = busLineName;
+    }
+
     private String studentName;
     private String studentNumber;
     private String headImg;

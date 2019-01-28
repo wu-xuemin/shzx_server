@@ -103,7 +103,7 @@ public class PickedStudentsInfoController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
-
+    @ApiOperation("根据校车+站点（当前站点）+年级+班级 查询学生乘车记录")
     @PostMapping("/selectStudentBus")
     public Result selectStudentBus(@RequestParam(defaultValue = "0") Integer page,
                                    @RequestParam(defaultValue = "0") Integer size,
