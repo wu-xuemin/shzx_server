@@ -28,12 +28,11 @@
     <result column="number" jdbcType="VARCHAR" property="busNumber" />
     <result column="plate_number" jdbcType="VARCHAR" property="plateNumber" />
     <result column="plate_number_pic" jdbcType="VARCHAR" property="plateNumberPic" />
-    <result column="bus_supplier_name" jdbcType="VARCHAR" property="busSupplierName" />
     <result column="bus_mom_account" jdbcType="VARCHAR" property="busMomAccount" />
     <result column="bus_driver_account" jdbcType="VARCHAR" property="busDriverAccount" />
     <result column="school_partition" jdbcType="VARCHAR" property="schoolPartition" />
     <result column="ipad_meid" jdbcType="VARCHAR" property="ipadMeid" />
-    <result column="valid" jdbcType="TINYINT" property="valid" />
+    <result column="bus_supplier" jdbcType="VARCHAR" property="busSupplier" />
   </resultMap>
   <resultMap id="StudentInfoResultMap" type="com.eservice.api.model.student.StudentInfo">
     <!--
@@ -58,19 +57,14 @@
 
   <select id="getBusLineInfoByBusMomAccountAndBusMode" resultMap="BusLineInfoResultMap">
     SELECT
-        bus_line.*, bus_base_info.number,
-        bus_base_info.plate_number,
-        bus_base_info.plate_number_pic,
-        bus_supplier.`name` AS bus_supplier_name,
-        user_bus_mom.account AS bus_mom_account,
-        user_bus_driver.account AS bus_driver_account,
-        bus_base_info.school_partition,
-	    bus_base_info.ipad_meid
+    bus_line.*,
+    bus_base_info.*,
+    user_bus_mom.account AS bus_mom_account,
+    user_bus_driver.account AS bus_driver_account
     FROM
-        bus_line
+    bus_line
     LEFT JOIN bus_base_info ON bus_line.bus_base_info = bus_base_info.id
     LEFT JOIN `user` AS u ON bus_base_info.bus_mom = u.id
-    LEFT JOIN bus_supplier ON bus_supplier.id = bus_base_info.bus_supplier
     LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bus_base_info.bus_mom
     LEFT JOIN `user` AS user_bus_driver ON user_bus_driver.id = bus_base_info.bus_driver
     WHERE
@@ -81,19 +75,14 @@
   </select>
   <select id="getBusLineInfoBySchoolPartition" resultMap="BusLineInfoResultMap">
     SELECT
-        bus_line.*, bus_base_info.number,
-        bus_base_info.plate_number,
-        bus_base_info.plate_number_pic,
-        bus_supplier.`name` AS bus_supplier_name,
-        user_bus_mom.account AS bus_mom_account,
-        user_bus_driver.account AS bus_driver_account,
-        bus_base_info.school_partition,
-	    bus_base_info.ipad_meid
+      bus_line.*,
+      bus_base_info.*,
+      user_bus_mom.account AS bus_mom_account,
+      user_bus_driver.account AS bus_driver_account
     FROM
         bus_line
     LEFT JOIN bus_base_info ON bus_line.bus_base_info = bus_base_info.id
     LEFT JOIN `user` AS u ON bus_base_info.bus_mom = u.id
-    LEFT JOIN bus_supplier ON bus_supplier.id = bus_base_info.bus_supplier
     LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bus_base_info.bus_mom
     LEFT JOIN `user` AS user_bus_driver ON user_bus_driver.id = bus_base_info.bus_driver
     WHERE

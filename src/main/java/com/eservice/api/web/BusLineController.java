@@ -92,7 +92,7 @@ public class BusLineController {
      * @param busMomAccount
      * @return
      */
-    @ApiOperation("根据巴士妈妈账号和班次来获得巴士妈妈信息,不同班次允许同个巴士妈妈")
+    @ApiOperation("根据巴士妈妈账号和班次来获得巴士线路等信息,不同班次允许同个巴士妈妈")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busMomAccount", value = "巴士妈妈账号，具有唯一性",required = true),
             @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“早班”、“午班”两种，晚班不支持",required = true)})
@@ -246,7 +246,7 @@ public class BusLineController {
     @ApiOperation("根据校车编号/早午班 来获得该校车的线路信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号，比如 xc001",required = true),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = " 早班 午班,不填则不限制")
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = " 早班 午班")
     })
     @PostMapping("/getBusLineInfoByBusNumberAndBusMode")
     public Result getBusLineInfoByBusNumberAndBusMode(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,

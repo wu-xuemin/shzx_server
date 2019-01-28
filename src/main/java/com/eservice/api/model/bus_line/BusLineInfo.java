@@ -44,19 +44,6 @@ public class BusLineInfo extends BusLine{
     }
 
     /**
-     * 供应商名字
-     */
-    private String busSupplierName;
-
-    public void setBusSupplierName(String busSupplierName) {
-        this.busSupplierName = busSupplierName;
-    }
-
-    public String getBusSupplierName() {
-        return busSupplierName;
-    }
-
-    /**
      * 巴士妈妈账号(一般就是名字）
      */
     private String busMomAccount;
@@ -117,4 +104,14 @@ public class BusLineInfo extends BusLine{
 //    public Byte getValid() {
 //        return valid;
 //    }
+
+    private String busSupplier;
+
+    public String getBusSupplier() {
+        return busSupplier;
+    }
+
+    public void setBusSupplier(String busSupplier) {
+        this.busSupplier = busSupplier;
+    }
 }
