@@ -1,12 +1,19 @@
 package com.eservice.api.service.util;
 
+import sun.misc.BASE64Encoder;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -16,6 +23,20 @@ import java.util.Date;
  */
 public class Util {
 
+
+    public static String getBase64ImgStr(String path) {
+        String result = "";
+        try {
+            ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
+            BufferedImage image = ImageIO.read(new File(path));
+            ImageIO.write(image, "png", byteArrayOut);
+            String tmp = new String(Base64.getEncoder().encode(byteArrayOut.toByteArray()));
+            result = tmp.replaceAll("\\r\\n", "");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     private static char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7',
             '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};

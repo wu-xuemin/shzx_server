@@ -7,6 +7,8 @@ import com.eservice.api.service.StudentService;
 import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.common.Constant;
 import com.eservice.api.service.impl.StudentServiceImpl;
+import com.eservice.api.service.park.SyncStuService;
+import com.eservice.api.service.park.model.WinVisitorRecord;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -14,10 +16,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -41,6 +40,9 @@ public class StudentController {
 
     @Resource
     private CommonService commonService;
+
+    @Resource
+    private SyncStuService syncStuService;
 
     @ApiOperation("增加学生信息，同时保存学生头像")
     @PostMapping("/add")
@@ -101,6 +103,23 @@ public class StudentController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
+    @PostMapping("/totalFaceNumber")
+    public Result totalFaceNumber() {
+        return ResultGenerator.genSuccessResult(syncStuService.getStudentList().size());
+    }
+
+    @PostMapping("/totalPlatformNumber")
+    public Result totalPlatformNumber() {
+        return ResultGenerator.genSuccessResult(studentService.findAll().size());
+    }
+
+    @PostMapping("/syncPic")
+    public Result syncPic() {
+        List<Student> platformStuList = studentService.findAll();
+        return ResultGenerator.genSuccessResult(syncStuService.syncStuPicToFacePlatform(platformStuList));
+    }
+
 
     @ApiOperation("根据校车编号和模式（班次），返回该校车班次的计划乘坐的学生")
     @ApiImplicitParams({
