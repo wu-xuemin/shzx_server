@@ -2,14 +2,16 @@ package com.eservice.api.web;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.banji.Banji;
-import com.eservice.api.service.BanjiService;
+import com.eservice.api.service.impl.BanjiServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ import java.util.List;
 @Api(description = "班级信息管理")
 public class BanjiController {
     @Resource
-    private BanjiService banjiService;
+    private BanjiServiceImpl banjiService;
 
     @PostMapping("/add")
     public Result add(Banji banji) {
@@ -55,4 +57,13 @@ public class BanjiController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
+    @ApiOperation("从excel里读取班级信息")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\国际部学生基本信息20190126.xls") })
+    @PostMapping("/parseInfoFromExcel")
+    public Result parseInfoFromExcel(@RequestParam String fileName) {
+        Result banji = banjiService.readFromExcel(fileName);
+        return ResultGenerator.genSuccessResult(banji);
+    }
+
 }

@@ -8,9 +8,11 @@ import com.eservice.api.model.bus_line.BusLineInfo;
 import com.eservice.api.model.student.Student;
 import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.service.BusLineService;
+import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.impl.BusBaseInfoServiceImpl;
 import com.eservice.api.service.impl.BusLineServiceImpl;
 import com.eservice.api.service.impl.StudentServiceImpl;
+import com.github.pagehelper.Constant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -131,6 +133,8 @@ public class BusLineController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
+    // todo ... 并移到 service里
     @PostMapping("/readFromExcel")
     public Result readFromExcel(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                               @RequestParam String fileName,
@@ -166,13 +170,13 @@ public class BusLineController {
                         HSSFCell studentNumber = hssfRow.getCell(3);
                         HSSFCell studentName = hssfRow.getCell(4);
                         HSSFCell studentPhones = hssfRow.getCell(5);
-                        busLineExcelHelper.setBusNumber(  getValue(busNumber));
+                        busLineExcelHelper.setBusNumber(CommonService.getValue(busNumber));
                         SimpleDateFormat sdf  = new SimpleDateFormat("hh:mm");
                         busLineExcelHelper.setTimeRemark(  sdf.format(timeRemark.getDateCellValue()));
-                        busLineExcelHelper.setStationName(  getValue(busStationName));
-                        busLineExcelHelper.setStudentNumber(  getValue(studentNumber));
-                        busLineExcelHelper.setStudentName(  getValue(studentName));
-                        busLineExcelHelper.setStudentPhones(  getValue(studentPhones));
+                        busLineExcelHelper.setStationName(  CommonService.getValue(busStationName));
+                        busLineExcelHelper.setStudentNumber(  CommonService.getValue(studentNumber));
+                        busLineExcelHelper.setStudentName(  CommonService.getValue(studentName));
+                        busLineExcelHelper.setStudentPhones(  CommonService.getValue(studentPhones));
                         list.add(busLineExcelHelper);
                         logger.info("=====" + busLineExcelHelper.toString());
 
@@ -228,19 +232,6 @@ public class BusLineController {
         }
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
-    }
-
-    private String getValue(HSSFCell hssfCell) {
-        if (hssfCell.getCellType() == hssfCell.CELL_TYPE_BOOLEAN) {
-            // 返回布尔类型的值
-            return String.valueOf(hssfCell.getBooleanCellValue());
-        } else if (hssfCell.getCellType() == hssfCell.CELL_TYPE_NUMERIC) {
-            // 返回数值类型的值
-            return String.valueOf(hssfCell.getNumericCellValue());
-        } else {
-            // 返回字符串类型的值
-            return String.valueOf(hssfCell.getStringCellValue());
-        }
     }
 
     @ApiOperation("根据校车编号/早午班 来获得该校车的线路信息")

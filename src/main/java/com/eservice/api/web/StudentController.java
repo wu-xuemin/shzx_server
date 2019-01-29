@@ -43,7 +43,6 @@ public class StudentController {
     private CommonService commonService;
 
     @ApiOperation("增加学生信息，同时保存学生头像")
-    // todo  这里参数是否改为具体的字符串而非外键比较方便前端？
     @PostMapping("/add")
     public Result add(Student student,
                       MultipartFile file) {
@@ -53,14 +52,17 @@ public class StudentController {
         }
         String message = null;
         String fileNameWithPath;
-        String resultPathStudentImg = null;
         if(file != null) {
             try {
-                fileNameWithPath = commonService.saveFile(studentImgDir, file, student.getStudentNumber() , student.getName(), 0);
+                fileNameWithPath = commonService.saveFile(studentImgDir, file, student.getStudentNumber() , student.getName());
 
                 if (fileNameWithPath != null) {
-                    resultPathStudentImg = fileNameWithPath;
-                    student.setHeadImg(resultPathStudentImg);
+                    /**
+                     * HeadImg，不保存绝对路径，只保存文件名，方便windows调试。
+                     * 命名方式： 学生照片命名方式为学号加姓名的方式：A123456_张小明.png
+                     * TODO: 少了文件后缀
+                     */
+                    student.setHeadImg(student.getStudentNumber() + "_" + student.getName());
                 } else {
                     message = "failed to save file, no student added of " + student.getName();
                     throw new RuntimeException();

@@ -1,6 +1,7 @@
 package com.eservice.api.service.common;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,21 +35,19 @@ public class CommonService {
      * @param file      文件
      * @param tag1，比如学号
      * @param tag2  比如姓名
-     * @param number    表示第几个文件
      * @return 文件路径
      * eg: xh333_zhangSan_2018-07-13-16-17-50_1.png
      */
     public String saveFile(String path,
                            MultipartFile file,
                            @RequestParam(defaultValue = "") String tag1,
-                           @RequestParam(defaultValue = "") String tag2,
-                           @RequestParam(defaultValue = "0") int number) throws IOException {
+                           @RequestParam(defaultValue = "") String tag2 ) throws IOException {
         String targetFileName = null;
         try {
             if (path != null && !file.isEmpty()) {
 
                 String fileName = file.getOriginalFilename();
-                targetFileName = path + formatFileName(fileName.replaceAll("/", "-"), tag1.replaceAll("/", "-"), tag2.replaceAll("/", "-"), number);
+                targetFileName = path + formatFileName(fileName.replaceAll("/", "-"), tag1.replaceAll("/", "-"), tag2.replaceAll("/", "-"));
                 if(debugFlag.equalsIgnoreCase("true")) {
                     logger.info("====CommonService.saveFile(): targetFileName  ========" + targetFileName);
                 }
@@ -71,17 +70,11 @@ public class CommonService {
     public String formatFileName(
                                  String fileName,
                                  @RequestParam(defaultValue = "") String tag1,
-                                 @RequestParam(defaultValue = "") String tag2,
-                                 @RequestParam(defaultValue = "0") int number) {
+                                 @RequestParam(defaultValue = "") String tag2) {
         String targetFileName = "";
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        //指定北京时间
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-        String dateStr = formatter.format(date);
-
-        targetFileName = tag1 + "_" + tag2 + "_"  + dateStr + "_" + number + suffixName;
+        targetFileName = tag1 + "_" + tag2 + suffixName;
+        logger.info("targetFileName:" + targetFileName);
         return targetFileName;
     }
 
@@ -259,5 +252,18 @@ public class CommonService {
         }
         return null;
 
+    }
+
+    public static String getValue(HSSFCell hssfCell) {
+        if (hssfCell.getCellType() == hssfCell.CELL_TYPE_BOOLEAN) {
+            // 返回布尔类型的值
+            return String.valueOf(hssfCell.getBooleanCellValue());
+        } else if (hssfCell.getCellType() == hssfCell.CELL_TYPE_NUMERIC) {
+            // 返回数值类型的值
+            return String.valueOf(hssfCell.getNumericCellValue());
+        } else {
+            // 返回字符串类型的值
+            return String.valueOf(hssfCell.getStringCellValue());
+        }
     }
 }
