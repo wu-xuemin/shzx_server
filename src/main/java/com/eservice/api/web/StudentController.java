@@ -60,9 +60,8 @@ public class StudentController {
                     /**
                      * HeadImg，不保存绝对路径，只保存文件名，方便windows调试。
                      * 命名方式： 学生照片命名方式为学号加姓名的方式：A123456_张小明.png
-                     * TODO: 少了文件后缀
                      */
-                    student.setHeadImg(student.getStudentNumber() + "_" + student.getName());
+                    student.setHeadImg(student.getStudentNumber() + "_" + student.getName() + file.getOriginalFilename());
                 } else {
                     message = "failed to save file, no student added of " + student.getName();
                     throw new RuntimeException();

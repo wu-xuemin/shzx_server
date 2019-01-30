@@ -88,38 +88,48 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
                     }
                     /**
                      * 班级目前不存在则增加
+                     * 注意这里不能用findby(filedName ,...)
                      */
                     Class cl = Class.forName("com.eservice.api.model.banji.Banji");
                     Field fieldClassName = cl.getDeclaredField("className");//成员名
-                    Field fieldGrade = cl.getDeclaredField("grade");
-                    Banji banjiNew = banjiService.findBy(fieldClassName.getName(), banjiExcel.getClassName());
-//                        Banji banji2 = banjiService.findBy(fieldGrade.getName(),banjiExcel.getGrade());
+                    Banji banjiExist = null;
+                    // todo, 多次导入，目前不会导致班级重复，但是会出错。必要时清一次班级数据然后重新导即可
+                    banjiExist = banjiService.findBy(fieldClassName.getName(), banjiExcel.getClassName());
                     /**
-                     * 班级名称不存在，或者存在于不同年级
-                     * TODO : 此处逻辑待更新
+                     * 班级名称不存在，则增加
                      */
-                    if ((null == banjiNew)) {
+                    if ((null == banjiExist)) {
                         banjiService.save(banji);
-
                         logger.info("add: =====" + rowNum + ":" + banjiExcel.getGrade() + "/"
                                 + banjiExcel.getClassName() + "/"
                                 + banjiExcel.getChargeTeacherName());
-                    } else {
-                        banjiService.update(banji);
+                    } else if(banjiExist != null) {
+                        if ((banjiExist.getGrade() != banji.getGrade())) {
+                            /**
+                             * 虽然班级名称存在，但是年级不同，也增加
+                             */
+                            banjiService.save(banji);
+                            logger.info("add: =====" + rowNum + ":" + banjiExcel.getGrade() + "/"
+                                    + banjiExcel.getClassName() + "/"
+                                    + banjiExcel.getChargeTeacherName());
+                        } else {
+                            /**
+                             * 班级名称存在，年级也相同，则更新
+                             */
+                            banjiService.update(banji);
 
-                        logger.info("Update: =====" + rowNum + ":" + banjiExcel.getGrade() + "/"
-                                + banjiExcel.getClassName() + "/"
-                                + banjiExcel.getChargeTeacherName());
+                            logger.info("Update: =====" + rowNum + ":" + banjiExcel.getGrade() + "/"
+                                    + banjiExcel.getClassName() + "/"
+                                    + banjiExcel.getChargeTeacherName());
+                        }
                     }
 
                 }
             }
 
         }catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

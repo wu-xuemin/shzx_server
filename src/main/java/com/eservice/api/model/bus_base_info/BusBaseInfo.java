@@ -26,7 +26,7 @@ public class BusBaseInfo {
     private String plateNumberPic;
 
     /**
-     * 供应商，外键
+     * 供应商
      */
     @Column(name = "bus_supplier")
     private String busSupplier;
