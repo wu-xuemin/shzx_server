@@ -69,4 +69,13 @@ public class BusStationsController {
         BusStations theBusStation = busStationsService.getBusStation(stationName);
         return ResultGenerator.genSuccessResult(theBusStation);
     }
+
+    @ApiOperation("从xls excel里读取站点信息")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\国际部学生基本信息20190126.xls") })
+    @PostMapping("/parseInfoFromExcel")
+    public Result parseInfoFromExcel(@RequestParam String fileName) {
+        Result banji = busStationsService.readFromExcel(fileName);
+        return ResultGenerator.genSuccessResult(banji);
+    }
+
 }

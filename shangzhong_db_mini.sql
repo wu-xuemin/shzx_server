@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-21 21:09:35
+Date: 2019-01-30 21:28:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,7 +23,7 @@ CREATE TABLE `banji` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `grade` varchar(255) NOT NULL COMMENT '年级',
   `class_name` varchar(255) NOT NULL COMMENT '班级名称',
-  `charge_teacher` int(10) unsigned NOT NULL COMMENT '班主任',
+  `charge_teacher` int(10) unsigned DEFAULT NULL COMMENT '班主任',
   PRIMARY KEY (`id`),
   KEY `fk_charge_teacher` (`charge_teacher`),
   CONSTRAINT `fk_charge_teacher` FOREIGN KEY (`charge_teacher`) REFERENCES `user` (`id`)
@@ -116,7 +116,7 @@ DROP TABLE IF EXISTS `bus_stations`;
 CREATE TABLE `bus_stations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `station_name` varchar(255) NOT NULL COMMENT '站点名称',
-  `gps_info` varchar(255) NOT NULL,
+  `gps_info` varchar(255) DEFAULT NULL,
   `fare_rate` varchar(255) DEFAULT NULL COMMENT '收费信息',
   `remark` time DEFAULT NULL COMMENT '站点的时间',
   `valid` int(11) DEFAULT NULL COMMENT '1表示有效，0表示无效',

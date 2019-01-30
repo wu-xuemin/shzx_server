@@ -62,6 +62,13 @@ public class BusLineExcelHelper extends BusLineInfo{
         this.studentPhones = studentTels;
     }
 
+    private String fareRate;
 
+    public String getFareRate() {
+        return fareRate;
+    }
 
+    public void setFareRate(String fareRate) {
+        this.fareRate = fareRate;
+    }
 }
