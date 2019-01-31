@@ -7,6 +7,8 @@ import com.eservice.api.model.user.UserDetail;
 import com.eservice.api.service.UserService;
 import com.eservice.api.service.impl.DeviceServiceImpl;
 import com.eservice.api.service.impl.UserServiceImpl;
+import com.eservice.api.service.park.SyncBusMomService;
+import com.eservice.api.service.park.model.WinVisitorRecord;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -34,6 +36,9 @@ public class UserController {
 
     @Resource
     private DeviceServiceImpl deviceService;
+
+    @Resource
+    private SyncBusMomService syncBusMomService;
 
     /**
      * 该值为default值， Android端传入的参数不能为“0”
@@ -133,6 +138,24 @@ public class UserController {
                 return ResultGenerator.genSuccessResult(user);
             }
         }
+    }
+
+    @PostMapping("/syncBusMomPicToFacePlatform")
+    public Result syncBusMomPicToFacePlatform() {
+        List<User> platformBusMomList = userService.findAllBusMom();
+        return ResultGenerator.genSuccessResult(syncBusMomService.syncBusMomPicToFacePlatform(platformBusMomList));
+    }
+
+    @PostMapping("totalBusMomNumber")
+    public Result totalBusMomNumber() {
+        List<User> platformBusMomList = userService.findAllBusMom();
+        return ResultGenerator.genSuccessResult(platformBusMomList.size());
+    }
+
+    @PostMapping("totalBusMomFaceNumber")
+    public Result totalBusMomFaceNumber() {
+        List<WinVisitorRecord> platformBusMomList = syncBusMomService.getBusMonList();
+        return ResultGenerator.genSuccessResult(platformBusMomList.size());
     }
 
 }

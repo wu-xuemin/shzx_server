@@ -197,6 +197,8 @@ public class SyncStuService {
                     try {
                         if(uploadStuPic(picBase64Data, needSyncStuList.get(i))) {
                             syncSuccessList.add(needSyncStuList.get(i));
+                        } else {
+                            syncFailList.add(needSyncStuList.get(i));
                         }
                     } catch (Exception e) {
                         syncFailList.add(needSyncStuList.get(i));

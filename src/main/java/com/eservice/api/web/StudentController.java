@@ -113,8 +113,8 @@ public class StudentController {
         return ResultGenerator.genSuccessResult(studentService.findAll().size());
     }
 
-    @PostMapping("/syncPic")
-    public Result syncPic() {
+    @PostMapping("/syncStuPicToFacePlatform")
+    public Result syncStuPicToFacePlatform() {
         List<Student> platformStuList = studentService.findAll();
         return ResultGenerator.genSuccessResult(syncStuService.syncStuPicToFacePlatform(platformStuList));
     }

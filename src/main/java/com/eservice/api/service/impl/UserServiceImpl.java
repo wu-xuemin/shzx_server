@@ -46,4 +46,8 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         return userMapper.selectUsers(account, name, roleId, valid);
     }
 
+    public List<User> findAllBusMom() {
+        return userMapper.findAllBusMom();
+    }
+
 }

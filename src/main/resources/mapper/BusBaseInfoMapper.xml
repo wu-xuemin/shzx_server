@@ -43,13 +43,10 @@
       SELECT
       bbi.*,
       bl.`name` as bus_line_name,
-      bl.*,
-      user_bus_mom.`name` AS bus_mom_name,
+      user_bus_mom.name AS bus_mom_name,
       user_bus_mom.account AS bus_mom_account,
-      user_bus_mom.*,
-      user_driver.`name` as bus_driver_name,
-      user_driver.account as bus_driver_account,
-      user_driver.*
+      user_driver.name as bus_driver_name,
+      user_driver.account as bus_driver_account
       FROM
       bus_base_info AS bbi
       LEFT JOIN `user` AS user_driver ON user_driver.id = bbi.bus_driver
@@ -90,6 +87,6 @@
       OR bbi.`bus_supplier` LIKE  CONCAT('%', '${keyWord}', '%')
       )
     </if>
-
+    GROUP BY bbi.id
   </select>
 </mapper>
