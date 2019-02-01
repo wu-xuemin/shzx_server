@@ -28,12 +28,9 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         .title("上海中学校车通行管理系统_后端接口文档_" + new Date())
-                        .description("1.0 添加学生时允许上传头像文件/student/add \n\r" +
-                                "1.1 根据站点名称 查找站点信息/bus/stations/getBusStation；\n\r" +
-                                "1.2 /transport/record/getPickingInfo返回信息中增加站点ID号。\n\r" +
-                                "2.BusBaseInfo表的busSupplier从Inter外键改为一个String字段 \n\r" +
-                                "3.在selectAbsenceStudentInfo查询缺乘学生时可以不限定班车参数\n\r" +
-                                "4.查询计划乘坐的学生getPlannedStudents不限制参数\n\r" )
+                        .description("1. 把transport_range并入bus_line，\n\r" +
+                                "2. 增加了和人脸平台的对接  \n\r"
+                        + "3. 从excel里读取班级、校车、线路等信息；\n\r")
                         .contact(new Contact("wuxuemin", "https://eservice-tech.cn/", "wuxuemin2000@126.com"))
                         .version("版本号:0.1")
                         .build())

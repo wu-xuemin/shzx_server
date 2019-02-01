@@ -71,6 +71,10 @@ public class BusLine {
 
     private String stations;
 
+    /**
+     * 某校车，比如沪A34567，早上的车号是“1”，午班，晚班的车号也是“1”.
+     * 线路的名称则为 1号车_早班、1号车_午班。
+     */
     private String name;
 
     private Integer valid;

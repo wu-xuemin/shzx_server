@@ -134,106 +134,6 @@ public class BusLineController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    // todo ... 并移到 service里
-    @PostMapping("/readFromExcel")
-    public Result readFromExcel(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
-                              @RequestParam String fileName,
-                              String busMode ) {
-        BusLineInfo busLineInfo = new BusLineInfo();
-        BusBaseInfo busBaseInfo = new BusBaseInfo();
-        PageHelper.startPage(page, size);
-        List<BusLineExcelHelper> list =   new ArrayList<BusLineExcelHelper>();
-        BusLineExcelHelper busLineExcelHelper = null;
-
-        BusLine busLine = new BusLine();
-        Student student = new Student();
-
-        File file =  new File(fileName);
-        try {
-
-            InputStream is = new FileInputStream(file);
-            HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
-            // 循环工作表Sheet
-            for (int numSheet = 0; numSheet < hssfWorkbook.getNumberOfSheets(); numSheet++) {
-                HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);
-                if (hssfSheet == null) {
-                    continue;
-                }
-                // 循环行Row
-                for (int rowNum = 2; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
-                    HSSFRow hssfRow = hssfSheet.getRow(rowNum);
-                    if (hssfRow != null) {
-                        busLineExcelHelper = new BusLineExcelHelper();
-                        HSSFCell busNumber = hssfRow.getCell(0);
-                        HSSFCell timeRemark = hssfRow.getCell(1);
-                        HSSFCell busStationName = hssfRow.getCell(2);
-                        HSSFCell studentNumber = hssfRow.getCell(3);
-                        HSSFCell studentName = hssfRow.getCell(4);
-                        HSSFCell studentPhones = hssfRow.getCell(5);
-                        busLineExcelHelper.setBusNumber(CommonService.getValue(busNumber));
-                        SimpleDateFormat sdf  = new SimpleDateFormat("hh:mm");
-                        busLineExcelHelper.setTimeRemark(  sdf.format(timeRemark.getDateCellValue()));
-                        busLineExcelHelper.setStationName(  CommonService.getValue(busStationName));
-                        busLineExcelHelper.setStudentNumber(  CommonService.getValue(studentNumber));
-                        busLineExcelHelper.setStudentName(  CommonService.getValue(studentName));
-                        busLineExcelHelper.setStudentPhones(  CommonService.getValue(studentPhones));
-                        list.add(busLineExcelHelper);
-                        logger.info("=====" + busLineExcelHelper.toString());
-
-                        //todo ,从目前的校车线路模板excel，来解析站点等 ，这样OK？
-                        /**
-                         * 保存校车编号到数据库，其他的校车数据，目前没有来源
-                         */
-                        busBaseInfo.setNumber(busLineExcelHelper.getBusNumber());
-                        // 是否存在该车号
-                        if(busBaseInfoService.findBy("number",busLineExcelHelper.getBusNumber()) != null){
-                            busBaseInfoService.update(busBaseInfo);
-                        } else {
-                            busBaseInfoService.save(busBaseInfo);
-                        }
-
-                        /**
-                         * 同个车号的站点，保存到对应的线路区间去
-                         */
-
-                        /**
-                         * 学生信息保存
-                         */
-                        if(studentService.findBy("student_number",busLineExcelHelper.getStudentNumber()) != null) {
-                            student.setStudentNumber(busLineExcelHelper.getStudentNumber());
-                            student.setName(busLineExcelHelper.getStudentName());
-                            student.setFamilyInfo(busLineExcelHelper.getStudentPhones());
-                            //TODO ...
-//                        student.setBusLineMorning(busLineExcelHelper.getBusNumber());
-                            studentService.update(student);
-                        } else {
-                            // 新增
-                            student.setStudentNumber(busLineExcelHelper.getStudentNumber());
-                            student.setName(busLineExcelHelper.getStudentName());
-                            student.setFamilyInfo(busLineExcelHelper.getStudentPhones());
-                            //TODO ...
-//                        student.setBusLineMorning(busLineExcelHelper.getBusNumber());
-                            studentService.save(student);
-                        }
-
-                    }
-                }
-            }
-
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-//        } catch (BiffException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        PageInfo pageInfo = new PageInfo(list);
-        return ResultGenerator.genSuccessResult(pageInfo);
-    }
-
     @ApiOperation("根据校车编号/早午班 来获得该校车的线路信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号，比如 xc001",required = true),
@@ -247,4 +147,13 @@ public class BusLineController {
         BusLine busLine = busLineService.getBusLineInfoByBusNumberAndBusMode(busNumber,busMode);
         return ResultGenerator.genSuccessResult(busLine);
     }
+
+    @ApiOperation("从xls excel里读取线路信息")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\xxxxx.xls") })
+    @PostMapping("/parseInfoFromExcel")
+    public Result parseInfoFromExcel(@RequestParam String fileName) {
+        Result banji = busLineService.readFromExcel(fileName);
+        return ResultGenerator.genSuccessResult(banji);
+    }
+
 }

@@ -56,6 +56,26 @@ public class BusLineInfo extends BusLine{
         return busMomAccount;
     }
 
+    private String busMomName;
+
+    private String busMomPhone;
+
+    public String getBusMomName() {
+        return busMomName;
+    }
+
+    public void setBusMomName(String busMomName) {
+        this.busMomName = busMomName;
+    }
+
+    public String getBusMomPhone() {
+        return busMomPhone;
+    }
+
+    public void setBusMomPhone(String busMomPhone) {
+        this.busMomPhone = busMomPhone;
+    }
+
     /**
      * 司机账号
      */
@@ -67,6 +87,26 @@ public class BusLineInfo extends BusLine{
 
     public String getBusDriverAccount() {
         return busDriverAccount;
+    }
+
+    public String busDriverName;
+
+    public String busDriverPhone;
+
+    public String getBusDriverName() {
+        return busDriverName;
+    }
+
+    public void setBusDriverName(String busDriverName) {
+        this.busDriverName = busDriverName;
+    }
+
+    public String getBusDriverPhone() {
+        return busDriverPhone;
+    }
+
+    public void setBusDriverPhone(String busDriverPhone) {
+        this.busDriverPhone = busDriverPhone;
     }
 
     /**
