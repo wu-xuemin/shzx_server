@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-30 21:28:36
+Date: 2019-02-02 13:07:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -98,9 +98,9 @@ CREATE TABLE `bus_line` (
   `bus_base_info` int(10) unsigned NOT NULL COMMENT '校车基本信息',
   `mode` varchar(255) NOT NULL COMMENT '"早班“、”午班“、”晚班“',
   `stations` text,
-  `name` varchar(255) DEFAULT NULL,
+  `name` varchar(160) NOT NULL DEFAULT '',
   `valid` int(10) unsigned DEFAULT '1' COMMENT '1表示有效，0表示无效',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`,`name`),
   KEY `fk_bus_base_info` (`bus_base_info`),
   CONSTRAINT `fk_bus_base_info` FOREIGN KEY (`bus_base_info`) REFERENCES `bus_base_info` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4;
@@ -278,9 +278,9 @@ CREATE TABLE `user` (
   `role_id` int(10) unsigned NOT NULL,
   `password` varchar(255) CHARACTER SET utf8 NOT NULL,
   `head_image` varchar(255) DEFAULT NULL COMMENT '头像保存位置',
-  `phone` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '电话',
+  `phone` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '电话',
   `create_time` datetime NOT NULL,
-  `valid` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '是否在职 ， “1”:在职 “0”:离职',
+  `valid` varchar(255) CHARACTER SET utf8 DEFAULT '1' COMMENT '是否在职 ， “1”:在职 “0”:离职',
   PRIMARY KEY (`id`),
   KEY `fk_u_role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)

@@ -45,7 +45,6 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
     private UserServiceImpl userService;
 
     private final Logger logger = LoggerFactory.getLogger(BanjiServiceImpl.class);
-    @PostMapping("/readFromExcel")
     public Result readFromExcel(@RequestParam String fileName ) {
         List<BanjiExcel> list =   new ArrayList<BanjiExcel>();
         BanjiExcel banjiExcel = null;

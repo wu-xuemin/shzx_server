@@ -46,7 +46,7 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
     private BusStationsServiceImpl busStationsService;
 
     private final Logger logger = LoggerFactory.getLogger(BusStationsServiceImpl.class);
-    @PostMapping("/readFromExcel")
+
     public Result readFromExcel(@RequestParam String fileName ) {
         List<BusLineExcelHelper> list =   new ArrayList<BusLineExcelHelper>();
         BusLineExcelHelper busLineExcelHelper = null;

@@ -54,7 +54,6 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
     public List<BusBaseFullInfo> getBusBaseInfo(String busNumber,String busLineName,String busDriverAccount,String busMomAccount,String busSupplierName, String schoolPartition,String keyWord){
         return busBaseInfoMapper.getBusBaseInfo(busNumber,busLineName,busDriverAccount,busMomAccount,busSupplierName,schoolPartition,keyWord);
     }
-    @PostMapping("/readFromExcel")
     public Result readFromExcel(@RequestParam String fileName ) {
         List<BusLineExcelHelper> list =   new ArrayList<BusLineExcelHelper>();
         BusLineExcelHelper busLineExcelHelper = null;

@@ -10,13 +10,13 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-02-01 18:01:32
+Date: 2019-02-02 13:07:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `banji`
+-- Table structure for banji
 -- ----------------------------
 DROP TABLE IF EXISTS `banji`;
 CREATE TABLE `banji` (
@@ -27,7 +27,7 @@ CREATE TABLE `banji` (
   PRIMARY KEY (`id`),
   KEY `fk_charge_teacher` (`charge_teacher`),
   CONSTRAINT `fk_charge_teacher` FOREIGN KEY (`charge_teacher`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of banji
@@ -37,9 +37,125 @@ INSERT INTO `banji` VALUES ('2', '1', '1年级2班', '12');
 INSERT INTO `banji` VALUES ('3', '1', '1年级3班', '13');
 INSERT INTO `banji` VALUES ('9', '2', '2年级1班', '14');
 INSERT INTO `banji` VALUES ('10', '', '2年级2班', '15');
+INSERT INTO `banji` VALUES ('11', '1年级', '1(1)', null);
+INSERT INTO `banji` VALUES ('12', '1年级', '1(2)', null);
+INSERT INTO `banji` VALUES ('13', '1年级', '1(3)', null);
+INSERT INTO `banji` VALUES ('14', '1年级', '1(4)', null);
+INSERT INTO `banji` VALUES ('15', '1年级', '1(5)', null);
+INSERT INTO `banji` VALUES ('16', '1年级', '1(6)', null);
+INSERT INTO `banji` VALUES ('17', '2年级', '2(1)', null);
+INSERT INTO `banji` VALUES ('18', '2年级', '2(2)', null);
+INSERT INTO `banji` VALUES ('19', '2年级', '2(3)', null);
+INSERT INTO `banji` VALUES ('20', '2年级', '2(4)', null);
+INSERT INTO `banji` VALUES ('21', '2年级', '2(5)', null);
+INSERT INTO `banji` VALUES ('22', '2年级', '2(6)', null);
+INSERT INTO `banji` VALUES ('23', '2年级', '2(7)', null);
+INSERT INTO `banji` VALUES ('24', '3年级', '3(1)', null);
+INSERT INTO `banji` VALUES ('25', '3年级', '3(2)', null);
+INSERT INTO `banji` VALUES ('26', '3年级', '3(3)', null);
+INSERT INTO `banji` VALUES ('27', '3年级', '3(4)', null);
+INSERT INTO `banji` VALUES ('28', '3年级', '3(5)', null);
+INSERT INTO `banji` VALUES ('29', '3年级', '3(6)', null);
+INSERT INTO `banji` VALUES ('30', '4年级', '4(1)', null);
+INSERT INTO `banji` VALUES ('31', '4年级', '4(2)', null);
+INSERT INTO `banji` VALUES ('32', '4年级', '4(3)', null);
+INSERT INTO `banji` VALUES ('33', '4年级', '4(4)', null);
+INSERT INTO `banji` VALUES ('34', '4年级', '4(5)', null);
+INSERT INTO `banji` VALUES ('35', '4年级', '4(6)', null);
+INSERT INTO `banji` VALUES ('36', '5年级', '5(1)', null);
+INSERT INTO `banji` VALUES ('37', '5年级', '5(2)', null);
+INSERT INTO `banji` VALUES ('38', '5年级', '5(3)', null);
+INSERT INTO `banji` VALUES ('39', '5年级', '5(4)', null);
+INSERT INTO `banji` VALUES ('40', '5年级', '5(5)', null);
+INSERT INTO `banji` VALUES ('41', '5年级', '5(6)', null);
+INSERT INTO `banji` VALUES ('42', '5年级', '5(7)', null);
+INSERT INTO `banji` VALUES ('43', '6年级', '6(1)', null);
+INSERT INTO `banji` VALUES ('44', '6年级', '6(2)', null);
+INSERT INTO `banji` VALUES ('45', '6年级', '6(3)', null);
+INSERT INTO `banji` VALUES ('46', '6年级', '6(4)', null);
+INSERT INTO `banji` VALUES ('47', '6年级', '6(5)', null);
+INSERT INTO `banji` VALUES ('48', '6年级', '6(6)', null);
+INSERT INTO `banji` VALUES ('49', '6年级', '6(7)', null);
+INSERT INTO `banji` VALUES ('50', '6年级', '6(8)', null);
+INSERT INTO `banji` VALUES ('51', '6年级', '6(9)', null);
+INSERT INTO `banji` VALUES ('52', '6年级', '6(10)', null);
+INSERT INTO `banji` VALUES ('53', '6年级', '6(11)', null);
+INSERT INTO `banji` VALUES ('54', '7年级', '7(1)', null);
+INSERT INTO `banji` VALUES ('55', '7年级', '7(2)', null);
+INSERT INTO `banji` VALUES ('56', '7年级', '7(3)', null);
+INSERT INTO `banji` VALUES ('57', '7年级', '7(4)', null);
+INSERT INTO `banji` VALUES ('58', '7年级', '7(5)', null);
+INSERT INTO `banji` VALUES ('59', '7年级', '7(6)', null);
+INSERT INTO `banji` VALUES ('60', '7年级', '7(7)', null);
+INSERT INTO `banji` VALUES ('61', '7年级', '7(8)', null);
+INSERT INTO `banji` VALUES ('62', '7年级', '7(9)', null);
+INSERT INTO `banji` VALUES ('63', '7年级', '7(10)', null);
+INSERT INTO `banji` VALUES ('64', '7年级', '7(11)', null);
+INSERT INTO `banji` VALUES ('65', '8年级', '8(1)', null);
+INSERT INTO `banji` VALUES ('66', '8年级', '8(2)', null);
+INSERT INTO `banji` VALUES ('67', '8年级', '8(3)', null);
+INSERT INTO `banji` VALUES ('68', '8年级', '8(4)', null);
+INSERT INTO `banji` VALUES ('69', '8年级', '8(5)', null);
+INSERT INTO `banji` VALUES ('70', '8年级', '8(6)', null);
+INSERT INTO `banji` VALUES ('71', '8年级', '8(7)', null);
+INSERT INTO `banji` VALUES ('72', '8年级', '8(8)', null);
+INSERT INTO `banji` VALUES ('73', '8年级', '8(9)', null);
+INSERT INTO `banji` VALUES ('74', '8年级', '8(10)', null);
+INSERT INTO `banji` VALUES ('75', '8年级', '8(11)', null);
+INSERT INTO `banji` VALUES ('76', '9年级', '9(1)', null);
+INSERT INTO `banji` VALUES ('77', '9年级', '9(2)', null);
+INSERT INTO `banji` VALUES ('78', '9年级', '9(3)', null);
+INSERT INTO `banji` VALUES ('79', '9年级', '9(4)', null);
+INSERT INTO `banji` VALUES ('80', '9年级', '9(5)', null);
+INSERT INTO `banji` VALUES ('81', '9年级', '9(6)', null);
+INSERT INTO `banji` VALUES ('82', '9年级', '9(7)', null);
+INSERT INTO `banji` VALUES ('83', '9年级', '9(8)', null);
+INSERT INTO `banji` VALUES ('84', '9年级', '9(9)', null);
+INSERT INTO `banji` VALUES ('85', '9年级', '9(10)', null);
+INSERT INTO `banji` VALUES ('86', '9年级', '9(11)', null);
+INSERT INTO `banji` VALUES ('87', '10年级', '10(1)', null);
+INSERT INTO `banji` VALUES ('88', '10年级', '10(2)', null);
+INSERT INTO `banji` VALUES ('89', '10年级', '10(3)', null);
+INSERT INTO `banji` VALUES ('90', '10年级', '10(4)', null);
+INSERT INTO `banji` VALUES ('91', '10年级', '10(5)', null);
+INSERT INTO `banji` VALUES ('92', '10年级', '10(6)', null);
+INSERT INTO `banji` VALUES ('93', '10年级', '10(7)', null);
+INSERT INTO `banji` VALUES ('94', '10年级', '10(8)', null);
+INSERT INTO `banji` VALUES ('95', '10年级', '10(9)', null);
+INSERT INTO `banji` VALUES ('96', '10年级', '10(10)', null);
+INSERT INTO `banji` VALUES ('97', '11年级', '11(1)A', null);
+INSERT INTO `banji` VALUES ('98', '11年级', '11(1)B', null);
+INSERT INTO `banji` VALUES ('99', '11年级', '11(2)', null);
+INSERT INTO `banji` VALUES ('100', '11年级', '11(3)', null);
+INSERT INTO `banji` VALUES ('101', '11年级', '11(4)', null);
+INSERT INTO `banji` VALUES ('102', '11年级', '11(5)', null);
+INSERT INTO `banji` VALUES ('103', '11年级', '11(6)', null);
+INSERT INTO `banji` VALUES ('104', '11年级', '11(7)', null);
+INSERT INTO `banji` VALUES ('105', '11年级', '11(8)', null);
+INSERT INTO `banji` VALUES ('106', '11年级', '11(9)', null);
+INSERT INTO `banji` VALUES ('107', '12年级', '12(1)A', null);
+INSERT INTO `banji` VALUES ('108', '12年级', '12(1)B', null);
+INSERT INTO `banji` VALUES ('109', '12年级', '12(2)', null);
+INSERT INTO `banji` VALUES ('110', '12年级', '12(3)', null);
+INSERT INTO `banji` VALUES ('111', '12年级', '12(4)', null);
+INSERT INTO `banji` VALUES ('112', '12年级', '12(5)', null);
+INSERT INTO `banji` VALUES ('113', '12年级', '12(6)', null);
+INSERT INTO `banji` VALUES ('114', '12年级', '12(7)', null);
+INSERT INTO `banji` VALUES ('115', '12年级', '12(8)', null);
+INSERT INTO `banji` VALUES ('116', '12年级', '12(9)', null);
+INSERT INTO `banji` VALUES ('117', '(zj) 1年级', '1(1)', null);
+INSERT INTO `banji` VALUES ('118', '(zj) 1年级', '1(2)', null);
+INSERT INTO `banji` VALUES ('119', '(zj) 2年级', '2(1)', null);
+INSERT INTO `banji` VALUES ('120', '(zj) 2年级', '2(2)', null);
+INSERT INTO `banji` VALUES ('121', '(zj) 3年级', '3(1)', null);
+INSERT INTO `banji` VALUES ('122', '(zj) 3年级', '3(2)', null);
+INSERT INTO `banji` VALUES ('123', '(zj) 4年级', '4(1)', null);
+INSERT INTO `banji` VALUES ('124', '(zj) 4年级', '4(2)', null);
+INSERT INTO `banji` VALUES ('125', '(zj) 5年级', '5(1)', null);
+INSERT INTO `banji` VALUES ('126', '(zj) 5年级', '5(2)', null);
 
 -- ----------------------------
--- Table structure for `booking_record`
+-- Table structure for booking_record
 -- ----------------------------
 DROP TABLE IF EXISTS `booking_record`;
 CREATE TABLE `booking_record` (
@@ -69,7 +185,7 @@ CREATE TABLE `booking_record` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `bus_base_info`
+-- Table structure for bus_base_info
 -- ----------------------------
 DROP TABLE IF EXISTS `bus_base_info`;
 CREATE TABLE `bus_base_info` (
@@ -138,16 +254,16 @@ INSERT INTO `bus_line` VALUES ('43', '35', '午班', null, '', '1');
 INSERT INTO `bus_line` VALUES ('46', '36', '午班', null, '', '1');
 INSERT INTO `bus_line` VALUES ('47', '38', '午班', null, '', '1');
 INSERT INTO `bus_line` VALUES ('48', '37', '午班', null, '', '1');
-INSERT INTO `bus_line` VALUES ('135', '62', '早班', '中山南一路500弄', '1号车_早班', '1');
-INSERT INTO `bus_line` VALUES ('136', '63', '早班', '爱建园田川路门', '2号车_早班', '1');
-INSERT INTO `bus_line` VALUES ('137', '64', '早班', '虹桥路2419号', '3号车_早班', '1');
-INSERT INTO `bus_line` VALUES ('138', '65', '早班', '普杰路69弄（锦梅路普杰路口，临时）', '4号车_早班', '1');
-INSERT INTO `bus_line` VALUES ('139', '66', '早班', '东大名路591号（白玉兰广场）', '5号车_早班', '1');
-INSERT INTO `bus_line` VALUES ('140', '67', '早班', '华山路1038弄嘉里华庭一期', '6号车_早班', '1');
-INSERT INTO `bus_line` VALUES ('141', '68', '早班', '商城路99号仁恒滨江园', '7号车_早班', '1');
-INSERT INTO `bus_line` VALUES ('142', '69', '早班', '古北瑞仕花园（红宝石路玛瑙路口）', '8号车_早班', '1');
-INSERT INTO `bus_line` VALUES ('143', '70', '早班', '黄桦路369弄（临时）', '9号车_早班', '1');
-INSERT INTO `bus_line` VALUES ('144', '71', '早班', '红松东路1099弄古北壹号', '10号车_早班', '1');
+INSERT INTO `bus_line` VALUES ('135', '62', '早班', '中山南一路500弄,瞿溪路968弄,鲁班路509弄（临时）,汇龙新城蒙自西路门,蒙自路蒙自西路口', '1号车_早班', '1');
+INSERT INTO `bus_line` VALUES ('136', '63', '早班', '爱建园田川路门,钦州路428号,钦州路262号,钦州南路8号中海馨园', '2号车_早班', '1');
+INSERT INTO `bus_line` VALUES ('137', '64', '早班', '虹桥路2419号,虹桥路2388弄中华园,金汇南路91弄锦绣江南二期,宜山路2328弄九歌上君 ,田林路397号万丽酒店（临时）', '3号车_早班', '1');
+INSERT INTO `bus_line` VALUES ('138', '65', '早班', '普杰路69弄（锦梅路普杰路口，临时）,锦梅路1398弄（春申路集心路口，临时）,畹町路39号（澜沧路口、交通银行）,伟业路388弄随园玉兰苑,龙里路上中西路口', '4号车_早班', '1');
+INSERT INTO `bus_line` VALUES ('139', '66', '早班', '东大名路591号（白玉兰广场）,金外滩花园外咸瓜街门,毛家园路外郎家桥街口,中华路11路公交站点', '5号车_早班', '1');
+INSERT INTO `bus_line` VALUES ('140', '67', '早班', '华山路1038弄嘉里华庭一期,镇宁路9号九尊大厦,华山路868弄（临时）', '6号车_早班', '1');
+INSERT INTO `bus_line` VALUES ('141', '68', '早班', '商城路99号仁恒滨江园,财富海景花园浦明路258弄门,浦城路377弄江临天下,潍坊西路1弄,上南花城雪野路门（临时）', '7号车_早班', '1');
+INSERT INTO `bus_line` VALUES ('142', '69', '早班', '古北瑞仕花园（红宝石路玛瑙路口）,红宝石路398号,古北路1000号', '8号车_早班', '1');
+INSERT INTO `bus_line` VALUES ('143', '70', '早班', '黄桦路369弄（临时）,虹井路368弄金俊苑,虹秀路78弄明泉璞院,虹莘路3800弄风度国际,虹莘路3333号天安豪园,虹梅路1109弄（临时）', '9号车_早班', '1');
+INSERT INTO `bus_line` VALUES ('144', '71', '早班', '红松东路1099弄古北壹号,红松东路699号', '10号车_早班', '1');
 
 -- ----------------------------
 -- Table structure for `bus_stations`
@@ -594,13 +710,13 @@ CREATE TABLE `user` (
   `role_id` int(10) unsigned NOT NULL,
   `password` varchar(255) CHARACTER SET utf8 NOT NULL,
   `head_image` varchar(255) DEFAULT NULL COMMENT '头像保存位置',
-  `phone` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '电话',
+  `phone` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '电话',
   `create_time` datetime NOT NULL,
-  `valid` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '是否在职 ， “1”:在职 “0”:离职',
+  `valid` varchar(255) CHARACTER SET utf8 DEFAULT '1' COMMENT '是否在职 ， “1”:在职 “0”:离职',
   PRIMARY KEY (`id`),
   KEY `fk_u_role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of user
@@ -622,6 +738,122 @@ INSERT INTO `user` VALUES ('23', 'sj3', 'sj3_xiaowu', null, '5', '1', null, '136
 INSERT INTO `user` VALUES ('24', 'sj4', 'sj_4', null, '5', '1', null, '13699990000', '1970-01-01 00:00:01', '1');
 INSERT INTO `user` VALUES ('25', 'sj5', 'sj5小张', null, '5', '1', null, '13699995566', '1970-01-01 00:00:01', '1');
 INSERT INTO `user` VALUES ('26', 'busMom-swg', 'busmm-swg', '', '3', 'password', '', '13800009123', '2019-01-12 15:13:14', '1');
+INSERT INTO `user` VALUES ('27', '浦晓瑛', '浦晓瑛', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('28', '吴莹', '吴莹', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('29', '杨逸鹃', '杨逸鹃', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('30', '吴昕娅', '吴昕娅', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('31', '钱炜蕾', '钱炜蕾', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('32', '节雨曦', '节雨曦', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('33', '朱叶子', '朱叶子', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('34', '叶星', '叶星', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('35', '莫易晏', '莫易晏', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('36', '傅冰', '傅冰', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('37', '李解', '李解', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('38', '沈丽娟', '沈丽娟', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('39', '苏清越', '苏清越', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('40', '董晓青', '董晓青', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('41', '朱丹', '朱丹', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('42', '顾千羽', '顾千羽', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('43', '施展', '施展', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('44', '张理慧', '张理慧', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('45', '孙伊妮', '孙伊妮', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('46', '潘阳', '潘阳', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('47', '刘蕾', '刘蕾', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('48', '姚懿晋', '姚懿晋', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('49', '张炜', '张炜', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('50', '施祎成', '施祎成', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('51', '陆路婷', '陆路婷', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('52', '杜佳妮', '杜佳妮', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('53', '金颖', '金颖', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('54', '姚青', '姚青', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('55', '朱雯', '朱雯', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('56', '李腾', '李腾', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('57', '吴文意', '吴文意', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('58', '姚丽丽', '姚丽丽', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('59', '刘轶欧', '刘轶欧', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('60', '周胜元', '周胜元', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('61', '孟世悦', '孟世悦', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('62', '田丽姣', '田丽姣', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('63', '王风华', '王风华', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('64', '肖倩', '肖倩', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('65', '钱志佳', '钱志佳', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('66', '谢晓胥', '谢晓胥', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('67', '刘琛', '刘琛', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('68', '朱蕾', '朱蕾', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('69', '高晓玲', '高晓玲', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('70', '陈璐', '陈璐', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('71', '徐琛', '徐琛', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('72', '杜桐', '杜桐', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('73', '欧晓曦', '欧晓曦', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('74', '刘素琼', '刘素琼', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('75', '刘婧雯', '刘婧雯', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('76', '胡荣章', '胡荣章', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('77', '汪文欣', '汪文欣', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('78', '刘铭', '刘铭', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('79', '金慧怡', '金慧怡', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('80', '邹月', '邹月', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('81', '闫洁', '闫洁', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('82', '郑雯寅', '郑雯寅', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('83', '陈凡', '陈凡', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('84', '金凌', '金凌', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('85', '金菁', '金菁', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('86', '施程成', '施程成', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('87', '陈冰心', '陈冰心', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('88', '李舒浩', '李舒浩', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('89', '刘琼', '刘琼', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('90', '张美', '张美', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('91', '顾敦罡', '顾敦罡', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('92', '孙灏', '孙灏', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('93', '姜慧慧', '姜慧慧', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('94', '汤佩涵', '汤佩涵', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('95', '蔡依青', '蔡依青', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('96', '檀沐', '檀沐', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('97', '徐海峰', '徐海峰', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('98', '郑晓燕', '郑晓燕', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('99', '傅颖', '傅颖', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('100', '谢君瑜', '谢君瑜', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('101', '徐绍弘', '徐绍弘', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('102', '王倩', '王倩', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('103', '周丹丹', '周丹丹', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('104', '刘璐怡', '刘璐怡', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('105', '吴雯倩', '吴雯倩', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('106', '李达', '李达', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('107', '朱雅婷', '朱雅婷', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('108', '丁艺', '丁艺', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('109', '陈丹青', '陈丹青', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('110', '刘晓雪', '刘晓雪', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('111', '陈琛', '陈琛', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('112', '赵涛', '赵涛', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('113', '洪淼', '洪淼', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('114', '朱艳瑾', '朱艳瑾', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('115', '潘婷婷', '潘婷婷', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('116', '姚艳婕', '姚艳婕', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('117', '胡文清', '胡文清', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('118', '高玥儿', '高玥儿', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('119', '庄臻敏', '庄臻敏', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('120', '宋丽萍', '宋丽萍', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('121', '张明欣', '张明欣', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('122', '顾悦文', '顾悦文', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('123', '吴晨', '吴晨', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('124', '徐臻成', '徐臻成', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('125', '方翼', '方翼', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('126', '张东升', '张东升', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('127', '欧阳彭芃', '欧阳彭芃', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('128', '徐晋', '徐晋', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('129', '王露', '王露', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('130', '马凯成', '马凯成', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('131', '郑艺欣', '郑艺欣', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('132', '王诗迪', '王诗迪', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('133', '高玙婷', '高玙婷', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('134', '赵晶', '赵晶', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('135', '杨村', '杨村', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('136', '谷京杨', '谷京杨', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('137', '陈苏蓉', '陈苏蓉', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('138', '李昊若', '李昊若', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('139', '王江玥', '王江玥', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('140', '谢雨辰', '谢雨辰', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('141', '吴晓冬', '吴晓冬', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
+INSERT INTO `user` VALUES ('142', '潘颖颖', '潘颖颖', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
 
 -- ----------------------------
 -- Table structure for `user_msg_status_info`

@@ -38,10 +38,10 @@ import java.util.List;
 
 
 /**
-* Class Description: xxx
-* @author Wilson Hu
-* @date 2019/01/11.
-*/
+ * Class Description: xxx
+ * @author Wilson Hu
+ * @date 2019/01/11.
+ */
 @Service
 @Transactional
 public class BusLineServiceImpl extends AbstractService<BusLine> implements BusLineService {
@@ -74,7 +74,6 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
         return busLineMapper.getBusLineInfoByBusNumberAndBusMode(busNumber,busMode);
     }
 
-    @PostMapping("/readFromExcel")
     public Result readFromExcel(@RequestParam String fileName ) {
         List<BusLineExcelHelper> list =   new ArrayList<BusLineExcelHelper>();
         BusLineExcelHelper busLineExcelHelper = null;
@@ -86,6 +85,7 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
             InputStream is = new FileInputStream(file);
             HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
             HSSFSheet hssfSheet = hssfWorkbook.getSheet("sheet1");
+            String currentStations;
 
             if (hssfSheet == null) {
                 return ResultGenerator.genFailResult("No sheet1 found");
@@ -109,13 +109,10 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                         String str = sdf.format(time);
                         int a = Integer.parseInt(str.split(":")[0]);
                         if (a >= 0 && a <= 12) {
-                            logger.info("早班时间");
                             busLineExcelHelper.setMode(Constant.BUS_MODE_MORNING);
                         } else if (a > 12 && a <= 18) {
-                            logger.info("午班时间");
                             busLineExcelHelper.setMode(Constant.BUS_MODE_AFTERNOON);
                         } else if (a > 18 && a <= 23) {
-                            logger.info("晚班时间");
                             busLineExcelHelper.setMode(Constant.BUS_MODE_NIGHT);
                         } else {
                             logger.info("wrong time: " + a);
@@ -159,25 +156,29 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                                 + busLine.getMode() + "/"
                                 + busLine.getStations());
                     } else {
-
-                        //todo 站点的更新逻辑
-                        /**
-                         * 如果线路存在，而该站点不存在，则增加站点（目前用逗号隔离站点），并更新线路
-                         */
+                        currentStations = busLineExist.getStations();
                         if(busLineExist.getStations().contains( busLineExcelHelper.getStationName())){
-                            logger.info("站点 " +  busLineExcelHelper.getStationName() + "已存在，不重复加入");
+                            /**
+                             * 如果线路存在，而该站点也存在，则不做处理
+                             */
+//                            logger.info("站点 " +  busLineExcelHelper.getStationName() + "已存在，不重复加入");
                         } else {
-                            logger.info("站点 " +  busLineExcelHelper.getStationName() + "还不存在，现在加入");
-                            busLine.setStations(busLineExist.getStations() + "," + busLineExcelHelper.getStationName());
+                            /**
+                             * 如果线路存在，而该站点不存在，则增加站点（目前用逗号隔离站点），并更新线路
+                             */
+                            logger.info("currentStations: " +  currentStations );
+                            logger.info("站点 " +  busLineExcelHelper.getStationName() + ", 还不存在，现在加入");
+                            currentStations = currentStations + "," + busLineExcelHelper.getStationName();
+                            /**
+                             * UPDATE 需要由ID, 否则更新无效
+                             */
+                            busLine.setId(busLineExist.getId());
+                            busLine.setStations(currentStations);
+                            logger.info("new currentStations: " +  currentStations );
+                            busLineService.update(busLine);
+                            logger.info("Updated: =====" + rowNum + "行:" + busLine.getName() + "/" + busLine.getMode() + "/" + busLine.getStations());
                         }
-
-                        busLineService.update(busLine);
-                        logger.info("Update: =====" + rowNum + ":" + busLine.getName() + "/"
-                                + busLine.getMode() + "/"
-                                + busLine.getStations());
-
                     }
-
                 }
             }
         }catch (FileNotFoundException e) {
