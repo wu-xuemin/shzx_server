@@ -166,4 +166,12 @@ public class UserController {
         return ResultGenerator.genSuccessResult(banji);
     }
 
+    @ApiOperation("从xls excel里读取巴士妈妈和司机信息")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName",
+            value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\校车线路上传模版_需求_2019_0201-新格式.xls") })
+    @PostMapping("/parseBusMomDriverFromExcel")
+    public Result parseBusMomDriverFromExcel(@RequestParam String fileName) {
+        Result banji = userService.parseBusMomDriverFromExcel(fileName);
+        return ResultGenerator.genSuccessResult(banji);
+    }
 }
