@@ -169,4 +169,13 @@ public class StudentController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
+
+    @ApiOperation("从xls excel里读取学生信息")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\国际部学生基本信息20190126_修正.xls") })
+    @PostMapping("/parseInfoFromExcel")
+    public Result parseInfoFromExcel(@RequestParam String fileName) {
+        Result banji = studentService.readFromExcel(fileName);
+        return ResultGenerator.genSuccessResult(banji);
+    }
 }

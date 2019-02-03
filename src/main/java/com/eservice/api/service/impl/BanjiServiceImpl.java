@@ -92,7 +92,7 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
                     Class cl = Class.forName("com.eservice.api.model.banji.Banji");
                     Field fieldClassName = cl.getDeclaredField("className");//成员名
                     Banji banjiExist = null;
-                    // todo, 多次导入，目前不会导致班级重复，但是会出错。必要时清一次班级数据然后重新导即可
+                    // todo, 多次导入，目前不会导致班级重复，但是会出错。清一次班级数据然后重新导即可（因为班级家名字重复）
                     banjiExist = banjiService.findBy(fieldClassName.getName(), banjiExcel.getClassName());
                     /**
                      * 班级名称不存在，则增加
@@ -115,8 +115,8 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
                             /**
                              * 班级名称存在，年级也相同，则更新
                              */
+                            banji.setId(banjiExist.getId());
                             banjiService.update(banji);
-
                             logger.info("Update: =====" + rowNum + ":" + banjiExcel.getGrade() + "/"
                                     + banjiExcel.getClassName() + "/"
                                     + banjiExcel.getChargeTeacherName());

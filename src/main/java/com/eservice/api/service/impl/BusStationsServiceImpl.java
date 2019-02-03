@@ -24,8 +24,11 @@ import javax.annotation.Resource;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -72,14 +75,16 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
                     HSSFCell stationNameCell = hssfRow.getCell(2);
                     HSSFCell fareRateCell = hssfRow.getCell(6);
 
-                    SimpleDateFormat sdf  = new SimpleDateFormat("hh:mm:ss");
-                    busLineExcelHelper.setTimeRemark( sdf.format(timeRemarkCell.getDateCellValue()));
+                    busLineExcelHelper.setTimeRemark( CommonService.getValue(timeRemarkCell));
                     busLineExcelHelper.setStationName(CommonService.getValue(stationNameCell));
                     busLineExcelHelper.setFareRate(CommonService.getValue(fareRateCell));
                     list.add(busLineExcelHelper);
 
-                    Time time = Time.valueOf(busLineExcelHelper.getTimeRemark());
-                    busStations.setRemark(time);
+                    SimpleDateFormat sdf  = new SimpleDateFormat("hh:mm");
+                    Date time = sdf.parse(CommonService.getValue(timeRemarkCell));
+                    Time timeStamp = new Time(time.getTime());
+
+                    busStations.setRemark(timeStamp);
                     busStations.setStationName(busLineExcelHelper.getStationName());
                     busStations.setFareRate(busLineExcelHelper.getFareRate());
 
@@ -104,6 +109,7 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
                         /**
                          * 班级名称存在，年级也相同，则更新
                          */
+                        busStations.setId(busStationExist.getId());
                         busStationsService.update(busStations);
                         logger.info("Update: =====" + rowNum + busStations.getStationName() + "/"
                                 + busStations.getRemark() + "/"
@@ -118,6 +124,8 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         PageInfo pageInfo = new PageInfo(list);

@@ -95,9 +95,10 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
                     /**
                      * 校车编号
                      */
-                    busBaseInfo.setNumber(busLineExcelHelper.getBusNumber());
+                    busBaseInfo.setNumber(busLineExcelHelper.getBusNumber().split("\\.")[0]);
                     busBaseInfo.setPlateNumber(busLineExcelHelper.getPlateNumber());
                     busBaseInfo.setSchoolPartition(busLineExcelHelper.getSchoolPartition());
+                    busBaseInfo.setValid(Byte.parseByte("1"));
 
                     /**
                      * 如果有对应的user 巴士妈妈/司机则保存
@@ -120,7 +121,7 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
                      */
                     Field fieldClassName = cl.getDeclaredField("number");
                     BusBaseInfo busBaseInfoExist = null;
-                    busBaseInfoExist = busBaseInfoService.findBy(fieldClassName.getName(), busLineExcelHelper.getBusNumber());
+                    busBaseInfoExist = busBaseInfoService.findBy(fieldClassName.getName(), busLineExcelHelper.getBusNumber().split("\\.")[0]);
                     /**
                      * 如果校车不存在，则增加
                      */
@@ -133,10 +134,11 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
                         /**
                          * 校车编号存在，则更新
                          */
+                        busBaseInfo.setId(busBaseInfoExist.getId());
                         busBaseInfoService.update(busBaseInfo);
                         logger.info("Update: =====" + rowNum + ":" + busBaseInfo.getNumber() + "/"
                                 + busBaseInfo.getSchoolPartition() + "/"
-                                + busBaseInfo.getBusMom());
+                                + busBaseInfo.getBusMom() + "/" + busBaseInfo.getBusMom());
                     }
                 }
             }

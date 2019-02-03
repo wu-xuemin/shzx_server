@@ -92,7 +92,7 @@ public class BusBaseInfoController {
     }
 
 
-    @ApiOperation("从xls excel里读取站点信息")
+    @ApiOperation("从xls excel里读取校车信息")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\xxxx.xls") })
     @PostMapping("/parseInfoFromExcel")
     public Result parseInfoFromExcel(@RequestParam String fileName) {
