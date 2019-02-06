@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -25,7 +26,7 @@ import java.util.*;
  */
 @Service
 public class CommonService {
-    Logger logger = Logger.getLogger(CommonService.class);
+    static Logger logger = Logger.getLogger(CommonService.class);
 
     @Value("${debug.flag}")
     private String debugFlag;
@@ -264,6 +265,30 @@ public class CommonService {
         } else {
             // 返回字符串类型的值
             return String.valueOf(hssfCell.getStringCellValue());
+        }
+    }
+
+    public static String getBusModeByTime( HSSFCell stationTimeRemarkCell ) {//Date time, SimpleDateFormat sdf
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+        Date time = null;
+        try {
+            time = sdf.parse(CommonService.getValue(stationTimeRemarkCell));
+            String str = sdf.format(time);
+            int a = Integer.parseInt(str.split(":")[0]);
+            if (a >= 0 && a <= 12) {
+                return Constant.BUS_MODE_MORNING;
+            } else if (a > 12 && a <= 18) {
+                return Constant.BUS_MODE_AFTERNOON;
+            } else if (a > 18 && a <= 23) {
+                return Constant.BUS_MODE_NIGHT;
+            } else {
+                logger.info("getBusModeByTime() error: " + "wrong time: " + a);
+                return "wrong time: " + a;
+            }
+        } catch (ParseException e) {
+            logger.info("getBusModeByTime() error: " + e.toString());
+            e.printStackTrace();
+            return Constant.FAIL;
         }
     }
 }

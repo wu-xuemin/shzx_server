@@ -103,23 +103,9 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                     busLineExcelHelper.setTimeRemark( CommonService.getValue(stationTimeRemarkCell));
                     ///
                     busLineExcelHelper.setTimeRemark(  CommonService.getValue(stationTimeRemarkCell));
-                    try {
-                        SimpleDateFormat sdf  = new SimpleDateFormat("hh:mm");
-                        Date time = sdf.parse(CommonService.getValue(stationTimeRemarkCell));
-                        String str = sdf.format(time);
-                        int a = Integer.parseInt(str.split(":")[0]);
-                        if (a >= 0 && a <= 12) {
-                            busLineExcelHelper.setMode(Constant.BUS_MODE_MORNING);
-                        } else if (a > 12 && a <= 18) {
-                            busLineExcelHelper.setMode(Constant.BUS_MODE_AFTERNOON);
-                        } else if (a > 18 && a <= 23) {
-                            busLineExcelHelper.setMode(Constant.BUS_MODE_NIGHT);
-                        } else {
-                            logger.info("wrong time: " + a);
-                        }
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                    String busModeGot = CommonService.getBusModeByTime(stationTimeRemarkCell);
+                    if( !busModeGot.equals(Constant.FAIL)) {
+                        busLineExcelHelper.setMode(busModeGot);
                     }
                     busLineExcelHelper.setName(CommonService.getValue(busNumberCell).split("\\.")[0] + "号车_" + busLineExcelHelper.getMode());
                     busLineExcelHelper.setStationName(CommonService.getValue(stationNameCell));

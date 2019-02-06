@@ -15,4 +15,7 @@ public class Constant {
     public static final String BUS_MODE_MORNING = "早班";
     public static final String BUS_MODE_AFTERNOON = "午班";
     public static final String BUS_MODE_NIGHT = "晚班";
+
+    public static final String SUCCESS = "SUCCESS";
+    public static final String FAIL = "FAIL";
   }

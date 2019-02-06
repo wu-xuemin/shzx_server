@@ -5,6 +5,9 @@ import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.dao.StudentMapper;
 import com.eservice.api.model.banji.Banji;
 import com.eservice.api.model.banji.BanjiExcel;
+import com.eservice.api.model.bus_line.BusLine;
+import com.eservice.api.model.bus_line.BusLineExcelHelper;
+import com.eservice.api.model.bus_stations.BusStations;
 import com.eservice.api.model.student.Student;
 import com.eservice.api.model.student.StudentExcel;
 import com.eservice.api.model.student.StudentInfo;
@@ -48,6 +51,12 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
     @Resource
     private StudentServiceImpl studentService;
 
+    @Resource
+    private BusLineServiceImpl busLineService;
+
+    @Resource
+    private BusStationsServiceImpl busStationsService;
+
     private final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     /**
      * 这个函数可以用后面的 getPlannedStudents 替代。
@@ -88,6 +97,9 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         return studentMapper.getStudents(className);
     }
 
+    /**
+     *从xls excel里读取学生信息(不包括线路和上下车站点)
+     */
     public Result readFromExcel(@RequestParam String fileName ) {
         List<StudentExcel> list =   new ArrayList<StudentExcel>();
         StudentExcel studentExcel = null;
@@ -222,6 +234,107 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
             }
 
 
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    /**
+     * 更新每个学生的校车线路和上下车站点信息
+     * NOTE: 在生成学生之后再调用该接口，该接口不生成学生，只是更新学生的线路和站点信息。
+     */
+    public Result parseInfoFromExcelForBoardStation(@RequestParam String fileName ) {
+        List<BusLineExcelHelper> list =   new ArrayList<BusLineExcelHelper>();
+        BusLineExcelHelper busLineExcelHelper = null;
+        Student student = null;
+        int sumOfUpdatedInSheet1 = 0;
+
+        File file =  new File(fileName);
+        try {
+
+            InputStream is = new FileInputStream(file);
+            HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
+            HSSFSheet hssfSheet = hssfWorkbook.getSheet("Sheet1");
+
+            if (hssfSheet == null) {
+                return ResultGenerator.genFailResult("No Sheet1 sheet found");
+            }
+            // 循环行Row
+            for (int rowNum = 2; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
+                HSSFRow hssfRow = hssfSheet.getRow(rowNum);
+                if (hssfRow != null) {
+                    busLineExcelHelper = new BusLineExcelHelper();
+                    student = new Student();
+                    HSSFCell busNumberCell = hssfRow.getCell(0);
+                    HSSFCell stationTimeRemarkCell = hssfRow.getCell(1);
+                    HSSFCell stationNameCell = hssfRow.getCell(2);
+                    HSSFCell studentNumberCell = hssfRow.getCell(3);
+                    HSSFCell studentNameCell = hssfRow.getCell(4);
+                    busLineExcelHelper.setBusNumber(CommonService.getValue(busNumberCell));
+                    busLineExcelHelper.setStationName(CommonService.getValue(stationNameCell));
+                    busLineExcelHelper.setStudentNumber(CommonService.getValue(studentNumberCell));
+                    busLineExcelHelper.setStudentName(CommonService.getValue(studentNameCell));
+
+                    /**
+                     * 查找学生
+                     */
+                    Student studentExist = null;
+                    Class cl = Class.forName("com.eservice.api.model.student.Student");
+                    Field fieldStudentNumber = cl.getDeclaredField("studentNumber");
+                    studentExist = studentService.findBy(fieldStudentNumber.getName(), busLineExcelHelper.getStudentNumber().split("\\.")[0]);
+                    if (null == studentExist) {
+                        return ResultGenerator.genFailResult("No student found by number: " + busLineExcelHelper.getStudentNumber());
+                    }
+                    /**
+                     * 查找线路
+                     */
+                    BusLine busLineExist = null;
+                    Class classBusLine = Class.forName("com.eservice.api.model.bus_line.BusLine");
+                    Field fieldBusLineName = classBusLine.getDeclaredField("name");
+                    busLineExist = busLineService.findBy(fieldBusLineName.getName(),
+                            busLineExcelHelper.getBusNumber().split("\\.")[0] + "号车_" + CommonService.getBusModeByTime(stationTimeRemarkCell));
+                    if (busLineExist != null) {
+                        student.setBusLineMorning(busLineExist.getId());
+                        student.setBusLineAfternoon(busLineExist.getId());
+                    }
+
+                    /**
+                     * 查找站点
+                     */
+                    BusStations busStationsExist = null;
+                    Class classBusStation = Class.forName("com.eservice.api.model.bus_stations.BusStations");
+                    Field fieldStationName = classBusStation.getDeclaredField("stationName");
+                    busStationsExist = busStationsService.findBy(fieldStationName.getName(), busLineExcelHelper.getStationName());
+                    if (busStationsExist != null) {
+                        student.setBoardStationMorning(busStationsExist.getId());
+                        student.setBoardStationAfternoon(busStationsExist.getId());
+                    }
+                    list.add(busLineExcelHelper);
+
+                    /**
+                     * 线路和站点，更新
+                     */
+                    student.setId(studentExist.getId());
+                    studentService.update(student);
+                    sumOfUpdatedInSheet1 ++;
+                    if((busLineExist != null) && busStationsExist != null ) {
+                        logger.info("updated=====" + sumOfUpdatedInSheet1 + " : "+ busLineExcelHelper.getStudentName() + "/" + busLineExcelHelper.getStudentNumber().split("\\.")[0]
+                                + "==>线路：" + busLineExist.getName()
+                                + " 站点：" + student.getBoardStationMorning() + "(" + busStationsExist.getStationName() + ")");
+                    } else {
+                        logger.info("updated=====" + " : " + busLineExcelHelper.getStudentName() + "/" + busLineExcelHelper.getStudentNumber()
+                                + " without busLine/busStation");
+                    }
+                }
+            }
         }catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
