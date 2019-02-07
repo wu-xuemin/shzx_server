@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-02-06 23:22:03
+Date: 2019-02-07 16:20:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -287,48 +287,48 @@ INSERT INTO `bus_stations` VALUES ('20', '秋色路口', '', null, null, null);
 INSERT INTO `bus_stations` VALUES ('21', '新胜路口', '', null, null, null);
 INSERT INTO `bus_stations` VALUES ('22', '10路口', '', null, null, null);
 INSERT INTO `bus_stations` VALUES ('23', 'CC口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('221', '中山南一路500弄', null, '4200.0', '07:11:00', null);
-INSERT INTO `bus_stations` VALUES ('222', '瞿溪路968弄', null, '4200.0', '07:16:00', null);
-INSERT INTO `bus_stations` VALUES ('223', '鲁班路509弄（临时）', null, '4200.0', '07:18:00', null);
-INSERT INTO `bus_stations` VALUES ('224', '汇龙新城蒙自西路门', null, '4200.0', '07:22:00', null);
-INSERT INTO `bus_stations` VALUES ('225', '蒙自路蒙自西路口', null, '4200.0', '07:24:00', null);
-INSERT INTO `bus_stations` VALUES ('226', '爱建园田川路门', null, '4200.0', '07:22:00', null);
-INSERT INTO `bus_stations` VALUES ('227', '钦州路428号', null, '4200.0', '07:32:00', null);
-INSERT INTO `bus_stations` VALUES ('228', '钦州路262号', null, '4200.0', '07:34:00', null);
-INSERT INTO `bus_stations` VALUES ('229', '钦州南路8号中海馨园', null, '4200.0', '07:37:00', null);
-INSERT INTO `bus_stations` VALUES ('230', '虹桥路2419号', null, '4200.0', '07:02:00', null);
-INSERT INTO `bus_stations` VALUES ('231', '虹桥路2388弄中华园', null, '4200.0', '07:04:00', null);
-INSERT INTO `bus_stations` VALUES ('232', '金汇南路91弄锦绣江南二期', null, '4200.0', '07:14:00', null);
-INSERT INTO `bus_stations` VALUES ('233', '宜山路2328弄九歌上君 ', null, '4200.0', '07:18:00', null);
-INSERT INTO `bus_stations` VALUES ('234', '田林路397号万丽酒店（临时）', null, '4200.0', '07:22:00', null);
-INSERT INTO `bus_stations` VALUES ('235', '普杰路69弄（锦梅路普杰路口，临时）', null, '4200.0', '07:00:00', null);
-INSERT INTO `bus_stations` VALUES ('236', '锦梅路1398弄（春申路集心路口，临时）', null, '4200.0', '07:04:00', null);
-INSERT INTO `bus_stations` VALUES ('237', '畹町路39号（澜沧路口、交通银行）', null, '4200.0', '07:10:00', null);
-INSERT INTO `bus_stations` VALUES ('238', '伟业路388弄随园玉兰苑', null, '4200.0', '07:14:00', null);
-INSERT INTO `bus_stations` VALUES ('239', '龙里路上中西路口', null, '4200.0', '07:32:00', null);
-INSERT INTO `bus_stations` VALUES ('240', '东大名路591号（白玉兰广场）', null, '4800.0', '07:00:00', null);
-INSERT INTO `bus_stations` VALUES ('241', '金外滩花园外咸瓜街门', null, '4800.0', '07:11:00', null);
-INSERT INTO `bus_stations` VALUES ('242', '毛家园路外郎家桥街口', null, '4800.0', '07:16:00', null);
-INSERT INTO `bus_stations` VALUES ('243', '中华路11路公交站点', null, '4200.0', '07:20:00', null);
-INSERT INTO `bus_stations` VALUES ('244', '华山路1038弄嘉里华庭一期', null, '4200.0', '07:12:00', null);
-INSERT INTO `bus_stations` VALUES ('245', '镇宁路9号九尊大厦', null, '4200.0', '07:18:00', null);
-INSERT INTO `bus_stations` VALUES ('246', '华山路868弄（临时）', null, '4200.0', '07:20:00', null);
-INSERT INTO `bus_stations` VALUES ('247', '商城路99号仁恒滨江园', null, '4800.0', '07:12:00', null);
-INSERT INTO `bus_stations` VALUES ('248', '财富海景花园浦明路258弄门', null, '4800.0', '07:14:00', null);
-INSERT INTO `bus_stations` VALUES ('249', '浦城路377弄江临天下', null, '4800.0', '07:16:00', null);
-INSERT INTO `bus_stations` VALUES ('250', '潍坊西路1弄', null, '4800.0', '07:20:00', null);
-INSERT INTO `bus_stations` VALUES ('251', '上南花城雪野路门（临时）', null, '4200.0', '07:29:00', null);
-INSERT INTO `bus_stations` VALUES ('252', '古北瑞仕花园（红宝石路玛瑙路口）', null, '4200.0', '07:14:00', null);
-INSERT INTO `bus_stations` VALUES ('253', '红宝石路398号', null, '4200.0', '07:16:00', null);
-INSERT INTO `bus_stations` VALUES ('254', '古北路1000号', null, '4200.0', '07:20:00', null);
-INSERT INTO `bus_stations` VALUES ('255', '黄桦路369弄（临时）', null, '4800.0', '07:00:00', null);
-INSERT INTO `bus_stations` VALUES ('256', '虹井路368弄金俊苑', null, '4200.0', '07:03:00', null);
-INSERT INTO `bus_stations` VALUES ('257', '虹秀路78弄明泉璞院', null, '4200.0', '07:12:00', null);
-INSERT INTO `bus_stations` VALUES ('258', '虹莘路3800弄风度国际', null, '4200.0', '07:15:00', null);
-INSERT INTO `bus_stations` VALUES ('259', '虹莘路3333号天安豪园', null, '4200.0', '07:17:00', null);
-INSERT INTO `bus_stations` VALUES ('260', '虹梅路1109弄（临时）', null, '4200.0', '07:30:00', null);
-INSERT INTO `bus_stations` VALUES ('261', '红松东路1099弄古北壹号', null, '4200.0', '07:15:00', null);
-INSERT INTO `bus_stations` VALUES ('262', '红松东路699号', null, '666.0', '07:17:00', null);
+INSERT INTO `bus_stations` VALUES ('221', '中山南一路500弄', null, '4200', '07:11:00', null);
+INSERT INTO `bus_stations` VALUES ('222', '瞿溪路968弄', null, '4200', '07:16:00', null);
+INSERT INTO `bus_stations` VALUES ('223', '鲁班路509弄（临时）', null, '4200', '07:18:00', null);
+INSERT INTO `bus_stations` VALUES ('224', '汇龙新城蒙自西路门', null, '4200', '07:22:00', null);
+INSERT INTO `bus_stations` VALUES ('225', '蒙自路蒙自西路口', null, '4200', '07:24:00', null);
+INSERT INTO `bus_stations` VALUES ('226', '爱建园田川路门', null, '4200', '07:22:00', null);
+INSERT INTO `bus_stations` VALUES ('227', '钦州路428号', null, '4200', '07:32:00', null);
+INSERT INTO `bus_stations` VALUES ('228', '钦州路262号', null, '4200', '07:34:00', null);
+INSERT INTO `bus_stations` VALUES ('229', '钦州南路8号中海馨园', null, '4200', '07:37:00', null);
+INSERT INTO `bus_stations` VALUES ('230', '虹桥路2419号', null, '4200', '07:02:00', null);
+INSERT INTO `bus_stations` VALUES ('231', '虹桥路2388弄中华园', null, '4200', '07:04:00', null);
+INSERT INTO `bus_stations` VALUES ('232', '金汇南路91弄锦绣江南二期', null, '4200', '07:14:00', null);
+INSERT INTO `bus_stations` VALUES ('233', '宜山路2328弄九歌上君 ', null, '4200', '07:18:00', null);
+INSERT INTO `bus_stations` VALUES ('234', '田林路397号万丽酒店（临时）', null, '4200', '07:22:00', null);
+INSERT INTO `bus_stations` VALUES ('235', '普杰路69弄（锦梅路普杰路口，临时）', null, '4200', '07:00:00', null);
+INSERT INTO `bus_stations` VALUES ('236', '锦梅路1398弄（春申路集心路口，临时）', null, '4200', '07:04:00', null);
+INSERT INTO `bus_stations` VALUES ('237', '畹町路39号（澜沧路口、交通银行）', null, '4200', '07:10:00', null);
+INSERT INTO `bus_stations` VALUES ('238', '伟业路388弄随园玉兰苑', null, '4200', '07:14:00', null);
+INSERT INTO `bus_stations` VALUES ('239', '龙里路上中西路口', null, '4200', '07:32:00', null);
+INSERT INTO `bus_stations` VALUES ('240', '东大名路591号（白玉兰广场）', null, '4800', '07:00:00', null);
+INSERT INTO `bus_stations` VALUES ('241', '金外滩花园外咸瓜街门', null, '4800', '07:11:00', null);
+INSERT INTO `bus_stations` VALUES ('242', '毛家园路外郎家桥街口', null, '4800', '07:16:00', null);
+INSERT INTO `bus_stations` VALUES ('243', '中华路11路公交站点', null, '4200', '07:20:00', null);
+INSERT INTO `bus_stations` VALUES ('244', '华山路1038弄嘉里华庭一期', null, '4200', '07:12:00', null);
+INSERT INTO `bus_stations` VALUES ('245', '镇宁路9号九尊大厦', null, '4200', '07:18:00', null);
+INSERT INTO `bus_stations` VALUES ('246', '华山路868弄（临时）', null, '4200', '07:20:00', null);
+INSERT INTO `bus_stations` VALUES ('247', '商城路99号仁恒滨江园', null, '4800', '07:12:00', null);
+INSERT INTO `bus_stations` VALUES ('248', '财富海景花园浦明路258弄门', null, '4800', '07:14:00', null);
+INSERT INTO `bus_stations` VALUES ('249', '浦城路377弄江临天下', null, '4800', '07:16:00', null);
+INSERT INTO `bus_stations` VALUES ('250', '潍坊西路1弄', null, '4800', '07:20:00', null);
+INSERT INTO `bus_stations` VALUES ('251', '上南花城雪野路门（临时）', null, '4200', '07:29:00', null);
+INSERT INTO `bus_stations` VALUES ('252', '古北瑞仕花园（红宝石路玛瑙路口）', null, '4200', '07:14:00', null);
+INSERT INTO `bus_stations` VALUES ('253', '红宝石路398号', null, '4200', '07:16:00', null);
+INSERT INTO `bus_stations` VALUES ('254', '古北路1000号', null, '4200', '07:20:00', null);
+INSERT INTO `bus_stations` VALUES ('255', '黄桦路369弄（临时）', null, '4800', '07:00:00', null);
+INSERT INTO `bus_stations` VALUES ('256', '虹井路368弄金俊苑', null, '4200', '07:03:00', null);
+INSERT INTO `bus_stations` VALUES ('257', '虹秀路78弄明泉璞院', null, '4200', '07:12:00', null);
+INSERT INTO `bus_stations` VALUES ('258', '虹莘路3800弄风度国际', null, '4200', '07:15:00', null);
+INSERT INTO `bus_stations` VALUES ('259', '虹莘路3333号天安豪园', null, '4200', '07:17:00', null);
+INSERT INTO `bus_stations` VALUES ('260', '虹梅路1109弄（临时）', null, '4200', '07:30:00', null);
+INSERT INTO `bus_stations` VALUES ('261', '红松东路1099弄古北壹号', null, '4200', '07:15:00', null);
+INSERT INTO `bus_stations` VALUES ('262', '红松东路699号', null, '666', '07:17:00', null);
 
 -- ----------------------------
 -- Table structure for device

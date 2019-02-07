@@ -86,7 +86,7 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
 
                     busStations.setRemark(timeStamp);
                     busStations.setStationName(busLineExcelHelper.getStationName());
-                    busStations.setFareRate(busLineExcelHelper.getFareRate());
+                    busStations.setFareRate(busLineExcelHelper.getFareRate().split("\\.")[0]);
 
                     /**
                      * 站点目前不存在则增加
