@@ -42,13 +42,15 @@
         student.*,
         banji.class_name as banji_name,
         bus_base_info.number as bus_number,
-        bus_stations.station_name AS board_station_morning_name
+        bus_stations.station_name AS board_station_morning_name,
+        bs_a.station_name AS board_station_afternoon_name
     FROM
         student
     LEFT JOIN banji ON banji.id = student.banji
     LEFT JOIN bus_line ON bus_line.id = student.bus_line_morning
     LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
     LEFT JOIN bus_stations ON bus_stations.id = student.board_station_morning
+    LEFT JOIN bus_stations AS bs_a ON bs_a.id = student.board_station_afternoon
     WHERE 1=1
     <if test="busNumber != null and busNumber != ''">
       and bus_base_info.number = #{busNumber}
@@ -60,13 +62,15 @@
       student.*,
       banji.class_name as banji_name,
       bus_base_info.number as bus_number,
-      bus_stations.station_name AS board_station_afternoon_name
+      bus_stations.station_name AS board_station_afternoon_name,
+      bs_m.station_name AS board_station_morning_name
     FROM
         student
     LEFT JOIN banji ON banji.id = student.banji
     LEFT JOIN bus_line ON bus_line.id = student.bus_line_afternoon
     LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
     LEFT JOIN bus_stations ON bus_stations.id = student.board_station_afternoon
+    LEFT JOIN bus_stations AS bs_m ON bs_m.id = student.board_station_morning
     WHERE 1=1
     <if test="busNumber != null and busNumber != ''">
        AND bus_base_info.number = #{busNumber}
@@ -78,13 +82,15 @@
       student.*,
       banji.class_name as banji_name,
       bus_base_info.number as bus_number,
-      bus_stations.station_name AS board_station_afternoon_name
+      bus_stations.station_name AS board_station_morning_name,
+      bs_m.station_name as board_station_afternoon_name
     FROM
         student
     LEFT JOIN banji ON banji.id = student.banji
     LEFT JOIN bus_line ON bus_line.id = student.bus_line_afternoon
     LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
     LEFT JOIN bus_stations ON bus_stations.id = student.board_station_afternoon
+    LEFT JOIN bus_stations as bs_m ON bs_m.id = student.board_station_morning
     WHERE
         banji.class_name = #{className}
   </select>
@@ -111,13 +117,15 @@
     student.*,
     banji.class_name as banji_name,
     bus_base_info.number as bus_number,
-    bus_stations.station_name AS board_station_morning_name
+    bus_stations.station_name AS board_station_morning_name,
+    bs_a.station_name AS board_station_afternoon_name
     FROM
     student
     LEFT JOIN banji ON banji.id = student.banji
     LEFT JOIN bus_line ON bus_line.id = student.bus_line_morning
     LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
     LEFT JOIN bus_stations ON bus_stations.id = student.board_station_morning
+    LEFT JOIN bus_stations AS bs_a ON bs_a.id = student.board_station_afternoon
     WHERE 1=1
     <if test="busNumber != null and busNumber != ''">
       AND bus_base_info.number = #{busNumber}
@@ -132,13 +140,15 @@
       student.*,
       banji.class_name as banji_name,
       bus_base_info.number as bus_number,
-      bus_stations.station_name AS board_station_afternoon_name
+      bus_stations.station_name AS board_station_afternoon_name,
+      bs_m.station_name AS board_station_morning_name
     FROM
       student
     LEFT JOIN banji ON banji.id = student.banji
     LEFT JOIN bus_line ON bus_line.id = student.bus_line_afternoon
     LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
     LEFT JOIN bus_stations ON bus_stations.id = student.board_station_afternoon
+    LEFT JOIN bus_stations AS bs_m ON bs_m.id = student.board_station_morning
     WHERE 1=1
     <if test="busNumber != null and busNumber != ''">
       AND  bus_base_info.number = #{busNumber}
