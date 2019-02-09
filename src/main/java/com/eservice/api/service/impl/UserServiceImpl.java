@@ -100,6 +100,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     bzr.setPassword("shzx");
                     bzr.setRoleId(4);
                     bzr.setCreateTime(new Date());
+                    bzr.setValid(1);
                     list.add(banjiExcel);
 
                     Class cl = Class.forName("com.eservice.api.model.user.User");
@@ -175,6 +176,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     busMom.setPassword("shzx");
                     busMom.setRoleId(3);
                     busMom.setCreateTime(new Date());
+                    busMom.setValid(1);
 
                     busDriver.setAccount(busLineExcelHelper.getBusDriverAccount());
                     busDriver.setName(busLineExcelHelper.getBusDriverName());
@@ -182,6 +184,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     busDriver.setPassword("shzx");
                     busDriver.setRoleId(5);
                     busDriver.setCreateTime(new Date());
+                    busDriver.setValid(1);
 
                     list.add(busLineExcelHelper);
 

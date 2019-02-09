@@ -119,6 +119,7 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                     }
                     busLine.setMode(busLineExcelHelper.getMode());
                     busLine.setName(busLineExcelHelper.getName());
+                    busLine.setValid(1);
 
                     /**
                      * 逐个加入站点

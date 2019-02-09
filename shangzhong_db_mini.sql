@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-02-02 13:07:31
+Date: 2019-02-09 22:39:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -77,7 +77,7 @@ CREATE TABLE `bus_base_info` (
   `bus_driver` int(10) unsigned DEFAULT NULL COMMENT '司机',
   `school_partition` varchar(255) DEFAULT NULL COMMENT '浦东校区；浦西校区',
   `ipad_meid` varchar(255) DEFAULT NULL COMMENT 'ipad绑定的设备号',
-  `valid` tinyint(10) unsigned DEFAULT NULL,
+  `valid` int(10) unsigned DEFAULT '1' COMMENT '1表示有效，0表示无效',
   PRIMARY KEY (`id`),
   KEY `fk_bus_mom` (`bus_mom`),
   KEY `fk_bus_driver` (`bus_driver`),
@@ -119,7 +119,7 @@ CREATE TABLE `bus_stations` (
   `gps_info` varchar(255) DEFAULT NULL,
   `fare_rate` varchar(255) DEFAULT NULL COMMENT '收费信息',
   `remark` time DEFAULT NULL COMMENT '站点的时间',
-  `valid` int(11) DEFAULT NULL COMMENT '1表示有效，0表示无效',
+  `valid` int(10) DEFAULT '1' COMMENT '1表示有效，0表示无效',
   PRIMARY KEY (`id`),
   KEY `station_name` (`station_name`(191))
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
@@ -221,6 +221,7 @@ CREATE TABLE `student` (
   `board_station_morning` int(10) unsigned DEFAULT NULL COMMENT '上午班车上车站点',
   `board_station_afternoon` int(10) unsigned DEFAULT NULL COMMENT '下午班车下车站点',
   `family_info` text COMMENT '家庭信息 JSON',
+  `valid` int(10) DEFAULT '1' COMMENT '1表示有效，0表示无效',
   PRIMARY KEY (`id`,`student_number`),
   KEY `fk_bus` (`bus_line_morning`),
   KEY `fk_banji` (`banji`),
@@ -280,7 +281,7 @@ CREATE TABLE `user` (
   `head_image` varchar(255) DEFAULT NULL COMMENT '头像保存位置',
   `phone` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '电话',
   `create_time` datetime NOT NULL,
-  `valid` varchar(255) CHARACTER SET utf8 DEFAULT '1' COMMENT '是否在职 ， “1”:在职 “0”:离职',
+  `valid` int(10) DEFAULT '1' COMMENT '是否在职 ， “1”:在职 “0”:离职',
   PRIMARY KEY (`id`),
   KEY `fk_u_role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)

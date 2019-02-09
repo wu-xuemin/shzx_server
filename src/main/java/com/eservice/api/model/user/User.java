@@ -45,9 +45,9 @@ public class User implements UserDetails {
     private Date createTime;
 
     /**
-     * 是否在职 ， “1”:在职 “0”:离职
+     * 是否在职 ， 1:在职 0:离职
      */
-    private String valid;
+    private Integer valid;
 
     /**
      * @return id
@@ -188,11 +188,11 @@ public class User implements UserDetails {
     }
 
     /**
-     * 获取是否在职 ， “1”:在职 “0”:离职
+     * 获取是否在职 ， 1:在职 0:离职
      *
      * @return valid - 是否在职 ， “1”:在职 “0”:离职
      */
-    public String getValid() {
+    public Integer getValid() {
         return valid;
     }
 
@@ -201,7 +201,7 @@ public class User implements UserDetails {
      *
      * @param valid 是否在职 ， “1”:在职 “0”:离职
      */
-    public void setValid(String valid) {
+    public void setValid(Integer valid) {
         this.valid = valid;
     }
 
