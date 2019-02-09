@@ -55,7 +55,7 @@ public class BusBaseInfo {
     @Column(name = "ipad_meid")
     private String ipadMeid;
 
-    private Byte valid;
+    private Integer valid;
 
     /**
      * @return id
@@ -218,14 +218,14 @@ public class BusBaseInfo {
     /**
      * @return valid
      */
-    public Byte getValid() {
+    public Integer getValid() {
         return valid;
     }
 
     /**
      * @param valid
      */
-    public void setValid(Byte valid) {
+    public void setValid(Integer valid) {
         this.valid = valid;
     }
 }

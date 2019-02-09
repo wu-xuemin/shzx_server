@@ -1,4 +1,5 @@
 package com.eservice.api.web;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
@@ -58,8 +59,14 @@ public class UserController {
         return ResultGenerator.genSuccessResult();
     }
     @PostMapping("/delete")
-    public Result delete(@RequestParam Integer id) {
-        userService.deleteById(id);
+    public Result delete(@RequestParam String user) {
+        if(user != null) {
+            User userObj = JSON.parseObject(user, User.class);
+            userObj.setValid(0);
+            userService.update(userObj);
+        } else {
+            ResultGenerator.genFailResult("参数不能为空！");
+        }
         return ResultGenerator.genSuccessResult();
     }
     /**

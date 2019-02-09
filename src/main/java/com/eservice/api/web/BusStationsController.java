@@ -1,4 +1,5 @@
 package com.eservice.api.web;
+import com.alibaba.fastjson.JSON;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.bus_stations.BusStations;
@@ -31,20 +32,31 @@ public class BusStationsController {
     private BusStationsServiceImpl busStationsService;
 
     @PostMapping("/add")
-    public Result add(BusStations busStations) {
-        busStationsService.save(busStations);
+    public Result add(String busStation) {
+        BusStations busStationsObj = JSON.parseObject(busStation,BusStations.class);
+        busStationsService.save(busStationsObj);
         return ResultGenerator.genSuccessResult();
     }
 
+    /**
+     *删除只设置valid值为0
+     */
     @PostMapping("/delete")
-    public Result delete(@RequestParam Integer id) {
-        busStationsService.deleteById(id);
+    public Result delete(@RequestParam String busStation) {
+        if(busStation != null){
+            BusStations busStationObj = JSON.parseObject(busStation,BusStations.class);
+            busStationObj.setValid(0);
+            busStationsService.update(busStationObj);
+        } else {
+            ResultGenerator.genFailResult("参数不能为空！");
+        }
         return ResultGenerator.genSuccessResult();
     }
 
     @PostMapping("/update")
-    public Result update(BusStations busStations) {
-        busStationsService.update(busStations);
+    public Result update(String busStation) {
+        BusStations busStationObj = JSON.parseObject(busStation,BusStations.class);
+        busStationsService.update(busStationObj);
         return ResultGenerator.genSuccessResult();
     }
 

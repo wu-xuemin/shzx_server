@@ -98,7 +98,7 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
                     busBaseInfo.setNumber(busLineExcelHelper.getBusNumber().split("\\.")[0]);
                     busBaseInfo.setPlateNumber(busLineExcelHelper.getPlateNumber());
                     busBaseInfo.setSchoolPartition(busLineExcelHelper.getSchoolPartition());
-                    busBaseInfo.setValid(Byte.parseByte("1"));
+                    busBaseInfo.setValid(1);
 
                     /**
                      * 如果有对应的user 巴士妈妈/司机则保存

@@ -1,5 +1,6 @@
 package com.eservice.api.web;
 
+import com.alibaba.fastjson.JSON;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.bus_base_info.BusBaseFullInfo;
@@ -40,8 +41,14 @@ public class BusBaseInfoController {
     }
 
     @PostMapping("/delete")
-    public Result delete(@RequestParam Integer id) {
-        busBaseInfoService.deleteById(id);
+    public Result delete(@RequestParam String busBaseInfo) {
+        if(busBaseInfo != null) {
+            BusBaseInfo busBaseInfoObj = JSON.parseObject(busBaseInfo, BusBaseInfo.class);
+            busBaseInfoObj.setValid(0);
+            busBaseInfoService.update(busBaseInfoObj);
+        } else {
+            ResultGenerator.genFailResult("参数不能为空！");
+        }
         return ResultGenerator.genSuccessResult();
     }
 

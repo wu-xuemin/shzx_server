@@ -1,4 +1,5 @@
 package com.eservice.api.web;
+import com.alibaba.fastjson.JSON;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.student.Student;
@@ -78,8 +79,14 @@ public class StudentController {
     }
 
     @PostMapping("/delete")
-    public Result delete(@RequestParam Integer id) {
-        studentService.deleteById(id);
+    public Result delete(@RequestParam String student) {
+        if(student != null) {
+            Student studentObj = JSON.parseObject(student, Student.class);
+            studentObj.setValid(0);
+            studentService.update(studentObj);
+        } else {
+            ResultGenerator.genFailResult("参数不能为空！");
+        }
         return ResultGenerator.genSuccessResult();
     }
 
