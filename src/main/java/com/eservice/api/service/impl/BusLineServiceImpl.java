@@ -74,6 +74,10 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
         return busLineMapper.getBusLineInfoByBusNumberAndBusMode(busNumber,busMode);
     }
 
+    public List<BusLine> list(String queryKey) {
+        return busLineMapper.list(queryKey);
+    }
+
     public Result readFromExcel(@RequestParam String fileName ) {
         List<BusLineExcelHelper> list =   new ArrayList<BusLineExcelHelper>();
         BusLineExcelHelper busLineExcelHelper = null;

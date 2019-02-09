@@ -1,4 +1,5 @@
 package com.eservice.api.web;
+import com.alibaba.fastjson.JSON;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.bus_base_info.BusBaseInfo;
@@ -26,6 +27,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tk.mybatis.mapper.entity.Condition;
 
 /**
 * Class Description: xxx
@@ -58,20 +61,33 @@ public class BusLineController {
     private final Logger logger = LoggerFactory.getLogger(BusLineController.class);
 
     @PostMapping("/add")
-    public Result add(BusLine busLine) {
-        busLineService.save(busLine);
+    public Result add(String busLine) {
+        BusLine busLineObj = JSON.parseObject(busLine, BusLine.class);
+        busLineService.save(busLineObj);
         return ResultGenerator.genSuccessResult();
     }
 
+    /**
+     *删除只设置valid值为0
+     * @param busLine
+     * @return
+     */
     @PostMapping("/delete")
-    public Result delete(@RequestParam Integer id) {
-        busLineService.deleteById(id);
+    public Result delete(@RequestParam String busLine) {
+        if(busLine != null) {
+            BusLine busLineObj = JSON.parseObject(busLine, BusLine.class);
+            busLineObj.setValid(0);
+            busLineService.update(busLineObj);
+        } else {
+            ResultGenerator.genFailResult("参数不能为空！");
+        }
         return ResultGenerator.genSuccessResult();
     }
 
     @PostMapping("/update")
-    public Result update(BusLine busLine) {
-        busLineService.update(busLine);
+    public Result update(String busLine) {
+        BusLine busLineObj = JSON.parseObject(busLine, BusLine.class);
+        busLineService.update(busLineObj);
         return ResultGenerator.genSuccessResult();
     }
 
@@ -82,9 +98,17 @@ public class BusLineController {
     }
 
     @PostMapping("/list")
-    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
+    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size, String queryKey) {
         PageHelper.startPage(page, size);
-        List<BusLine> list = busLineService.findAll();
+        List<BusLine> list;
+        if("".equals(queryKey)) {
+            Condition condition = new Condition(BusLine.class);
+            condition.createCriteria().andCondition("valid = ",1);
+            list = busLineService.findByCondition(condition);
+        } else {
+            list = busLineService.list(queryKey);
+        }
+
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

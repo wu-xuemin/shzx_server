@@ -36,7 +36,7 @@ INSERT INTO `banji` VALUES ('1', '1', '1年级1班', '11');
 INSERT INTO `banji` VALUES ('2', '1', '1年级2班', '12');
 INSERT INTO `banji` VALUES ('3', '1', '1年级3班', '13');
 INSERT INTO `banji` VALUES ('9', '2', '2年级1班', '14');
-INSERT INTO `banji` VALUES ('10', '', '2年级2班', '15');
+INSERT INTO `banji` VALUES ('10', '2', '2年级2班', '15');
 INSERT INTO `banji` VALUES ('127', '1年级', '1(1)', '27');
 INSERT INTO `banji` VALUES ('128', '1年级', '1(2)', '28');
 INSERT INTO `banji` VALUES ('129', '1年级', '1(3)', '29');
@@ -468,7 +468,7 @@ CREATE TABLE `role` (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', '超级管理员', '全局管理', '');
+INSERT INTO `role` VALUES ('1', '超级管理员', '全局管理', '{\"datamanage\":[\"/home/datamanage/databus\",\"/home/datamanage/classdata\",\"/home/datamanage/recordquery\"],\"schoolbus\":[\"/home/schoolbus/busmanage\",\"/home/schoolbus/sitelib\",\"/home/schoolbus/nightway\",\"/home/schoolbus/linemamage\"],\"student\":[\"/home/student/studentmange\",\"/home/student/changemange\"],\"system\":[\"/home/system/user_manage\",\"/home/system/role_manage\",\"/home/system/data_sync\"]}');
 INSERT INTO `role` VALUES ('2', '管理员', '管理', null);
 INSERT INTO `role` VALUES ('3', '巴士妈妈', '巴士妈妈', null);
 INSERT INTO `role` VALUES ('4', '班主任', '班主任', null);
