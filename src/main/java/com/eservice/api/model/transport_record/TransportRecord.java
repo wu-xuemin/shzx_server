@@ -125,4 +125,33 @@ public class TransportRecord {
     public void setCurrentStation(Integer currentStation) {
         this.currentStation = currentStation;
     }
+
+    /**
+     * 早上上车、午班上车、午班下车、晚班上车
+     * 方便区分午班的上车还是下车记录等
+     */
+    @Column(name = "flag")
+    private String flag;
+
+    /**
+     * 校车编号，因为晚班的线路和校车不绑定，所以需要记录校车
+     */
+    @Column(name = "bus_number_in_tr")
+    private String busNumberInTR;
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public String getBusNumberInTR() {
+        return busNumberInTR;
+    }
+
+    public void setBusNumberInTR(String busNumberInTR) {
+        this.busNumberInTR = busNumberInTR;
+    }
 }

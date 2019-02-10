@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-02-09 22:39:11
+Date: 2019-02-10 23:34:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -3325,6 +3325,8 @@ CREATE TABLE `transport_record` (
   `date` date NOT NULL COMMENT '接送日期',
   `bus_line` int(10) unsigned NOT NULL COMMENT '校车线路，外键，',
   `current_station` int(10) unsigned DEFAULT NULL COMMENT '校车所处的当前站点',
+  `flag` varchar(255) NOT NULL COMMENT '早上上车、午班上车、午班下车、晚班上车',
+  `bus_number_in_tr` varchar(255) NOT NULL COMMENT '校车编号，因为晚班的线路和校车不绑定，所以需要记录校车. 命名后缀in_tr是为了不影响其他地方的bus_number',
   PRIMARY KEY (`id`),
   KEY `fk_tr_bus` (`bus_line`),
   KEY `fk_current_station` (`current_station`),
@@ -3335,42 +3337,42 @@ CREATE TABLE `transport_record` (
 -- ----------------------------
 -- Records of transport_record
 -- ----------------------------
-INSERT INTO `transport_record` VALUES ('11', '2019-01-01', '34', null);
-INSERT INTO `transport_record` VALUES ('12', '2019-01-01', '38', null);
-INSERT INTO `transport_record` VALUES ('13', '2019-01-01', '39', null);
-INSERT INTO `transport_record` VALUES ('14', '2019-01-11', '34', null);
-INSERT INTO `transport_record` VALUES ('15', '2019-01-11', '38', null);
-INSERT INTO `transport_record` VALUES ('16', '2019-01-11', '39', null);
-INSERT INTO `transport_record` VALUES ('17', '2019-01-11', '40', null);
-INSERT INTO `transport_record` VALUES ('18', '2019-01-11', '41', null);
-INSERT INTO `transport_record` VALUES ('19', '2019-01-12', '34', null);
-INSERT INTO `transport_record` VALUES ('20', '2019-01-12', '38', null);
-INSERT INTO `transport_record` VALUES ('21', '2019-01-12', '42', null);
-INSERT INTO `transport_record` VALUES ('22', '2019-01-12', '43', null);
-INSERT INTO `transport_record` VALUES ('23', '2019-01-12', '43', null);
-INSERT INTO `transport_record` VALUES ('25', '2019-01-14', '38', '11');
-INSERT INTO `transport_record` VALUES ('26', '2019-01-14', '38', '12');
-INSERT INTO `transport_record` VALUES ('27', '2019-01-14', '38', '12');
-INSERT INTO `transport_record` VALUES ('28', '2019-01-14', '38', '12');
-INSERT INTO `transport_record` VALUES ('43', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('44', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('45', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('46', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('47', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('48', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('49', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('50', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('51', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('52', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('53', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('54', '2019-01-22', '34', '21');
-INSERT INTO `transport_record` VALUES ('55', '2019-01-22', '34', '21');
-INSERT INTO `transport_record` VALUES ('56', '2019-01-22', '34', '21');
-INSERT INTO `transport_record` VALUES ('57', '2019-01-22', '34', '21');
-INSERT INTO `transport_record` VALUES ('58', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('59', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('60', '2019-01-22', '42', '21');
-INSERT INTO `transport_record` VALUES ('61', '2019-01-22', '41', null);
+INSERT INTO `transport_record` VALUES ('11', '2019-01-01', '34', null, '', '');
+INSERT INTO `transport_record` VALUES ('12', '2019-01-01', '38', null, '', '');
+INSERT INTO `transport_record` VALUES ('13', '2019-01-01', '39', null, '', '');
+INSERT INTO `transport_record` VALUES ('14', '2019-01-11', '34', null, '', '');
+INSERT INTO `transport_record` VALUES ('15', '2019-01-11', '38', null, '', '');
+INSERT INTO `transport_record` VALUES ('16', '2019-01-11', '39', null, '', '');
+INSERT INTO `transport_record` VALUES ('17', '2019-01-11', '40', null, '', '');
+INSERT INTO `transport_record` VALUES ('18', '2019-01-11', '41', null, '', '');
+INSERT INTO `transport_record` VALUES ('19', '2019-01-12', '34', null, '', '');
+INSERT INTO `transport_record` VALUES ('20', '2019-01-12', '38', null, '', '');
+INSERT INTO `transport_record` VALUES ('21', '2019-01-12', '42', null, '', '');
+INSERT INTO `transport_record` VALUES ('22', '2019-01-12', '43', null, '', '');
+INSERT INTO `transport_record` VALUES ('23', '2019-01-12', '43', null, '', '');
+INSERT INTO `transport_record` VALUES ('25', '2019-01-14', '38', '11', '', '');
+INSERT INTO `transport_record` VALUES ('26', '2019-01-14', '38', '12', '', '');
+INSERT INTO `transport_record` VALUES ('27', '2019-01-14', '38', '12', '', '');
+INSERT INTO `transport_record` VALUES ('28', '2019-01-14', '38', '12', '', '');
+INSERT INTO `transport_record` VALUES ('43', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('44', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('45', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('46', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('47', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('48', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('49', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('50', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('51', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('52', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('53', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('54', '2019-01-22', '34', '21', '', '');
+INSERT INTO `transport_record` VALUES ('55', '2019-01-22', '34', '21', '', '');
+INSERT INTO `transport_record` VALUES ('56', '2019-01-22', '34', '21', '', '');
+INSERT INTO `transport_record` VALUES ('57', '2019-01-22', '34', '21', '', '');
+INSERT INTO `transport_record` VALUES ('58', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('59', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('60', '2019-01-22', '42', '21', '', '');
+INSERT INTO `transport_record` VALUES ('61', '2019-01-22', '41', null, '', '');
 
 -- ----------------------------
 -- Table structure for user

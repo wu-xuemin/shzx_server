@@ -65,6 +65,13 @@ public class TransportRecordController {
         if(transportRecord == null) {
             return ResultGenerator.genFailResult("transportRecord 不能为空");
         }
+        if(!(transportRecord.getBusNumberInTR().equals(Constant.TRANSPORT_RECORD_FLAG_MORNING_UP)
+                ||transportRecord.getBusNumberInTR().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)
+                ||transportRecord.getBusNumberInTR().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)
+                ||transportRecord.getBusNumberInTR().equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT_UP))){
+            return ResultGenerator.genFailResult("flag 只能是 " + Constant.TRANSPORT_RECORD_FLAG_MORNING_UP + " / " + Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP
+            + Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN + "/" + Constant.TRANSPORT_RECORD_FLAG_NIGHT_UP);
+        }
         transportRecord.setDate(new Date());
         transportRecordService.saveAndGetID(transportRecord);
         return ResultGenerator.genSuccessResult(transportRecord.getId());
@@ -386,4 +393,6 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult(allPickingInfo);
     }
 
+    //todo 新增了bus_number_in_tr和flag后，相关接口验证
+    //todo 某些表 增加字段 create_time,update_time
 }

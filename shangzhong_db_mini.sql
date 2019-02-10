@@ -256,6 +256,8 @@ CREATE TABLE `transport_record` (
   `date` date NOT NULL COMMENT '接送日期',
   `bus_line` int(10) unsigned NOT NULL COMMENT '校车线路，外键，',
   `current_station` int(10) unsigned DEFAULT NULL COMMENT '校车所处的当前站点',
+  `flag` varchar(255) NOT NULL COMMENT '早上上车、午班上车、午班下车、晚班上车',
+  `bus_number_in_tr` varchar(255) NOT NULL COMMENT '校车编号，因为晚班的线路和校车不绑定，所以需要记录校车. 命名后缀in_tr是为了不影响其他地方的bus_number',
   PRIMARY KEY (`id`),
   KEY `fk_tr_bus` (`bus_line`),
   KEY `fk_current_station` (`current_station`),

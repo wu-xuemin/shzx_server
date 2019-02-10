@@ -16,6 +16,11 @@ public class Constant {
     public static final String BUS_MODE_AFTERNOON = "午班";
     public static final String BUS_MODE_NIGHT = "晚班";
 
+    public static final String TRANSPORT_RECORD_FLAG_MORNING_UP = "早上上车";
+    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON_UP = "午班上车";
+    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN = "午班下车";
+    public static final String TRANSPORT_RECORD_FLAG_NIGHT_UP = "晚班上车";
+
     public static final String SUCCESS = "SUCCESS";
     public static final String FAIL = "FAIL";
   }

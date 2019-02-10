@@ -9,6 +9,8 @@
     <result column="date" jdbcType="DATE" property="date" />
     <result column="bus_line" jdbcType="INTEGER" property="busLine" />
     <result column="current_station" jdbcType="INTEGER" property="currentStation" />
+    <result column="flag" jdbcType="VARCHAR" property="flag" />
+    <result column="bus_number_in_tr" jdbcType="VARCHAR" property="busNumberInTR" />
   </resultMap>
   <resultMap id="TransportRecordInfoResultMap" type="com.eservice.api.model.transport_record.TransportRecordInfo">
     <!--
@@ -18,6 +20,8 @@
     <result column="date" jdbcType="DATE" property="date" />
     <result column="bus_line" jdbcType="INTEGER" property="busLine" />
     <result column="current_station" jdbcType="INTEGER" property="currentStation" />
+    <result column="flag" jdbcType="VARCHAR" property="flag" />
+    <result column="bus_number" jdbcType="VARCHAR" property="busNumber" />
 
     <result column="bus_number" jdbcType="VARCHAR" property="busNumber" />
     <result column="board_station_name_morning" jdbcType="VARCHAR" property="boardStationNameMorning" />
