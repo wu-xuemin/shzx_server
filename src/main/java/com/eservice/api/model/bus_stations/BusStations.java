@@ -69,8 +69,7 @@ public class BusStations {
      */
     private String fareRate;
 
-    // todo 时间类型是否合适
-    private Time remark;
+    private String remark;
 
     private Integer valid;
 
@@ -82,11 +81,11 @@ public class BusStations {
         this.fareRate = fareRate;
     }
 
-    public Time getRemark() {
+    public String getRemark() {
         return remark;
     }
 
-    public void setRemark(Time remark) {
+    public void setRemark(String remark) {
         this.remark = remark;
     }
 

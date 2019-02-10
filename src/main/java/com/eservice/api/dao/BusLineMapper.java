@@ -17,4 +17,6 @@ public interface BusLineMapper extends Mapper<BusLine> {
     BusLine getBusLineInfoByBusNumberAndBusMode( @Param("busNumber")String busNumber,@Param("busMode")String busMode);
     @Select("select * from bus_line where valid = 1 and ( name like '%${queryKey}%' or stations like '%${queryKey}%')")
     List<BusLine> list(@Param("queryKey")String queryKey);
+    @Select("select * from bus_line bl left join bus_base_info bbi on bl.bus_base_info = bbi.id where bl.valid = 1 and bbi.number = '${busNumber}'")
+    List<BusLine> getBusLineByBusNumber(@Param("busNumber")String busNumber);
 }

@@ -35,8 +35,9 @@ public class BusBaseInfoController {
     private BusBaseInfoServiceImpl busBaseInfoService;
 
     @PostMapping("/add")
-    public Result add(BusBaseInfo busBaseInfo) {
-        busBaseInfoService.save(busBaseInfo);
+    public Result add(String busBaseInfo) {
+        BusBaseInfo busBaseInfoObj = JSON.parseObject(busBaseInfo, BusBaseInfo.class);
+        busBaseInfoService.save(busBaseInfoObj);
         return ResultGenerator.genSuccessResult();
     }
 
@@ -53,8 +54,9 @@ public class BusBaseInfoController {
     }
 
     @PostMapping("/update")
-    public Result update(BusBaseInfo busBaseInfo) {
-        busBaseInfoService.update(busBaseInfo);
+    public Result update(String busBaseInfo) {
+        BusBaseInfo busBaseInfoObj = JSON.parseObject(busBaseInfo, BusBaseInfo.class);
+        busBaseInfoService.update(busBaseInfoObj);
         return ResultGenerator.genSuccessResult();
     }
 

@@ -39,16 +39,19 @@ import java.util.List;
 @Service
 @Transactional
 public class BusStationsServiceImpl extends AbstractService<BusStations> implements BusStationsService {
+    private final Logger logger = LoggerFactory.getLogger(BusStationsServiceImpl.class);
     @Resource
     private BusStationsMapper busStationsMapper;
+    @Resource
+    private BusStationsServiceImpl busStationsService;
 
     public BusStations getBusStation(String stationName){
         return busStationsMapper.getBusStation(stationName);
     }
-    @Resource
-    private BusStationsServiceImpl busStationsService;
 
-    private final Logger logger = LoggerFactory.getLogger(BusStationsServiceImpl.class);
+    public List<BusStations> search(String queryKey) {
+        return busStationsMapper.search(queryKey);
+    }
 
     public Result readFromExcel(@RequestParam String fileName ) {
         List<BusLineExcelHelper> list =   new ArrayList<BusLineExcelHelper>();
@@ -81,10 +84,10 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
                     list.add(busLineExcelHelper);
 
                     SimpleDateFormat sdf  = new SimpleDateFormat("hh:mm");
-                    Date time = sdf.parse(CommonService.getValue(timeRemarkCell));
-                    Time timeStamp = new Time(time.getTime());
+//                    Date time = sdf.parse(CommonService.getValue(timeRemarkCell));
+//                    Time timeStamp = new Time(time.getTime());
 
-                    busStations.setRemark(timeStamp);
+                    busStations.setRemark(CommonService.getValue(timeRemarkCell));
                     busStations.setStationName(busLineExcelHelper.getStationName());
                     busStations.setFareRate(busLineExcelHelper.getFareRate().split("\\.")[0]);
                     busStations.setValid(1);
@@ -125,8 +128,6 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
             e.printStackTrace();
         }
         PageInfo pageInfo = new PageInfo(list);

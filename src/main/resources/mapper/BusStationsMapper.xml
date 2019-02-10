@@ -9,7 +9,7 @@
     <result column="station_name" jdbcType="VARCHAR" property="stationName" />
     <result column="gps_info" jdbcType="VARCHAR" property="gpsInfo" />
     <result column="fare_rate" jdbcType="VARCHAR" property="fareRate" />
-    <result column="remark" jdbcType="TIME" property="remark" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="valid" jdbcType="INTEGER" property="valid" />
 
   </resultMap>
@@ -19,5 +19,14 @@
   bus_stations as bs
   WHERE
    bs.station_name = #{stationName}
+  </select>
+  <select id="search" resultMap="BaseResultMap">
+    SELECT *
+    FROM
+    bus_stations as bs
+    WHERE bs.valid = 1
+    <if test="queryKey != null and queryKey != ''">
+      AND bs.station_name LIKE CONCAT('%', '${queryKey}', '%')
+    </if>
   </select>
 </mapper>

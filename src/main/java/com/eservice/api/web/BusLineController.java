@@ -113,6 +113,15 @@ public class BusLineController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
+    @PostMapping("/getBusLineByBusNumber")
+    public Result getBusLineByBusNumber(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,String busNumber) {
+        PageHelper.startPage(page, size);
+        List<BusLine> list;
+        list = busLineService.getBusLineByBusNumber(busNumber);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
     /**
      * 根据巴士妈妈账号来获得巴士妈妈所在的巴士, 允许多条线都是同个bus妈妈，比如早午班
      * @param busMomAccount

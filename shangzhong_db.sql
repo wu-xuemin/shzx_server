@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : local
 Source Server Version : 50553
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : shangzhong_db
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-02-10 23:34:00
+Date: 2019-02-11 00:35:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for banji
+-- Table structure for `banji`
 -- ----------------------------
 DROP TABLE IF EXISTS `banji`;
 CREATE TABLE `banji` (
@@ -155,7 +155,7 @@ INSERT INTO `banji` VALUES ('241', '(zj) 5年级', '5(1)', '141');
 INSERT INTO `banji` VALUES ('242', '(zj) 5年级', '5(2)', '142');
 
 -- ----------------------------
--- Table structure for booking_record
+-- Table structure for `booking_record`
 -- ----------------------------
 DROP TABLE IF EXISTS `booking_record`;
 CREATE TABLE `booking_record` (
@@ -185,7 +185,7 @@ CREATE TABLE `booking_record` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for bus_base_info
+-- Table structure for `bus_base_info`
 -- ----------------------------
 DROP TABLE IF EXISTS `bus_base_info`;
 CREATE TABLE `bus_base_info` (
@@ -204,14 +204,14 @@ CREATE TABLE `bus_base_info` (
   KEY `fk_bus_driver` (`bus_driver`),
   CONSTRAINT `bus_base_info_ibfk_1` FOREIGN KEY (`bus_driver`) REFERENCES `user` (`id`),
   CONSTRAINT `bus_base_info_ibfk_2` FOREIGN KEY (`bus_mom`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=899 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=900 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus_base_info
 -- ----------------------------
 INSERT INTO `bus_base_info` VALUES ('1', 'XC001', '沪A1111', '', '港湾校车有限公司', '2', '21', '浦东', 'meid111', '1');
-INSERT INTO `bus_base_info` VALUES ('35', 'XC002', '沪A22222', '', '港湾校车有限公司', '3', '22', '浦东', 'meid222', '1');
-INSERT INTO `bus_base_info` VALUES ('36', 'XC003', '沪A33333', '', '港湾校车有限公司', '4', '23', '浦东', 'meid333', '1');
+INSERT INTO `bus_base_info` VALUES ('35', 'XC002', '沪A22222', '', '港湾校车有限公司', '143', '22', '浦东', 'meid222', '1');
+INSERT INTO `bus_base_info` VALUES ('36', 'XC003', '沪A33333', '', '港湾校车有限公司', '5', '23', '浦东', 'meid333', '1');
 INSERT INTO `bus_base_info` VALUES ('37', 'XC004', '沪A4444C', '', '小卫校车有限公司', '5', '24', '浦西', 'meid4444', '1');
 INSERT INTO `bus_base_info` VALUES ('38', 'XC005', '沪A55555', '', '小卫校车有限公司', '6', '25', '浦西', 'mdid5555', '1');
 INSERT INTO `bus_base_info` VALUES ('62', '1', '沪DA5954', null, null, '143', '144', '浦西', null, '1');
@@ -224,9 +224,10 @@ INSERT INTO `bus_base_info` VALUES ('68', '7', '沪AZ0007', null, null, '155', '
 INSERT INTO `bus_base_info` VALUES ('69', '8', '沪D59950', null, null, '157', '158', '浦西', null, '1');
 INSERT INTO `bus_base_info` VALUES ('70', '9', '沪D59969', null, null, '159', '160', '浦西', null, '1');
 INSERT INTO `bus_base_info` VALUES ('71', '10', '沪EQ7737', null, null, '161', '162', '浦西', null, '1');
+INSERT INTO `bus_base_info` VALUES ('899', 'XC006', '沪A12345', null, '上海公交公司', '3', '150', '浦东', null, '1');
 
 -- ----------------------------
--- Table structure for bus_line
+-- Table structure for `bus_line`
 -- ----------------------------
 DROP TABLE IF EXISTS `bus_line`;
 CREATE TABLE `bus_line` (
@@ -246,7 +247,7 @@ CREATE TABLE `bus_line` (
 -- ----------------------------
 INSERT INTO `bus_line` VALUES ('34', '1', '早班', null, '', '1');
 INSERT INTO `bus_line` VALUES ('38', '35', '早班', null, '', '1');
-INSERT INTO `bus_line` VALUES ('39', '36', '早班', null, '', '1');
+INSERT INTO `bus_line` VALUES ('39', '36', '早班', '11路口,22路口,33路口', 'XC003_早班', '1');
 INSERT INTO `bus_line` VALUES ('40', '37', '早班', null, '', '1');
 INSERT INTO `bus_line` VALUES ('41', '38', '早班', null, '', '1');
 INSERT INTO `bus_line` VALUES ('42', '1', '午班', null, '', '1');
@@ -266,7 +267,7 @@ INSERT INTO `bus_line` VALUES ('143', '70', '早班', '黄桦路369弄（临时�
 INSERT INTO `bus_line` VALUES ('144', '71', '早班', '红松东路1099弄古北壹号,红松东路699号', '10号车_早班', '1');
 
 -- ----------------------------
--- Table structure for bus_stations
+-- Table structure for `bus_stations`
 -- ----------------------------
 DROP TABLE IF EXISTS `bus_stations`;
 CREATE TABLE `bus_stations` (
@@ -274,74 +275,74 @@ CREATE TABLE `bus_stations` (
   `station_name` varchar(255) NOT NULL COMMENT '站点名称',
   `gps_info` varchar(255) DEFAULT NULL,
   `fare_rate` varchar(255) DEFAULT NULL COMMENT '收费信息',
-  `remark` time DEFAULT NULL COMMENT '站点的时间',
+  `remark` varchar(255) DEFAULT NULL COMMENT '站点的时间',
   `valid` int(10) DEFAULT '1' COMMENT '1表示有效，0表示无效',
   PRIMARY KEY (`id`),
   KEY `station_name` (`station_name`(191))
-) ENGINE=InnoDB AUTO_INCREMENT=263 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=266 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus_stations
 -- ----------------------------
-INSERT INTO `bus_stations` VALUES ('1', '1号路口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('11', '11路口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('12', '22路口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('13', '33路口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('14', 'AA路口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('15', 'bb路口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('16', '人民路口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('17', '晚霞路口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('18', '人民广场', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('19', '44路口修改了', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('20', '秋色路口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('21', '新胜路口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('22', '10路口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('23', 'CC口', '', null, null, null);
-INSERT INTO `bus_stations` VALUES ('221', '中山南一路500弄', null, '4200', '07:11:00', null);
-INSERT INTO `bus_stations` VALUES ('222', '瞿溪路968弄', null, '4200', '07:16:00', null);
-INSERT INTO `bus_stations` VALUES ('223', '鲁班路509弄（临时）', null, '4200', '07:18:00', null);
-INSERT INTO `bus_stations` VALUES ('224', '汇龙新城蒙自西路门', null, '4200', '07:22:00', null);
-INSERT INTO `bus_stations` VALUES ('225', '蒙自路蒙自西路口', null, '4200', '07:24:00', null);
-INSERT INTO `bus_stations` VALUES ('226', '爱建园田川路门', null, '4200', '07:22:00', null);
-INSERT INTO `bus_stations` VALUES ('227', '钦州路428号', null, '4200', '07:32:00', null);
-INSERT INTO `bus_stations` VALUES ('228', '钦州路262号', null, '4200', '07:34:00', null);
-INSERT INTO `bus_stations` VALUES ('229', '钦州南路8号中海馨园', null, '4200', '07:37:00', null);
-INSERT INTO `bus_stations` VALUES ('230', '虹桥路2419号', null, '4200', '07:02:00', null);
-INSERT INTO `bus_stations` VALUES ('231', '虹桥路2388弄中华园', null, '4200', '07:04:00', null);
-INSERT INTO `bus_stations` VALUES ('232', '金汇南路91弄锦绣江南二期', null, '4200', '07:14:00', null);
-INSERT INTO `bus_stations` VALUES ('233', '宜山路2328弄九歌上君 ', null, '4200', '07:18:00', null);
-INSERT INTO `bus_stations` VALUES ('234', '田林路397号万丽酒店（临时）', null, '4200', '07:22:00', null);
-INSERT INTO `bus_stations` VALUES ('235', '普杰路69弄（锦梅路普杰路口，临时）', null, '4200', '07:00:00', null);
-INSERT INTO `bus_stations` VALUES ('236', '锦梅路1398弄（春申路集心路口，临时）', null, '4200', '07:04:00', null);
-INSERT INTO `bus_stations` VALUES ('237', '畹町路39号（澜沧路口、交通银行）', null, '4200', '07:10:00', null);
-INSERT INTO `bus_stations` VALUES ('238', '伟业路388弄随园玉兰苑', null, '4200', '07:14:00', null);
-INSERT INTO `bus_stations` VALUES ('239', '龙里路上中西路口', null, '4200', '07:32:00', null);
-INSERT INTO `bus_stations` VALUES ('240', '东大名路591号（白玉兰广场）', null, '4800', '07:00:00', null);
-INSERT INTO `bus_stations` VALUES ('241', '金外滩花园外咸瓜街门', null, '4800', '07:11:00', null);
-INSERT INTO `bus_stations` VALUES ('242', '毛家园路外郎家桥街口', null, '4800', '07:16:00', null);
-INSERT INTO `bus_stations` VALUES ('243', '中华路11路公交站点', null, '4200', '07:20:00', null);
-INSERT INTO `bus_stations` VALUES ('244', '华山路1038弄嘉里华庭一期', null, '4200', '07:12:00', null);
-INSERT INTO `bus_stations` VALUES ('245', '镇宁路9号九尊大厦', null, '4200', '07:18:00', null);
-INSERT INTO `bus_stations` VALUES ('246', '华山路868弄（临时）', null, '4200', '07:20:00', null);
-INSERT INTO `bus_stations` VALUES ('247', '商城路99号仁恒滨江园', null, '4800', '07:12:00', null);
-INSERT INTO `bus_stations` VALUES ('248', '财富海景花园浦明路258弄门', null, '4800', '07:14:00', null);
-INSERT INTO `bus_stations` VALUES ('249', '浦城路377弄江临天下', null, '4800', '07:16:00', null);
-INSERT INTO `bus_stations` VALUES ('250', '潍坊西路1弄', null, '4800', '07:20:00', null);
-INSERT INTO `bus_stations` VALUES ('251', '上南花城雪野路门（临时）', null, '4200', '07:29:00', null);
-INSERT INTO `bus_stations` VALUES ('252', '古北瑞仕花园（红宝石路玛瑙路口）', null, '4200', '07:14:00', null);
-INSERT INTO `bus_stations` VALUES ('253', '红宝石路398号', null, '4200', '07:16:00', null);
-INSERT INTO `bus_stations` VALUES ('254', '古北路1000号', null, '4200', '07:20:00', null);
-INSERT INTO `bus_stations` VALUES ('255', '黄桦路369弄（临时）', null, '4800', '07:00:00', null);
-INSERT INTO `bus_stations` VALUES ('256', '虹井路368弄金俊苑', null, '4200', '07:03:00', null);
-INSERT INTO `bus_stations` VALUES ('257', '虹秀路78弄明泉璞院', null, '4200', '07:12:00', null);
-INSERT INTO `bus_stations` VALUES ('258', '虹莘路3800弄风度国际', null, '4200', '07:15:00', null);
-INSERT INTO `bus_stations` VALUES ('259', '虹莘路3333号天安豪园', null, '4200', '07:17:00', null);
-INSERT INTO `bus_stations` VALUES ('260', '虹梅路1109弄（临时）', null, '4200', '07:30:00', null);
-INSERT INTO `bus_stations` VALUES ('261', '红松东路1099弄古北壹号', null, '4200', '07:15:00', null);
-INSERT INTO `bus_stations` VALUES ('262', '红松东路699号', null, '666', '07:17:00', null);
+INSERT INTO `bus_stations` VALUES ('1', '1号路口', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('11', '11路口', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('12', '22路口', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('13', '33路口', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('14', 'AA路口', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('15', 'bb路口', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('16', '人民路口', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('17', '晚霞路口', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('18', '人民广场', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('19', '44路口修改了', '123', '4800', '8:00', '1');
+INSERT INTO `bus_stations` VALUES ('20', '秋色路口', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('21', '新胜路口', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('22', '10路口', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('23', 'CC口', '', null, null, '1');
+INSERT INTO `bus_stations` VALUES ('221', '中山南一路500弄', null, '4200', '07:11:00', '1');
+INSERT INTO `bus_stations` VALUES ('222', '瞿溪路968弄', null, '4200', '07:16:00', '1');
+INSERT INTO `bus_stations` VALUES ('223', '鲁班路509弄（临时）', null, '4200', '07:18:00', '1');
+INSERT INTO `bus_stations` VALUES ('224', '汇龙新城蒙自西路门', null, '4200', '07:22:00', '1');
+INSERT INTO `bus_stations` VALUES ('225', '蒙自路蒙自西路口', null, '4200', '07:24:00', '1');
+INSERT INTO `bus_stations` VALUES ('226', '爱建园田川路门', null, '4200', '07:22:00', '1');
+INSERT INTO `bus_stations` VALUES ('227', '钦州路428号', null, '4200', '07:32:00', '1');
+INSERT INTO `bus_stations` VALUES ('228', '钦州路262号', null, '4200', '07:34:00', '1');
+INSERT INTO `bus_stations` VALUES ('229', '钦州南路8号中海馨园', null, '4200', '07:37:00', '1');
+INSERT INTO `bus_stations` VALUES ('230', '虹桥路2419号', null, '4200', '07:02:00', '1');
+INSERT INTO `bus_stations` VALUES ('231', '虹桥路2388弄中华园', null, '4200', '07:04:00', '1');
+INSERT INTO `bus_stations` VALUES ('232', '金汇南路91弄锦绣江南二期', null, '4200', '07:14:00', '1');
+INSERT INTO `bus_stations` VALUES ('233', '宜山路2328弄九歌上君 ', null, '4200', '07:18:00', '1');
+INSERT INTO `bus_stations` VALUES ('234', '田林路397号万丽酒店（临时）', null, '4200', '07:22:00', '1');
+INSERT INTO `bus_stations` VALUES ('235', '普杰路69弄（锦梅路普杰路口，临时）', null, '4200', '07:00:00', '1');
+INSERT INTO `bus_stations` VALUES ('236', '锦梅路1398弄（春申路集心路口，临时）', null, '4200', '07:04:00', '1');
+INSERT INTO `bus_stations` VALUES ('237', '畹町路39号（澜沧路口、交通银行）', null, '4200', '07:10:00', '1');
+INSERT INTO `bus_stations` VALUES ('238', '伟业路388弄随园玉兰苑', null, '4200', '07:14:00', '1');
+INSERT INTO `bus_stations` VALUES ('239', '龙里路上中西路口', null, '4200', '07:32:00', '1');
+INSERT INTO `bus_stations` VALUES ('240', '东大名路591号（白玉兰广场）', null, '4800', '07:00:00', '1');
+INSERT INTO `bus_stations` VALUES ('241', '金外滩花园外咸瓜街门', null, '4800', '07:11:00', '1');
+INSERT INTO `bus_stations` VALUES ('242', '毛家园路外郎家桥街口', null, '4800', '07:16:00', '1');
+INSERT INTO `bus_stations` VALUES ('243', '中华路11路公交站点', null, '4200', '07:20:00', '1');
+INSERT INTO `bus_stations` VALUES ('244', '华山路1038弄嘉里华庭一期', null, '4200', '07:12:00', '1');
+INSERT INTO `bus_stations` VALUES ('245', '镇宁路9号九尊大厦', null, '4200', '07:18:00', '1');
+INSERT INTO `bus_stations` VALUES ('246', '华山路868弄（临时）', null, '4200', '07:20:00', '1');
+INSERT INTO `bus_stations` VALUES ('247', '商城路99号仁恒滨江园', null, '4800', '07:12:00', '1');
+INSERT INTO `bus_stations` VALUES ('248', '财富海景花园浦明路258弄门', null, '4800', '07:14:00', '1');
+INSERT INTO `bus_stations` VALUES ('249', '浦城路377弄江临天下', null, '4800', '07:16:00', '1');
+INSERT INTO `bus_stations` VALUES ('250', '潍坊西路1弄', null, '4800', '07:20:00', '1');
+INSERT INTO `bus_stations` VALUES ('251', '上南花城雪野路门（临时）', null, '4200', '07:29:00', '1');
+INSERT INTO `bus_stations` VALUES ('252', '古北瑞仕花园（红宝石路玛瑙路口）', null, '4200', '07:14:00', '1');
+INSERT INTO `bus_stations` VALUES ('253', '红宝石路398号', null, '4200', '07:16:00', '1');
+INSERT INTO `bus_stations` VALUES ('254', '古北路1000号', null, '4200', '07:20:00', '1');
+INSERT INTO `bus_stations` VALUES ('255', '黄桦路369弄（临时）', null, '4800', '07:00:00', '1');
+INSERT INTO `bus_stations` VALUES ('256', '虹井路368弄金俊苑', null, '4200', '07:03:00', '1');
+INSERT INTO `bus_stations` VALUES ('257', '虹秀路78弄明泉璞院', null, '4200', '07:12:00', '1');
+INSERT INTO `bus_stations` VALUES ('258', '虹莘路3800弄风度国际', null, '4200', '07:15:00', '1');
+INSERT INTO `bus_stations` VALUES ('259', '虹莘路3333号天安豪园', null, '4200', '07:17:00', '1');
+INSERT INTO `bus_stations` VALUES ('260', '虹梅路1109弄（临时）', null, '4200', '07:30:00', '1');
+INSERT INTO `bus_stations` VALUES ('261', '红松东路1099弄古北壹号', null, '4200', '07:15:00', '1');
+INSERT INTO `bus_stations` VALUES ('262', '红松东路699号', null, '666', '07:17:00', '1');
 
 -- ----------------------------
--- Table structure for device
+-- Table structure for `device`
 -- ----------------------------
 DROP TABLE IF EXISTS `device`;
 CREATE TABLE `device` (
@@ -360,7 +361,7 @@ INSERT INTO `device` VALUES ('3', 'ipad3', '3333aaa');
 INSERT INTO `device` VALUES ('4', 'Dvname', 'abc111');
 
 -- ----------------------------
--- Table structure for messages
+-- Table structure for `messages`
 -- ----------------------------
 DROP TABLE IF EXISTS `messages`;
 CREATE TABLE `messages` (
@@ -381,7 +382,7 @@ INSERT INTO `messages` VALUES ('2', '2019-01-12 11:52:56', 'title---开会通知
 INSERT INTO `messages` VALUES ('4', '2019-01-11 13:53:36', '学习通知', '校车办', '0', '学西嘻嘻嘻嘻嘻嘻嘻嘻');
 
 -- ----------------------------
--- Table structure for picked_students_info
+-- Table structure for `picked_students_info`
 -- ----------------------------
 DROP TABLE IF EXISTS `picked_students_info`;
 CREATE TABLE `picked_students_info` (
@@ -454,7 +455,7 @@ INSERT INTO `picked_students_info` VALUES ('77', '61', '2019-01-22 21:01:12', '2
 INSERT INTO `picked_students_info` VALUES ('78', '58', '2019-01-22 21:20:13', '23');
 
 -- ----------------------------
--- Table structure for role
+-- Table structure for `role`
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
@@ -476,7 +477,7 @@ INSERT INTO `role` VALUES ('5', '司机', '司机', null);
 INSERT INTO `role` VALUES ('6', 'test11', 'test11des', null);
 
 -- ----------------------------
--- Table structure for student
+-- Table structure for `student`
 -- ----------------------------
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student` (
@@ -3375,7 +3376,7 @@ INSERT INTO `transport_record` VALUES ('60', '2019-01-22', '42', '21', '', '');
 INSERT INTO `transport_record` VALUES ('61', '2019-01-22', '41', null, '', '');
 
 -- ----------------------------
--- Table structure for user
+-- Table structure for `user`
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -3552,7 +3553,7 @@ INSERT INTO `user` VALUES ('161', '黄德琴', '黄德琴', null, '3', 'shzx', n
 INSERT INTO `user` VALUES ('162', '余解宝', '余解宝', null, '5', 'shzx', null, '1.8964604797E10', '2019-02-02 14:21:35', '1');
 
 -- ----------------------------
--- Table structure for user_msg_status_info
+-- Table structure for `user_msg_status_info`
 -- ----------------------------
 DROP TABLE IF EXISTS `user_msg_status_info`;
 CREATE TABLE `user_msg_status_info` (
