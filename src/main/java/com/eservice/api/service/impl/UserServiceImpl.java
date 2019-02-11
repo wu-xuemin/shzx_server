@@ -111,6 +111,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                      * 用户名称不存在，则增加,用户存在，则更新
                      */
                     if ((null == userExist)) {
+                        bzr.setCreateTime(new Date());
                         save(bzr);
                         logger.info("charge teacher added: =====" + rowNum + ":" + bzr.getAccount());
                     } else {
@@ -198,6 +199,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                      * Mom,Driver 用户名称不存在，则增加,用户存在，则更新
                      */
                     if ((null == userMomExist)) {
+                        busMom.setCreateTime(new Date());
                         save(busMom);
                         logger.info("Mom added: =====" + rowNum + ":" + busMom.getAccount());
                     } else {
@@ -206,6 +208,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     }
 
                     if ((null == userDriverExist)) {
+                        busDriver.setCreateTime(new Date());
                         save(busDriver);
                         logger.info("busDriver added: =====" + rowNum + ":" + busDriver.getAccount());
                     } else {

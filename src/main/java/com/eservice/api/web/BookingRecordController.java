@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class BookingRecordController {
 
     @PostMapping("/add")
     public Result add(BookingRecord bookingRecord) {
+        bookingRecord.setCreateTime(new Date());
         bookingRecordService.save(bookingRecord);
         return ResultGenerator.genSuccessResult();
     }
@@ -40,6 +42,7 @@ public class BookingRecordController {
 
     @PostMapping("/update")
     public Result update(BookingRecord bookingRecord) {
+        bookingRecord.setUpdateTime(new Date());
         bookingRecordService.update(bookingRecord);
         return ResultGenerator.genSuccessResult();
     }

@@ -31,6 +31,7 @@ import javax.annotation.Resource;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -160,10 +161,12 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                      * 学生学号不存在，则增加, 存在则更新
                      */
                     if ((null == studentExist)) {
+                        student.setCreateTime(new Date());
                         studentService.save(student);
                         sumOfAddInSheet1++;
                         logger.info("added : =====" + student.getName() + "/" + student.getStudentNumber() + ", sum is " + sumOfAddInSheet1);
                     } else {
+                        student.setUpdateTime(new Date());
                         student.setId(studentExist.getId());
                         studentService.update(student);
                         logger.info("updated : =====" + student.getName() + "/" + student.getStudentNumber() );
@@ -323,6 +326,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                     /**
                      * 线路和站点，更新
                      */
+                    student.setUpdateTime(new Date());
                     student.setId(studentExist.getId());
                     studentService.update(student);
                     sumOfUpdatedInSheet1 ++;

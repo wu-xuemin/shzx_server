@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,6 +75,7 @@ public class StudentController {
                 return ResultGenerator.genFailResult(e.getMessage() + "," + message);
             }
         }
+        student.setCreateTime(new Date());
         studentService.save(student);
         return ResultGenerator.genSuccessResult();
     }
@@ -92,6 +94,7 @@ public class StudentController {
 
     @PostMapping("/update")
     public Result update(Student student) {
+        student.setUpdateTime(new Date());
         studentService.update(student);
         return ResultGenerator.genSuccessResult();
     }

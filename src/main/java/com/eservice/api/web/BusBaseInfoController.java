@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +38,7 @@ public class BusBaseInfoController {
     @PostMapping("/add")
     public Result add(String busBaseInfo) {
         BusBaseInfo busBaseInfoObj = JSON.parseObject(busBaseInfo, BusBaseInfo.class);
+        busBaseInfoObj.setCreateTime(new Date());
         busBaseInfoService.save(busBaseInfoObj);
         return ResultGenerator.genSuccessResult();
     }
@@ -56,6 +58,7 @@ public class BusBaseInfoController {
     @PostMapping("/update")
     public Result update(String busBaseInfo) {
         BusBaseInfo busBaseInfoObj = JSON.parseObject(busBaseInfo, BusBaseInfo.class);
+        busBaseInfoObj.setUpdateTime(new Date());
         busBaseInfoService.update(busBaseInfoObj);
         return ResultGenerator.genSuccessResult();
     }

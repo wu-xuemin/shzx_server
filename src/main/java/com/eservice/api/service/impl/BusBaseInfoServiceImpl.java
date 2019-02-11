@@ -29,6 +29,7 @@ import java.lang.reflect.Field;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -126,6 +127,7 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
                      * 如果校车不存在，则增加
                      */
                     if ((null == busBaseInfoExist)) {
+                        busBaseInfo.setCreateTime(new Date());
                         busBaseInfoService.save(busBaseInfo);
                         logger.info("add: =====" + rowNum + ":" + busBaseInfo.getNumber() + "/"
                                 + busBaseInfo.getSchoolPartition() + "/"
@@ -134,6 +136,7 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
                         /**
                          * 校车编号存在，则更新
                          */
+                        busBaseInfo.setUpdateTime(new Date());
                         busBaseInfo.setId(busBaseInfoExist.getId());
                         busBaseInfoService.update(busBaseInfo);
                         logger.info("Update: =====" + rowNum + ":" + busBaseInfo.getNumber() + "/"

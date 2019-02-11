@@ -145,6 +145,7 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                      * 如果线路不存在，则增加线路
                      */
                     if(null == busLineExist){
+                        busLine.setCreateTime(new Date());
                         busLine.setStations( busLineExcelHelper.getStationName());
                         busLineService.save(busLine);
                         logger.info("add: =====" + rowNum + ":" + busLine.getName() + "/"
@@ -169,6 +170,7 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                              */
                             busLine.setId(busLineExist.getId());
                             busLine.setStations(currentStations);
+                            busLine.setUpdateTime(new Date());
                             logger.info("new currentStations: " +  currentStations );
                             busLineService.update(busLine);
                             logger.info("Updated: =====" + rowNum + "行:" + busLine.getName() + "/" + busLine.getMode() + "/" + busLine.getStations());

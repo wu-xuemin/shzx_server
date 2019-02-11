@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -98,6 +99,7 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
                      * 班级名称不存在，则增加
                      */
                     if ((null == banjiExist)) {
+                        banji.setCreateTime(new Date());
                         banjiService.save(banji);
                         logger.info("add: =====" + rowNum + ":" + banjiExcel.getGrade() + "/"
                                 + banjiExcel.getClassName() + "/"
@@ -107,6 +109,7 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
                             /**
                              * 虽然班级名称存在，但是年级不同，也增加
                              */
+                            banji.setCreateTime(new Date());
                             banjiService.save(banji);
                             logger.info("add: =====" + rowNum + ":" + banjiExcel.getGrade() + "/"
                                     + banjiExcel.getClassName() + "/"
@@ -115,6 +118,7 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
                             /**
                              * 班级名称存在，年级也相同，则更新
                              */
+                            banji.setUpdateTime(new Date());
                             banji.setId(banjiExist.getId());
                             banjiService.update(banji);
                             logger.info("Update: =====" + rowNum + ":" + banjiExcel.getGrade() + "/"

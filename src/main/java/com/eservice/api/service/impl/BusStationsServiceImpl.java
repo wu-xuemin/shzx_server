@@ -105,6 +105,7 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
                      * 站点名称不存在，则增加
                      */
                     if ((null == busStationExist)) {
+                        busStations.setCreateTime(new Date());
                         busStationsService.save(busStations);
                         logger.info("add: =====" + rowNum + ":" + busStations.getStationName() + "/"
                                 + busStations.getRemark() + "/"
@@ -113,6 +114,7 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
                         /**
                          * 班级名称存在，年级也相同，则更新
                          */
+                        busStations.setUpdateTime(new Date());
                         busStations.setId(busStationExist.getId());
                         busStationsService.update(busStations);
                         logger.info("Update: =====" + rowNum + busStations.getStationName() + "/"

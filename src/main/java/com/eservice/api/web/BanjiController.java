@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class BanjiController {
 
     @PostMapping("/add")
     public Result add(Banji banji) {
+        banji.setCreateTime(new Date());
         banjiService.save(banji);
         return ResultGenerator.genSuccessResult();
     }
@@ -40,6 +42,7 @@ public class BanjiController {
 
     @PostMapping("/update")
     public Result update(Banji banji) {
+        banji.setUpdateTime(new Date());
         banjiService.update(banji);
         return ResultGenerator.genSuccessResult();
     }

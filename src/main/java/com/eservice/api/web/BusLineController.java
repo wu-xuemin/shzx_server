@@ -37,6 +37,7 @@ import javax.annotation.Resource;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +64,7 @@ public class BusLineController {
     @PostMapping("/add")
     public Result add(String busLine) {
         BusLine busLineObj = JSON.parseObject(busLine, BusLine.class);
+        busLineObj.setCreateTime(new Date());
         busLineService.save(busLineObj);
         return ResultGenerator.genSuccessResult();
     }
@@ -87,6 +89,7 @@ public class BusLineController {
     @PostMapping("/update")
     public Result update(String busLine) {
         BusLine busLineObj = JSON.parseObject(busLine, BusLine.class);
+        busLineObj.setUpdateTime(new Date());
         busLineService.update(busLineObj);
         return ResultGenerator.genSuccessResult();
     }
