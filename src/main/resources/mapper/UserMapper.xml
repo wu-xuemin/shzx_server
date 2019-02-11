@@ -24,7 +24,9 @@
   <select id="requestLogin" resultMap="BaseResultMap">
     SELECT u.*
     FROM user u
-    WHERE u.account = '${account}' AND u.password = '${password}'
+    WHERE
+    u.valid = 1 AND
+    u.account = '${account}' AND u.password = '${password}'
    </select>
 
   <select id="selectUsers" resultMap="BaseResultMap">

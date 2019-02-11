@@ -52,7 +52,8 @@
     LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bus_base_info.bus_mom
     LEFT JOIN `user` AS user_bus_driver ON user_bus_driver.id = bus_base_info.bus_driver
     WHERE
-      user_bus_mom.account = #{busMomAccount}
+      bus_line.valid = 1
+      and user_bus_mom.account = #{busMomAccount}
       <if test="busMode != null and busMode != ''">
       AND bus_line.`mode` = #{busMode}
       </if>
@@ -70,7 +71,9 @@
     LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bus_base_info.bus_mom
     LEFT JOIN `user` AS user_bus_driver ON user_bus_driver.id = bus_base_info.bus_driver
     WHERE
-        bus_base_info.school_partition =  #{schoolPartition}
+      bus_line.valid = 1
+      AND
+      bus_base_info.school_partition =  #{schoolPartition}
   </select>
 
   <select id="getStudents" resultMap="com.eservice.api.dao.StudentMapper.StudentInfoResultMap" >
@@ -89,7 +92,10 @@
     LEFT JOIN bus_stations as bs_a on bs_a.id = student.board_station_afternoon
     LEFT JOIN bus_line as bl on ( bl.id = student.bus_line_afternoon or bl.id = student.bus_line_morning)
     LEFT JOIN bus_base_info as bbi on bbi.id = bl.bus_base_info
-    WHERE bbi.number = #{busNumber}
+    WHERE
+    student.valid = '1'
+    AND
+    bbi.number = #{busNumber}
       <if test="busMode != null and busMode != ''">
           AND bl.`mode` = #{busMode}
       </if>
@@ -102,9 +108,11 @@
         bus_line AS bl
     LEFT JOIN bus_base_info AS bbi ON bbi.id = bl.bus_base_info
     WHERE
-        bbi.number = #{busNumber}
-    AND
-        bl.`mode` = #{busMode}
+         bl.valid = 1
+         AND
+         bbi.number = #{busNumber}
+         AND
+         bl.`mode` = #{busMode}
   </select>
 
 </mapper>

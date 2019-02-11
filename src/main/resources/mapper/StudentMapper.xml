@@ -15,6 +15,8 @@
     <result column="board_station_morning" jdbcType="INTEGER" property="boardStationMorning" />
     <result column="board_station_afternoon" jdbcType="INTEGER" property="boardStationAfternoon" />
     <result column="family_info" jdbcType="LONGVARCHAR" property="familyInfo" />
+
+    <result column="valid" jdbcType="INTEGER" property="valid" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -32,6 +34,7 @@
     <result column="board_station_morning" jdbcType="INTEGER" property="boardStationMorning" />
     <result column="board_station_afternoon" jdbcType="INTEGER" property="boardStationAfternoon" />
     <result column="family_info" jdbcType="LONGVARCHAR" property="familyInfo" />
+    <result column="valid" jdbcType="INTEGER" property="valid" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
 
@@ -55,7 +58,8 @@
     LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
     LEFT JOIN bus_stations ON bus_stations.id = student.board_station_morning
     LEFT JOIN bus_stations AS bs_a ON bs_a.id = student.board_station_afternoon
-    WHERE 1=1
+    WHERE
+    student.valid = 1
     <if test="busNumber != null and busNumber != ''">
       and bus_base_info.number = #{busNumber}
     </if>
@@ -75,7 +79,8 @@
     LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
     LEFT JOIN bus_stations ON bus_stations.id = student.board_station_afternoon
     LEFT JOIN bus_stations AS bs_m ON bs_m.id = student.board_station_morning
-    WHERE 1=1
+    WHERE
+    student.valid = 1
     <if test="busNumber != null and busNumber != ''">
        AND bus_base_info.number = #{busNumber}
     </if>
@@ -96,7 +101,9 @@
     LEFT JOIN bus_stations ON bus_stations.id = student.board_station_afternoon
     LEFT JOIN bus_stations as bs_m ON bs_m.id = student.board_station_morning
     WHERE
-        banji.class_name = #{className}
+      student.valid = 1
+      AND
+      banji.class_name = #{className}
   </select>
   <select id="getSutdentInfo" resultMap="StudentInfoResultMap">
     SELECT
@@ -113,6 +120,7 @@
     LEFT JOIN bus_stations as bus_stations_a ON bus_stations_a.id = student.board_station_afternoon
     LEFT JOIN bus_stations as bus_stations_m ON bus_stations_m.id = student.board_station_morning
     WHERE
+--     student.valid = 1
 	  student.student_number  = #{studentNumber}
   </select>
 
@@ -130,7 +138,8 @@
     LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
     LEFT JOIN bus_stations ON bus_stations.id = student.board_station_morning
     LEFT JOIN bus_stations AS bs_a ON bs_a.id = student.board_station_afternoon
-    WHERE 1=1
+    WHERE
+    student.valid = 1
     <if test="busNumber != null and busNumber != ''">
       AND bus_base_info.number = #{busNumber}
     </if>
@@ -153,7 +162,8 @@
     LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
     LEFT JOIN bus_stations ON bus_stations.id = student.board_station_afternoon
     LEFT JOIN bus_stations AS bs_m ON bs_m.id = student.board_station_morning
-    WHERE 1=1
+    WHERE
+    student.valid = 1
     <if test="busNumber != null and busNumber != ''">
       AND  bus_base_info.number = #{busNumber}
     </if>
@@ -177,7 +187,8 @@
 
     LEFT JOIN bus_stations as bs_a ON bs_a.id = student.board_station_afternoon  -- 早班午班同一站
     LEFT JOIN bus_stations as bs_m ON bs_m.id = student.board_station_morning -- 早班午班同一站
-    WHERE 1=1
+    WHERE
+    student.valid = 1
     <if test="busNumber != null and busNumber != ''">
       AND  bus_base_info.number = #{busNumber}
     </if>
