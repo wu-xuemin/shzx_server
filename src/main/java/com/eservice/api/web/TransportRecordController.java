@@ -331,23 +331,27 @@ public class TransportRecordController {
                 null,
                 null);
         if(listTransportRecordInfo.size() == 0){
-            logger.info(" no record found");
-            return  null;
+            logger.info(" no record found，just ");
+            //即使没有乘车记录，也可以返回计划乘坐
+//            return  null;
+        } else {
+            TransportRecordInfo transportRecordInfoCurrent = listTransportRecordInfo.get(0);
+            allPickingInfo.setCurrentStation(transportRecordInfoCurrent.getCurrentStationName());
         }
-        TransportRecordInfo transportRecordInfoCurrent = listTransportRecordInfo.get(0);
-        allPickingInfo.setCurrentStation(transportRecordInfoCurrent.getCurrentStationName());
         ArrayList<StationPickingInfo> list = new ArrayList<>();
 
         //获取全部站点名称
         BusLine busLine = busLineService.getBusLineInfoByBusNumberAndBusMode(busNumber,busMode);
 
-        List<BusStations> stationsList = JSON.parseArray(busLine.getStations(), BusStations.class);
-        for (int i = 0; i < stationsList.size(); i++) {
+//        List<BusStations> stationsList = JSON.parseArray(busLine.getStations(), BusStations.class);
+        //原先是JSON格式，现在是逗号分隔了站点
+         String[] stationsArr = busLine.getStations().split("\\,");
+        for (int i = 0; i < stationsArr.length; i++) {
 
             StationPickingInfo stationPickingInfo = new StationPickingInfo();
             //站点名
-            stationPickingInfo.setStationName(stationsList.get(i).getStationName());
-            BusStations busStations = busStationsService.getBusStation(stationsList.get(i).getStationName());
+            stationPickingInfo.setStationName(stationsArr[i]);
+            BusStations busStations = busStationsService.getBusStation(stationsArr[i]);
             if(busStations != null){
                 // 站点都真实（即线路中的站点都来自站点列表中）之后，不会有查不到的，目前是为了防止假数据站点
                 stationPickingInfo.setStationId(busStations.getId());
@@ -357,7 +361,7 @@ public class TransportRecordController {
                     null,
                     busNumber,
                     busMode,
-                    stationsList.get(i).getStationName(),
+                    stationsArr[i],
                     null,
                     null);
             if(debugFlag.equalsIgnoreCase("true")) {
@@ -383,7 +387,7 @@ public class TransportRecordController {
             stationPickingInfo.setPickedList(listActualStudents);
 
             //总学生
-            List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, busMode,stationsList.get(i).getStationName());
+            List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, busMode,stationsArr[i]);
             stationPickingInfo.setPlanList(listPlannedStudents);
             list.add(stationPickingInfo);
         }
@@ -393,5 +397,5 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult(allPickingInfo);
     }
 
-    //todo valid=0的不返回。
+    //todo excel读的电话格式不对
 }

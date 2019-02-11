@@ -34,11 +34,6 @@ CREATE TABLE `banji` (
 -- ----------------------------
 -- Records of banji
 -- ----------------------------
-INSERT INTO `banji` VALUES ('1', '1', '1年级1班', '11', '1970-01-01 00:00:01', null);
-INSERT INTO `banji` VALUES ('2', '1', '1年级2班', '12', '1970-01-01 00:00:01', null);
-INSERT INTO `banji` VALUES ('3', '1', '1年级3班', '13', '1970-01-01 00:00:01', null);
-INSERT INTO `banji` VALUES ('9', '2', '2年级1班', '14', '1970-01-01 00:00:01', null);
-INSERT INTO `banji` VALUES ('10', '2', '2年级2班', '15', '1970-01-01 00:00:01', null);
 INSERT INTO `banji` VALUES ('127', '1年级', '1(1)', '27', '1970-01-01 00:00:01', null);
 INSERT INTO `banji` VALUES ('128', '1年级', '1(2)', '28', '1970-01-01 00:00:01', null);
 INSERT INTO `banji` VALUES ('129', '1年级', '1(3)', '29', '1970-01-01 00:00:01', null);
@@ -213,11 +208,6 @@ CREATE TABLE `bus_base_info` (
 -- ----------------------------
 -- Records of bus_base_info
 -- ----------------------------
-INSERT INTO `bus_base_info` VALUES ('1', 'XC001', '沪A1111', '', '港湾校车有限公司', '2', '21', '浦东', 'meid111', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_base_info` VALUES ('35', 'XC002', '沪A22222', '', '港湾校车有限公司', '143', '22', '浦东', 'meid222', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_base_info` VALUES ('36', 'XC003', '沪A33333', '', '港湾校车有限公司', '4', '23', '浦东', 'meid333', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_base_info` VALUES ('37', 'XC004', '沪A4444C', '', '小卫校车有限公司', '5', '24', '浦西', 'meid4444', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_base_info` VALUES ('38', 'XC005', '沪A55555', '', '小卫校车有限公司', '6', '25', '浦西', 'mdid5555', '1', '1970-01-01 00:00:01', null);
 INSERT INTO `bus_base_info` VALUES ('62', '1', '沪DA5954', null, null, '143', '144', '浦西', null, '1', '1970-01-01 00:00:01', null);
 INSERT INTO `bus_base_info` VALUES ('63', '2', '沪BT7607', null, null, '145', '146', '浦西', null, '1', '1970-01-01 00:00:01', null);
 INSERT INTO `bus_base_info` VALUES ('64', '3', '沪D42545', null, null, '147', '148', '浦西', null, '1', '1970-01-01 00:00:01', null);
@@ -251,16 +241,6 @@ CREATE TABLE `bus_line` (
 -- ----------------------------
 -- Records of bus_line
 -- ----------------------------
-INSERT INTO `bus_line` VALUES ('34', '1', '早班', null, 'testName1', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_line` VALUES ('38', '35', '早班', null, 'testName2', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_line` VALUES ('39', '36', '早班', null, 'testName3', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_line` VALUES ('40', '37', '早班', null, 'testName4', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_line` VALUES ('41', '38', '早班', null, 'testName5', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_line` VALUES ('42', '1', '午班', null, 'testName6', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_line` VALUES ('43', '35', '午班', null, 'testName7', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_line` VALUES ('46', '36', '午班', null, 'testName8', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_line` VALUES ('47', '38', '午班', null, 'testName9', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `bus_line` VALUES ('48', '37', '午班', null, 'testName10', '1', '1970-01-01 00:00:01', null);
 INSERT INTO `bus_line` VALUES ('135', '62', '早班', '中山南一路500弄,瞿溪路968弄,鲁班路509弄（临时）,汇龙新城蒙自西路门,蒙自路蒙自西路口', '1号车_早班', '1', '1970-01-01 00:00:01', null);
 INSERT INTO `bus_line` VALUES ('136', '63', '早班', '爱建园田川路门,钦州路428号,钦州路262号,钦州南路8号中海馨园', '2号车_早班', '1', '1970-01-01 00:00:01', null);
 INSERT INTO `bus_line` VALUES ('137', '64', '早班', '虹桥路2419号,虹桥路2388弄中华园,金汇南路91弄锦绣江南二期,宜山路2328弄九歌上君 ,田林路397号万丽酒店（临时）', '3号车_早班', '1', '1970-01-01 00:00:01', null);
@@ -292,20 +272,6 @@ CREATE TABLE `bus_stations` (
 -- ----------------------------
 -- Records of bus_stations
 -- ----------------------------
-INSERT INTO `bus_stations` VALUES ('1', '1号路口', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('11', '11路口', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('12', '22路口', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('13', '33路口', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('14', 'AA路口', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('15', 'bb路口', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('16', '人民路口', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('17', '晚霞路口', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('18', '人民广场', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('19', '44路口修改了', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('20', '秋色路口', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('21', '新胜路口', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('22', '10路口', '', null, null, null, '1970-01-01 00:00:01', null);
-INSERT INTO `bus_stations` VALUES ('23', 'CC口', '', null, null, null, '1970-01-01 00:00:01', null);
 INSERT INTO `bus_stations` VALUES ('221', '中山南一路500弄', null, '4200', '07:11:00', '1', '1970-01-01 00:00:01', null);
 INSERT INTO `bus_stations` VALUES ('222', '瞿溪路968弄', null, '4200', '07:16:00', '1', '1970-01-01 00:00:01', null);
 INSERT INTO `bus_stations` VALUES ('223', '鲁班路509弄（临时）', null, '4200', '07:18:00', '1', '1970-01-01 00:00:01', null);
@@ -408,59 +374,6 @@ CREATE TABLE `picked_students_info` (
 -- ----------------------------
 -- Records of picked_students_info
 -- ----------------------------
-INSERT INTO `picked_students_info` VALUES ('23', '11', '2019-01-01 14:10:03', '16');
-INSERT INTO `picked_students_info` VALUES ('24', '11', '2019-01-01 14:14:10', '17');
-INSERT INTO `picked_students_info` VALUES ('25', '12', '2019-01-01 14:14:40', '18');
-INSERT INTO `picked_students_info` VALUES ('26', '14', '2019-01-11 14:16:38', '16');
-INSERT INTO `picked_students_info` VALUES ('27', '14', '2019-01-11 14:16:50', '17');
-INSERT INTO `picked_students_info` VALUES ('28', '14', '2019-01-11 15:17:00', '18');
-INSERT INTO `picked_students_info` VALUES ('29', '21', '2019-01-12 11:06:03', '16');
-INSERT INTO `picked_students_info` VALUES ('30', '21', '2019-01-12 11:06:24', '24');
-INSERT INTO `picked_students_info` VALUES ('31', '22', '2019-01-12 11:06:43', '16');
-INSERT INTO `picked_students_info` VALUES ('33', '22', '2019-01-12 11:07:00', '17');
-INSERT INTO `picked_students_info` VALUES ('34', '23', '2019-01-12 11:07:36', '24');
-INSERT INTO `picked_students_info` VALUES ('35', '23', '2019-01-12 11:07:54', '20');
-INSERT INTO `picked_students_info` VALUES ('37', '22', '2019-01-14 10:28:54', '1');
-INSERT INTO `picked_students_info` VALUES ('39', '19', '2019-01-12 08:37:26', '16');
-INSERT INTO `picked_students_info` VALUES ('40', '46', '2019-01-22 00:30:42', '25');
-INSERT INTO `picked_students_info` VALUES ('41', '46', '2019-01-22 00:31:48', '25');
-INSERT INTO `picked_students_info` VALUES ('42', '47', '2019-01-22 00:33:09', '25');
-INSERT INTO `picked_students_info` VALUES ('43', '47', '2019-01-22 00:33:43', '25');
-INSERT INTO `picked_students_info` VALUES ('44', '48', '2019-01-22 00:39:42', '25');
-INSERT INTO `picked_students_info` VALUES ('45', '48', '2019-01-22 00:40:02', '25');
-INSERT INTO `picked_students_info` VALUES ('46', '48', '2019-01-22 00:42:20', '25');
-INSERT INTO `picked_students_info` VALUES ('47', '49', '2019-01-22 00:45:02', '25');
-INSERT INTO `picked_students_info` VALUES ('48', '51', '2019-01-22 01:05:15', '25');
-INSERT INTO `picked_students_info` VALUES ('49', '52', '2019-01-22 01:49:48', '1');
-INSERT INTO `picked_students_info` VALUES ('50', '52', '2019-01-22 01:51:17', '1');
-INSERT INTO `picked_students_info` VALUES ('51', '52', '2019-01-22 01:51:40', '1');
-INSERT INTO `picked_students_info` VALUES ('52', '52', '2019-01-22 01:52:04', '1');
-INSERT INTO `picked_students_info` VALUES ('53', '52', '2019-01-22 01:52:10', '1');
-INSERT INTO `picked_students_info` VALUES ('54', '53', '2019-01-22 01:53:24', '25');
-INSERT INTO `picked_students_info` VALUES ('55', '53', '2019-01-22 01:53:32', '26');
-INSERT INTO `picked_students_info` VALUES ('56', '54', '2019-01-22 08:11:15', '25');
-INSERT INTO `picked_students_info` VALUES ('57', '54', '2019-01-22 08:12:23', '25');
-INSERT INTO `picked_students_info` VALUES ('58', '55', '2019-01-22 08:17:28', '25');
-INSERT INTO `picked_students_info` VALUES ('59', '55', '2019-01-22 08:21:16', '25');
-INSERT INTO `picked_students_info` VALUES ('60', '55', '2019-01-22 08:21:59', '25');
-INSERT INTO `picked_students_info` VALUES ('61', '56', '2019-01-22 08:25:54', '25');
-INSERT INTO `picked_students_info` VALUES ('62', '57', '2019-01-22 08:30:07', '25');
-INSERT INTO `picked_students_info` VALUES ('63', '58', '2019-01-22 11:22:53', '1');
-INSERT INTO `picked_students_info` VALUES ('64', '59', '2019-01-22 11:28:52', '1');
-INSERT INTO `picked_students_info` VALUES ('65', '59', '2019-01-22 11:29:21', '25');
-INSERT INTO `picked_students_info` VALUES ('66', '59', '2019-01-22 11:32:08', '1');
-INSERT INTO `picked_students_info` VALUES ('67', '59', '2019-01-22 11:35:20', '25');
-INSERT INTO `picked_students_info` VALUES ('68', '60', '2019-01-22 11:40:49', '1');
-INSERT INTO `picked_students_info` VALUES ('69', '60', '2019-01-22 11:41:11', '25');
-INSERT INTO `picked_students_info` VALUES ('70', '60', '2019-01-22 20:23:11', '16');
-INSERT INTO `picked_students_info` VALUES ('71', '60', '2019-01-22 20:41:17', '17');
-INSERT INTO `picked_students_info` VALUES ('72', '60', '2019-01-22 20:43:45', '18');
-INSERT INTO `picked_students_info` VALUES ('73', '57', '2019-01-22 20:46:01', '18');
-INSERT INTO `picked_students_info` VALUES ('74', '57', '2019-01-22 20:49:14', '16');
-INSERT INTO `picked_students_info` VALUES ('75', '57', '2019-01-22 20:49:44', '17');
-INSERT INTO `picked_students_info` VALUES ('76', '57', '2019-01-22 20:52:13', '19');
-INSERT INTO `picked_students_info` VALUES ('77', '61', '2019-01-22 21:01:12', '21');
-INSERT INTO `picked_students_info` VALUES ('78', '58', '2019-01-22 21:20:13', '23');
 
 -- ----------------------------
 -- Table structure for `role`
@@ -518,17 +431,6 @@ CREATE TABLE `student` (
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES ('1', 'xh888', '/shzx/xh888.png', '武都头', '9', '34', '42', '13', '13', '', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `student` VALUES ('16', 'xh001', '/shzx/xh001.png', '张小名', '1', '34', '42', '21', '21', '', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `student` VALUES ('17', 'xh002', '/shzx/xh002.png', '王小明', '1', '34', '42', '12', '12', '', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `student` VALUES ('18', 'XH003', '/shzx/xh003.png', '王小丫', '1', '38', '43', '14', '14', '', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `student` VALUES ('19', 'xh021', '/shzx/xh021.png', '张晓婷', '9', '39', '46', '16', '16', '', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `student` VALUES ('20', 'xh020', '/shzx/xh020.png', '黄丽', '10', '40', '48', '19', '19', '', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `student` VALUES ('21', 'xh023', '/shzx/xh023.png', '王语嫣', '10', '41', '47', '11', '19', '', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `student` VALUES ('23', '4321', '/shzx/xh022.png', '刘亦菲', '2', '34', '42', '23', '23', '', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `student` VALUES ('24', 'xh0023', '/shzx/xh000023.png', '张成', '3', '38', '43', '13', '13', '', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `student` VALUES ('25', 'xh222', '/shzx/xh222.png', '高圆圆', '1', '34', '42', '22', '22', '', '1', '1970-01-01 00:00:01', null);
-INSERT INTO `student` VALUES ('26', 'xh444', '/shzx/xh444.png', '吴彦祖', '1', '34', '42', '23', '23', '', '1', '1970-01-01 00:00:01', null);
 INSERT INTO `student` VALUES ('3409', '10769', null, '陈映礽', '164', null, null, null, null, '陈燕来', '1', '1970-01-01 00:00:01', null);
 INSERT INTO `student` VALUES ('3410', '10770', null, '陈知远', '163', null, null, null, null, '陈欢', '1', '1970-01-01 00:00:01', null);
 INSERT INTO `student` VALUES ('3411', '10771', null, '陈奕霏', '160', '142', '142', '253', '253', '陈政宏', '1', '1970-01-01 00:00:01', null);
@@ -3348,42 +3250,6 @@ CREATE TABLE `transport_record` (
 -- ----------------------------
 -- Records of transport_record
 -- ----------------------------
-INSERT INTO `transport_record` VALUES ('11', '2019-01-01', '34', null, '', '');
-INSERT INTO `transport_record` VALUES ('12', '2019-01-01', '38', null, '', '');
-INSERT INTO `transport_record` VALUES ('13', '2019-01-01', '39', null, '', '');
-INSERT INTO `transport_record` VALUES ('14', '2019-01-11', '34', null, '', '');
-INSERT INTO `transport_record` VALUES ('15', '2019-01-11', '38', null, '', '');
-INSERT INTO `transport_record` VALUES ('16', '2019-01-11', '39', null, '', '');
-INSERT INTO `transport_record` VALUES ('17', '2019-01-11', '40', null, '', '');
-INSERT INTO `transport_record` VALUES ('18', '2019-01-11', '41', null, '', '');
-INSERT INTO `transport_record` VALUES ('19', '2019-01-12', '34', null, '', '');
-INSERT INTO `transport_record` VALUES ('20', '2019-01-12', '38', null, '', '');
-INSERT INTO `transport_record` VALUES ('21', '2019-01-12', '42', null, '', '');
-INSERT INTO `transport_record` VALUES ('22', '2019-01-12', '43', null, '', '');
-INSERT INTO `transport_record` VALUES ('23', '2019-01-12', '43', null, '', '');
-INSERT INTO `transport_record` VALUES ('25', '2019-01-14', '38', '11', '', '');
-INSERT INTO `transport_record` VALUES ('26', '2019-01-14', '38', '12', '', '');
-INSERT INTO `transport_record` VALUES ('27', '2019-01-14', '38', '12', '', '');
-INSERT INTO `transport_record` VALUES ('28', '2019-01-14', '38', '12', '', '');
-INSERT INTO `transport_record` VALUES ('43', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('44', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('45', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('46', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('47', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('48', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('49', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('50', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('51', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('52', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('53', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('54', '2019-01-22', '34', '21', '', '');
-INSERT INTO `transport_record` VALUES ('55', '2019-01-22', '34', '21', '', '');
-INSERT INTO `transport_record` VALUES ('56', '2019-01-22', '34', '21', '', '');
-INSERT INTO `transport_record` VALUES ('57', '2019-01-22', '34', '21', '', '');
-INSERT INTO `transport_record` VALUES ('58', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('59', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('60', '2019-01-22', '42', '21', '', '');
-INSERT INTO `transport_record` VALUES ('61', '2019-01-22', '41', null, '', '');
 
 -- ----------------------------
 -- Table structure for `user`

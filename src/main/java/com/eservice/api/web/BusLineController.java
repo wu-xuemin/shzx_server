@@ -143,6 +143,19 @@ public class BusLineController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+    @ApiOperation("根据巴士司机账号和班次来获得巴士线路等信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "busDriverAccount", value = "巴士司机账号，具有唯一性",required = true),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“早班”、“午班”两种，晚班不支持",required = true)})
+    @PostMapping("/getBusLineInfoByBusDriverAccountAndBusMode")
+    public Result getBusLineInfoByBusDriverAccountAndBusMode(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                                          @RequestParam String busDriverAccount,
+                                                          @RequestParam String busMode ) {
+        PageHelper.startPage(page, size);
+        List<BusLineInfo> list = busLineService.getBusLineInfoByBusDriverAccountAndBusMode(busDriverAccount,busMode);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
 
     @ApiOperation("根据校区来获得该校区的所有巴士线路相关信息")
     @PostMapping("/getBusLineInfoBySchoolPartition")

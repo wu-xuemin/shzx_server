@@ -33,7 +33,11 @@
     <result column="plate_number" jdbcType="VARCHAR" property="plateNumber" />
     <result column="plate_number_pic" jdbcType="VARCHAR" property="plateNumberPic" />
     <result column="bus_mom_account" jdbcType="VARCHAR" property="busMomAccount" />
+    <result column="bus_mom_name" jdbcType="VARCHAR" property="busMomName" />
+    <result column="bus_mom_phone" jdbcType="VARCHAR" property="busMomPhone" />
     <result column="bus_driver_account" jdbcType="VARCHAR" property="busDriverAccount" />
+    <result column="bus_driver_phone" jdbcType="VARCHAR" property="busDriverPhone" />
+    <result column="bus_driver_name" jdbcType="VARCHAR" property="busDriverName" />
     <result column="school_partition" jdbcType="VARCHAR" property="schoolPartition" />
     <result column="ipad_meid" jdbcType="VARCHAR" property="ipadMeid" />
     <result column="bus_supplier" jdbcType="VARCHAR" property="busSupplier" />
@@ -44,7 +48,11 @@
     bus_line.*,
     bus_base_info.*,
     user_bus_mom.account AS bus_mom_account,
-    user_bus_driver.account AS bus_driver_account
+    user_bus_driver.account AS bus_driver_account,
+    user_bus_mom.`name` AS bus_mom_name,
+    user_bus_mom.phone AS bus_mom_phone,
+    user_bus_driver.`name` AS bus_driver_name,
+    user_bus_driver.phone AS bus_driver_phone
     FROM
     bus_line
     LEFT JOIN bus_base_info ON bus_line.bus_base_info = bus_base_info.id
@@ -58,6 +66,31 @@
       AND bus_line.`mode` = #{busMode}
       </if>
   </select>
+
+  <select id="getBusLineInfoByBusDriverAccountAndBusMode" resultMap="BusLineInfoResultMap">
+    SELECT
+    bus_line.*,
+    bus_base_info.*,
+    user_bus_mom.account AS bus_mom_account,
+    user_bus_driver.account AS bus_driver_account,
+    user_bus_mom.`name` AS bus_mom_name,
+    user_bus_mom.phone AS bus_mom_phone,
+    user_bus_driver.`name` AS bus_driver_name,
+    user_bus_driver.phone AS bus_driver_phone
+    FROM
+    bus_line
+    LEFT JOIN bus_base_info ON bus_line.bus_base_info = bus_base_info.id
+    LEFT JOIN `user` AS u ON bus_base_info.bus_mom = u.id
+    LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bus_base_info.bus_mom
+    LEFT JOIN `user` AS user_bus_driver ON user_bus_driver.id = bus_base_info.bus_driver
+    WHERE
+    bus_line.valid = 1
+    and user_bus_driver.account = #{busDriverAccount}
+    <if test="busMode != null and busMode != ''">
+      AND bus_line.`mode` = #{busMode}
+    </if>
+  </select>
+
   <select id="getBusLineInfoBySchoolPartition" resultMap="BusLineInfoResultMap">
     SELECT
       bus_line.*,
