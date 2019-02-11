@@ -15,6 +15,8 @@
     <result column="school_partition" jdbcType="VARCHAR" property="schoolPartition" />
     <result column="ipad_meid" jdbcType="VARCHAR" property="ipadMeid" />
     <result column="valid" jdbcType="TINYINT" property="valid" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <resultMap id="BusBaseFullInfoResultMap" type="com.eservice.api.model.bus_base_info.BusBaseFullInfo">
     <!--
@@ -30,6 +32,8 @@
     <result column="school_partition" jdbcType="VARCHAR" property="schoolPartition" />
     <result column="ipad_meid" jdbcType="VARCHAR" property="ipadMeid" />
     <result column="valid" jdbcType="TINYINT" property="valid" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
 
     <!--<result column="bus_supplier_name" jdbcType="VARCHAR" property="busSupplierName" />-->
     <result column="bus_mom_name" jdbcType="VARCHAR" property="busMomName" />

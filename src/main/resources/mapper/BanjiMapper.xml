@@ -9,5 +9,7 @@
     <result column="grade" jdbcType="TINYINT" property="grade" />
     <result column="class_name" jdbcType="VARCHAR" property="className" />
     <result column="charge_teacher" jdbcType="INTEGER" property="chargeTeacher" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 </mapper>

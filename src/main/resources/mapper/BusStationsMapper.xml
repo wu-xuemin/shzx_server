@@ -11,6 +11,8 @@
     <result column="fare_rate" jdbcType="VARCHAR" property="fareRate" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="valid" jdbcType="INTEGER" property="valid" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
 
   </resultMap>
   <select id="getBusStation" resultMap="BaseResultMap">

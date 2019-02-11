@@ -1,7 +1,10 @@
 package com.eservice.api.model.bus_stations;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import javax.persistence.*;
 import java.sql.Time;
+import java.util.Date;
 
 @Table(name = "bus_stations")
 public class BusStations {
@@ -95,5 +98,29 @@ public class BusStations {
 
     public void setValid(Integer valid) {
         this.valid = valid;
+    }
+
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    @Column(name = "create_time")
+    private Date createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    @Column(name = "update_time")
+    private Date updateTime;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

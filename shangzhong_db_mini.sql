@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-02-09 22:39:11
+Date: 2019-02-11 14:45:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,6 +24,8 @@ CREATE TABLE `banji` (
   `grade` varchar(255) NOT NULL COMMENT '年级',
   `class_name` varchar(255) NOT NULL COMMENT '班级名称',
   `charge_teacher` int(10) unsigned DEFAULT NULL COMMENT '班主任',
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_charge_teacher` (`charge_teacher`),
   CONSTRAINT `fk_charge_teacher` FOREIGN KEY (`charge_teacher`) REFERENCES `user` (`id`)
@@ -78,6 +80,8 @@ CREATE TABLE `bus_base_info` (
   `school_partition` varchar(255) DEFAULT NULL COMMENT '浦东校区；浦西校区',
   `ipad_meid` varchar(255) DEFAULT NULL COMMENT 'ipad绑定的设备号',
   `valid` int(10) unsigned DEFAULT '1' COMMENT '1表示有效，0表示无效',
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_bus_mom` (`bus_mom`),
   KEY `fk_bus_driver` (`bus_driver`),
@@ -100,6 +104,8 @@ CREATE TABLE `bus_line` (
   `stations` text,
   `name` varchar(160) NOT NULL DEFAULT '',
   `valid` int(10) unsigned DEFAULT '1' COMMENT '1表示有效，0表示无效',
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`,`name`),
   KEY `fk_bus_base_info` (`bus_base_info`),
   CONSTRAINT `fk_bus_base_info` FOREIGN KEY (`bus_base_info`) REFERENCES `bus_base_info` (`id`)
@@ -120,6 +126,8 @@ CREATE TABLE `bus_stations` (
   `fare_rate` varchar(255) DEFAULT NULL COMMENT '收费信息',
   `remark` time DEFAULT NULL COMMENT '站点的时间',
   `valid` int(10) DEFAULT '1' COMMENT '1表示有效，0表示无效',
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `station_name` (`station_name`(191))
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
@@ -222,6 +230,8 @@ CREATE TABLE `student` (
   `board_station_afternoon` int(10) unsigned DEFAULT NULL COMMENT '下午班车下车站点',
   `family_info` text COMMENT '家庭信息 JSON',
   `valid` int(10) DEFAULT '1' COMMENT '1表示有效，0表示无效',
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`,`student_number`),
   KEY `fk_bus` (`bus_line_morning`),
   KEY `fk_banji` (`banji`),

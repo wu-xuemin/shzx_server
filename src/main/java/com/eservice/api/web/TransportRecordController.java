@@ -393,6 +393,5 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult(allPickingInfo);
     }
 
-    //todo 新增了bus_number_in_tr和flag后，相关接口验证
-    //todo 某些表 增加字段 create_time,update_time
+    //todo valid=0的不返回。
 }

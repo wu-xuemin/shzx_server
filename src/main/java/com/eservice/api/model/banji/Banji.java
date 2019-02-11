@@ -1,6 +1,8 @@
 package com.eservice.api.model.banji;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import javax.persistence.*;
+import java.util.Date;
 
 public class Banji {
     @Id
@@ -90,5 +92,29 @@ public class Banji {
      */
     public void setChargeTeacher(Integer chargeTeacher) {
         this.chargeTeacher = chargeTeacher;
+    }
+
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    @Column(name = "create_time")
+    private Date createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    @Column(name = "update_time")
+    private Date updateTime;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }
