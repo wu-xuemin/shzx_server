@@ -186,7 +186,11 @@ public class SyncBusMomService {
             result = "BusMom照片已同步";
         } else {
             for (int i = 0; i < needSyncBusMomList.size(); i++) {
-                File picFile = new File(USER_IMG_DIR + needSyncBusMomList.get(i).getPhone() + ".png");
+                File dir = new File(USER_IMG_DIR);
+                if(!dir.exists()) {
+                    dir.mkdirs();
+                }
+                File picFile = new File(USER_IMG_DIR + needSyncBusMomList.get(i).getPhone() + "_" + needSyncBusMomList.get(i).getName() + ".png");
                 if(!picFile.exists()) {
                     picNotExistList.add(needSyncBusMomList.get(i));
                 } else {

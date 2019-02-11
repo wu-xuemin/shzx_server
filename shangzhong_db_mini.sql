@@ -124,7 +124,7 @@ CREATE TABLE `bus_stations` (
   `station_name` varchar(255) NOT NULL COMMENT '站点名称',
   `gps_info` varchar(255) DEFAULT NULL,
   `fare_rate` varchar(255) DEFAULT NULL COMMENT '收费信息',
-  `remark` time DEFAULT NULL COMMENT '站点的时间',
+  `remark` varchar(255) DEFAULT NULL COMMENT '站点的时间',
   `valid` int(10) DEFAULT '1' COMMENT '1表示有效，0表示无效',
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
@@ -208,7 +208,7 @@ CREATE TABLE `role` (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', '超级管理员', '全局管理', '');
+INSERT INTO `role` VALUES ('1', '超级管理员', '全局管理', '{\"datamanage\":[\"/home/datamanage/databus\",\"/home/datamanage/classdata\",\"/home/datamanage/recordquery\"],\"schoolbus\":[\"/home/schoolbus/busmanage\",\"/home/schoolbus/sitelib\",\"/home/schoolbus/nightway\",\"/home/schoolbus/linemamage\"],\"student\":[\"/home/student/studentmange\",\"/home/student/changemange\"],\"system\":[\"/home/system/user_manage\",\"/home/system/role_manage\",\"/home/system/data_sync\"]}');
 INSERT INTO `role` VALUES ('2', '管理员', '管理', null);
 INSERT INTO `role` VALUES ('3', '巴士妈妈', '巴士妈妈', null);
 INSERT INTO `role` VALUES ('4', '班主任', '班主任', null);

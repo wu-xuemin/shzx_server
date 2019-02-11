@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -93,9 +94,14 @@ public class StudentController {
     }
 
     @PostMapping("/update")
-    public Result update(Student student) {
-        student.setUpdateTime(new Date());
-        studentService.update(student);
+    @Transactional
+    public Result update(String student, String photoBase64Data) {
+        Student studentObj = JSON.parseObject(student, Student.class);
+        studentObj.setUpdateTime(new Date());
+        if(photoBase64Data != null && !"".equals(photoBase64Data)) {
+
+        }
+        studentService.update(studentObj);
         return ResultGenerator.genSuccessResult();
     }
 

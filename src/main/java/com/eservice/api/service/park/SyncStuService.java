@@ -136,6 +136,9 @@ public class SyncStuService {
                         public void run() {
                             HashSet<String> hashSet = new HashSet<>();
                             for (WinVisitorRecord item: tmpList) {
+                                if(!item.isSuccess()) {
+                                    logger.error("照片质量未通过学生：学号:{}, 姓名:{}", item.getMeta().getExternal_id(),item.getMeta().getName());
+                                }
                                 if(item.getMeta() == null) {
                                     logger.error("信息错误学生：ID:{}, URL:{}", item.getPerson_id_str(),item.getImage_uri());
                                 } else {
@@ -189,7 +192,11 @@ public class SyncStuService {
             result = "学生照片已同步";
         } else {
             for (int i = 0; i < needSyncStuList.size(); i++) {
-                File picFile = new File(STUDENT_IMG_DIR + needSyncStuList.get(i).getStudentNumber() + ".png");
+                File dir = new File(STUDENT_IMG_DIR);
+                if(!dir.exists()) {
+                    dir.mkdirs();
+                }
+                File picFile = new File(STUDENT_IMG_DIR + needSyncStuList.get(i).getStudentNumber() + "_" + needSyncStuList.get(i).getName() + ".png");
                 if(!picFile.exists()) {
                     picNotExistList.add(needSyncStuList.get(i));
                 } else {
