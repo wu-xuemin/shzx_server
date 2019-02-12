@@ -397,5 +397,4 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult(allPickingInfo);
     }
 
-    //todo excel读的电话格式不对
 }

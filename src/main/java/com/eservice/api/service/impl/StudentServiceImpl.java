@@ -373,6 +373,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                 student = studentService.getSutdentInfo(tempList[i].getName().split("_")[0]);
                 if(student != null) {
                     student.setHeadImg(tempList[i].getName());
+                    student.setUpdateTime(new Date());
                     studentService.update(student);
                     logger.info("学生：" + tempList[i].getName().split("_")[0] + " 已更新head_img");
                 } else {

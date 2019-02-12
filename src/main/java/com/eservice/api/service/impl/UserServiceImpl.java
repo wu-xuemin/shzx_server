@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Resource;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -115,6 +116,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                         save(bzr);
                         logger.info("charge teacher added: =====" + rowNum + ":" + bzr.getAccount());
                     } else {
+                        bzr.setId(userExist.getId());
                         update(bzr);
                         logger.info("charge teacher Updated: =====" + rowNum + ":" + bzr.getAccount());
                     }
@@ -141,6 +143,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         BusLineExcelHelper busLineExcelHelper = null;
         User busMom = null;
         User busDriver = null;
+        DecimalFormat format = new DecimalFormat("#");
 
         File file =  new File(fileName);
         try {
@@ -166,10 +169,10 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     //账号设为和姓名一样
                     busLineExcelHelper.setBusMomAccount(CommonService.getValue(busMomNameCell));
                     busLineExcelHelper.setBusMomName(CommonService.getValue(busMomNameCell));
-                    busLineExcelHelper.setBusMomPhone(CommonService.getValue(busMomPhoneCell));
+                    busLineExcelHelper.setBusMomPhone(format.format(busMomPhoneCell.getNumericCellValue()));
                     busLineExcelHelper.setBusDriverAccount(CommonService.getValue(busDriverNameCell));
                     busLineExcelHelper.setBusDriverName(CommonService.getValue(busDriverNameCell));
-                    busLineExcelHelper.setBusDriverPhone(CommonService.getValue(busDriverPhoneCell));
+                    busLineExcelHelper.setBusDriverPhone(format.format(busDriverPhoneCell.getNumericCellValue()));
 
                     busMom.setAccount(busLineExcelHelper.getBusMomAccount());
                     busMom.setName(busLineExcelHelper.getBusMomName());
@@ -203,6 +206,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                         save(busMom);
                         logger.info("Mom added: =====" + rowNum + ":" + busMom.getAccount());
                     } else {
+                        busMom.setId(userMomExist.getId());
                         update(busMom);
                         logger.info("Mom Updated: =====" + rowNum + ":" + busMom.getAccount());
                     }
@@ -212,6 +216,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                         save(busDriver);
                         logger.info("busDriver added: =====" + rowNum + ":" + busDriver.getAccount());
                     } else {
+                        busDriver.setId(userDriverExist.getId());
                         update(busDriver);
                         logger.info("busDriver Updated: =====" + rowNum + ":" + busDriver.getAccount());
                     }
