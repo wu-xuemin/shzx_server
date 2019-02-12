@@ -23,6 +23,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,6 +60,10 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
     private BusStationsServiceImpl busStationsService;
 
     private final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+
+    @Value("${student_img_dir}")
+    private String STUDENT_IMG_DIR;
+
     /**
      * 这个函数可以用后面的 getPlannedStudents 替代。
      */
@@ -348,6 +353,33 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
+        }
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    public Result getAndInsertStudentHeadImg() {
+        File dir = new File(STUDENT_IMG_DIR);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+        List<String> list = new ArrayList<String>();
+        File file = new File(STUDENT_IMG_DIR);
+        File[] tempList = file.listFiles();
+
+        Student student = null;
+        for (int i = 0; i < tempList.length; i++) {
+            if (tempList[i].isFile()) {
+                student = studentService.getSutdentInfo(tempList[i].getName().split("_")[0]);
+                if(student != null) {
+                    student.setHeadImg(tempList[i].getName());
+                    studentService.update(student);
+                    logger.info("学生：" + tempList[i].getName().split("_")[0] + " 已更新head_img");
+                } else {
+                    logger.info("根据文件 " + tempList[i].getName() + "，找不到对应的学生");
+                }
+                list.add(tempList[i].getName());
+            }
         }
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);

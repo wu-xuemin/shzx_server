@@ -201,4 +201,12 @@ public class StudentController {
         Result banji = studentService.parseInfoFromExcelForBoardStation(fileName);
         return ResultGenerator.genSuccessResult(banji);
     }
+
+    @ApiOperation("读取学生的头像文件（放在特定目录下student_img_dir）的命名来填充学生的头像字段，比如某学生的头像文件为 14111_张三.png 则在该学生的head_img字段填入14111_张三.png ")
+    @PostMapping("/getAndInsertStudentHeadImg")
+    public Result getAndInsertStudentHeadImg() {
+        Result result = studentService.getAndInsertStudentHeadImg();
+        return ResultGenerator.genSuccessResult(result);
+    }
+
 }
