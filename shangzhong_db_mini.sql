@@ -16,6 +16,17 @@ Date: 2019-02-11 14:45:20
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
+DROP TABLE IF EXISTS `afternoon_picked`;
+CREATE TABLE `afternoon_picked` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `student_number` varchar(150) NOT NULL,
+  `bus_number` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `create_time` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_ap_student_number` (`student_number`),
+  CONSTRAINT `fk_ap_student_number` FOREIGN KEY (`student_number`) REFERENCES `student` (`student_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- Table structure for `banji`
 -- ----------------------------
 DROP TABLE IF EXISTS `banji`;
@@ -171,7 +182,18 @@ CREATE TABLE `messages` (
 -- ----------------------------
 -- Records of messages
 -- ----------------------------
-
+DROP TABLE IF EXISTS `night_picked`;
+CREATE TABLE `night_picked` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `student_number` varchar(150) NOT NULL,
+  `bus_number` varchar(255) NOT NULL,
+  `bus_line` int(10) unsigned NOT NULL,
+  `date` date NOT NULL,
+  `create_time` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_np_stu_num` (`student_number`),
+  CONSTRAINT `fk_np_stu_num` FOREIGN KEY (`student_number`) REFERENCES `student` (`student_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for `picked_students_info`
@@ -238,6 +260,7 @@ CREATE TABLE `student` (
   KEY `fk_board_station_morning` (`board_station_morning`),
   KEY `fk_board_station_afternoon` (`board_station_afternoon`),
   KEY `fk_bus_afternoon` (`bus_line_afternoon`),
+  KEY `student_number` (`student_number`),
   CONSTRAINT `fk_banji` FOREIGN KEY (`banji`) REFERENCES `banji` (`id`),
   CONSTRAINT `fk_board_station_afternoon` FOREIGN KEY (`board_station_afternoon`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_board_station_morning` FOREIGN KEY (`board_station_morning`) REFERENCES `bus_stations` (`id`),
@@ -269,8 +292,8 @@ CREATE TABLE `transport_record` (
   `flag` varchar(255) NOT NULL COMMENT '早上上车、午班上车、午班下车、晚班上车',
   `bus_number_in_tr` varchar(255) NOT NULL COMMENT '校车编号，因为晚班的线路和校车不绑定，所以需要记录校车. 命名后缀in_tr是为了不影响其他地方的bus_number',
   `status` varchar(255) NOT NULL COMMENT '早班待开始/早班进行中/早班已结束 /午班进行中/午班已结束/晚班进行中/晚班已结束',
-  `begin_time` datetime NOT NULL,
-  `end_time` datetime DEFAULT NULL,
+  `begin_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `end_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_tr_bus` (`bus_line`),
   KEY `fk_current_station` (`current_station`),

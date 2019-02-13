@@ -16,6 +16,17 @@ Date: 2019-02-12 00:21:34
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
+DROP TABLE IF EXISTS `afternoon_picked`;
+CREATE TABLE `afternoon_picked` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `student_number` varchar(150) NOT NULL,
+  `bus_number` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `create_time` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_ap_student_number` (`student_number`),
+  CONSTRAINT `fk_ap_student_number` FOREIGN KEY (`student_number`) REFERENCES `student` (`student_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- Table structure for `banji`
 -- ----------------------------
 DROP TABLE IF EXISTS `banji`;
@@ -357,6 +368,18 @@ INSERT INTO `messages` VALUES ('2', '2019-01-12 11:52:56', 'title---开会通知
 INSERT INTO `messages` VALUES ('4', '2019-01-11 13:53:36', '学习通知', '校车办', '0', '学西嘻嘻嘻嘻嘻嘻嘻嘻');
 
 -- ----------------------------
+DROP TABLE IF EXISTS `night_picked`;
+CREATE TABLE `night_picked` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `student_number` varchar(150) NOT NULL,
+  `bus_number` varchar(255) NOT NULL,
+  `bus_line` int(10) unsigned NOT NULL,
+  `date` date NOT NULL,
+  `create_time` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_np_stu_num` (`student_number`),
+  CONSTRAINT `fk_np_stu_num` FOREIGN KEY (`student_number`) REFERENCES `student` (`student_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- Table structure for `picked_students_info`
 -- ----------------------------
 DROP TABLE IF EXISTS `picked_students_info`;
@@ -422,6 +445,7 @@ CREATE TABLE `student` (
   KEY `fk_board_station_morning` (`board_station_morning`),
   KEY `fk_board_station_afternoon` (`board_station_afternoon`),
   KEY `fk_bus_afternoon` (`bus_line_afternoon`),
+  KEY `student_number` (`student_number`),
   CONSTRAINT `fk_banji` FOREIGN KEY (`banji`) REFERENCES `banji` (`id`),
   CONSTRAINT `fk_board_station_afternoon` FOREIGN KEY (`board_station_afternoon`) REFERENCES `bus_stations` (`id`),
   CONSTRAINT `fk_board_station_morning` FOREIGN KEY (`board_station_morning`) REFERENCES `bus_stations` (`id`),
@@ -3242,8 +3266,8 @@ CREATE TABLE `transport_record` (
   `flag` varchar(255) NOT NULL COMMENT '早上上车、午班上车、午班下车、晚班上车',
   `bus_number_in_tr` varchar(255) NOT NULL COMMENT '校车编号，因为晚班的线路和校车不绑定，所以需要记录校车. 命名后缀in_tr是为了不影响其他地方的bus_number',
   `status` varchar(255) NOT NULL COMMENT '早班待开始/早班进行中/早班已结束 /午班进行中/午班已结束/晚班进行中/晚班已结束',
-  `begin_time` datetime NOT NULL,
-  `end_time` datetime DEFAULT NULL,
+  `begin_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `end_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_tr_bus` (`bus_line`),
   KEY `fk_current_station` (`current_station`),
@@ -3254,6 +3278,7 @@ CREATE TABLE `transport_record` (
 -- ----------------------------
 -- Records of transport_record
 -- ----------------------------
+INSERT INTO `transport_record` VALUES ('1', '2019-02-13', '135', '221', '', '', '行程进行中', '2019-02-13 18:04:21', null);
 
 -- ----------------------------
 -- Table structure for `user`
@@ -3411,26 +3436,26 @@ INSERT INTO `user` VALUES ('139', '王江玥', '王江玥', null, '4', 'shzx', n
 INSERT INTO `user` VALUES ('140', '谢雨辰', '谢雨辰', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
 INSERT INTO `user` VALUES ('141', '吴晓冬', '吴晓冬', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
 INSERT INTO `user` VALUES ('142', '潘颖颖', '潘颖颖', null, '4', 'shzx', null, null, '2019-02-02 11:55:45', '1');
-INSERT INTO `user` VALUES ('143', '黄秋萍', '黄秋萍', null, '3', 'shzx', null, '13761943957', '2019-02-02 14:21:34', '1');
-INSERT INTO `user` VALUES ('144', '刘志勋', '刘志勋', null, '5', 'shzx', null, '13636413258', '2019-02-02 14:21:34', '1');
-INSERT INTO `user` VALUES ('145', '高明娟', '高明娟', null, '3', 'shzx', null, '13818250389', '2019-02-02 14:21:34', '1');
-INSERT INTO `user` VALUES ('146', '印正银', '印正银', null, '5', 'shzx', null, '13321936422', '2019-02-02 14:21:34', '1');
-INSERT INTO `user` VALUES ('147', '徐明芳', '徐明芳', null, '3', 'shzx', null, '13641890593', '2019-02-02 14:21:34', '1');
-INSERT INTO `user` VALUES ('148', '印国武', '印国武', null, '5', 'shzx', null, '1367185167', '2019-02-02 14:21:34', '1');
-INSERT INTO `user` VALUES ('149', '谈英荣', '谈英荣', null, '3', 'shzx', null, '15002191952', '2019-02-02 14:21:34', '1');
-INSERT INTO `user` VALUES ('150', '浦红涛', '浦红涛', null, '5', 'shzx', null, '15301609833', '2019-02-02 14:21:34', '1');
-INSERT INTO `user` VALUES ('151', '俞正明', '俞正明', null, '3', 'shzx', null, '15921798608', '2019-02-02 14:21:35', '1');
-INSERT INTO `user` VALUES ('152', '邱海林', '邱海林', null, '5', 'shzx', null, '18918671805', '2019-02-02 14:21:35', '1');
-INSERT INTO `user` VALUES ('153', '华素琴', '华素琴', null, '3', 'shzx', null, '18117314192', '2019-02-02 14:21:35', '1');
-INSERT INTO `user` VALUES ('154', '薛鋆', '薛鋆', null, '5', 'shzx', null, '13391252523', '2019-02-02 14:21:35', '1');
-INSERT INTO `user` VALUES ('155', '王秀英', '王秀英', null, '3', 'shzx', null, '18019387499', '2019-02-02 14:21:35', '1');
-INSERT INTO `user` VALUES ('156', '钱景利', '钱景利', null, '5', 'shzx', null, '13801862913', '2019-02-02 14:21:35', '1');
-INSERT INTO `user` VALUES ('157', '霍建兰', '霍建兰', null, '3', 'shzx', null, '13917923087', '2019-02-02 14:21:35', '1');
-INSERT INTO `user` VALUES ('158', '马国平', '马国平', null, '5', 'shzx', null, '13003211112', '2019-02-02 14:21:35', '1');
-INSERT INTO `user` VALUES ('159', '章慧萍', '章慧萍', null, '3', 'shzx', null, '18930797867', '2019-02-02 14:21:35', '1');
-INSERT INTO `user` VALUES ('160', '韩建平', '韩建平', null, '5', 'shzx', null, '18017853309', '2019-02-02 14:21:35', '1');
-INSERT INTO `user` VALUES ('161', '黄德琴', '黄德琴', null, '3', 'shzx', null, '13764916124', '2019-02-02 14:21:35', '1');
-INSERT INTO `user` VALUES ('162', '余解宝', '余解宝', null, '5', 'shzx', null, '18964604797', '2019-02-02 14:21:35', '1');
+INSERT INTO `user` VALUES ('143', '黄秋萍', '黄秋萍', null, '3', 'shzx', null, '13761943958', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('144', '刘志勋', '刘志勋', null, '5', 'shzx', null, '13636413259', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('145', '高明娟', '高明娟', null, '3', 'shzx', null, '13818250389', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('146', '印正银', '印正银', null, '5', 'shzx', null, '13321936422', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('147', '徐明芳', '徐明芳', null, '3', 'shzx', null, '13641890593', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('148', '印国武', '印国武', null, '5', 'shzx', null, '13671851670', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('149', '谈英荣', '谈英荣', null, '3', 'shzx', null, '15002191952', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('150', '浦红涛', '浦红涛', null, '5', 'shzx', null, '15301609833', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('151', '俞正明', '俞正明', null, '3', 'shzx', null, '15921798608', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('152', '邱海林', '邱海林', null, '5', 'shzx', null, '18918671805', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('153', '华素琴', '华素琴', null, '3', 'shzx', null, '18117314192', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('154', '薛鋆', '薛鋆', null, '5', 'shzx', null, '13391252523', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('155', '王秀英', '王秀英', null, '3', 'shzx', null, '18019387499', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('156', '钱景利', '钱景利', null, '5', 'shzx', null, '13801862913', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('157', '霍建兰', '霍建兰', null, '3', 'shzx', null, '13917923087', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('158', '马国平', '马国平', null, '5', 'shzx', null, '13003211112', '2019-02-12 16:30:59', '1');
+INSERT INTO `user` VALUES ('159', '章慧萍', '章慧萍', null, '3', 'shzx', null, '18930797867', '2019-02-12 16:31:00', '1');
+INSERT INTO `user` VALUES ('160', '韩建平', '韩建平', null, '5', 'shzx', null, '18017853309', '2019-02-12 16:31:00', '1');
+INSERT INTO `user` VALUES ('161', '黄德琴', '黄德琴', null, '3', 'shzx', null, '13764916124', '2019-02-12 16:31:00', '1');
+INSERT INTO `user` VALUES ('162', '余解宝', '余解宝', null, '5', 'shzx', null, '18964604797', '2019-02-12 16:31:00', '1');
 
 -- ----------------------------
 -- Table structure for `user_msg_status_info`

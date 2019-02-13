@@ -141,8 +141,10 @@
     LEFT JOIN bus_base_info AS bbi ON bbi.id = bl.bus_base_info
     WHERE
         bbi.number = #{busNumber}
-    AND bl.`mode` = #{busMode}
-    AND DATE_FORMAT( tr.date,  '%Y-%m-%d' ) = #{queryDate}
+      <if test="busMode != null and busMode != ''">
+        AND bl.`mode` = #{busMode}
+      </if>
+      AND DATE_FORMAT( tr.date,  '%Y-%m-%d' ) = #{queryDate}
   </select>
 
   <insert id="saveAndGetID" useGeneratedKeys="true" parameterType="com.eservice.api.model.transport_record.TransportRecord"
