@@ -2,6 +2,8 @@ package com.eservice.api.model.transport_record;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import java.sql.Timestamp;
+import java.time.DateTimeException;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -156,16 +158,17 @@ public class TransportRecord {
     }
 
     /**
-     * 进行中(TRANSPORT_RECORD_STATUS_RUNNING)、已结束
+     * 行程进行中(TRANSPORT_RECORD_STATUS_RUNNING)、已结束
      */
     @Column(name = "status")
     private String status;
 
+    // Timestamp 可以显示非0时分秒
     @Column(name = "begin_time")
-    private Date beginTime;
+    private Timestamp beginTime;
 
     @Column(name = "end_time")
-    private Date endTime;
+    private Timestamp endTime;
 
     public String getStatus() {
         return status;
@@ -175,19 +178,19 @@ public class TransportRecord {
         this.status = status;
     }
 
-    public Date getBeginTime() {
+    public Timestamp getBeginTime() {
         return beginTime;
     }
 
-    public void setBeginTime(Date beginTime) {
+    public void setBeginTime(Timestamp beginTime) {
         this.beginTime = beginTime;
     }
 
-    public Date getEndTime() {
+    public Timestamp getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
     }
 }

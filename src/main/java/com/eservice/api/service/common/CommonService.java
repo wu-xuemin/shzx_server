@@ -298,22 +298,22 @@ public class CommonService {
     }
 
     /**
-     * 根据时间 自动判断 早班发车、午班发车、晚班发车
+     * 在没有当天的发车记录的情况下
+     * 根据时间 自动判断处于 早班待发车、午班待发车、晚班待发车哪个阶段
      */
-    public static String getTransportRecordFlagByTime( Date date ) {//Date time, SimpleDateFormat sdf
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
-        Date time = null;
-        String str = sdf.format(time);
+    public static String getBusStatusByTime( Date date ) {//Date time, SimpleDateFormat sdf
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String str = sdf.format(date);
         int a = Integer.parseInt(str.split(":")[0]);
         if (a >= 0 && a <= 12) {
-            return Constant.TRANSPORT_RECORD_FLAG_MORNING;
-        } else if (a > 12 && a <= 18) {
+            return Constant.BUS_STATUS_ZAOBAN_WAIT_START;
+        } else if (a > 12 && a <= 17) {
             /**
              * 注意，午班上车、晚班上车 另外处理
              */
-            return Constant.TRANSPORT_RECORD_FLAG_AFTERNOON;
-        } else if (a > 18 && a <= 23) {
-            return Constant.TRANSPORT_RECORD_FLAG_NIGHT;
+            return Constant.BUS_STATUS_WUBAN_WAIT_START;
+        } else if (a > 17 && a <= 24) {
+            return Constant.BUS_STATUS_WANBAN_WAIT_START;
         } else {
             logger.warn("getBusModeByTime() error: " + "wrong time: " + a);
             return "wrong time: " + date;

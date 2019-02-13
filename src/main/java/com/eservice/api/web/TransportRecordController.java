@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -69,15 +70,15 @@ public class TransportRecordController {
         }
         // todo date字段废弃？
         transportRecordObj.setDate(new Date());
-        transportRecordObj.setBeginTime(new Date());
+        transportRecordObj.setBeginTime((Timestamp) new Date());
         /**
          * 后端根据当前时间判断
          */
-        if(CommonService.getTransportRecordFlagByTime(new Date()).equals(Constant.TRANSPORT_RECORD_FLAG_MORNING)) {
+        if(CommonService.getBusStatusByTime(new Date()).equals(Constant.BUS_STATUS_ZAOBAN_WAIT_START)) {
             transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_MORNING);
-        } else if(CommonService.getTransportRecordFlagByTime(new Date()).equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON)) {
+        } else if(CommonService.getBusStatusByTime(new Date()).equals(Constant.BUS_STATUS_WUBAN_WAIT_START)) {
             transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON);
-        } else if(CommonService.getTransportRecordFlagByTime(new Date()).equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT)) {
+        } else if(CommonService.getBusStatusByTime(new Date()).equals(Constant.BUS_STATUS_WANBAN_WAIT_START)) {
             transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_NIGHT);
         }
         transportRecordObj.setStatus(Constant.TRANSPORT_RECORD_STATUS_RUNNING);
@@ -96,7 +97,7 @@ public class TransportRecordController {
     public Result update(String transportRecord) {
         TransportRecord transportRecordObj = JSON.parseObject(transportRecord,TransportRecord.class);
         if(transportRecordObj.getStatus().equals(Constant.TRANSPORT_RECORD_STATUS_DONE)){
-            transportRecordObj.setEndTime(new Date());
+            transportRecordObj.setEndTime((Timestamp) new Date());
         }
         transportRecordService.update(transportRecordObj);
         return ResultGenerator.genSuccessResult();
@@ -408,6 +409,19 @@ public class TransportRecordController {
         allPickingInfo.setStationPickingInfoList(list);
 
         return ResultGenerator.genSuccessResult(allPickingInfo);
+    }
+
+
+    @ApiOperation("根据校车编号 获取校车 当天此时 所处状态（比如早班未开始、早班进行中、早班已结束...），" +
+            "如果早班没使用APP，下午午班才开始用，这是应该根据时间返回午班未开始状态" +
+            "比如前端APP意外退出之后，如果是当天重启则返回奔溃前的状态，" +
+            "如果是第2天或之后重启，则当作新的一天来处理")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号", required = true)})
+    @PostMapping("/getBusStatusByBusNumber")
+    public Result getBusStatusByBusNumber(@RequestParam() String busNumber) {
+        String status = transportRecordService.getBusStatusByBusNumber(busNumber);
+        return ResultGenerator.genSuccessResult(status);
     }
 
 }
