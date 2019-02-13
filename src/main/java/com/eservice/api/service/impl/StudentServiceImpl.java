@@ -77,7 +77,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         }
     }
 
-    public StudentInfo getSutdentInfo(String studentNumber){
+    public StudentInfo getStudentInfo(String studentNumber){
         return studentMapper.getSutdentInfo(studentNumber);
     }
 
@@ -358,7 +358,10 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    public Result getAndInsertStudentHeadImg() {
+    /**
+     * 返回学生照片文件存在，但是在数据库中不存在的照片文件名
+     */
+    public List<String> getAndInsertStudentHeadImg() {
         File dir = new File(STUDENT_IMG_DIR);
         if(!dir.exists()) {
             dir.mkdirs();
@@ -370,19 +373,18 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         Student student = null;
         for (int i = 0; i < tempList.length; i++) {
             if (tempList[i].isFile()) {
-                student = studentService.getSutdentInfo(tempList[i].getName().split("_")[0]);
+                student = studentService.getStudentInfo(tempList[i].getName().split("_")[0]);
                 if(student != null) {
                     student.setHeadImg(tempList[i].getName());
                     student.setUpdateTime(new Date());
                     studentService.update(student);
                     logger.info("学生：" + tempList[i].getName().split("_")[0] + " 已更新head_img");
                 } else {
-                    logger.info("根据文件 " + tempList[i].getName() + "，找不到对应的学生");
+                    logger.warn("根据文件 " + tempList[i].getName() + "，找不到对应的学生");
+                    list.add(tempList[i].getName());
                 }
-                list.add(tempList[i].getName());
             }
         }
-        PageInfo pageInfo = new PageInfo(list);
-        return ResultGenerator.genSuccessResult(pageInfo);
+        return list;
     }
 }

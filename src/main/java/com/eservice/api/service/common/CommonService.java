@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Decoder;
 
 import javax.net.ssl.*;
 import java.io.*;
@@ -33,28 +34,36 @@ public class CommonService {
 
     /**
      * @param path      保存文件的总路径
-     * @param file      文件
+     * @param rowData 照片文件的base64
      * @param tag1，比如学号
      * @param tag2  比如姓名
      * @return 文件路径
      * eg: xh333_zhangSan_2018-07-13-16-17-50_1.png
      */
     public String saveFile(String path,
-                           MultipartFile file,
+                           String rowData,
                            @RequestParam(defaultValue = "") String tag1,
                            @RequestParam(defaultValue = "") String tag2 ) throws IOException {
         String targetFileName = null;
         try {
-            if (path != null && !file.isEmpty()) {
-
-                String fileName = file.getOriginalFilename();
-                targetFileName = path + formatFileName(fileName.replaceAll("/", "-"), tag1.replaceAll("/", "-"), tag2.replaceAll("/", "-"));
+            if (path != null) {
+                //防止学号和姓名中有“/”
+                targetFileName = path + formatFileName(tag1.replaceAll("/", "-"), tag2.replaceAll("/", "-"));
                 if(debugFlag.equalsIgnoreCase("true")) {
                     logger.info("====CommonService.saveFile(): targetFileName  ========" + targetFileName);
                 }
                 BufferedOutputStream out = new BufferedOutputStream(
                         new FileOutputStream(new File(targetFileName)));
-                out.write(file.getBytes());
+                BASE64Decoder decoder = new BASE64Decoder();
+                // 解密
+                byte[] b = decoder.decodeBuffer(rowData);
+                // 处理数据
+                for (int i = 0; i < b.length; ++i) {
+                    if (b[i] < 0) {
+                        b[i] += 256;
+                    }
+                }
+                out.write(b);
                 out.flush();
                 out.close();
                 if(debugFlag.equalsIgnoreCase("true")) {
@@ -68,13 +77,9 @@ public class CommonService {
         return targetFileName;
     }
 
-    public String formatFileName(
-                                 String fileName,
-                                 @RequestParam(defaultValue = "") String tag1,
-                                 @RequestParam(defaultValue = "") String tag2) {
-        String targetFileName = "";
-        String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        targetFileName = tag1 + "_" + tag2 + suffixName;
+    public String formatFileName(String tag1, String tag2) {
+        String suffixName = ".png";
+        String targetFileName = tag1 + "_" + tag2 + suffixName;
         logger.info("targetFileName:" + targetFileName);
         return targetFileName;
     }

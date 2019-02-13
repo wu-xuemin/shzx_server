@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.http.util.TextUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,35 +51,42 @@ public class StudentController {
 
     @ApiOperation("增加学生信息，同时保存学生头像")
     @PostMapping("/add")
-    public Result add(Student student,
-                      MultipartFile file) {
+    public Result add(String student, String photoData) {
+        Student studentObj = JSON.parseObject(student, Student.class);
         File dir = new File(studentImgDir);
         if(!dir.exists()){
             dir.mkdir();
         }
         String message = null;
         String fileNameWithPath;
-        if(file != null) {
+        if(!TextUtils.isEmpty(photoData)) {
             try {
-                fileNameWithPath = commonService.saveFile(studentImgDir, file, student.getStudentNumber() , student.getName());
-
-                if (fileNameWithPath != null) {
-                    /**
-                     * HeadImg，不保存绝对路径，只保存文件名，方便windows调试。
-                     * 命名方式： 学生照片命名方式为学号加姓名的方式：A123456_张小明.png
-                     */
-                    student.setHeadImg(student.getStudentNumber() + "_" + student.getName() + file.getOriginalFilename());
+                String base64RowData = photoData.substring(photoData.indexOf(",")+ 1);
+                if(syncStuService.uploadStuPic(base64RowData,studentObj)) {
+                    fileNameWithPath = commonService.saveFile(studentImgDir, base64RowData, studentObj.getStudentNumber() , studentObj.getName());
+                    if (fileNameWithPath != null) {
+                        /**
+                         * HeadImg，不保存绝对路径，只保存文件名，方便windows调试。
+                         * 命名方式： 学生照片命名方式为学号加姓名的方式：A123456_张小明.png
+                         */
+                        studentObj.setHeadImg(studentObj.getStudentNumber().replaceAll("/", "_") + "_" + studentObj.getName().replaceAll("/", "_") + ".png");
+                    } else {
+                        message = "failed to save file, no student added of " + studentObj.getName();
+                        throw new RuntimeException();
+                    }
                 } else {
-                    message = "failed to save file, no student added of " + student.getName();
+                    message = "Upload to  face platform failed, student name: " + studentObj.getName();
                     throw new RuntimeException();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
                 return ResultGenerator.genFailResult(e.getMessage() + "," + message);
             }
+        } else {
+            return ResultGenerator.genFailResult("照片不能为空！");
         }
-        student.setCreateTime(new Date());
-        studentService.save(student);
+        studentObj.setCreateTime(new Date());
+        studentService.save(studentObj);
         return ResultGenerator.genSuccessResult();
     }
 
@@ -95,12 +104,34 @@ public class StudentController {
 
     @PostMapping("/update")
     @Transactional
-    public Result update(String student, String photoBase64Data) {
-        Student studentObj = JSON.parseObject(student, Student.class);
-        studentObj.setUpdateTime(new Date());
-        if(photoBase64Data != null && !"".equals(photoBase64Data)) {
-
+    public Result update(String student, String photoData) {
+        File dir = new File(studentImgDir);
+        if(!dir.exists()){
+            dir.mkdir();
         }
+        String message = null;
+        String fileNameWithPath;
+        Student studentObj = JSON.parseObject(student, Student.class);
+        if(photoData != null && !"".equals(photoData)) {
+            try {
+                String base64RowData = photoData.substring(photoData.indexOf(",")+ 1);
+                if(syncStuService.uploadStuPic(base64RowData,studentObj)) {
+                    fileNameWithPath = commonService.saveFile(studentImgDir, base64RowData, studentObj.getStudentNumber(), studentObj.getName());
+                    if (fileNameWithPath == null) {
+                        message = "failed to save file, no student added of " + studentObj.getName();
+                        throw new RuntimeException();
+                    }
+                } else {
+                    message = "Upload to  face platform failed, student name: " + studentObj.getName();
+                    throw new RuntimeException();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResultGenerator.genFailResult(e.getMessage() + "," + message);
+            }
+        }
+        studentObj.setUpdateTime(new Date());
         studentService.update(studentObj);
         return ResultGenerator.genSuccessResult();
     }
@@ -153,9 +184,9 @@ public class StudentController {
 
     @ApiOperation("根据学号查找某学生详细信息")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "studentNumber", value = "学生的学号") })
-    @PostMapping("/getSutdentInfo")
-    public Result getSutdentInfo(@RequestParam String studentNumber) {
-        Student student = studentService.getSutdentInfo(studentNumber);
+    @PostMapping("/getStudentInfo")
+    public Result getStudentInfo(@RequestParam String studentNumber) {
+        Student student = studentService.getStudentInfo(studentNumber);
         return ResultGenerator.genSuccessResult(student);
     }
 
@@ -202,11 +233,11 @@ public class StudentController {
         return ResultGenerator.genSuccessResult(banji);
     }
 
-    @ApiOperation("读取学生的头像文件（放在特定目录下student_img_dir）的命名来填充学生的头像字段，比如某学生的头像文件为 14111_张三.png 则在该学生的head_img字段填入14111_张三.png ")
+    @ApiOperation("读取学生的头像文件（放在特定目录下student_img_dir）的命名来填充学生的头像字段，比如某学生的头像文件为 14111_张三.png 则在该学生的head_img字段填入14111_张三.png;返回列表显示照片存在，但是数据库中不存在的文件名。")
     @PostMapping("/getAndInsertStudentHeadImg")
     public Result getAndInsertStudentHeadImg() {
-        Result result = studentService.getAndInsertStudentHeadImg();
-        return ResultGenerator.genSuccessResult(result);
+        List<String> notDBExistList = studentService.getAndInsertStudentHeadImg();
+        return ResultGenerator.genSuccessResult(notDBExistList);
     }
 
 }

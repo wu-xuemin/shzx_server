@@ -54,7 +54,7 @@ public class PickedStudentsInfoController {
         if (transportRecordService.findById(pickedStudentsInfo.getTransportRecordId()) == null) {
             return ResultGenerator.genFailResult("请检查 pickedStudentsInfo的TransportRecordId参数，是否实际已创建对应的TransportRecord");
         }
-        Student student = studentService.getSutdentInfo(studentNumber);
+        Student student = studentService.getStudentInfo(studentNumber);
         if(student == null){
             return ResultGenerator.genFailResult("请检查studentNumber参数");
         }

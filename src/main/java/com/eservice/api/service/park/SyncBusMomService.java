@@ -115,42 +115,39 @@ public class SyncBusMomService {
         if (responseModel != null && responseModel.getResults() != null) {
             ArrayList<WinVisitorRecord> tmpList = (ArrayList<WinVisitorRecord>)JSONArray.parseArray(responseModel.getResults(), WinVisitorRecord.class);
             if (tmpList != null && tmpList.size() > 0) {
-                boolean changed = false;
-                if (tmpList != null && tmpList.size() != 0) {
-                    if (tmpList.size() != staffList.size()) {
-                        changed = true;
-                    } else {
-                        if (!tmpList.equals(staffList)) {
-                            changed = true;
-                        }
-                    }
-                    if (changed) {
-                        logger.info("The number of BusMom：{} ==> {}", staffList.size(), tmpList.size());
-                    }
-                    if (mExecutor == null) {
-                        initExecutor();
-                    }
-                    mExecutor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            HashSet<String> hashSet = new HashSet<>();
-                            for (WinVisitorRecord item: tmpList) {
-                                if(item.getMeta() == null) {
-                                    logger.error("信息错误BusMom：ID:{}, URL:{}", item.getPerson_id_str(),item.getImage_uri());
+                if (mExecutor == null) {
+                    initExecutor();
+                }
+                mExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        HashSet<String> hashSet = new HashSet<>();
+                        ArrayList<WinVisitorRecord> qualityPassedList =  new ArrayList<>();
+                        for (WinVisitorRecord item: tmpList) {
+                            if(!item.isSuccess()) {
+                                logger.error("照片质量未通过BusMom：手机号:{}, 姓名:{}", item.getMeta().getExternal_id(),item.getMeta().getName());
+                                continue;
+                            } else {
+                                qualityPassedList.add(item);
+                            }
+                            if(item.getMeta() == null) {
+                                logger.error("信息错误BusMom：ID:{}, URL:{}", item.getPerson_id_str(),item.getImage_uri());
+                            } else {
+                                if(item.getMeta().getExternal_id() == null || item.getMeta().getExternal_id().equals("")) {
+                                    logger.error("手机号为空BusMom：{} {}", item.getMeta().getName(),item.getMeta().getExternal_id());
+                                } else if(!hashSet.contains(item.getMeta().getExternal_id())) {
+                                    hashSet.add(item.getMeta().getExternal_id());
                                 } else {
-                                    if(item.getMeta().getExternal_id() == null || item.getMeta().getExternal_id().equals("")) {
-                                        logger.error("手机号为空BusMom：{} {}", item.getMeta().getName(),item.getMeta().getExternal_id());
-                                    } else if(!hashSet.contains(item.getMeta().getExternal_id())) {
-                                        hashSet.add(item.getMeta().getExternal_id());
-                                    } else {
-                                        logger.error("手机号重复的BusMom：{} {}", item.getMeta().getName(),item.getMeta().getExternal_id());
-                                    }
+                                    logger.error("手机号重复的BusMom：{} {}", item.getMeta().getName(),item.getMeta().getExternal_id());
                                 }
                             }
                         }
-                    });
-                    staffList = tmpList;
-                }
+                        if(!SYNCING) {
+                            logger.info("The number of busMom：{} ==> {}", staffList.size(), qualityPassedList.size());
+                            staffList = qualityPassedList;
+                        }
+                    }
+                });
             }
         }
     }
