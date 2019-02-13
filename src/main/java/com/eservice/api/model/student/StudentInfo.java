@@ -41,4 +41,34 @@ public class StudentInfo extends Student {
     public void setBoardStationAfternoonName(String boardStationAfternoonName) {
         this.boardStationAfternoonName = boardStationAfternoonName;
     }
+
+    private String busPlateNumber;
+
+    private String chargeTeacherName;
+
+    private String chargeTeacherPhone;
+
+    public String getBusPlateNumber() {
+        return busPlateNumber;
+    }
+
+    public void setBusPlateNumber(String busPlateNumber) {
+        this.busPlateNumber = busPlateNumber;
+    }
+
+    public String getChargeTeacherName() {
+        return chargeTeacherName;
+    }
+
+    public void setChargeTeacherName(String chargeTeacherName) {
+        this.chargeTeacherName = chargeTeacherName;
+    }
+
+    public String getChargeTeacherPhone() {
+        return chargeTeacherPhone;
+    }
+
+    public void setChargeTeacherPhone(String chargeTeacherPhone) {
+        this.chargeTeacherPhone = chargeTeacherPhone;
+    }
 }

@@ -42,6 +42,9 @@
     <result column="bus_number" jdbcType="VARCHAR" property="busNumber" />
     <result column="board_station_morning_name" jdbcType="VARCHAR" property="boardStationMorningName" />
     <result column="board_station_afternoon_name" jdbcType="VARCHAR" property="boardStationAfternoonName" />
+    <result column="bus_plate_number" jdbcType="VARCHAR" property="busPlateNumber" />
+    <result column="charge_teacher_name" jdbcType="VARCHAR" property="chargeTeacherName" />
+    <result column="charge_teacher_phone" jdbcType="VARCHAR" property="chargeTeacherPhone" />
   </resultMap>
 
   <select id="getPlannedStudentsMorningByBusNumber" resultMap="StudentInfoResultMap">
@@ -49,6 +52,9 @@
         student.*,
         banji.class_name as banji_name,
         bus_base_info.number as bus_number,
+        bus_base_info.plate_number as bus_plate_number,
+        user_bzr.`name` AS charge_teacher_name,
+        user_bzr.phone AS charge_teacher_phone,
         bus_stations.station_name AS board_station_morning_name,
         bs_a.station_name AS board_station_afternoon_name
     FROM
@@ -58,18 +64,22 @@
     LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
     LEFT JOIN bus_stations ON bus_stations.id = student.board_station_morning
     LEFT JOIN bus_stations AS bs_a ON bs_a.id = student.board_station_afternoon
+    LEFT JOIN user AS user_bzr ON banji.charge_teacher = user_bzr.id
     WHERE
     student.valid = 1
     <if test="busNumber != null and busNumber != ''">
       and bus_base_info.number = #{busNumber}
     </if>
   </select>
-
+<!-- todo 测试afternoon-->
   <select id="getPlannedStudentsAfternoonByBusNumber" resultMap="StudentInfoResultMap">
     SELECT
       student.*,
       banji.class_name as banji_name,
       bus_base_info.number as bus_number,
+      bus_base_info.plate_number as bus_plate_number,
+      user_bzr.`name` AS charge_teacher_name,
+      user_bzr.phone AS charge_teacher_phone,
       bus_stations.station_name AS board_station_afternoon_name,
       bs_m.station_name AS board_station_morning_name
     FROM
@@ -79,6 +89,7 @@
     LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
     LEFT JOIN bus_stations ON bus_stations.id = student.board_station_afternoon
     LEFT JOIN bus_stations AS bs_m ON bs_m.id = student.board_station_morning
+    LEFT JOIN user AS user_bzr ON banji.charge_teacher = user_bzr.id
     WHERE
     student.valid = 1
     <if test="busNumber != null and busNumber != ''">
