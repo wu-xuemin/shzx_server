@@ -296,4 +296,29 @@ public class CommonService {
             return Constant.FAIL;
         }
     }
+
+    /**
+     * 根据时间 自动判断 早班发车、午班发车、晚班发车
+     */
+    public static String getTransportRecordFlagByTime( Date date ) {//Date time, SimpleDateFormat sdf
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+        Date time = null;
+        String str = sdf.format(time);
+        int a = Integer.parseInt(str.split(":")[0]);
+        if (a >= 0 && a <= 12) {
+            return Constant.TRANSPORT_RECORD_FLAG_MORNING;
+        } else if (a > 12 && a <= 18) {
+            /**
+             * 注意，午班上车、晚班上车 另外处理
+             */
+            return Constant.TRANSPORT_RECORD_FLAG_AFTERNOON;
+        } else if (a > 18 && a <= 23) {
+            return Constant.TRANSPORT_RECORD_FLAG_NIGHT;
+        } else {
+            logger.warn("getBusModeByTime() error: " + "wrong time: " + a);
+            return "wrong time: " + date;
+        }
+    }
+
+
 }

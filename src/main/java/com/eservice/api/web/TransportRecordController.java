@@ -11,6 +11,7 @@ import com.eservice.api.model.transport_record.AllPickingInfo;
 import com.eservice.api.model.transport_record.StationPickingInfo;
 import com.eservice.api.model.transport_record.TransportRecord;
 import com.eservice.api.model.transport_record.TransportRecordInfo;
+import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.common.Constant;
 import com.eservice.api.service.impl.BusLineServiceImpl;
 import com.eservice.api.service.impl.BusStationsServiceImpl;
@@ -61,20 +62,27 @@ public class TransportRecordController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "date", value = " 时间，留空")})
     @PostMapping("/add")
-    public Result add(TransportRecord transportRecord) {
-        if(transportRecord == null) {
-            return ResultGenerator.genFailResult("transportRecord 不能为空");
+    public Result add(String transportRecord) {
+        TransportRecord transportRecordObj = JSON.parseObject(transportRecord, TransportRecord.class);
+        if(transportRecordObj == null) {
+            return ResultGenerator.genFailResult("transportRecord 解析失败");
         }
-        if(!(transportRecord.getBusNumberInTR().equals(Constant.TRANSPORT_RECORD_FLAG_MORNING_UP)
-                ||transportRecord.getBusNumberInTR().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)
-                ||transportRecord.getBusNumberInTR().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)
-                ||transportRecord.getBusNumberInTR().equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT_UP))){
-            return ResultGenerator.genFailResult("flag 只能是 " + Constant.TRANSPORT_RECORD_FLAG_MORNING_UP + " / " + Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP
-            + Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN + "/" + Constant.TRANSPORT_RECORD_FLAG_NIGHT_UP);
+        // todo date字段废弃？
+        transportRecordObj.setDate(new Date());
+        transportRecordObj.setBeginTime(new Date());
+        /**
+         * 后端根据当前时间判断
+         */
+        if(CommonService.getTransportRecordFlagByTime(new Date()).equals(Constant.TRANSPORT_RECORD_FLAG_MORNING)) {
+            transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_MORNING);
+        } else if(CommonService.getTransportRecordFlagByTime(new Date()).equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON)) {
+            transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON);
+        } else if(CommonService.getTransportRecordFlagByTime(new Date()).equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT)) {
+            transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_NIGHT);
         }
-        transportRecord.setDate(new Date());
-        transportRecordService.saveAndGetID(transportRecord);
-        return ResultGenerator.genSuccessResult(transportRecord.getId());
+        transportRecordObj.setStatus(Constant.TRANSPORT_RECORD_STATUS_RUNNING);
+        transportRecordService.saveAndGetID(transportRecordObj);
+        return ResultGenerator.genSuccessResult(transportRecordObj.getId());
     }
 
     @PostMapping("/delete")
@@ -83,9 +91,14 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult();
     }
 
+    //TODO 其他各个add/Update， 统一改成String类型
     @PostMapping("/update")
-    public Result update(TransportRecord transportRecord) {
-        transportRecordService.update(transportRecord);
+    public Result update(String transportRecord) {
+        TransportRecord transportRecordObj = JSON.parseObject(transportRecord,TransportRecord.class);
+        if(transportRecordObj.getStatus().equals(Constant.TRANSPORT_RECORD_STATUS_DONE)){
+            transportRecordObj.setEndTime(new Date());
+        }
+        transportRecordService.update(transportRecordObj);
         return ResultGenerator.genSuccessResult();
     }
 

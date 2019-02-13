@@ -16,11 +16,27 @@ public class Constant {
     public static final String BUS_MODE_AFTERNOON = "午班";
     public static final String BUS_MODE_NIGHT = "晚班";
 
-    public static final String TRANSPORT_RECORD_FLAG_MORNING_UP = "早上上车";
-    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON_UP = "午班上车";
-    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN = "午班下车";
-    public static final String TRANSPORT_RECORD_FLAG_NIGHT_UP = "晚班上车";
+    public static final String TRANSPORT_RECORD_FLAG_MORNING = "早班发车";
+//    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON_UP = "午班上车";
+    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON = "午班发车";
+    public static final String TRANSPORT_RECORD_FLAG_NIGHT = "晚班发车";
 
     public static final String SUCCESS = "SUCCESS";
     public static final String FAIL = "FAIL";
-  }
+
+    public static final String TRANSPORT_STATUS_ZAOBAN_NOT_START = "早班未开始";
+    public static final String TRANSPORT_STATUS_ZAOBAN_RUNNING = "早班进行中";
+    public static final String TRANSPORT_STATUS_ZAOBAN_DONE = "早班已结束";
+
+   // public static final String TRANSPORT_STATUS_WUBAN_NOT_START = "早班未开始"; //等同 早班已结束，
+    public static final String TRANSPORT_STATUS_WUBAN_RUNNING = "午班进行中";
+    public static final String TRANSPORT_STATUS_WUBAN_DONE = "午班已结束";
+
+   // public static final String TRANSPORT_STATUS_WANGBAN_NOT_START = "晚班未开始"; //等同 午班已结束
+    public static final String TRANSPORT_STATUS_WANGBAN_RUNNING = "晚班进行中";
+    public static final String TRANSPORT_STATUS_WANGBAN_DONE = "晚班已结束";
+
+    public static final String TRANSPORT_RECORD_STATUS_RUNNING = "行程进行中";
+    public static final String TRANSPORT_RECORD_STATUS_DONE = "行程已结束";
+
+}

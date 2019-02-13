@@ -127,14 +127,14 @@ public class TransportRecord {
     }
 
     /**
-     * 早上上车、午班上车、午班下车、晚班上车
-     * 方便区分午班的上车还是下车记录等
+     * 早上发车、午班发车、晚班发车
+     * 根据时间判断这3个，午班上车和晚班上车另外处理
      */
     @Column(name = "flag")
     private String flag;
 
     /**
-     * 校车编号，因为晚班的线路和校车不绑定，所以需要记录校车
+     * 校车编号，因为晚班的线路和校车不绑定，所以需要记录校车  --待废弃
      */
     @Column(name = "bus_number_in_tr")
     private String busNumberInTR;
@@ -153,5 +153,41 @@ public class TransportRecord {
 
     public void setBusNumberInTR(String busNumberInTR) {
         this.busNumberInTR = busNumberInTR;
+    }
+
+    /**
+     * 进行中(TRANSPORT_RECORD_STATUS_RUNNING)、已结束
+     */
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "begin_time")
+    private Date beginTime;
+
+    @Column(name = "end_time")
+    private Date endTime;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }

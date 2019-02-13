@@ -11,6 +11,9 @@
     <result column="current_station" jdbcType="INTEGER" property="currentStation" />
     <result column="flag" jdbcType="VARCHAR" property="flag" />
     <result column="bus_number_in_tr" jdbcType="VARCHAR" property="busNumberInTR" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="begin_time" jdbcType="DATE" property="beginTime" />
+    <result column="end_time" jdbcType="DATE" property="endTime" />
   </resultMap>
   <resultMap id="TransportRecordInfoResultMap" type="com.eservice.api.model.transport_record.TransportRecordInfo">
     <!--
