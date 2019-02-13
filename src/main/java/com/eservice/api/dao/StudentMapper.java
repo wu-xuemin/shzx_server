@@ -13,7 +13,7 @@ public interface StudentMapper extends Mapper<Student> {
 
     List<StudentInfo> getPlannedStudentsAfternoonByBusNumber(@Param("busNumber") String busNumber);
 
-    StudentInfo getSutdentInfo(@Param("studentNumber") String studentNumber);
+    StudentInfo getStudentInfo(@Param("studentNumber") String studentNumber);
 
     List<StudentInfo> getPlannedStudentsMorning(@Param("busNumber") String busNumber,@Param("busStation") String busStation);
 
@@ -21,5 +21,5 @@ public interface StudentMapper extends Mapper<Student> {
 
     List<StudentInfo> getPlannedStudents(@Param("busNumber") String busNumber,@Param("busStation") String busStation);
 
-    List<StudentInfo> getStudents(@Param("className") String className);
+    List<StudentInfo> getStudents(@Param("gradeName") String gradeName, @Param("className") String className, @Param("queryKey") String queryKey);
 }

@@ -91,9 +91,11 @@ public class StudentController {
     }
 
     @PostMapping("/delete")
+    @Transactional
     public Result delete(@RequestParam String student) {
         if(student != null) {
             Student studentObj = JSON.parseObject(student, Student.class);
+            //TODO:需要删除对应照片以及人脸平台中对应的学生
             studentObj.setValid(0);
             studentService.update(studentObj);
         } else {
@@ -193,10 +195,12 @@ public class StudentController {
     @ApiOperation("根据班级名称获取学生列表")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "className", value = "班级名称") })
     @PostMapping("/getStudents")
-    public Result getStudents(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,@RequestParam String className) {
+    public Result getStudents(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                              @RequestParam(defaultValue = "") String gradeName, @RequestParam(defaultValue = "") String className,
+                              @RequestParam(defaultValue = "") String queryKey) {
 
         PageHelper.startPage(page, size);
-        List<StudentInfo> students = studentService.getStudents(className);
+        List<StudentInfo> students = studentService.getStudents(gradeName,className,queryKey);
         PageInfo pageInfo = new PageInfo(students);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

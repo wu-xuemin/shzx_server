@@ -78,7 +78,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
     }
 
     public StudentInfo getStudentInfo(String studentNumber){
-        return studentMapper.getSutdentInfo(studentNumber);
+        return studentMapper.getStudentInfo(studentNumber);
     }
 
     /**
@@ -99,8 +99,8 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
 
     }
 
-    public List<StudentInfo> getStudents(String className) {
-        return studentMapper.getStudents(className);
+    public List<StudentInfo> getStudents(String gradeName,String className, String queryKey) {
+        return studentMapper.getStudents(gradeName,className,queryKey);
     }
 
     /**
