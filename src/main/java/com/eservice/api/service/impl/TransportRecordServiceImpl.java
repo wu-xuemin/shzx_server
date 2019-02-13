@@ -9,6 +9,7 @@ import com.eservice.api.service.TransportRecordService;
 import com.eservice.api.core.AbstractService;
 import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.common.Constant;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,12 @@ import java.util.List;
 public class TransportRecordServiceImpl extends AbstractService<TransportRecord> implements TransportRecordService {
     @Resource
     private TransportRecordMapper transportRecordMapper;
+    @Value("${bus_morning_deadline}")
+    private static Integer BUS_MORNING_DEADLINE;
+
+    @Value("${bus_afternoon_deadline}")
+    private static Integer BUS_AFTERNOON_DEADLINE;
+
 
     public List<TransportRecordInfo> selectTransportRecord(  String queryStartTime,
                                                              String queryFinishTime,
@@ -82,42 +89,108 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
              * 如果该车在当天的 transport_record里不存在记录，表示当天没有发过车
              * 则根据时间来返回:早班待发车/午班待发车/晚班待发车 （即使存在情况：早班没使用APP，直接使用午班/晚班）
              */
-            return CommonService.getBusStatusByTime(new Date());
+            return getBusInitialStatusByTime(new Date());
         } else {
             /**
              * 如果该车在当天的 transport_record里存在记录，则根据最后最新那个记录beginTime和Status来判断
              */
-            String status = recordList.get(recordList.size() - 1).getStatus();
-            SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
-            String beginTime = sdf2.format(recordList.get(recordList.size() - 1).getBeginTime());
-            int h = Integer.parseInt(beginTime.split(":")[0]);
-            if(h <=12){
-                if(status.equals(Constant.TRANSPORT_RECORD_STATUS_RUNNING)) {
-                    return Constant.BUS_STATUS_ZAOBAN_RUNNING;
-                }else if(status.equals(Constant.TRANSPORT_RECORD_STATUS_DONE)) {
-                    return Constant.BUS_STATUS_ZAOBAN_DONE;
-                } else {
-                    return "Wrong status" + status;
+            TransportRecord latestRecord = recordList.get(recordList.size() - 1);
+            String busStatus = Constant.BUS_STATUS_ERROR;
+            if(latestRecord != null) {
+                String recordStatus = latestRecord.getStatus();
+                switch (recordStatus) {
+                    case Constant.TRANSPORT_RECORD_STATUS_NIGHT_LINE_SELECTED:
+                        busStatus = Constant.BUS_STATUS_WANBAN_LINE_SELECTED;
+                        break;
+                    case Constant.TRANSPORT_RECORD_STATUS_RUNNING:
+                        if(latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_MORNING)) {
+                            busStatus = Constant.BUS_STATUS_ZAOBAN_RUNNING;
+                        } else if(latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON)) {
+                            busStatus = Constant.BUS_STATUS_WUBAN_RUNNING;
+                        } else {
+                            busStatus = Constant.BUS_STATUS_WANBAN_RUNNING;
+                        }
+                        break;
+                    case Constant.TRANSPORT_RECORD_STATUS_DONE:
+                        /*
+                           如果已经结束的是早班，早班就被排除，根据时间来判断是午班还是晚班；
+                           如果已经结束的是午班，则只考虑晚班
+                         */
+                        if(latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_MORNING)) {
+                            //按时间计算是早班，但是实际早班已完成，所以默认返回午班
+                            String tmpStatus = getBusInitialStatusByTime(new Date());
+                            if(tmpStatus.equals(Constant.BUS_STATUS_ZAOBAN_WAIT_START)) {
+                                busStatus = Constant.BUS_STATUS_WUBAN_WAIT_START;
+                            } else {
+                                //如果是其他的状态，则不变
+                                busStatus = tmpStatus;
+                            }
+                        } else if(latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON)) {
+                            //直接切换到晚班待开始
+                            busStatus = Constant.BUS_STATUS_WANBAN_WAIT_START;
+                        } else {
+                            busStatus = Constant.BUS_STATUS_WANBAN_DONE;
+                        }
+//                        SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
+//                        String beginTime = sdf2.format(recordList.get(recordList.size() - 1).getBeginTime());
+//                        int h = Integer.parseInt(beginTime.split(":")[0]);
+//                        if(h <=12){
+//                            if(status.equals(Constant.TRANSPORT_RECORD_STATUS_RUNNING)) {
+//                                return Constant.BUS_STATUS_ZAOBAN_RUNNING;
+//                            }else if(status.equals(Constant.TRANSPORT_RECORD_STATUS_DONE)) {
+//                                return Constant.BUS_STATUS_ZAOBAN_DONE;
+//                            } else {
+//                                return "Wrong status" + status;
+//                            }
+//                        } else if( h>12 && h<= 17){
+//                            if(status.equals(Constant.TRANSPORT_RECORD_STATUS_RUNNING)) {
+//                                return Constant.BUS_STATUS_WUBAN_RUNNING;
+//                            }else if(status.equals(Constant.TRANSPORT_RECORD_STATUS_DONE)) {
+//                                return Constant.BUS_STATUS_WUBAN_DONE;
+//                            } else {
+//                                return "Wrong status" + status;
+//                            }
+//                        } else if( h>17 && h<= 24){
+//                            if(status.equals(Constant.TRANSPORT_RECORD_STATUS_RUNNING)) {
+//                                return Constant.BUS_STATUS_WANBAN_RUNNING;
+//                            }else if(status.equals(Constant.TRANSPORT_RECORD_STATUS_DONE)) {
+//                                return Constant.BUS_STATUS_WANBAN_DONE;
+//                            } else {
+//                                return "Wrong status" + status;
+//                            }
+//                        } else {
+//                            return "Wrong Hour" + h;
+//                        }
+                        break;
+
+                    default:
+                        busStatus = Constant.BUS_STATUS_ERROR;
+
                 }
-            } else if( h>12 && h<= 17){
-                if(status.equals(Constant.TRANSPORT_RECORD_STATUS_RUNNING)) {
-                    return Constant.BUS_STATUS_WUBAN_RUNNING;
-                }else if(status.equals(Constant.TRANSPORT_RECORD_STATUS_DONE)) {
-                    return Constant.BUS_STATUS_WUBAN_DONE;
-                } else {
-                    return "Wrong status" + status;
-                }
-            } else if( h>17 && h<= 24){
-                if(status.equals(Constant.TRANSPORT_RECORD_STATUS_RUNNING)) {
-                    return Constant.BUS_STATUS_WANBAN_RUNNING;
-                }else if(status.equals(Constant.TRANSPORT_RECORD_STATUS_DONE)) {
-                    return Constant.BUS_STATUS_WANBAN_DONE;
-                } else {
-                    return "Wrong status" + status;
-                }
-            } else {
-                return "Wrong Hour" + h;
             }
+            return busStatus;
+        }
+    }
+
+    /**
+     * 在没有当天的发车记录的情况下
+     * 根据时间 自动判断处于 早班待发车、午班待发车、晚班待发车哪个阶段
+     */
+    private String getBusInitialStatusByTime( Date date ) {//Date time, SimpleDateFormat sdf
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String str = sdf.format(date);
+        int hour = Integer.parseInt(str.split(":")[0]);
+        if (hour < BUS_MORNING_DEADLINE) {
+            return Constant.BUS_STATUS_ZAOBAN_WAIT_START;
+        } else if (hour >= BUS_MORNING_DEADLINE && hour < BUS_AFTERNOON_DEADLINE) {
+            /**
+             * 注意，午班上车、晚班上车 另外处理
+             */
+            return Constant.BUS_STATUS_WUBAN_WAIT_START;
+        } else if (hour >= BUS_AFTERNOON_DEADLINE) {
+            return Constant.BUS_STATUS_WANBAN_WAIT_START;
+        } else {
+            return Constant.BUS_STATUS_ERROR;
         }
     }
 }

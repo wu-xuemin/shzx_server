@@ -59,7 +59,7 @@ public class TransportRecordController {
     @Value("${debug.flag}")
     private String debugFlag;
 
-    @ApiOperation("增加接送班次记录，一趟车对应一条记录（午班一趟车算两次，学生上车刷脸到开始行程前算一次，行程开始后算一次），比如在开始行程时调用该接口, 注意参数中的日期会在服务端重置，即以服务端时间为准")
+    @ApiOperation("增加接送班次记录，早班开始行程/午班开始行程/晚班选择线时会调用该接口, flag值必须带上(早班、午班、晚班) 注意参数中的日期会在服务端重置，即以服务端时间为准")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "date", value = " 时间，留空")})
     @PostMapping("/add")
@@ -68,22 +68,53 @@ public class TransportRecordController {
         if(transportRecordObj == null) {
             return ResultGenerator.genFailResult("transportRecord 解析失败");
         }
-        // todo date字段废弃？
-        transportRecordObj.setDate(new Date());
-        transportRecordObj.setBeginTime((Timestamp) new Date());
-        /**
-         * 后端根据当前时间判断
-         */
-        if(CommonService.getBusStatusByTime(new Date()).equals(Constant.BUS_STATUS_ZAOBAN_WAIT_START)) {
-            transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_MORNING);
-        } else if(CommonService.getBusStatusByTime(new Date()).equals(Constant.BUS_STATUS_WUBAN_WAIT_START)) {
-            transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON);
-        } else if(CommonService.getBusStatusByTime(new Date()).equals(Constant.BUS_STATUS_WANBAN_WAIT_START)) {
-            transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_NIGHT);
+        if(transportRecordObj.getBusLine() == null) {
+            return ResultGenerator.genFailResult("校车线路错误");
         }
-        transportRecordObj.setStatus(Constant.TRANSPORT_RECORD_STATUS_RUNNING);
-        transportRecordService.saveAndGetID(transportRecordObj);
-        return ResultGenerator.genSuccessResult(transportRecordObj.getId());
+        String flag = transportRecordObj.getFlag();
+        //APP端必须传递一个确定的flag
+        if( flag == null ||
+                (!flag.equals(Constant.TRANSPORT_RECORD_FLAG_MORNING) && !flag.equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON) && !flag.equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT))) {
+            return ResultGenerator.genFailResult("Flag错误");
+        } else {
+            transportRecordObj.setDate(new Date());
+            transportRecordObj.setBeginTime((Timestamp) new Date());
+            transportRecordObj.setFlag(flag);
+            if(flag.equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT)) {
+                //晚班是在选择线路时创建record,所以需要判断线路是否被占用
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = new Date();
+                List<TransportRecord> nightRecordList = transportRecordService.getTransportRecord(null,Constant.BUS_MODE_NIGHT,sdf1.format(date));
+                String busNumber = "";
+                if(nightRecordList != null) {
+                    for (int i = 0; i < nightRecordList.size(); i++) {
+                        if(nightRecordList.get(i).getBusLine().equals(transportRecordObj.getBusLine())) {
+                            busNumber = nightRecordList.get(i).getBusNumberInTR();
+                            break;
+                        }
+                    }
+                    if(!"".equals(busNumber)) {
+                        return ResultGenerator.genFailResult("线路已被[" + busNumber + "]选择");
+                    } else {
+                        transportRecordObj.setStatus(Constant.TRANSPORT_RECORD_STATUS_NIGHT_LINE_SELECTED);
+                    }
+                }
+            } else {
+                transportRecordObj.setStatus(Constant.TRANSPORT_RECORD_STATUS_RUNNING);
+            }
+//            /**
+//             * 后端根据当前时间判断
+//             */
+//            if(CommonService.getBusInitialStatusByTime(new Date()).equals(Constant.BUS_STATUS_ZAOBAN_WAIT_START)) {
+//                transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_MORNING);
+//            } else if(CommonService.getBusInitialStatusByTime(new Date()).equals(Constant.BUS_STATUS_WUBAN_WAIT_START)) {
+//                transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON);
+//            } else if(CommonService.getBusInitialStatusByTime(new Date()).equals(Constant.BUS_STATUS_WANBAN_WAIT_START)) {
+//                transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_NIGHT);
+//            }
+            transportRecordService.saveAndGetID(transportRecordObj);
+            return ResultGenerator.genSuccessResult(transportRecordObj.getId());
+        }
     }
 
     @PostMapping("/delete")
@@ -92,7 +123,7 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult();
     }
 
-    //TODO 其他各个add/Update， 统一改成String类型
+    @ApiOperation("早班结束行程/午班结束行程/晚班结束行程；特殊情况是晚班开始行程时也是调用此接口")
     @PostMapping("/update")
     public Result update(String transportRecord) {
         TransportRecord transportRecordObj = JSON.parseObject(transportRecord,TransportRecord.class);
@@ -421,7 +452,11 @@ public class TransportRecordController {
     @PostMapping("/getBusStatusByBusNumber")
     public Result getBusStatusByBusNumber(@RequestParam() String busNumber) {
         String status = transportRecordService.getBusStatusByBusNumber(busNumber);
-        return ResultGenerator.genSuccessResult(status);
+        if(status.equals(Constant.BUS_STATUS_ERROR)) {
+            return ResultGenerator.genFailResult(status);
+        } else {
+            return ResultGenerator.genSuccessResult(status);
+        }
     }
 
 }
