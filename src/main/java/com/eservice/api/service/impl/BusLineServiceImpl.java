@@ -78,6 +78,9 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
     public BusLine getBusLineInfoByBusNumberAndBusMode( String busNumber,String busMode ){
         return busLineMapper.getBusLineInfoByBusNumberAndBusMode(busNumber,busMode);
     }
+    public List<BusLine> getBusLinesByMode( String busMode ){
+        return busLineMapper.getBusLinesByMode(busMode);
+    }
 
     public List<BusLine> list(String queryKey) {
         return busLineMapper.list(queryKey);

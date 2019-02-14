@@ -189,14 +189,24 @@ public class BusLineController {
             @ApiImplicitParam(paramType = "query",name = "busMode", value = " 早班 午班")
     })
     @PostMapping("/getBusLineInfoByBusNumberAndBusMode")
-    public Result getBusLineInfoByBusNumberAndBusMode(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
-                                                      @RequestParam String busNumber,
+    public Result getBusLineInfoByBusNumberAndBusMode(@RequestParam String busNumber,
                                                       @RequestParam String busMode ) {
 
         BusLine busLine = busLineService.getBusLineInfoByBusNumberAndBusMode(busNumber,busMode);
         return ResultGenerator.genSuccessResult(busLine);
     }
 
+    @ApiOperation("根据 早午晚班 来查询线路信息")
+    @ApiImplicitParams({ @ApiImplicitParam(paramType = "query",name = "busMode", value = " 早班 午班 晚班",required = true)
+    })
+    @PostMapping("/getBusLinesByMode")
+    public Result getBusLinesByMode(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                                      @RequestParam String busMode ) {
+        PageHelper.startPage(page, size);
+        List<BusLine> busLineList = busLineService.getBusLinesByMode(busMode);
+        PageInfo pageInfo = new PageInfo(busLineList);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
     @ApiOperation("从xls excel里读取线路信息")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\xxxxx.xls") })
     @PostMapping("/parseInfoFromExcel")

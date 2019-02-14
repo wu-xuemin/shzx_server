@@ -13,6 +13,7 @@ public interface TransportRecordMapper extends Mapper<TransportRecord> {
     List<TransportRecordInfo> selectTransportRecord(@Param("queryStartTime") String queryStartTime,
                                                     @Param("queryFinishTime") String queryFinishTime,
                                                     @Param("studentName") String studentName,
+                                                    @Param("studentNumber") String studentNumber,
                                                     @Param("busNumber") String busNumber,
                                                     @Param("busMode") String busMode,
                                                     @Param("busStationName") String busStationName,
