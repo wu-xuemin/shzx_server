@@ -62,15 +62,15 @@ public class TransportRecordController {
 
     @ApiOperation("增加接送班次记录，早班开始行程/午班开始行程/晚班选择线时会调用该接口, flag值必须带上(早班、午班上车、午班下车、晚班) 注意参数中的日期会在服务端重置，即以服务端时间为准")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",name = "busLine", value = " 线路ID"),
-            @ApiImplicitParam(paramType = "query",name = "currentStation", value = " 站点 ID"),
-            @ApiImplicitParam(paramType = "query",name = "busNumberInTR", value = " 校车编号 "),
-            @ApiImplicitParam(paramType = "query",name = "flag", value = " 早班、午班上车、午班下车、晚班 "),
+            @ApiImplicitParam(paramType = "query",name = "busLine", value = " 线路ID",required = true),
+            @ApiImplicitParam(paramType = "query",name = "currentStation", value = " 站点 ID",required = true),
+            @ApiImplicitParam(paramType = "query",name = "busNumberInTR", value = " 校车编号 ",required = true),
+            @ApiImplicitParam(paramType = "query",name = "flag", value = " 早班、午班上车、午班下车、晚班 ",required = true),
             //todo 这个status,由前端传入还是统一后端维护？
-            @ApiImplicitParam(paramType = "query",name = "status", value = "行程进行中、行程已结束、晚班行程已选  ")})
+            @ApiImplicitParam(paramType = "query",name = "status", value = "行程进行中、行程已结束、晚班行程已选 ",required = true)})
     @PostMapping("/add")
     public Result add(TransportRecord transportRecord) {
-//        TransportRecord transportRecordObj = JSON.parseObject(transportRecord, TransportRecord.class);
+        //todo, 检查记录的合理性，比如重复的
         if(transportRecord == null) {
             return ResultGenerator.genFailResult("transportRecord 为空");
         }
@@ -122,13 +122,20 @@ public class TransportRecordController {
     }
 
     @ApiOperation("早班结束行程/午班结束行程/晚班结束行程；特殊情况是晚班开始行程时也是调用此接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "Id", value = " ID",required = true),
+            @ApiImplicitParam(paramType = "query",name = "busLine", value = " 线路ID",required = true),
+            @ApiImplicitParam(paramType = "query",name = "currentStation", value = " 站点 ID",required = true),
+            @ApiImplicitParam(paramType = "query",name = "busNumberInTR", value = " 校车编号 ",required = true),
+            @ApiImplicitParam(paramType = "query",name = "flag", value = " 早班、午班上车、午班下车、晚班 ",required = true),
+            @ApiImplicitParam(paramType = "query",name = "status", value = "行程进行中、行程已结束、晚班行程已选 ",required = true)})
     @PostMapping("/update")
-    public Result update(String transportRecord) {
-        TransportRecord transportRecordObj = JSON.parseObject(transportRecord,TransportRecord.class);
-        if(transportRecordObj.getStatus().equals(Constant.TRANSPORT_RECORD_STATUS_DONE)){
-            transportRecordObj.setEndTime((Timestamp) new Date());
+    public Result update(TransportRecord transportRecord) {
+        if(transportRecord.getStatus().equals(Constant.TRANSPORT_RECORD_STATUS_DONE)){
+            Date date = new Date();
+            transportRecord.setEndTime( new java.sql.Timestamp(date.getTime()));
         }
-        transportRecordService.update(transportRecordObj);
+        transportRecordService.update(transportRecord);
         return ResultGenerator.genSuccessResult();
     }
 

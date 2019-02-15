@@ -60,6 +60,8 @@ public class BusLineInfo extends BusLine{
 
     private String busMomPhone;
 
+    private String busMomHeadImg;
+
     public String getBusMomName() {
         return busMomName;
     }
@@ -92,6 +94,24 @@ public class BusLineInfo extends BusLine{
     public String busDriverName;
 
     public String busDriverPhone;
+
+    public String getBusMomHeadImg() {
+        return busMomHeadImg;
+    }
+
+    public void setBusMomHeadImg(String busMomHeadImg) {
+        this.busMomHeadImg = busMomHeadImg;
+    }
+
+    public String getBusDriverHeadImg() {
+        return busDriverHeadImg;
+    }
+
+    public void setBusDriverHeadImg(String busDriverHeadImg) {
+        this.busDriverHeadImg = busDriverHeadImg;
+    }
+
+    private String busDriverHeadImg;
 
     public String getBusDriverName() {
         return busDriverName;

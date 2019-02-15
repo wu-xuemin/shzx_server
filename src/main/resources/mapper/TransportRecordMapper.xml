@@ -142,8 +142,10 @@
         transport_record AS tr
     LEFT JOIN bus_line AS bl ON bl.id = tr.bus_line
     LEFT JOIN bus_base_info AS bbi ON bbi.id = bl.bus_base_info
-    WHERE
-        bbi.number = #{busNumber}
+    WHERE  1=1
+    <if test="busNumber != null and busNumber != ''">
+      AND   bbi.number = #{busNumber}
+    </if>
       <if test="busMode != null and busMode != ''">
         AND bl.`mode` = #{busMode}
       </if>

@@ -35,6 +35,8 @@
     <result column="bus_mom_account" jdbcType="VARCHAR" property="busMomAccount" />
     <result column="bus_mom_name" jdbcType="VARCHAR" property="busMomName" />
     <result column="bus_mom_phone" jdbcType="VARCHAR" property="busMomPhone" />
+    <result column="bus_mom_head_img" jdbcType="VARCHAR" property="busMomHeadImg" />
+    <result column="bus_driver_head_img" jdbcType="VARCHAR" property="busDriverHeadImg" />
     <result column="bus_driver_account" jdbcType="VARCHAR" property="busDriverAccount" />
     <result column="bus_driver_phone" jdbcType="VARCHAR" property="busDriverPhone" />
     <result column="bus_driver_name" jdbcType="VARCHAR" property="busDriverName" />
@@ -51,6 +53,8 @@
     user_bus_driver.account AS bus_driver_account,
     user_bus_mom.`name` AS bus_mom_name,
     user_bus_mom.phone AS bus_mom_phone,
+    user_bus_mom.head_image AS bus_mom_head_img,
+    user_bus_driver.head_image AS bus_driver_head_img,
     user_bus_driver.`name` AS bus_driver_name,
     user_bus_driver.phone AS bus_driver_phone
     FROM
@@ -75,6 +79,8 @@
     user_bus_driver.account AS bus_driver_account,
     user_bus_mom.`name` AS bus_mom_name,
     user_bus_mom.phone AS bus_mom_phone,
+    user_bus_mom.head_image AS bus_mom_head_img,
+    user_bus_driver.head_image AS bus_driver_head_img,
     user_bus_driver.`name` AS bus_driver_name,
     user_bus_driver.phone AS bus_driver_phone
     FROM
