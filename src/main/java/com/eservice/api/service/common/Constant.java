@@ -18,10 +18,11 @@ public class Constant {
 
     /**
      * 注意，transport_record的FLAG 是用来标识 TransportRecord的 发车记录的早班/午班/晚班
-     * 后端根据时间判断这3个，午班上车和晚班上车另外处理
+     * 后端根据时间判断这4个。
      */
     public static final String TRANSPORT_RECORD_FLAG_MORNING = "早班";
-    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON = "午班";
+    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON_UP = "午班上车";
+    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN = "午班下车";
     public static final String TRANSPORT_RECORD_FLAG_NIGHT = "晚班";
 
     /**

@@ -1,4 +1,5 @@
 package com.eservice.api.web;
+
 import com.alibaba.fastjson.JSON;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
@@ -74,7 +75,9 @@ public class TransportRecordController {
         String flag = transportRecordObj.getFlag();
         //APP端必须传递一个确定的flag
         if( flag == null ||
-                (!flag.equals(Constant.TRANSPORT_RECORD_FLAG_MORNING) && !flag.equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON) && !flag.equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT))) {
+                (!flag.equals(Constant.TRANSPORT_RECORD_FLAG_MORNING) && !flag.equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)
+                        && !flag.equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)
+                        && !flag.equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT))) {
             return ResultGenerator.genFailResult("Flag错误");
         } else {
             transportRecordObj.setDate(new Date());
@@ -102,16 +105,6 @@ public class TransportRecordController {
             } else {
                 transportRecordObj.setStatus(Constant.TRANSPORT_RECORD_STATUS_RUNNING);
             }
-//            /**
-//             * 后端根据当前时间判断
-//             */
-//            if(CommonService.getBusInitialStatusByTime(new Date()).equals(Constant.BUS_STATUS_ZAOBAN_WAIT_START)) {
-//                transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_MORNING);
-//            } else if(CommonService.getBusInitialStatusByTime(new Date()).equals(Constant.BUS_STATUS_WUBAN_WAIT_START)) {
-//                transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON);
-//            } else if(CommonService.getBusInitialStatusByTime(new Date()).equals(Constant.BUS_STATUS_WANBAN_WAIT_START)) {
-//                transportRecordObj.setFlag(Constant.TRANSPORT_RECORD_FLAG_NIGHT);
-//            }
             transportRecordService.saveAndGetID(transportRecordObj);
             return ResultGenerator.genSuccessResult(transportRecordObj.getId());
         }
@@ -458,12 +451,8 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号", required = true)})
     @PostMapping("/getBusStatusByBusNumber")
     public Result getBusStatusByBusNumber(@RequestParam() String busNumber) {
-        String status = transportRecordService.getBusStatusByBusNumber(busNumber);
-        if(status.equals(Constant.BUS_STATUS_ERROR)) {
-            return ResultGenerator.genFailResult(status);
-        } else {
-            return ResultGenerator.genSuccessResult(status);
-        }
+        Result status = transportRecordService.getBusStatusByBusNumber(busNumber);
+        return status;
     }
 
 }
