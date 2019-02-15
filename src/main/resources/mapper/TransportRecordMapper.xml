@@ -153,8 +153,8 @@
   <insert id="saveAndGetID" useGeneratedKeys="true" parameterType="com.eservice.api.model.transport_record.TransportRecord"
           keyProperty="id">
     insert into
-    transport_record(date, bus_line, current_station)
-    values( #{date}, #{busLine}, #{currentStation})
+    transport_record(date, bus_line, current_station,flag,bus_number_in_tr,status,begin_time,end_time)
+    values( #{date}, #{busLine}, #{currentStation}, #{flag}, #{busNumberInTR}, #{status}, #{beginTime}, #{endTime})
   </insert>
 
 </mapper>

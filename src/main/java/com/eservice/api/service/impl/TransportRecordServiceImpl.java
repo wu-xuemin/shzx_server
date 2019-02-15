@@ -176,9 +176,6 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
         if (hour < BUS_MORNING_DEADLINE) {
             return Constant.BUS_STATUS_ZAOBAN_WAIT_START;
         } else if (hour >= BUS_MORNING_DEADLINE && hour < BUS_AFTERNOON_DEADLINE) {
-            /**
-             * 注意，午班上车、晚班上车 另外处理
-             */
             return Constant.BUS_STATUS_WUBAN_WAIT_START;
         } else if (hour >= BUS_AFTERNOON_DEADLINE) {
             return Constant.BUS_STATUS_WANBAN_WAIT_START;

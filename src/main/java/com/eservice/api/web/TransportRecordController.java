@@ -60,19 +60,24 @@ public class TransportRecordController {
     @Value("${debug.flag}")
     private String debugFlag;
 
-    @ApiOperation("增加接送班次记录，早班开始行程/午班开始行程/晚班选择线时会调用该接口, flag值必须带上(早班、午班、晚班) 注意参数中的日期会在服务端重置，即以服务端时间为准")
+    @ApiOperation("增加接送班次记录，早班开始行程/午班开始行程/晚班选择线时会调用该接口, flag值必须带上(早班、午班上车、午班下车、晚班) 注意参数中的日期会在服务端重置，即以服务端时间为准")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",name = "date", value = " 时间，留空")})
+            @ApiImplicitParam(paramType = "query",name = "busLine", value = " 线路ID"),
+            @ApiImplicitParam(paramType = "query",name = "currentStation", value = " 站点 ID"),
+            @ApiImplicitParam(paramType = "query",name = "busNumberInTR", value = " 校车编号 "),
+            @ApiImplicitParam(paramType = "query",name = "flag", value = " 早班、午班上车、午班下车、晚班 "),
+            //todo 这个status,由前端传入还是统一后端维护？
+            @ApiImplicitParam(paramType = "query",name = "status", value = "行程进行中、行程已结束、晚班行程已选  ")})
     @PostMapping("/add")
-    public Result add(String transportRecord) {
-        TransportRecord transportRecordObj = JSON.parseObject(transportRecord, TransportRecord.class);
-        if(transportRecordObj == null) {
-            return ResultGenerator.genFailResult("transportRecord 解析失败");
+    public Result add(TransportRecord transportRecord) {
+//        TransportRecord transportRecordObj = JSON.parseObject(transportRecord, TransportRecord.class);
+        if(transportRecord == null) {
+            return ResultGenerator.genFailResult("transportRecord 为空");
         }
-        if(transportRecordObj.getBusLine() == null) {
-            return ResultGenerator.genFailResult("校车线路错误");
+        if(transportRecord.getBusLine() == null) {
+            return ResultGenerator.genFailResult("校车线路为空");
         }
-        String flag = transportRecordObj.getFlag();
+        String flag = transportRecord.getFlag();
         //APP端必须传递一个确定的flag
         if( flag == null ||
                 (!flag.equals(Constant.TRANSPORT_RECORD_FLAG_MORNING) && !flag.equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)
@@ -80,18 +85,18 @@ public class TransportRecordController {
                         && !flag.equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT))) {
             return ResultGenerator.genFailResult("Flag错误");
         } else {
-            transportRecordObj.setDate(new Date());
-            transportRecordObj.setBeginTime((Timestamp) new Date());
-            transportRecordObj.setFlag(flag);
+            Date date = new Date();
+            transportRecord.setDate(date);
+            transportRecord.setBeginTime( new java.sql.Timestamp(date.getTime()));
+//            transportRecordObj.setFlag(flag);
             if(flag.equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT)) {
                 //晚班是在选择线路时创建record,所以需要判断线路是否被占用
                 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-                Date date = new Date();
                 List<TransportRecord> nightRecordList = transportRecordService.getTransportRecord(null,Constant.BUS_MODE_NIGHT,sdf1.format(date));
                 String busNumber = "";
                 if(nightRecordList != null) {
                     for (int i = 0; i < nightRecordList.size(); i++) {
-                        if(nightRecordList.get(i).getBusLine().equals(transportRecordObj.getBusLine())) {
+                        if(nightRecordList.get(i).getBusLine().equals(transportRecord.getBusLine())) {
                             busNumber = nightRecordList.get(i).getBusNumberInTR();
                             break;
                         }
@@ -99,14 +104,14 @@ public class TransportRecordController {
                     if(!"".equals(busNumber)) {
                         return ResultGenerator.genFailResult("线路已被[" + busNumber + "]选择");
                     } else {
-                        transportRecordObj.setStatus(Constant.TRANSPORT_RECORD_STATUS_NIGHT_LINE_SELECTED);
+                        transportRecord.setStatus(Constant.TRANSPORT_RECORD_STATUS_NIGHT_LINE_SELECTED);
                     }
                 }
             } else {
-                transportRecordObj.setStatus(Constant.TRANSPORT_RECORD_STATUS_RUNNING);
+                transportRecord.setStatus(Constant.TRANSPORT_RECORD_STATUS_RUNNING);
             }
-            transportRecordService.saveAndGetID(transportRecordObj);
-            return ResultGenerator.genSuccessResult(transportRecordObj.getId());
+            transportRecordService.saveAndGetID(transportRecord);
+            return ResultGenerator.genSuccessResult(transportRecord.getId());
         }
     }
 

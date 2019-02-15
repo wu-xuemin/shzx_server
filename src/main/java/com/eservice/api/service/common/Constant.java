@@ -18,7 +18,6 @@ public class Constant {
 
     /**
      * 注意，transport_record的FLAG 是用来标识 TransportRecord的 发车记录的早班/午班/晚班
-     * 后端根据时间判断这4个。
      */
     public static final String TRANSPORT_RECORD_FLAG_MORNING = "早班";
     public static final String TRANSPORT_RECORD_FLAG_AFTERNOON_UP = "午班上车";
@@ -28,9 +27,9 @@ public class Constant {
     /**
      * 注意，transport_record的status标志行程是否结束
      */
-    public static final String TRANSPORT_RECORD_STATUS_RUNNING = "行程进行中";
-    public static final String TRANSPORT_RECORD_STATUS_DONE = "行程已结束";
-    public static final String TRANSPORT_RECORD_STATUS_NIGHT_LINE_SELECTED = "晚班行程已选";
+    public static final String TRANSPORT_RECORD_STATUS_RUNNING = "行程进行中";               //在添加记录时后端会设置
+    public static final String TRANSPORT_RECORD_STATUS_DONE = "行程已结束";                  //需要APP来Update设置
+    public static final String TRANSPORT_RECORD_STATUS_NIGHT_LINE_SELECTED = "晚班行程已选"; //在添加记录时后端会设置
 
     /**
      * 校车所处状态
@@ -41,6 +40,8 @@ public class Constant {
 
 
     public static final String BUS_STATUS_WUBAN_WAIT_START = "午班待发车";
+    //todo 相关的更新
+    public static final String BUS_STATUS_WUBAN_ABOARDING = "午班上车中";
     public static final String BUS_STATUS_WUBAN_RUNNING = "午班进行中";
     public static final String BUS_STATUS_WUBAN_DONE = "午班已结束";
 

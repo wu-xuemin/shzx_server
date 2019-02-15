@@ -129,8 +129,7 @@ public class TransportRecord {
     }
 
     /**
-     * 早上发车、午班发车、晚班发车
-     * 根据时间判断这3个，午班上车和晚班上车另外处理
+     * 早上、午班上车、午班下车、晚班
      */
     @Column(name = "flag")
     private String flag;
@@ -158,7 +157,7 @@ public class TransportRecord {
     }
 
     /**
-     * 行程进行中(TRANSPORT_RECORD_STATUS_RUNNING)、已结束
+     * 行程进行中(TRANSPORT_RECORD_STATUS_RUNNING)、行程已结束、晚班行程已选
      */
     @Column(name = "status")
     private String status;
