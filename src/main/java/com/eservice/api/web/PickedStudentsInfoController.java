@@ -107,10 +107,10 @@ public class PickedStudentsInfoController {
     @PostMapping("/selectStudentBus")
     public Result selectStudentBus(@RequestParam(defaultValue = "0") Integer page,
                                    @RequestParam(defaultValue = "0") Integer size,
-                                   @RequestParam(defaultValue = "") String busNumber,
-                                   @RequestParam(defaultValue = "") String busStation,
-                                   @RequestParam(defaultValue = "") String gradeName,
-                                   @RequestParam(defaultValue = "") String className,
+                                    String busNumber,
+                                    String busStation,
+                                    String gradeName,
+                                    String className,
                                    String queryStartTime,
                                    String queryFinishTime,
                                    String keyWord

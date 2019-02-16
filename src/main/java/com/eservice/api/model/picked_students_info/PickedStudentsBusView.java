@@ -126,4 +126,23 @@ public class PickedStudentsBusView extends PickedStudentsInfo {
     private String className;
     private String busNumber;
     private String busValid;
+
+    private String studentStationsMorning;
+    private String studentStationsAfternoon;
+
+    public String getStudentStationsMorning() {
+        return studentStationsMorning;
+    }
+
+    public void setStudentStationsMorning(String studentStationsMorning) {
+        this.studentStationsMorning = studentStationsMorning;
+    }
+
+    public String getStudentStationsAfternoon() {
+        return studentStationsAfternoon;
+    }
+
+    public void setStudentStationsAfternoon(String studentStationsAfternoon) {
+        this.studentStationsAfternoon = studentStationsAfternoon;
+    }
 }
