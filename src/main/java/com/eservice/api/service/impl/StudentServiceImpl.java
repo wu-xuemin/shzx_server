@@ -64,6 +64,12 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
     @Value("${student_img_dir}")
     private String STUDENT_IMG_DIR;
 
+    @Value("${url_style}")
+    private String urlStyle;
+
+    @Value("${student_img_url_prefix}")
+    private String studentImgUrlPrefix;
+
     /**
      * 这个函数可以用后面的 getPlannedStudents 替代。
      */
@@ -375,7 +381,11 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
             if (tempList[i].isFile()) {
                 student = studentService.getStudentInfo(tempList[i].getName().split("_")[0]);
                 if(student != null) {
-                    student.setHeadImg(tempList[i].getName());
+                    if(urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
+                        student.setHeadImg(tempList[i].getName());
+                    } else {
+                        student.setHeadImg(studentImgUrlPrefix + tempList[i].getName());
+                    }
                     student.setUpdateTime(new Date());
                     studentService.update(student);
                     logger.info("学生：" + tempList[i].getName().split("_")[0] + " 已更新head_img");

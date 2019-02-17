@@ -42,7 +42,10 @@ public class StudentController {
     private StudentServiceImpl studentService;
     @Value("${student_img_dir}")
     private String studentImgDir;
-
+    @Value("${url_style}")
+    private String urlStyle;
+    @Value("${student_img_url_prefix}")
+    private String studentImgUrlPrefix;
     @Resource
     private CommonService commonService;
 
@@ -65,11 +68,19 @@ public class StudentController {
                 if(syncStuService.uploadStuPic(base64RowData,studentObj)) {
                     fileNameWithPath = commonService.saveFile(studentImgDir, base64RowData, studentObj.getStudentNumber() , studentObj.getName());
                     if (fileNameWithPath != null) {
-                        /**
-                         * HeadImg，不保存绝对路径，只保存文件名，方便windows调试。
-                         * 命名方式： 学生照片命名方式为学号加姓名的方式：A123456_张小明.png
-                         */
-                        studentObj.setHeadImg(studentObj.getStudentNumber().replaceAll("/", "_") + "_" + studentObj.getName().replaceAll("/", "_") + ".png");
+                        if(urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
+                            /**
+                             * HeadImg，不保存绝对路径，只保存文件名，方便windows调试。
+                             * 方式：xh123456_张小明.png
+                             */
+                            studentObj.setHeadImg(studentObj.getStudentNumber().replaceAll("/", "_") + "_" + studentObj.getName().replaceAll("/", "_") + ".png");
+                        } else {
+                            /**
+                             * HeadImg，保存绝对路径，方便APP/web调用
+                             * 方式：https://eservice-tech.cn/studentImg/10812_林芯妤.png
+                             */
+                            studentObj.setHeadImg(studentImgUrlPrefix + studentObj.getStudentNumber().replaceAll("/", "_") + "_" + studentObj.getName().replaceAll("/", "_") + ".png");
+                        }
                     } else {
                         message = "failed to save file, no student added of " + studentObj.getName();
                         throw new RuntimeException();
