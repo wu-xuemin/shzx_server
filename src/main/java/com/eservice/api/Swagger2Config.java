@@ -28,9 +28,7 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         .title("上海中学校车通行管理系统_后端接口文档_" + new Date())
-                        .description("1. 把transport_range并入bus_line，\n\r" +
-                                "2. 增加了和人脸平台的对接  \n\r"
-                        + "3. 从excel里读取班级、校车、线路等信息；\n\r")
+                        .description("getBusLineInfoByBusMomAccountAndBusMode改为getBusLineInfoByBusMomAccount根据巴士妈妈账号 获得巴士线路等信息,每个巴士妈妈都固定一辆校车，会返回固定一辆校车的早班和午班线路（busNumber相同），类似的还有司机的getBusLineInfoByBusDriverAccount\n\r")
                         .contact(new Contact("wuxuemin", "https://eservice-tech.cn/", "wuxuemin2000@126.com"))
                         .version("版本号:0.1")
                         .build())

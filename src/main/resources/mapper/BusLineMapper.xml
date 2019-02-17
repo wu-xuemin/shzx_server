@@ -45,7 +45,7 @@
     <result column="bus_supplier" jdbcType="VARCHAR" property="busSupplier" />
   </resultMap>
 
-  <select id="getBusLineInfoByBusMomAccountAndBusMode" resultMap="BusLineInfoResultMap">
+  <select id="getBusLineInfoByBusMomAccount" resultMap="BusLineInfoResultMap">
     SELECT
     bus_line.*,
     bus_base_info.*,
@@ -64,14 +64,12 @@
     LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bus_base_info.bus_mom
     LEFT JOIN `user` AS user_bus_driver ON user_bus_driver.id = bus_base_info.bus_driver
     WHERE
-      bus_line.valid = 1
-      and user_bus_mom.account = #{busMomAccount}
-      <if test="busMode != null and busMode != ''">
-      AND bus_line.`mode` = #{busMode}
-      </if>
+    bus_line.valid = 1
+    and user_bus_mom.account = #{busMomAccount}
   </select>
 
-  <select id="getBusLineInfoByBusDriverAccountAndBusMode" resultMap="BusLineInfoResultMap">
+
+  <select id="getBusLineInfoByBusDriverAccount" resultMap="BusLineInfoResultMap">
     SELECT
     bus_line.*,
     bus_base_info.*,
@@ -92,9 +90,6 @@
     WHERE
     bus_line.valid = 1
     and user_bus_driver.account = #{busDriverAccount}
-    <if test="busMode != null and busMode != ''">
-      AND bus_line.`mode` = #{busMode}
-    </if>
   </select>
 
   <select id="getBusLineInfoBySchoolPartition" resultMap="BusLineInfoResultMap">

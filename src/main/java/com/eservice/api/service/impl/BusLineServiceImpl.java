@@ -59,12 +59,11 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
 
     private final Logger logger = LoggerFactory.getLogger(BusLineServiceImpl.class);
 
-    public List<BusLineInfo> getBusLineInfoByBusMomAccountAndBusMode(String busMomAccount,String busMode){
-        return busLineMapper.getBusLineInfoByBusMomAccountAndBusMode(busMomAccount,busMode);
+    public  List<BusLineInfo> getBusLineInfoByBusMomAccount (String busMomAccount ){
+        return busLineMapper.getBusLineInfoByBusMomAccount(busMomAccount);
     }
-
-    public List<BusLineInfo> getBusLineInfoByBusDriverAccountAndBusMode(String busDriverAccount,String busMode){
-        return busLineMapper.getBusLineInfoByBusDriverAccountAndBusMode(busDriverAccount,busMode);
+    public List<BusLineInfo> getBusLineInfoByBusDriverAccount(String busDriverAccount){
+        return busLineMapper.getBusLineInfoByBusDriverAccount(busDriverAccount);
     }
 
     public List<BusLineInfo> getBusLineInfoBySchoolPartition(String schoolPartition){
