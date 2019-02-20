@@ -146,10 +146,17 @@
     <if test="busNumber != null and busNumber != ''">
       AND   bbi.number = #{busNumber}
     </if>
-      <if test="busMode != null and busMode != ''">
-        AND bl.`mode` = #{busMode}
-      </if>
+    <if test="busMode != null and busMode != ''">
+      AND bl.`mode` = #{busMode}
+    </if>
+
+    <if test="queryDate != null and queryDate != ''">
       AND DATE_FORMAT( tr.date,  '%Y-%m-%d' ) = #{queryDate}
+    </if>
+
+    <if test="busLineName != null and busLineName != ''">
+      and bl.`name` = #{busLineName}
+    </if>
   </select>
 
   <insert id="saveAndGetID" useGeneratedKeys="true" parameterType="com.eservice.api.model.transport_record.TransportRecord"

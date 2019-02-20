@@ -33,7 +33,7 @@ public class ClearHangingTransportRecord {
     public void clear() {
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
-        List<TransportRecord> recordList = transportRecordService.getTransportRecord(null,null,sdf1.format(date));
+        List<TransportRecord> recordList = transportRecordService.getTransportRecord(null,null,null,sdf1.format(date));
         if(recordList.isEmpty()){
             logger.info("none transportRecord need clear");
             return;
@@ -45,6 +45,7 @@ public class ClearHangingTransportRecord {
                         "  Flag:" + tr.getFlag() +
                         "  Status:" + tr.getStatus() + " ==> " + Constant.TRANSPORT_RECORD_STATUS_DONE) ;
                 tr.setStatus(Constant.TRANSPORT_RECORD_STATUS_DONE);
+                tr.setEndTime( new java.sql.Timestamp(date.getTime()));
                 transportRecordService.update(tr);
             }
         }

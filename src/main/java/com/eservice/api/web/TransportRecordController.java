@@ -70,13 +70,19 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "status", value = "行程进行中、行程已结束、晚班行程已选 ",required = true)})
     @PostMapping("/add")
     public Result add(TransportRecord transportRecord) {
-        //todo, 检查记录的合理性，比如重复的
+        //todo, 检查记录的合理性，比如重复的.。。暂时先允许重复？
         if(transportRecord == null) {
             return ResultGenerator.genFailResult("transportRecord 为空");
         }
         if(transportRecord.getBusLine() == null) {
             return ResultGenerator.genFailResult("校车线路为空");
         }
+        //线路是否存在
+        if(busLineService.findBy("id",transportRecord.getBusLine()) == null){
+
+            return ResultGenerator.genFailResult("校车线路ID 不存在");
+        }
+
         String flag = transportRecord.getFlag();
         //APP端必须传递一个确定的flag
         if( flag == null ||
@@ -92,7 +98,7 @@ public class TransportRecordController {
             if(flag.equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT)) {
                 //晚班是在选择线路时创建record,所以需要判断线路是否被占用
                 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-                List<TransportRecord> nightRecordList = transportRecordService.getTransportRecord(null,Constant.BUS_MODE_NIGHT,sdf1.format(date));
+                List<TransportRecord> nightRecordList = transportRecordService.getTransportRecord(null,null,Constant.BUS_MODE_NIGHT,sdf1.format(date));
                 String busNumber = "";
                 if(nightRecordList != null) {
                     for (int i = 0; i < nightRecordList.size(); i++) {
@@ -300,16 +306,18 @@ public class TransportRecordController {
 
     @ApiOperation("根据校车编号 + 模式（早班、午班）+日期 获取车次记录信息（包括了当前站点等）")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号", required = true),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“早班”、“午班”两种，晚班不支持 ", required = true),
-            @ApiImplicitParam(paramType = "query",name = "queryDate", value = "要查询的日期，比如 2018-12-19", required = true)})
+            @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号" ),
+            @ApiImplicitParam(paramType = "query",name = "busLineName", value = "线路名称" ),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次 "),
+            @ApiImplicitParam(paramType = "query",name = "queryDate", value = "要查询的日期，比如 2018-12-19")})
     @PostMapping("/getTransportRecord")
     public Result getTransportRecord(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
-                                       @RequestParam() String busNumber,
-                                       @RequestParam String busMode,
-                                       @RequestParam String queryDate) {
+                                     String busNumber,
+                                     String busLineName,
+                                     String busMode,
+                                     String queryDate) {
         PageHelper.startPage(page, size);
-        List<TransportRecord> list = transportRecordService.getTransportRecord(busNumber,busMode,queryDate);
+        List<TransportRecord> list = transportRecordService.getTransportRecord(busNumber,busLineName,busMode,queryDate);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
@@ -455,7 +463,7 @@ public class TransportRecordController {
     }
 
 
-    @ApiOperation("根据校车编号 获取校车 当天此时 所处状态（比如早班未开始、早班进行中、早班已结束...），" +
+    @ApiOperation("根据校车编号 获取校车 当天此时 所处状态（比如 早班待发车、早班进行中、早班已结束...），" +
             "如果早班没使用APP，下午午班才开始用，这是应该根据时间返回午班未开始状态" +
             "比如前端APP意外退出之后，如果是当天重启则返回奔溃前的状态，" +
             "如果是第2天或之后重启，则当作新的一天来处理")
@@ -467,4 +475,13 @@ public class TransportRecordController {
         return status;
     }
 
+
+    @ApiOperation("根据线路名称（是唯一的）获取校车当天此时所处状态（晚班待发车、晚班线路已选、晚班进行中、晚班已结束等）" )
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "busLineName", value = "线路名称", required = true)})
+    @PostMapping("/getBusStatusByBusLineName")
+    public Result getBusStatusByBusLineName(@RequestParam() String busLineName) {
+        Result status = transportRecordService.getBusStatusByBusLineName(busLineName);
+        return status;
+    }
 }

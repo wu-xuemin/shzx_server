@@ -29,6 +29,7 @@ public interface TransportRecordMapper extends Mapper<TransportRecord> {
                                               @Param("queryFinishTime") String queryFinishTime);
 
     List<TransportRecord> getTransportRecord(@Param("busNumber") String busNumber,
+                                             @Param("busLineName") String busLineName,
                                              @Param("busMode") String busMode,
                                              @Param("queryDate") String queryDate);
 
