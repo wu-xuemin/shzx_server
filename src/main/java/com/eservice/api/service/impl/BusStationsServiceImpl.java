@@ -74,7 +74,7 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
                 if (hssfRow != null) {
                     busLineExcelHelper = new BusLineExcelHelper();
                     busStations = new BusStations();
-                    HSSFCell timeRemarkCell = hssfRow.getCell(1);
+                    HSSFCell timeRemarkCell = hssfRow.getCell(14);
                     HSSFCell stationNameCell = hssfRow.getCell(2);
                     HSSFCell fareRateCell = hssfRow.getCell(6);
 
@@ -83,7 +83,7 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
                     busLineExcelHelper.setFareRate(CommonService.getValue(fareRateCell));
                     list.add(busLineExcelHelper);
 
-                    SimpleDateFormat sdf  = new SimpleDateFormat("hh:mm");
+//                    SimpleDateFormat sdf  = new SimpleDateFormat("hh:mm");
 //                    Date time = sdf.parse(CommonService.getValue(timeRemarkCell));
 //                    Time timeStamp = new Time(time.getTime());
 
@@ -112,7 +112,7 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
                                 + busStations.getFareRate());
                     } else {
                         /**
-                         * 班级名称存在，年级也相同，则更新
+                         * 站点名称存在，则更新
                          */
                         busStations.setUpdateTime(new Date());
                         busStations.setId(busStationExist.getId());

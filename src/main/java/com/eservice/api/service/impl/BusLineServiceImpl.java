@@ -111,7 +111,7 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                 if (hssfRow != null) {
                     busLine = new BusLine();
                     HSSFCell busNumberCell = hssfRow.getCell(0);
-                    HSSFCell stationTimeRemarkCell = hssfRow.getCell(1);
+                    HSSFCell stationTimeRemarkCell = hssfRow.getCell(14);
                     HSSFCell stationNameCell = hssfRow.getCell(2);
                     busLineExcelHelper = new BusLineExcelHelper();
                     busLineExcelHelper.setBusNumber(CommonService.getValue(busNumberCell));
@@ -126,7 +126,7 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                     busLineExcelHelper.setStationName(CommonService.getValue(stationNameCell));
                     list.add(busLineExcelHelper);
 
-                    BusBaseInfo busBaseInfo =busBaseInfoService.findBy("number",busLineExcelHelper.getBusNumber());
+                    BusBaseInfo busBaseInfo =busBaseInfoService.findBy("number",busLineExcelHelper.getBusNumber().split("\\.")[0]);
                     if(busBaseInfo == null){
                         logger.info("can not find bus by bus number " + busLineExcelHelper.getBusNumber());
                     } else {

@@ -110,7 +110,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
     }
 
     /**
-     *从xls excel里读取学生信息(不包括线路和上下车站点)
+     *从xls excel里读取学生信息(不包括线路和上下车站点),注意有两个sheet,Sheet2 包含了所有年级，sheet1只包含1-12年级
      */
     public Result readFromExcel(@RequestParam String fileName ) {
         List<StudentExcel> list =   new ArrayList<StudentExcel>();
@@ -124,66 +124,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
 
             InputStream is = new FileInputStream(file);
             HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
-            HSSFSheet hssfSheet = hssfWorkbook.getSheet("1-12年级学生信息");
 
-            if (hssfSheet == null) {
-                return ResultGenerator.genFailResult("No 1-12年级学生信息 sheet found");
-            }
-            // 循环行Row
-            for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
-                HSSFRow hssfRow = hssfSheet.getRow(rowNum);
-                if (hssfRow != null) {
-                    studentExcel = new StudentExcel();
-                    student = new Student();
-                    HSSFCell studentNumberCell = hssfRow.getCell(1);
-                    HSSFCell studentNameCell = hssfRow.getCell(2);
-                    HSSFCell studentGradeCell = hssfRow.getCell(6);
-                    HSSFCell studentBanjiCell = hssfRow.getCell(7);
-                    HSSFCell studentBzrNameCell = hssfRow.getCell(16);
-
-                    studentExcel.setStudentNumber(CommonService.getValue(studentNumberCell));
-                    studentExcel.setName(CommonService.getValue(studentNameCell));
-                    studentExcel.setBanjiName(CommonService.getValue(studentBanjiCell));
-                    studentExcel.setGradeName(CommonService.getValue(studentGradeCell));
-                    studentExcel.setBzrName(CommonService.getValue(studentBzrNameCell));
-
-                    /**
-                     * 查找班级
-                     */
-                    Banji banjiExist = null;
-                    Class cl = Class.forName("com.eservice.api.model.banji.Banji");
-                    Field fieldClassName = cl.getDeclaredField("className");
-                    // todo 班级名称重复时
-                    banjiExist = banjiService.findBy(fieldClassName.getName(), studentExcel.getBanjiName());
-                    if(null != banjiExist){
-                        student.setBanji(banjiExist.getId());
-                    }
-                    student.setName(studentExcel.getName());
-                    student.setStudentNumber(studentExcel.getStudentNumber().split("\\.")[0]);
-                    student.setValid(1);
-                    list.add(studentExcel);
-
-                    Student studentExist = null;
-                    Class cl2 = Class.forName("com.eservice.api.model.student.Student");
-                    Field fieldClassName2 = cl2.getDeclaredField("studentNumber");
-                    studentExist = studentService.findBy(fieldClassName2.getName(), student.getStudentNumber());
-
-                    /**
-                     * 学生学号不存在，则增加, 存在则更新
-                     */
-                    if ((null == studentExist)) {
-                        student.setCreateTime(new Date());
-                        studentService.save(student);
-                        sumOfAddInSheet1++;
-                        logger.info("added : =====" + student.getName() + "/" + student.getStudentNumber() + ", sum is " + sumOfAddInSheet1);
-                    } else {
-                        student.setUpdateTime(new Date());
-                        student.setId(studentExist.getId());
-                        studentService.update(student);
-                        logger.info("updated : =====" + student.getName() + "/" + student.getStudentNumber() );
-                    }
-                }
-            }
 
             /////////////////// 根据 sheet2
             HSSFSheet hssfSheet2 = hssfWorkbook.getSheet("Sheet2");
@@ -197,7 +138,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                 if (hssfRow != null) {
                     studentExcel = new StudentExcel();
                     student = new Student();
-                    HSSFCell studentNumberCell = hssfRow.getCell(1);
+                    HSSFCell studentNumberCell = hssfRow.getCell(0);
                     HSSFCell studentNameCell = hssfRow.getCell(3);
                     HSSFCell studentBanjiCell = hssfRow.getCell(2);
                     HSSFCell studentFamilyCell = hssfRow.getCell(17);
@@ -237,16 +178,80 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                      * 学生学号不存在，则增加, 存在则更新
                      */
                     if ((null == studentExist)) {
+                        student.setCreateTime(new Date());
                         studentService.save(student);
                         sumOfAddInSheet2++;
                         logger.info("sheet2 added : =====" + student.getName() + "/" + student.getStudentNumber() + ", sum is " + sumOfAddInSheet2);
                     } else {
+                        student.setUpdateTime(new Date());
                         student.setId(studentExist.getId());
                         studentService.update(student);
                         logger.info("sheet2 updated : =====" + student.getName() + "/" + student.getStudentNumber() );
                     }
                 }
             }
+
+            HSSFSheet hssfSheet = hssfWorkbook.getSheet("1-12年级学生信息");
+
+            if (hssfSheet == null) {
+                return ResultGenerator.genFailResult("No 1-12年级学生信息 sheet found");
+            }
+            // 循环行Row
+            for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
+                HSSFRow hssfRow = hssfSheet.getRow(rowNum);
+                if (hssfRow != null) {
+                    studentExcel = new StudentExcel();
+                    student = new Student();
+                    HSSFCell studentNumberCell = hssfRow.getCell(0);
+                    HSSFCell studentNameCell = hssfRow.getCell(2);
+                    HSSFCell studentGradeCell = hssfRow.getCell(6);
+                    HSSFCell studentBanjiCell = hssfRow.getCell(7);
+                    HSSFCell studentBzrNameCell = hssfRow.getCell(16);
+
+                    studentExcel.setStudentNumber(CommonService.getValue(studentNumberCell));
+                    studentExcel.setName(CommonService.getValue(studentNameCell));
+                    studentExcel.setBanjiName(CommonService.getValue(studentBanjiCell));
+                    studentExcel.setGradeName(CommonService.getValue(studentGradeCell));
+                    studentExcel.setBzrName(CommonService.getValue(studentBzrNameCell));
+
+                    /**
+                     * 查找班级
+                     */
+                    Banji banjiExist = null;
+                    Class cl = Class.forName("com.eservice.api.model.banji.Banji");
+                    Field fieldClassName = cl.getDeclaredField("className");
+                    // todo 班级名称重复时
+                    banjiExist = banjiService.findBy(fieldClassName.getName(), studentExcel.getBanjiName());
+                    if(null != banjiExist){
+                        student.setBanji(banjiExist.getId());
+                    }
+                    student.setName(studentExcel.getName());
+                    student.setStudentNumber(studentExcel.getStudentNumber().split("\\.")[0]);
+                    student.setValid(1);
+                    list.add(studentExcel);
+
+                    Student studentExist = null;
+                    Class cl2 = Class.forName("com.eservice.api.model.student.Student");
+                    Field fieldClassName2 = cl2.getDeclaredField("studentNumber");
+                    studentExist = studentService.findBy(fieldClassName2.getName(), student.getStudentNumber());
+
+                    /**
+                     * 学生学号不存在，则增加, 存在则更新
+                     */
+                    if ((null == studentExist)) {
+                        student.setCreateTime(new Date());
+                        studentService.save(student);
+                        sumOfAddInSheet1++;
+                        logger.info("sheet 1 added : =====" + student.getName() + "/" + student.getStudentNumber() + ", sum is " + sumOfAddInSheet1);
+                    } else {
+                        student.setUpdateTime(new Date());
+                        student.setId(studentExist.getId());
+                        studentService.update(student);
+                        logger.info("sheet1 updated : =====" + student.getName() + "/" + student.getStudentNumber() );
+                    }
+                }
+            }
+
 
 
         }catch (FileNotFoundException e) {
@@ -289,13 +294,13 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                     busLineExcelHelper = new BusLineExcelHelper();
                     student = new Student();
                     HSSFCell busNumberCell = hssfRow.getCell(0);
-                    HSSFCell stationTimeRemarkCell = hssfRow.getCell(1);
+                    HSSFCell stationTimeRemarkCell = hssfRow.getCell(14);
                     HSSFCell stationNameCell = hssfRow.getCell(2);
                     HSSFCell studentNumberCell = hssfRow.getCell(3);
                     HSSFCell studentNameCell = hssfRow.getCell(4);
                     busLineExcelHelper.setBusNumber(CommonService.getValue(busNumberCell));
                     busLineExcelHelper.setStationName(CommonService.getValue(stationNameCell));
-                    busLineExcelHelper.setStudentNumber(CommonService.getValue(studentNumberCell));
+                    busLineExcelHelper.setStudentNumber(CommonService.getValue(studentNumberCell).trim());
                     busLineExcelHelper.setStudentName(CommonService.getValue(studentNameCell));
 
                     /**
@@ -306,7 +311,9 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                     Field fieldStudentNumber = cl.getDeclaredField("studentNumber");
                     studentExist = studentService.findBy(fieldStudentNumber.getName(), busLineExcelHelper.getStudentNumber().split("\\.")[0]);
                     if (null == studentExist) {
-                        return ResultGenerator.genFailResult("No student found by number: " + busLineExcelHelper.getStudentNumber());
+//                        return ResultGenerator.genFailResult("No student found by number: " + busLineExcelHelper.getStudentNumber());
+                       logger.warn("No student found by number: " + busLineExcelHelper.getStudentNumber());
+                       continue;
                     }
                     /**
                      * 查找线路

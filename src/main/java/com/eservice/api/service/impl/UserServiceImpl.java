@@ -204,21 +204,21 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     if ((null == userMomExist)) {
                         busMom.setCreateTime(new Date());
                         save(busMom);
-                        logger.info("Mom added: =====" + rowNum + ":" + busMom.getAccount());
+                        logger.info("Mom added: =====" + rowNum + ":" + busMom.getAccount() + busMom.getPhone());
                     } else {
                         busMom.setId(userMomExist.getId());
                         update(busMom);
-                        logger.info("Mom Updated: =====" + rowNum + ":" + busMom.getAccount());
+                        logger.info("Mom Updated: =====" + rowNum + ":" + busMom.getAccount() + busMom.getPhone());
                     }
 
                     if ((null == userDriverExist)) {
                         busDriver.setCreateTime(new Date());
                         save(busDriver);
-                        logger.info("busDriver added: =====" + rowNum + ":" + busDriver.getAccount());
+                        logger.info("busDriver added: =====" + rowNum + ":" + busDriver.getAccount() + busDriver.getPhone());
                     } else {
                         busDriver.setId(userDriverExist.getId());
                         update(busDriver);
-                        logger.info("busDriver Updated: =====" + rowNum + ":" + busDriver.getAccount());
+                        logger.info("busDriver Updated: =====" + rowNum + ":" + busDriver.getAccount() + busDriver.getPhone());
                     }
                 }
             }

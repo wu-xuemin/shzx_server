@@ -110,7 +110,7 @@ CREATE TABLE `bus_base_info` (
 DROP TABLE IF EXISTS `bus_line`;
 CREATE TABLE `bus_line` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `bus_base_info` int(10) unsigned NOT NULL COMMENT '校车基本信息',
+  `bus_base_info` int(10) unsigned DEFAULT NULL COMMENT '校车基本信息；晚班和校车不绑定',
   `mode` varchar(255) NOT NULL COMMENT '"早班“、”午班“、”晚班“',
   `stations` text,
   `name` varchar(160) NOT NULL DEFAULT '',
