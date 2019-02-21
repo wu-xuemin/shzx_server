@@ -89,12 +89,12 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
         return busLineMapper.getBusLineByBusNumber(busNumber);
     }
 
-    public Result readFromExcel(@RequestParam String fileName ) {
-        List<BusLineExcelHelper> list =   new ArrayList<BusLineExcelHelper>();
+    public Result readFromExcel(@RequestParam String fileName) {
+        List<BusLineExcelHelper> list = new ArrayList<BusLineExcelHelper>();
         BusLineExcelHelper busLineExcelHelper = null;
         BusLine busLine = null;
 
-        File file =  new File(fileName);
+        File file = new File(fileName);
         try {
 
             InputStream is = new FileInputStream(file);
@@ -115,19 +115,19 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                     HSSFCell stationNameCell = hssfRow.getCell(2);
                     busLineExcelHelper = new BusLineExcelHelper();
                     busLineExcelHelper.setBusNumber(CommonService.getValue(busNumberCell));
-                    busLineExcelHelper.setTimeRemark( CommonService.getValue(stationTimeRemarkCell));
+                    busLineExcelHelper.setTimeRemark(CommonService.getValue(stationTimeRemarkCell));
                     ///
-                    busLineExcelHelper.setTimeRemark(  CommonService.getValue(stationTimeRemarkCell));
+                    busLineExcelHelper.setTimeRemark(CommonService.getValue(stationTimeRemarkCell));
                     String busModeGot = CommonService.getBusModeByTime(stationTimeRemarkCell);
-                    if( !busModeGot.equals(Constant.FAIL)) {
+                    if (!busModeGot.equals(Constant.FAIL)) {
                         busLineExcelHelper.setMode(busModeGot);
                     }
                     busLineExcelHelper.setName(CommonService.getValue(busNumberCell).split("\\.")[0] + "号车_" + busLineExcelHelper.getMode());
                     busLineExcelHelper.setStationName(CommonService.getValue(stationNameCell));
                     list.add(busLineExcelHelper);
 
-                    BusBaseInfo busBaseInfo =busBaseInfoService.findBy("number",busLineExcelHelper.getBusNumber().split("\\.")[0]);
-                    if(busBaseInfo == null){
+                    BusBaseInfo busBaseInfo = busBaseInfoService.findBy("number", busLineExcelHelper.getBusNumber().split("\\.")[0]);
+                    if (busBaseInfo == null) {
                         logger.info("can not find bus by bus number " + busLineExcelHelper.getBusNumber());
                     } else {
                         busLine.setBusBaseInfo(busBaseInfo.getId());
@@ -151,16 +151,16 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                     /**
                      * 如果线路不存在，则增加线路
                      */
-                    if(null == busLineExist){
+                    if (null == busLineExist) {
                         busLine.setCreateTime(new Date());
-                        busLine.setStations( busLineExcelHelper.getStationName());
+                        busLine.setStations(busLineExcelHelper.getStationName());
                         busLineService.save(busLine);
                         logger.info("add: =====" + rowNum + ":" + busLine.getName() + "/"
                                 + busLine.getMode() + "/"
                                 + busLine.getStations());
                     } else {
                         currentStations = busLineExist.getStations();
-                        if(busLineExist.getStations().contains( busLineExcelHelper.getStationName())){
+                        if (busLineExist.getStations().contains(busLineExcelHelper.getStationName())) {
                             /**
                              * 如果线路存在，而该站点也存在，则不做处理
                              */
@@ -169,8 +169,8 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                             /**
                              * 如果线路存在，而该站点不存在，则增加站点（目前用逗号隔离站点），并更新线路
                              */
-                            logger.info("currentStations: " +  currentStations );
-                            logger.info("站点 " +  busLineExcelHelper.getStationName() + ", 还不存在，现在加入");
+                            logger.info("currentStations: " + currentStations);
+                            logger.info("站点 " + busLineExcelHelper.getStationName() + ", 还不存在，现在加入");
                             currentStations = currentStations + "," + busLineExcelHelper.getStationName();
                             /**
                              * UPDATE 需要由ID, 否则更新无效
@@ -178,14 +178,14 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                             busLine.setId(busLineExist.getId());
                             busLine.setStations(currentStations);
                             busLine.setUpdateTime(new Date());
-                            logger.info("new currentStations: " +  currentStations );
+                            logger.info("new currentStations: " + currentStations);
                             busLineService.update(busLine);
                             logger.info("Updated: =====" + rowNum + "行:" + busLine.getName() + "/" + busLine.getMode() + "/" + busLine.getStations());
                         }
                     }
                 }
             }
-        }catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -198,5 +198,65 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
+    public void cleanAndCreateAfternoonBusLine(String busLineSame) {
+
+        BusLine busLineNoon = new BusLine();
+        String stationsNoon = null;
+        List<BusLine> busLineListMorning = busLineService.getBusLinesByMode(Constant.BUS_MODE_MORNING);
+        List<BusLine> busLineListNoonOld = busLineService.getBusLinesByMode(Constant.BUS_MODE_AFTERNOON);
+        for (BusLine bln: busLineListNoonOld) {
+            busLineService.deleteById(bln.getId());
+        }
+        logger.info(busLineListNoonOld.size() + " old noonLines cleaned ");
+
+        String[] stationsArrMorning;
+        //改 busBaseInfo, mode,name,stations,
+        List<BusLine> busLineListNoon = new ArrayList<>();
+        for (BusLine blm: busLineListMorning) {
+
+            List<String> stationListNoon = new ArrayList<>();
+            busLineNoon.setBusBaseInfo(blm.getBusBaseInfo());
+            busLineNoon.setMode(Constant.BUS_MODE_AFTERNOON);
+            busLineNoon.setName(blm.getName().replace(Constant.BUS_MODE_MORNING,Constant.BUS_MODE_AFTERNOON));
+            /**
+             * 站点倒个序 （除了1,8,10,11,16,17,20,31,41,60,67,74,86,97）
+             */
+            if(!blm.getName().replace("号车_早班","").equals("1")
+                    && !blm.getName().replace("号车_早班","").equals("8")
+                    && !blm.getName().replace("号车_早班","").equals("10")
+                    && !blm.getName().replace("号车_早班","").equals("11")
+                    && !blm.getName().replace("号车_早班","").equals("16")
+                    && !blm.getName().replace("号车_早班","").equals("17")
+                    && !blm.getName().replace("号车_早班","").equals("20")
+                    && !blm.getName().replace("号车_早班","").equals("31")
+                    && !blm.getName().replace("号车_早班","").equals("41")
+                    && !blm.getName().replace("号车_早班","").equals("60")
+                    && !blm.getName().replace("号车_早班","").equals("67")
+                    && !blm.getName().replace("号车_早班","").equals("74")
+                    && !blm.getName().replace("号车_早班","").equals("86")
+                    && !blm.getName().replace("号车_早班","").equals("97")) {
+                stationsArrMorning = blm.getStations().split(",");
+                for (int i = stationsArrMorning.length; i > 0; i--) {
+                    stationListNoon.add(stationsArrMorning[i - 1]);
+                }
+                for (int i = 0; i < stationListNoon.size(); i++) {
+                    if (i == 0) {
+                        stationsNoon = stationListNoon.get(i);
+                    } else {
+                        stationsNoon = stationsNoon + "," + stationListNoon.get(i);
+                    }
+                }
+            } else {
+                stationsNoon = blm.getStations();
+            }
+            busLineNoon.setStations(stationsNoon);
+            busLineNoon.setCreateTime(new Date());
+            busLineNoon.setValid(1);
+            busLineService.save(busLineNoon);
+            busLineListNoon.add(busLineNoon);
+            logger.info("add 午班： " + busLineNoon.getName() + "id:");
+        }
+//todo 问题：午班线路的ID都相同
+    }
 
 }

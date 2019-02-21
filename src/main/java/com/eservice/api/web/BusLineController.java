@@ -206,4 +206,13 @@ public class BusLineController {
         return ResultGenerator.genSuccessResult(banji);
     }
 
+    @ApiOperation("清除午班线路再根据早班线路生成午班线路（除少部分线路的早班午班线路相同，大部分线路的早班午班相反）返回生成的午班线路")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "busLineSame", value = "早班午班相同的线路，用逗号隔开，默认1,8,10,11,16,17,20,31,41,60,67,74,86,97") })
+    @PostMapping("/cleanAndCreateAfternoonBusLine")
+    public Result cleanAndCreateAfternoonBusLine(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                                 @RequestParam(defaultValue = "1,8,10,11,16,17,20,31,41,60,67,74,86,97") String busLineSame ) {
+        PageHelper.startPage(page, size);
+        busLineService.cleanAndCreateAfternoonBusLine(busLineSame);
+        return ResultGenerator.genSuccessResult("见log");
+    }
 }
