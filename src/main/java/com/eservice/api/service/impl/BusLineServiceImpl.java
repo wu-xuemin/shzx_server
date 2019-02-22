@@ -59,25 +59,27 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
 
     private final Logger logger = LoggerFactory.getLogger(BusLineServiceImpl.class);
 
-    public  List<BusLineInfo> getBusLineInfoByBusMomAccount (String busMomAccount ){
+    public List<BusLineInfo> getBusLineInfoByBusMomAccount(String busMomAccount) {
         return busLineMapper.getBusLineInfoByBusMomAccount(busMomAccount);
     }
-    public List<BusLineInfo> getBusLineInfoByBusDriverAccount(String busDriverAccount){
+
+    public List<BusLineInfo> getBusLineInfoByBusDriverAccount(String busDriverAccount) {
         return busLineMapper.getBusLineInfoByBusDriverAccount(busDriverAccount);
     }
 
-    public List<BusLineInfo> getBusLineInfoBySchoolPartition(String schoolPartition){
+    public List<BusLineInfo> getBusLineInfoBySchoolPartition(String schoolPartition) {
         return busLineMapper.getBusLineInfoBySchoolPartition(schoolPartition);
     }
 
-    public List<StudentInfo> getStudents(String busNumber,String busMode){
-        return busLineMapper.getStudents(busNumber,busMode);
+    public List<StudentInfo> getStudents(String busNumber, String busMode) {
+        return busLineMapper.getStudents(busNumber, busMode);
     }
 
-    public BusLine getBusLineInfoByBusNumberAndBusMode( String busNumber,String busMode ){
-        return busLineMapper.getBusLineInfoByBusNumberAndBusMode(busNumber,busMode);
+    public BusLine getBusLineInfoByBusNumberAndBusMode(String busNumber, String busMode) {
+        return busLineMapper.getBusLineInfoByBusNumberAndBusMode(busNumber, busMode);
     }
-    public List<BusLine> getBusLinesByMode( String busMode ){
+
+    public List<BusLine> getBusLinesByMode(String busMode) {
         return busLineMapper.getBusLinesByMode(busMode);
     }
 
@@ -198,11 +200,10 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    public void cleanAndCreateAfternoonBusLine(String busLineSame) {
-
-        BusLine busLineNoon = new BusLine();
-        String stationsNoon = null;
+    public void cleanAndCreateAfternoonBusLine(String busLineIDsNotReserve) {
+        String strStationsNoon = null;
         List<BusLine> busLineListMorning = busLineService.getBusLinesByMode(Constant.BUS_MODE_MORNING);
+        List<BusLine> busLineListNoon = new ArrayList<>();
         List<BusLine> busLineListNoonOld = busLineService.getBusLinesByMode(Constant.BUS_MODE_AFTERNOON);
         for (BusLine bln: busLineListNoonOld) {
             busLineService.deleteById(bln.getId());
@@ -211,52 +212,54 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
 
         String[] stationsArrMorning;
         //改 busBaseInfo, mode,name,stations,
-        List<BusLine> busLineListNoon = new ArrayList<>();
         for (BusLine blm: busLineListMorning) {
-
-            List<String> stationListNoon = new ArrayList<>();
+            BusLine busLineNoon = new BusLine();
             busLineNoon.setBusBaseInfo(blm.getBusBaseInfo());
             busLineNoon.setMode(Constant.BUS_MODE_AFTERNOON);
-            busLineNoon.setName(blm.getName().replace(Constant.BUS_MODE_MORNING,Constant.BUS_MODE_AFTERNOON));
+            busLineNoon.setName(blm.getName().replace(Constant.BUS_MODE_MORNING, Constant.BUS_MODE_AFTERNOON));
             /**
-             * 站点倒个序 （除了1,8,10,11,16,17,20,31,41,60,67,74,86,97）
+             * 站点倒个序 （默认除了1,8,10,11,16,17,20,31,41,60,67,74,86,97之外的都倒序）
              */
-            if(!blm.getName().replace("号车_早班","").equals("1")
-                    && !blm.getName().replace("号车_早班","").equals("8")
-                    && !blm.getName().replace("号车_早班","").equals("10")
-                    && !blm.getName().replace("号车_早班","").equals("11")
-                    && !blm.getName().replace("号车_早班","").equals("16")
-                    && !blm.getName().replace("号车_早班","").equals("17")
-                    && !blm.getName().replace("号车_早班","").equals("20")
-                    && !blm.getName().replace("号车_早班","").equals("31")
-                    && !blm.getName().replace("号车_早班","").equals("41")
-                    && !blm.getName().replace("号车_早班","").equals("60")
-                    && !blm.getName().replace("号车_早班","").equals("67")
-                    && !blm.getName().replace("号车_早班","").equals("74")
-                    && !blm.getName().replace("号车_早班","").equals("86")
-                    && !blm.getName().replace("号车_早班","").equals("97")) {
+            if(isReserve(blm.getName(),busLineIDsNotReserve)){
                 stationsArrMorning = blm.getStations().split(",");
+                List<String> stationListNoon = new ArrayList<>();
                 for (int i = stationsArrMorning.length; i > 0; i--) {
                     stationListNoon.add(stationsArrMorning[i - 1]);
                 }
                 for (int i = 0; i < stationListNoon.size(); i++) {
                     if (i == 0) {
-                        stationsNoon = stationListNoon.get(i);
+                        strStationsNoon = stationListNoon.get(i);
                     } else {
-                        stationsNoon = stationsNoon + "," + stationListNoon.get(i);
+                        strStationsNoon = strStationsNoon + "," + stationListNoon.get(i);
                     }
                 }
-            } else {
-                stationsNoon = blm.getStations();
+            }else {
+                strStationsNoon = blm.getStations();
             }
-            busLineNoon.setStations(stationsNoon);
+
+            busLineNoon.setStations(strStationsNoon);
             busLineNoon.setCreateTime(new Date());
             busLineNoon.setValid(1);
             busLineService.save(busLineNoon);
             busLineListNoon.add(busLineNoon);
-            logger.info("add 午班： " + busLineNoon.getName() + "id:");
+            logger.info("add 午班： " + busLineNoon.getName() + "id:" + busLineNoon.getId());
         }
-//todo 问题：午班线路的ID都相同
+    }
+
+    /**
+     * 需要倒序则返回true
+     * @param busLineName 待检查的早班线路名称
+     * @param busLineIDsNotReserve 不需要倒序的线路ID，以逗号分隔
+     */
+    public boolean isReserve(String busLineName, String busLineIDsNotReserve){
+
+        String[] IdArr = busLineIDsNotReserve.split(",");
+        for (int i=0; i < IdArr.length; i++) {
+            if(busLineName.replace("号车_早班", "").equals(IdArr[i])){
+                return false;
+            }
+        }
+        return true;
     }
 
 }
