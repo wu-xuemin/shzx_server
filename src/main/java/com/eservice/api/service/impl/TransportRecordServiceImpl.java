@@ -112,7 +112,7 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
             //经过String转换回导致浏览器端多出引号前的斜杆
             String busStatus = Constant.BUS_STATUS_ERROR;
 
-            logger.info("today last record id/flag/status is " +latestRecord.getId() + "/" +latestRecord.getFlag() + "/" + latestRecord.getStatus());
+            logger.info("getBusStatusByBusNumber "+busNumber+", today last record id/flag/status is " +latestRecord.getId() + "/" +latestRecord.getFlag() + "/" + latestRecord.getStatus());
             if (latestRecord != null) {
                 String recordStatus = latestRecord.getStatus();
                 switch (recordStatus) {
@@ -201,7 +201,7 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
             TransportRecord latestRecord = recordList.get(recordList.size() - 1);
             //经过String转换回导致浏览器端多出引号前的斜杆
             String busStatus = Constant.BUS_STATUS_ERROR;
-            logger.info("today last record id/flag/status by busLineName is " +latestRecord.getId() + "/" +latestRecord.getFlag() + "/" + latestRecord.getStatus());
+            logger.info("today last record id/flag/status by busLineName " +busLineName + " is " +latestRecord.getId() + "/" +latestRecord.getFlag() + "/" + latestRecord.getStatus());
             if (latestRecord != null) {
                 String recordStatus = latestRecord.getStatus();
                 switch (recordStatus) {

@@ -99,16 +99,19 @@ public class TransportRecordController {
                 //晚班是在选择线路时创建record,所以需要判断线路是否被占用
                 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
                 List<TransportRecord> nightRecordList = transportRecordService.getTransportRecord(null,null,Constant.BUS_MODE_NIGHT,sdf1.format(date));
-                String busNumber = "";
+                String busNumberAlreadySelected = "";
+                Integer transportRecordId = null;
                 if(nightRecordList != null) {
                     for (int i = 0; i < nightRecordList.size(); i++) {
                         if(nightRecordList.get(i).getBusLine().equals(transportRecord.getBusLine())) {
-                            busNumber = nightRecordList.get(i).getBusNumberInTR();
+                            busNumberAlreadySelected = nightRecordList.get(i).getBusNumberInTR();
+                            transportRecordId = nightRecordList.get(i).getId();
                             break;
                         }
                     }
-                    if(!"".equals(busNumber)) {
-                        return ResultGenerator.genFailResult("线路已被[" + busNumber + "]选择");
+                    if(!"".equals(busNumberAlreadySelected)) {
+                        logger.info("线路已被" + busNumberAlreadySelected + "选择, 对应的transportRecord的ID为 " + transportRecordId);
+                        return ResultGenerator.genFailResult("线路已被[" + busNumberAlreadySelected + "]选择, 对应的transportRecord的ID为 " + transportRecordId);
                     } else {
                         transportRecord.setStatus(Constant.TRANSPORT_RECORD_STATUS_NIGHT_LINE_SELECTED);
                     }
@@ -117,6 +120,10 @@ public class TransportRecordController {
                 transportRecord.setStatus(Constant.TRANSPORT_RECORD_STATUS_RUNNING);
             }
             transportRecordService.saveAndGetID(transportRecord);
+            logger.info("add record  " + " busLine:" + busLineService.findById(transportRecord.getBusLine()).getName()
+                    + " Flag:"+ transportRecord.getFlag() + "status-by-api:" + transportRecord.getStatus()
+                    + "  busNumber:" + transportRecord.getBusNumberInTR()+ " begainTime " + transportRecord.getBeginTime());
+
             return ResultGenerator.genSuccessResult(transportRecord.getId());
         }
     }
@@ -142,6 +149,10 @@ public class TransportRecordController {
             transportRecord.setEndTime( new java.sql.Timestamp(date.getTime()));
         }
         transportRecordService.update(transportRecord);
+        logger.info("update"+ transportRecord.getId() + busLineService.findById(transportRecord.getBusLine()).getName()
+                + " Flag:"+ transportRecord.getFlag() + "status:" + transportRecord.getStatus()
+                + "  busNumber:" + transportRecord.getBusNumberInTR());
+
         return ResultGenerator.genSuccessResult();
     }
 
@@ -222,9 +233,9 @@ public class TransportRecordController {
         List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, busMode,null);
 
         if(debugFlag.equalsIgnoreCase("true")) {
-            logger.info("校车 " + busNumber + busMode + "班次" + " 计划乘坐学生人数 " + listPlannedStudents.size());
+            logger.info("selectAbsenceStudentInfo，校车 " + busNumber + busMode + "班次" + " 计划乘坐学生人数 " + listPlannedStudents.size());
             for (StudentInfo st : listPlannedStudents) {
-                logger.info(" 具体学号：" + st.getStudentNumber());
+                logger.info(" 具体学号：" + st.getStudentNumber() + st.getName());
             }
         }
         List<TransportRecordInfo> listActualRecordInfo = transportRecordService.selectTransportRecord(queryStartTime,
@@ -237,7 +248,7 @@ public class TransportRecordController {
                                                                                                     null,
                                                                                                     null);
         if(debugFlag.equalsIgnoreCase("true")) {
-            logger.info("校车 " + busNumber + "在" + busMode + " " +  queryStartTime + " 实际乘坐人数 " + listActualRecordInfo.size());
+            logger.info("selectAbsenceStudentInfo by 校车 " + busNumber + "在" + busMode + " " +  queryStartTime + " 实际乘坐人数 " + listActualRecordInfo.size());
             for (TransportRecordInfo tr: listActualRecordInfo) {
                 logger.info(" 具体学号：" + tr.getStudentNumber());
             }
@@ -277,9 +288,9 @@ public class TransportRecordController {
         }
 
         if(debugFlag.equalsIgnoreCase("true")) {
-            logger.info("校车 " + busNumber + "在" + busMode + " " + queryStartTime + " 缺乘人数 " + listAbsenceStudents.size());
+            logger.info("selectAbsenceStudentInfo by 校车 " + busNumber + "在" + busMode + " " + queryStartTime + " 缺乘人数 " + listAbsenceStudents.size());
             for (StudentInfo st : listAbsenceStudents) {
-                logger.info(" 缺乘 具体学号：" + st.getStudentNumber());
+                logger.info(" 缺乘：" + st.getStudentNumber() + studentService.getStudentInfo(st.getStudentNumber()).getName());
             }
         }
         PageInfo pageInfo = new PageInfo(listAbsenceStudents);
@@ -360,10 +371,10 @@ public class TransportRecordController {
 
     @ApiOperation("根据日期(如果不填则默认当前日期)+校车编号+班次  查询该实际接送信息（包括站点列表，各个站点实际接送学生和计划接送学生））")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "查询的起始时间，比如 2019-01-11"),
-            @ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "查询的结束时间，比如2019-01-12"),
+            @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "查询的起始时间，比如 2019-01-11，参数为空则默认当天"),
+            @ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "查询的结束时间，比如2019-01-12，参数为空则默认当天+1"),
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "查询的校车编号，比如 XC002",required = true),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次，限于 “早班”、“午班”，如果指定了班次 ",required = true),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次，限于 “早班”、“午班” ",required = true),
     })
     @PostMapping("/getPickingInfo")
     public Result getPickingInfo(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
@@ -371,6 +382,9 @@ public class TransportRecordController {
                                            String queryFinishTime,
                                           @RequestParam String busNumber,
                                           @RequestParam String busMode ) {
+        if( !busMode.equals(Constant.BUS_MODE_AFTERNOON) && !busMode.equals(Constant.BUS_MODE_MORNING)) {
+            return ResultGenerator.genFailResult("busMode 错误，限于 “早班”、“午班” ");
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if(null == queryStartTime){
             queryStartTime = sdf.format(new Date());
@@ -394,8 +408,10 @@ public class TransportRecordController {
                 null,
                 null,
                 null);
+
+        logger.info("getPickingInfo by " + busNumber + ",Mode:" + busMode);
         if(listTransportRecordInfo.size() == 0){
-            logger.info(" no record found，just ");
+            logger.info("getPickingInfo， no record found，just get plan students ");
             //即使没有乘车记录，也可以返回计划乘坐
 //            return  null;
         } else {
@@ -409,54 +425,55 @@ public class TransportRecordController {
 
 //        List<BusStations> stationsList = JSON.parseArray(busLine.getStations(), BusStations.class);
         //原先是JSON格式，现在是逗号分隔了站点
-         String[] stationsArr = busLine.getStations().split("\\,");
-        for (int i = 0; i < stationsArr.length; i++) {
+        if(!busMode.equals(Constant.BUS_MODE_NIGHT)) {
+            String[] stationsArr = busLine.getStations().split("\\,");
+            for (int i = 0; i < stationsArr.length; i++) {
 
-            StationPickingInfo stationPickingInfo = new StationPickingInfo();
-            //站点名
-            stationPickingInfo.setStationName(stationsArr[i]);
-            BusStations busStations = busStationsService.getBusStation(stationsArr[i]);
-            if(busStations != null){
-                // 站点都真实（即线路中的站点都来自站点列表中）之后，不会有查不到的，目前是为了防止假数据站点
-                stationPickingInfo.setStationId(busStations.getId());
-            }
-            List<TransportRecordInfo> listActualRecordInfo = transportRecordService.selectTransportRecord(queryStartTime,
-                    queryFinishTime,
-                    null,
-                    null,
-                    busNumber,
-                    busMode,
-                    stationsArr[i],
-                    null,
-                    null);
-            if(debugFlag.equalsIgnoreCase("true")) {
-                logger.info("校车 " + busNumber + "在" + busMode + " " +  queryStartTime + " 实际乘坐人数 " + listActualRecordInfo.size());
-                for (TransportRecordInfo tr: listActualRecordInfo) {
-                    logger.info(" 具体学号：" + tr.getStudentNumber());
+                StationPickingInfo stationPickingInfo = new StationPickingInfo();
+                //站点名
+                stationPickingInfo.setStationName(stationsArr[i]);
+                BusStations busStations = busStationsService.getBusStation(stationsArr[i]);
+                if (busStations != null) {
+                    // 站点都真实（即线路中的站点都来自站点列表中）之后，不会有查不到的，目前是为了防止假数据站点
+                    stationPickingInfo.setStationId(busStations.getId());
                 }
-            }
+                List<TransportRecordInfo> listActualRecordInfo = transportRecordService.selectTransportRecord(queryStartTime,
+                        queryFinishTime,
+                        null,
+                        null,
+                        busNumber,
+                        busMode,
+                        stationsArr[i],
+                        null,
+                        null);
+                if (debugFlag.equalsIgnoreCase("true")) {
+                    logger.info("getPickingInfo，校车 " + busNumber + "在" + busMode + stationsArr[i] + queryStartTime + " 实际乘坐人数 " + listActualRecordInfo.size());
+                    for (TransportRecordInfo tr : listActualRecordInfo) {
+                        logger.info("实际乘坐：" + studentService.getStudentInfo(tr.getStudentNumber()).getName());
+                    }
+                }
 
-            //已上车学生
-            List<StudentInfo> listActualStudents = new ArrayList<>();
-            for (TransportRecordInfo tri:listActualRecordInfo) {
-                StudentInfo studentInfo = new StudentInfo();
-                studentInfo.setBoardStationAfternoonName(tri.getBoardStationNameAfternoon());
-                studentInfo.setBanjiName(tri.getStudentBanji());
-                studentInfo.setBoardStationMorningName(tri.getBoardStationNameMorning());
-                studentInfo.setBusNumber(tri.getBusNumber());
-                studentInfo.setName(tri.getStudentName());
-                studentInfo.setStudentNumber(tri.getStudentNumber());
-                studentInfo.setHeadImg(tri.getStudentHeadImg());
-                listActualStudents.add(studentInfo);
-            }
-            stationPickingInfo.setPickedList(listActualStudents);
+                //已上车学生
+                List<StudentInfo> listActualStudents = new ArrayList<>();
+                for (TransportRecordInfo tri : listActualRecordInfo) {
+                    StudentInfo studentInfo = new StudentInfo();
+                    studentInfo.setBoardStationAfternoonName(tri.getBoardStationNameAfternoon());
+                    studentInfo.setBanjiName(tri.getStudentBanji());
+                    studentInfo.setBoardStationMorningName(tri.getBoardStationNameMorning());
+                    studentInfo.setBusNumber(tri.getBusNumber());
+                    studentInfo.setName(tri.getStudentName());
+                    studentInfo.setStudentNumber(tri.getStudentNumber());
+                    studentInfo.setHeadImg(tri.getStudentHeadImg());
+                    listActualStudents.add(studentInfo);
+                }
+                stationPickingInfo.setPickedList(listActualStudents);
 
-            //总学生
-            List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, busMode,stationsArr[i]);
-            stationPickingInfo.setPlanList(listPlannedStudents);
-            list.add(stationPickingInfo);
+                //总学生
+                List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, busMode, stationsArr[i]);
+                stationPickingInfo.setPlanList(listPlannedStudents);
+                list.add(stationPickingInfo);
+            }
         }
-
         allPickingInfo.setStationPickingInfoList(list);
 
         return ResultGenerator.genSuccessResult(allPickingInfo);
@@ -472,6 +489,7 @@ public class TransportRecordController {
     @PostMapping("/getBusStatusByBusNumber")
     public Result getBusStatusByBusNumber(@RequestParam() String busNumber) {
         Result status = transportRecordService.getBusStatusByBusNumber(busNumber);
+        logger.info("getBusStatusByBusNumber " + busNumber + ",got status: " + status.getData());
         return status;
     }
 
@@ -482,6 +500,7 @@ public class TransportRecordController {
     @PostMapping("/getBusStatusByBusLineName")
     public Result getBusStatusByBusLineName(@RequestParam() String busLineName) {
         Result status = transportRecordService.getBusStatusByBusLineName(busLineName);
+        logger.info("getBusStatusByBusLineName " + busLineName + ",got status: " + status.getData());
         return status;
     }
 }

@@ -15,6 +15,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,6 +42,8 @@ public class PickedStudentsInfoController {
     private TransportRecordServiceImpl transportRecordService;
     @Resource
     private StudentServiceImpl studentService;
+
+    private final Logger logger = LoggerFactory.getLogger(PickedStudentsInfoController.class);
 
     @ApiOperation("增加一次学生乘车记录（比如每次刷脸成功时）")
     @ApiImplicitParams({
@@ -75,6 +79,9 @@ public class PickedStudentsInfoController {
         pickedStudentsInfo.setStudentId(student.getId());
         pickedStudentsInfo.setBoardTime(new Date());
         pickedStudentsInfoService.save(pickedStudentsInfo);
+        logger.info("add trID " + pickedStudentsInfo.getTransportRecordId()
+                + studentService.findById(pickedStudentsInfo.getStudentId()).getName()
+                + pickedStudentsInfo.getBoardTime());
         return ResultGenerator.genSuccessResult();
     }
 
