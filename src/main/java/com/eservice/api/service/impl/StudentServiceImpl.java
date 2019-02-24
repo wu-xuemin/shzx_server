@@ -1,5 +1,6 @@
 package com.eservice.api.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.dao.StudentMapper;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Resource;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -118,6 +120,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         Student student = null;
         int sumOfAddInSheet1 = 0;
         int sumOfAddInSheet2 = 0;
+        DecimalFormat format = new DecimalFormat("#");
 
         File file =  new File(fileName);
         try {
@@ -141,16 +144,30 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                     HSSFCell studentNumberCell = hssfRow.getCell(0);
                     HSSFCell studentNameCell = hssfRow.getCell(3);
                     HSSFCell studentBanjiCell = hssfRow.getCell(2);
-                    HSSFCell studentFamilyCell = hssfRow.getCell(17);
+                    // 监护人姓名
+                    HSSFCell studentGuardianNameCell = hssfRow.getCell(17);
+                    // 监护人手机
+                    HSSFCell studentGuardianPhoneCell = hssfRow.getCell(19);
 
                     studentExcel.setStudentNumber(CommonService.getValue(studentNumberCell));
                     studentExcel.setName(CommonService.getValue(studentNameCell));
                     if(null != studentBanjiCell) {
                         studentExcel.setBanjiName(CommonService.getValue(studentBanjiCell));
                     }
-                    if(null != studentFamilyCell) {
-                        studentExcel.setFamilyInfo(CommonService.getValue(studentFamilyCell));
-                    }/**
+
+                    /**
+                     * 监护人及其电话，excel格式混杂
+                     */
+                    JSONObject jsonObject = new JSONObject();
+                    if(null != studentGuardianNameCell) {
+                        jsonObject.put("监护人", CommonService.getValue(studentGuardianNameCell));
+                        if(null != studentGuardianPhoneCell) {
+                            jsonObject.put("联系方式", format.format(studentGuardianPhoneCell.getNumericCellValue()));
+//                            jsonObject.put("联系方式", CommonService.getValue(studentGuardianPhoneCell));
+                        }
+                    }
+                    studentExcel.setFamilyInfo(jsonObject.toJSONString());
+                    /**
                      * 查找班级
                      */
                     Banji banjiExist = null;
