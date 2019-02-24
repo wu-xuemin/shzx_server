@@ -149,7 +149,8 @@ public class TransportRecordController {
             transportRecord.setEndTime( new java.sql.Timestamp(date.getTime()));
         }
         transportRecordService.update(transportRecord);
-        logger.info("update"+ transportRecord.getId() + busLineService.findById(transportRecord.getBusLine()).getName()
+        logger.info("update tr.id "+ transportRecord.getId()
+                + " name: " + busLineService.findById(transportRecord.getBusLine()).getName()
                 + " Flag:"+ transportRecord.getFlag() + "status:" + transportRecord.getStatus()
                 + "  busNumber:" + transportRecord.getBusNumberInTR());
 
@@ -374,7 +375,7 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "查询的起始时间，比如 2019-01-11，参数为空则默认当天"),
             @ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "查询的结束时间，比如2019-01-12，参数为空则默认当天+1"),
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "查询的校车编号，比如 XC002",required = true),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次，限于 “早班”、“午班” ",required = true),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次， 只能“早班”、“午班”，不能查晚班因为晚班和校车没有绑定 ",required = true),
     })
     @PostMapping("/getPickingInfo")
     public Result getPickingInfo(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
@@ -468,15 +469,24 @@ public class TransportRecordController {
                 }
                 stationPickingInfo.setPickedList(listActualStudents);
 
-                //总学生
+                //计划乘坐的学生
                 List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, busMode, stationsArr[i]);
                 stationPickingInfo.setPlanList(listPlannedStudents);
                 list.add(stationPickingInfo);
             }
-        }
-        allPickingInfo.setStationPickingInfoList(list);
 
-        return ResultGenerator.genSuccessResult(allPickingInfo);
+            allPickingInfo.setStationPickingInfoList(list);
+            return ResultGenerator.genSuccessResult(allPickingInfo);
+        } else {
+            /**
+             * 晚班没有计划乘坐的学生，也没有中间站点，只需返回实际乘坐了哪些学生即可
+             * 晚班的记录，没有绑定校车信息，根据校车编号是查不到晚班记录的
+             * 逻辑上不会走到这里，仅仅作为记录
+             */
+            logger.warn("晚班没有计划乘坐学生，查询晚班的实际上车学生则 根据返回的 transportRecord id来查");
+            return ResultGenerator.genSuccessResult("晚班没有计划乘坐学生，查询晚班的实际上车学生则 根据返回的 transportRecord id来查");
+        }
+
     }
 
 
@@ -502,5 +512,18 @@ public class TransportRecordController {
         Result status = transportRecordService.getBusStatusByBusLineName(busLineName);
         logger.info("getBusStatusByBusLineName " + busLineName + ",got status: " + status.getData());
         return status;
+    }
+
+
+    @ApiOperation("根据TransportRecordId 获取该车次的实际乘坐学生，可用于晚班意外退出后恢复状态（晚班提示线路已选，会返回TransportRecordId）")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "TransportRecordId", value = "TransportRecord的Id" ) })
+    @PostMapping("/getStudentsByTransportRecordId")
+    public Result getStudentsByTransportRecordId(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                     String TransportRecordId) {
+        PageHelper.startPage(page, size);
+        List<StudentInfo> list = transportRecordService.getStudentsByTransportRecordId(TransportRecordId);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
     }
 }

@@ -42,6 +42,10 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
     private Integer BUS_AFTERNOON_DEADLINE;
 
     private final Logger logger = LoggerFactory.getLogger(TransportRecordServiceImpl.class);
+
+    /**
+     *  注意，晚班的记录，没有绑定校车信息，根据校车编号是查不到晚班记录的
+     */
     public List<TransportRecordInfo> selectTransportRecord(  String queryStartTime,
                                                              String queryFinishTime,
                                                              String studentName,
@@ -275,5 +279,9 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
         } else {
             return Constant.BUS_STATUS_ERROR;
         }
+    }
+
+    public List<StudentInfo> getStudentsByTransportRecordId(String TransportRecordId ){
+        return transportRecordMapper.getStudentsByTransportRecordId(TransportRecordId);
     }
 }

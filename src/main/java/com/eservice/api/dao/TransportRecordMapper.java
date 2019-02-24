@@ -2,6 +2,7 @@ package com.eservice.api.dao;
 
 import com.eservice.api.core.Mapper;
 import com.eservice.api.model.student.Student;
+import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.model.transport_record.TransportRecord;
 import com.eservice.api.model.transport_record.TransportRecordInfo;
 import org.apache.ibatis.annotations.Param;
@@ -34,4 +35,6 @@ public interface TransportRecordMapper extends Mapper<TransportRecord> {
                                              @Param("queryDate") String queryDate);
 
     void saveAndGetID(TransportRecord transportRecord);
+
+    List<StudentInfo> getStudentsByTransportRecordId(@Param("TransportRecordId") String TransportRecordId);
 }

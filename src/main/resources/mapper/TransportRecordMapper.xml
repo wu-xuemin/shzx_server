@@ -165,5 +165,16 @@
     transport_record(date, bus_line, current_station,flag,bus_number_in_tr,status,begin_time,end_time)
     values( #{date}, #{busLine}, #{currentStation}, #{flag}, #{busNumberInTR}, #{status}, #{beginTime}, #{endTime})
   </insert>
+  <select id="getStudentsByTransportRecordId" resultMap="com.eservice.api.dao.StudentMapper.StudentInfoResultMap">
+    SELECT
+        tr.*, psi.*, student.*, banji.*
+    FROM
+        transport_record AS tr
+    LEFT JOIN picked_students_info AS psi ON psi.transport_record_id = tr.id
+    LEFT JOIN student ON psi.student_id = student.id
+    LEFT JOIN banji ON banji.id = student.banji
+    WHERE
+        tr.id = #{TransportRecordId}
+  </select>
 
 </mapper>
