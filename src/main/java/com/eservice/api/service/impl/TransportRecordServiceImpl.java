@@ -127,8 +127,9 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
                         jsonObject.put("TransportRecord", latestRecord.getId());
                         if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_MORNING)) {
                             jsonObject.put("busStatus", Constant.BUS_STATUS_ZAOBAN_RUNNING);
-                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)
-                                || latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)) {
+                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP) ) {
+                            jsonObject.put("busStatus", Constant.BUS_STATUS_WUBAN_ABOARDING);
+                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)) {
                             jsonObject.put("busStatus", Constant.BUS_STATUS_WUBAN_RUNNING);
                         } else if(latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT)){
                             jsonObject.put("busStatus", Constant.BUS_STATUS_WANBAN_RUNNING);
@@ -143,23 +144,26 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
                            如果已经结束的是午班，则只考虑晚班
                          */
                         if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_MORNING)) {
-                            //按时间计算是早班，但是实际早班已完成，所以默认返回午班
+                            //最后的记录是早班已完成
                             String tmpStatus = getBusInitialStatusByTime(new Date());
                             if (tmpStatus.equals(Constant.BUS_STATUS_ZAOBAN_WAIT_START)) {
                                 jsonObject.put("busStatus", Constant.BUS_STATUS_WUBAN_WAIT_START);
                                 return ResultGenerator.genSuccessResult(jsonObject);
                             } else {
-                                //如果是其他的状态，则不变
-//                                busStatus = tmpStatus;
+                                //如果是其他的状态(午班待发车，晚班待发车)，则不变
                                 jsonObject.put("busStatus", tmpStatus);
                                 return ResultGenerator.genSuccessResult(jsonObject);
                             }
-                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)
-                                || latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)) {
-                            //直接切换到晚班待开始
+                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)) {
+                            //最后的记录是 午班上车已完成
+                            jsonObject.put("busStatus", Constant.BUS_STATUS_WUBAN_RUNNING);
+                            return ResultGenerator.genSuccessResult(jsonObject);
+                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)) {
+                            //最后的记录是 午班下车已完成
                             jsonObject.put("busStatus", Constant.BUS_STATUS_WANBAN_WAIT_START);
                             return ResultGenerator.genSuccessResult(jsonObject);
-                        } else {
+                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT)) {
+                            //最后的记录是 晚班已完成
                             jsonObject.put("busStatus", Constant.BUS_STATUS_WANBAN_DONE);
                             return ResultGenerator.genSuccessResult(jsonObject);
                         }
@@ -216,8 +220,9 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
                         jsonObject.put("TransportRecord", latestRecord.getId());
                         if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_MORNING)) {
                             jsonObject.put("busStatus", Constant.BUS_STATUS_ZAOBAN_RUNNING);
-                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)
-                                || latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)) {
+                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)) {
+                            jsonObject.put("busStatus", Constant.BUS_STATUS_WUBAN_ABOARDING);
+                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)) {
                             jsonObject.put("busStatus", Constant.BUS_STATUS_WUBAN_RUNNING);
                         } else {
                             jsonObject.put("busStatus", Constant.BUS_STATUS_WANBAN_RUNNING);
@@ -230,23 +235,26 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
                            如果已经结束的是午班，则只考虑晚班
                          */
                         if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_MORNING)) {
-                            //按时间计算是早班，但是实际早班已完成，所以默认返回午班
+                            //最后的记录是早班已完成
                             String tmpStatus = getBusInitialStatusByTime(new Date());
                             if (tmpStatus.equals(Constant.BUS_STATUS_ZAOBAN_WAIT_START)) {
                                 jsonObject.put("busStatus", Constant.BUS_STATUS_WUBAN_WAIT_START);
                                 return ResultGenerator.genSuccessResult(jsonObject);
                             } else {
-                                //如果是其他的状态，则不变
-//                                busStatus = tmpStatus;
+                                //如果是其他的状态(午班待发车，晚班待发车)，则不变
                                 jsonObject.put("busStatus", tmpStatus);
                                 return ResultGenerator.genSuccessResult(jsonObject);
                             }
-                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)
-                                || latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)) {
-                            //直接切换到晚班待开始
+                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)) {
+                            //最后的记录是 午班上车已完成
+                            jsonObject.put("busStatus", Constant.BUS_STATUS_WUBAN_RUNNING);
+                            return ResultGenerator.genSuccessResult(jsonObject);
+                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)) {
+                            //最后的记录是 午班下车已完成
                             jsonObject.put("busStatus", Constant.BUS_STATUS_WANBAN_WAIT_START);
                             return ResultGenerator.genSuccessResult(jsonObject);
-                        } else {
+                        } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT)) {
+                            //最后的记录是 晚班已完成
                             jsonObject.put("busStatus", Constant.BUS_STATUS_WANBAN_DONE);
                             return ResultGenerator.genSuccessResult(jsonObject);
                         }
