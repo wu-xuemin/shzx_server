@@ -121,6 +121,7 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
                 String recordStatus = latestRecord.getStatus();
                 switch (recordStatus) {
                     case Constant.TRANSPORT_RECORD_STATUS_NIGHT_LINE_SELECTED:
+                        jsonObject.put("TransportRecord", latestRecord.getId());
                         jsonObject.put("busStatus", Constant.BUS_STATUS_WANBAN_LINE_SELECTED);
                         return ResultGenerator.genSuccessResult(jsonObject);
                     case Constant.TRANSPORT_RECORD_STATUS_RUNNING:
@@ -214,6 +215,7 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
                 String recordStatus = latestRecord.getStatus();
                 switch (recordStatus) {
                     case Constant.TRANSPORT_RECORD_STATUS_NIGHT_LINE_SELECTED:
+                        jsonObject.put("TransportRecord", latestRecord.getId());
                         jsonObject.put("busStatus", Constant.BUS_STATUS_WANBAN_LINE_SELECTED);
                         return ResultGenerator.genSuccessResult(jsonObject);
                     case Constant.TRANSPORT_RECORD_STATUS_RUNNING:
