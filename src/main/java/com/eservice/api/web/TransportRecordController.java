@@ -388,11 +388,10 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次， 只能“早班”、“午班”，不能查晚班因为晚班和校车没有绑定 ",required = true),
     })
     @PostMapping("/getPickingInfo")
-    public Result getPickingInfo(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
-                                           String queryStartTime,
-                                           String queryFinishTime,
-                                          @RequestParam String busNumber,
-                                          @RequestParam String busMode ) {
+    public Result getPickingInfo(String queryStartTime,
+                                 String queryFinishTime,
+                                 @RequestParam String busNumber,
+                                 @RequestParam String busMode ) {
         if( !busMode.equals(Constant.BUS_MODE_AFTERNOON) && !busMode.equals(Constant.BUS_MODE_MORNING)) {
             return ResultGenerator.genFailResult("busMode 错误，限于 “早班”、“午班” ");
         }
@@ -538,4 +537,139 @@ public class TransportRecordController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
+    @ApiOperation("午班下车过程中，分子（当前站点还没下车的）变小，根据校车获取当天午班的分子")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号" ) })
+    @PostMapping("/getStudentsWaitGetOff")
+    public Result getStudentsWaitGetOff(@RequestParam String busNumber ) {
+        String queryStartTime;
+        String queryFinishTime;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        queryStartTime = sdf.format(new Date());
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        Date tomorrow = c.getTime();
+        queryFinishTime = sdf.format(tomorrow);
+
+        AllPickingInfo allPickingInfo = new AllPickingInfo();
+        ArrayList<StationPickingInfo> pickingInfoArrayList = new ArrayList<>();
+        //获取全部站点名称
+        BusLine busLine = busLineService.getBusLineInfoByBusNumberAndBusMode(busNumber, Constant.BUS_MODE_AFTERNOON);
+        String[] stationsArr = busLine.getStations().split("\\,");
+
+        for (int i = 0; i < stationsArr.length; i++) {
+            StationPickingInfo stationPickingInfo = new StationPickingInfo();
+            //站点名
+            stationPickingInfo.setStationName(stationsArr[i]);
+            BusStations busStations = busStationsService.getBusStation(stationsArr[i]);
+            if (busStations != null) {
+                // 站点都真实（即线路中的站点都来自站点列表中）之后，不会有查不到的，目前是为了防止假数据站点
+                stationPickingInfo.setStationId(busStations.getId());
+            }
+            /**
+             * 午班上车记录
+             */
+            List<TransportRecordInfo> listActualRecordInfoWubanUp = transportRecordService.selectTransportRecord(queryStartTime,
+                    queryFinishTime,
+                    null,
+                    null,
+                    busNumber,
+                    //目前app传的busline参数 为早班的，不正确，这里先用null
+                    null,//Constant.BUS_MODE_AFTERNOON,
+                    stationsArr[i],
+                    null,
+                    null,
+                    Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP,
+                    null);
+            if (debugFlag.equalsIgnoreCase("true")) {
+                logger.info("getStudentsWaitGetOff，校车 " + busNumber + " 午班上车 " + stationsArr[i] + queryStartTime + " 实际乘坐人数 " + listActualRecordInfoWubanUp.size());
+                for (TransportRecordInfo tr : listActualRecordInfoWubanUp) {
+                    logger.info("实际午班上车：" + studentService.getStudentInfo(tr.getStudentNumber()).getName());
+                }
+            }
+
+            /**
+             * 午班上车已上车的学生
+             */
+            List<StudentInfo> listActualStudentsWubanUp = new ArrayList<>();
+            for (TransportRecordInfo tri : listActualRecordInfoWubanUp) {
+                StudentInfo studentInfo = new StudentInfo();
+                studentInfo.setBoardStationAfternoonName(tri.getBoardStationNameAfternoon());
+                studentInfo.setBanjiName(tri.getStudentBanji());
+                studentInfo.setBoardStationMorningName(tri.getBoardStationNameMorning());
+                studentInfo.setBusNumber(tri.getBusNumber());
+                studentInfo.setName(tri.getStudentName());
+                studentInfo.setStudentNumber(tri.getStudentNumber());
+                studentInfo.setHeadImg(tri.getStudentHeadImg());
+                listActualStudentsWubanUp.add(studentInfo);
+            }
+
+            /**
+             * 午班下车记录
+             */
+            List<TransportRecordInfo> listActualRecordInfoWubanDown = transportRecordService.selectTransportRecord(queryStartTime,
+                    queryFinishTime,
+                    null,
+                    null,
+                    busNumber,
+                    Constant.BUS_MODE_AFTERNOON,
+                    stationsArr[i],
+                    null,
+                    null,
+                    Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN,
+                    null);
+            if (debugFlag.equalsIgnoreCase("true")) {
+                logger.info("getStudentsWaitGetOff，校车 " + busNumber + " 午班下车 " + stationsArr[i] + queryStartTime + " 实际乘坐人数 " + listActualRecordInfoWubanUp.size());
+                for (TransportRecordInfo tr : listActualRecordInfoWubanDown) {
+                    logger.info("实际午班下车：" + studentService.getStudentInfo(tr.getStudentNumber()).getName());
+                }
+            }
+
+            /**
+             * 午班下车 已下车的学生
+             */
+            List<StudentInfo> listActualStudentsWubanDown = new ArrayList<>();
+            for (TransportRecordInfo tri : listActualRecordInfoWubanDown) {
+                StudentInfo studentInfo = new StudentInfo();
+                studentInfo.setBoardStationAfternoonName(tri.getBoardStationNameAfternoon());
+                studentInfo.setBanjiName(tri.getStudentBanji());
+                studentInfo.setBoardStationMorningName(tri.getBoardStationNameMorning());
+                studentInfo.setBusNumber(tri.getBusNumber());
+                studentInfo.setName(tri.getStudentName());
+                studentInfo.setStudentNumber(tri.getStudentNumber());
+                studentInfo.setHeadImg(tri.getStudentHeadImg());
+                listActualStudentsWubanDown.add(studentInfo);
+            }
+
+            /**
+             * 午班上车已上车的学生 - 午班下车已下车的学生
+             */
+            List<StudentInfo> listActualStudentsRemain = new ArrayList<>();
+            for (StudentInfo studentInfoActualWubanUp: listActualStudentsWubanUp) {
+
+                boolean isInBus = true;
+                for (StudentInfo studentInfoActualWubanDown: listActualStudentsWubanDown) {
+                    /**
+                     * 在实际午班下车名单中找到，表示不再在车上
+                     */
+                    if(studentInfoActualWubanUp.getStudentNumber().equalsIgnoreCase( studentInfoActualWubanDown.getStudentNumber())){
+                        isInBus = false;
+                    }
+                }
+
+                if(isInBus){
+                    listActualStudentsRemain.add(studentInfoActualWubanUp);
+                }
+            }
+
+            stationPickingInfo.setRemainList(listActualStudentsRemain);
+            pickingInfoArrayList.add(stationPickingInfo);
+            allPickingInfo.setStationPickingInfoList(pickingInfoArrayList);
+        }
+        return ResultGenerator.genSuccessResult(allPickingInfo);
+    }
+
 }

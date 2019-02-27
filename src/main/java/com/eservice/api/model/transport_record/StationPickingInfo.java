@@ -12,9 +12,28 @@ public class StationPickingInfo {
 
     private String stationName;
 
+    /**
+     * 该站点 计划接送的学生
+     */
     private List<StudentInfo> planList;
 
+    /**
+     * 该站点 实际接送的学生
+     */
     private List<StudentInfo> pickedList;
+
+    /**
+     * 该站点 等待下车的学生， 在午班下车时统计车上剩下的学生
+     */
+    private List<StudentInfo> remainList;
+
+    public List<StudentInfo> getRemainList() {
+        return remainList;
+    }
+
+    public void setRemainList(List<StudentInfo> remainList) {
+        this.remainList = remainList;
+    }
 
     public String getStationName() {
         return stationName;
