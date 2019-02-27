@@ -101,6 +101,15 @@
     <if test="className != null and className != ''">
       AND banji.class_name = #{className}
     </if>
+
+    <if test="recordFlag != null and recordFlag != ''">
+    AND tr.flag = #{recordFlag}
+    </if>
+
+    <if test="recordStatus != null and recordStatus != ''">
+    AND tr.`status` = #{recordStatus}
+    </if>
+
 </select>
 
   <select id="getUnplannedStudentsMorning" resultMap="com.eservice.api.dao.StudentMapper.BaseResultMap">

@@ -54,7 +54,9 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
                                                              String busMode,
                                                              String busStationName,
                                                              String grade,
-                                                             String className) {
+                                                             String className,
+                                                             String recordFlag,
+                                                             String recordStatus) {
         return transportRecordMapper.selectTransportRecord(queryStartTime,
                                                             queryFinishTime,
                                                             studentName,
@@ -63,7 +65,9 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
                                                             busMode,
                                                             busStationName,
                                                             grade,
-                                                            className);
+                                                            className,
+                                                            recordFlag,
+                                                            recordStatus);
     }
 
      public List<Student> getUnplannedStudents(String busNumber,String busMode, String queryStartTime, String queryFinishTime){
