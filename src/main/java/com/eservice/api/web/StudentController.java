@@ -71,15 +71,15 @@ public class StudentController {
                         if(urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
                             /**
                              * HeadImg，不保存绝对路径，只保存文件名，方便windows调试。
-                             * 方式：xh123456_张小明.png
+                             * 方式：xh123456.jpg
                              */
-                            studentObj.setHeadImg(studentObj.getStudentNumber().replaceAll("/", "_") + "_" + studentObj.getName().replaceAll("/", "_") + ".png");
+                            studentObj.setHeadImg(studentObj.getStudentNumber().replaceAll("/", "_") + ".jpg");
                         } else {
                             /**
                              * HeadImg，保存绝对路径，方便APP/web调用
-                             * 方式：https://eservice-tech.cn/studentImg/10812_林芯妤.png
+                             * 方式：https://eservice-tech.cn/studentImg/10812.jpg
                              */
-                            studentObj.setHeadImg(studentImgUrlPrefix + studentObj.getStudentNumber().replaceAll("/", "_") + "_" + studentObj.getName().replaceAll("/", "_") + ".png");
+                            studentObj.setHeadImg(studentImgUrlPrefix + studentObj.getStudentNumber().replaceAll("/", "_") + ".jpg");
                         }
                     } else {
                         message = "failed to save file, no student added of " + studentObj.getName();
@@ -241,14 +241,14 @@ public class StudentController {
     }
 
     @ApiOperation("从xls excel里读取学生 线路和上下车站点 信息")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\国际部学生基本信息20190126_修正.xls") })
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\校车线路上传模版_需求_2019_0127(1)-0220.xls") })
     @PostMapping("/parseInfoFromExcelForBoardStation")
     public Result parseInfoFromExcelForBoardStation(@RequestParam String fileName) {
         Result banji = studentService.parseInfoFromExcelForBoardStation(fileName);
         return ResultGenerator.genSuccessResult(banji);
     }
 
-    @ApiOperation("读取学生的头像文件（放在特定目录下student_img_dir）的命名来填充学生的头像字段，比如某学生的头像文件为 14111_张三.png 则在该学生的head_img字段填入14111_张三.png;返回列表显示照片存在，但是数据库中不存在的文件名。")
+    @ApiOperation("读取学生的头像文件（放在特定目录下student_img_dir）的命名来填充学生的头像字段，比如某学生的头像文件为 14111.jpg 则在该学生的head_img字段填入14111.jpg;返回列表显示照片存在，但是数据库中不存在的文件名。")
     @PostMapping("/getAndInsertStudentHeadImg")
     public Result getAndInsertStudentHeadImg() {
         List<String> notDBExistList = studentService.getAndInsertStudentHeadImg();

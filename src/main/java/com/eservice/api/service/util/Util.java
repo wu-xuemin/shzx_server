@@ -29,7 +29,7 @@ public class Util {
         try {
             ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
             BufferedImage image = ImageIO.read(new File(path));
-            ImageIO.write(image, "png", byteArrayOut);
+            ImageIO.write(image, "jpg", byteArrayOut);
             String tmp = new String(Base64.getEncoder().encode(byteArrayOut.toByteArray()));
             result = tmp.replaceAll("\\r\\n", "");
         } catch (IOException e) {

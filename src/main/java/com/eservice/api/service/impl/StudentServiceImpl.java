@@ -342,7 +342,11 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                             busLineExcelHelper.getBusNumber().split("\\.")[0] + "号车_" + CommonService.getBusModeByTime(stationTimeRemarkCell));
                     if (busLineExist != null) {
                         student.setBusLineMorning(busLineExist.getId());
-                        student.setBusLineAfternoon(busLineExist.getId());
+                        // 午班和早班不同。目前表格里只有早班
+                        BusLine busLineExistWuban = null;
+                        busLineExistWuban = busLineService.findBy(fieldBusLineName.getName(),
+                                busLineExcelHelper.getBusNumber().split("\\.")[0] + "号车_午班" );
+                        student.setBusLineAfternoon(busLineExistWuban.getId());
                     }
 
                     /**
@@ -401,9 +405,10 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         File[] tempList = file.listFiles();
 
         Student student = null;
+        Integer count = 0;
         for (int i = 0; i < tempList.length; i++) {
             if (tempList[i].isFile()) {
-                student = studentService.getStudentInfo(tempList[i].getName().split("_")[0]);
+                student = studentService.getStudentInfo(tempList[i].getName().split("\\.")[0]);
                 if(student != null) {
                     if(urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
                         student.setHeadImg(tempList[i].getName());
@@ -414,7 +419,8 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                     studentService.update(student);
                     logger.info("学生：" + tempList[i].getName().split("_")[0] + " 已更新head_img");
                 } else {
-                    logger.warn("根据文件 " + tempList[i].getName() + "，找不到对应的学生");
+                    count ++;
+                    logger.warn("根据文件 " + tempList[i].getName() + "，找不到对应的学生, " + count);
                     list.add(tempList[i].getName());
                 }
             }

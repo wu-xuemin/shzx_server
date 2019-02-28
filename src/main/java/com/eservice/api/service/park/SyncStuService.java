@@ -169,6 +169,7 @@ public class SyncStuService {
         ArrayList<Student> syncFailList = new ArrayList<>();
         ArrayList<Student> picNotExistList = new ArrayList<>();
         List<WinVisitorRecord> facePlatformStuList = getStudentList();
+        logger.info("platformStuList size: " + platformStuList.size());
         for (int i = 0; i < platformStuList.size(); i++) {
             boolean exist = false;
             for (int j = 0; j < facePlatformStuList.size() && !exist; j++) {
@@ -188,7 +189,7 @@ public class SyncStuService {
                 if(!dir.exists()) {
                     dir.mkdirs();
                 }
-                File picFile = new File(STUDENT_IMG_DIR + needSyncStuList.get(i).getStudentNumber() + "_" + needSyncStuList.get(i).getName() + ".png");
+                File picFile = new File(STUDENT_IMG_DIR + needSyncStuList.get(i).getStudentNumber() + ".jpg");
                 if(!picFile.exists()) {
                     picNotExistList.add(needSyncStuList.get(i));
                 } else {

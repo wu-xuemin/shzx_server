@@ -585,7 +585,7 @@ public class TransportRecordController {
                     Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP,
                     null);
             if (debugFlag.equalsIgnoreCase("true")) {
-                logger.info("getStudentsWaitGetOff，校车 " + busNumber + " 午班上车 " + stationsArr[i] + queryStartTime + " 实际乘坐人数 " + listActualRecordInfoWubanUp.size());
+                logger.info("getStudentsWaitGetOff，校车 " + busNumber + " 午班上车 " + stationsArr[i] + queryStartTime + " 实际上车人数 " + listActualRecordInfoWubanUp.size());
                 for (TransportRecordInfo tr : listActualRecordInfoWubanUp) {
                     logger.info("实际午班上车：" + studentService.getStudentInfo(tr.getStudentNumber()).getName());
                 }
@@ -615,14 +615,15 @@ public class TransportRecordController {
                     null,
                     null,
                     busNumber,
-                    Constant.BUS_MODE_AFTERNOON,
+                    //目前app传的busline参数 为早班的，不正确，这里先用null
+                    null,//Constant.BUS_MODE_AFTERNOON,
                     stationsArr[i],
                     null,
                     null,
                     Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN,
                     null);
             if (debugFlag.equalsIgnoreCase("true")) {
-                logger.info("getStudentsWaitGetOff，校车 " + busNumber + " 午班下车 " + stationsArr[i] + queryStartTime + " 实际乘坐人数 " + listActualRecordInfoWubanUp.size());
+                logger.info("getStudentsWaitGetOff，校车 " + busNumber + " 午班下车 " + stationsArr[i] + queryStartTime + " 实际下车人数 " + listActualRecordInfoWubanDown.size());
                 for (TransportRecordInfo tr : listActualRecordInfoWubanDown) {
                     logger.info("实际午班下车：" + studentService.getStudentInfo(tr.getStudentNumber()).getName());
                 }
