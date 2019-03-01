@@ -255,4 +255,18 @@ public class StudentController {
         return ResultGenerator.genSuccessResult(notDBExistList);
     }
 
+    @ApiOperation("把特定目录下student_img_dir_number的照片文件（学号.xxx）都改名为： 学号_姓名.xxx，返回重名等意外的情况")
+    @PostMapping("/renameNumberStudentPicFile")
+    public Result renameNumberStudentPicFile() {
+        List<String> notDBExistList = studentService.renameNumberStudentPicFile();
+        return ResultGenerator.genSuccessResult(notDBExistList);
+    }
+
+    //这个接口待测
+    @ApiOperation("把特定目录下student_img_dir_name的照片文件（姓名.xxx）都改名为： 学号_姓名.xxx，返回重名等意外的情况")
+    @PostMapping("/renameNameStudentPicFile")
+    public Result renameNameStudentPicFile() {
+        List<String> notDBExistList = studentService.renameNameStudentPicFile();
+        return ResultGenerator.genSuccessResult(notDBExistList);
+    }
 }

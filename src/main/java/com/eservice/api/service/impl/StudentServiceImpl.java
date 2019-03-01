@@ -66,6 +66,18 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
     @Value("${student_img_dir}")
     private String STUDENT_IMG_DIR;
 
+    /**
+     * 以姓名命名的照片 所在的路径
+     */
+    @Value("${student_img_dir_name}")
+    private String STUDENT_IMG_DIR_NAME;
+
+    /**
+     * 以学号命名的照片 所在的路径
+     */
+    @Value("${student_img_dir_number}")
+    private String STUDENT_IMG_DIR_NUMBER;
+
     @Value("${url_style}")
     private String urlStyle;
 
@@ -411,9 +423,9 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                 student = studentService.getStudentInfo(tempList[i].getName().split("\\.")[0]);
                 if(student != null) {
                     if(urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
-                        student.setHeadImg(tempList[i].getName());
+                        student.setHeadImg( tempList[i].getName().split("\\.")[0] + "_"  + student.getName() + "." + tempList[i].getName().split("\\.")[1]);
                     } else {
-                        student.setHeadImg(studentImgUrlPrefix + tempList[i].getName());
+                        student.setHeadImg(studentImgUrlPrefix  + tempList[i].getName().split("\\.")[0] + "_"  + student.getName() + "." + tempList[i].getName().split("\\.")[1]);
                     }
                     student.setUpdateTime(new Date());
                     studentService.update(student);
@@ -426,5 +438,121 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
             }
         }
         return list;
+    }
+
+    /**
+     *  改名： 2345.xxx --> 2344_张三.xxx
+     */
+    public List<String> renameNumberStudentPicFile() {
+        File dir = new File(STUDENT_IMG_DIR_NUMBER);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+        List<String> list = new ArrayList<String>();
+        File file = new File(STUDENT_IMG_DIR_NUMBER);
+        File[] tempList = file.listFiles();
+
+        Student student = null;
+        Integer count = 0;
+        Integer countRenamed = 0;
+        for (int i = 0; i < tempList.length; i++) {
+            if (tempList[i].isFile()) {
+                student = studentService.getStudentInfo(tempList[i].getName().split("\\.")[0]);
+                if(student != null) {
+                    /**
+                     * 改名： 2345.xxx --> 2344_张三.xxx
+                     */
+                    String newName = tempList[i].getName().split("\\.")[0] + "_"
+                            + student.getName()
+                            + "." + tempList[i].getName().split("\\.")[1];
+                    renameFile(STUDENT_IMG_DIR_NUMBER,tempList[i].getName(),newName);
+                    countRenamed ++;
+
+                } else {
+                    count ++;
+                    logger.warn("根据文件 学号 " + tempList[i].getName() + "，找不到对应的学生, " + count);
+                    list.add(tempList[i].getName());
+                }
+            }
+        }
+        logger.info("countRenamed " + countRenamed);
+        return list;
+    }
+
+    /**
+     * 改名： 张三.xxx --> 2344_张三.xxx
+     */
+    public List<String> renameNameStudentPicFile() {
+        File dir = new File(STUDENT_IMG_DIR_NAME);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+        List<String> list = new ArrayList<String>();
+        File file = new File(STUDENT_IMG_DIR_NAME);
+        File[] tempList = file.listFiles();
+
+        Student student = null;
+        Integer count = 0;
+        Integer countRenamed = 0;
+        for (int i = 0; i < tempList.length; i++) {
+            if (tempList[i].isFile()) {
+                /**
+                 * 根据姓名查找，可能有重复
+                 */
+                List<StudentInfo> studentList = studentService.getStudents(null,null,tempList[i].getName().split("\\.")[0]);
+                if(studentList.isEmpty()){
+                    logger.warn("根据文件 姓名 " + tempList[i].getName() + "，找不到对应的学生, " + count);
+                } else if(studentList.size() ==1) {
+                    /**
+                     * 改名： 张三.xxx --> 2344_张三.xxx
+                     */
+                    String newName = student.getStudentNumber()
+                            + "_" + tempList[i].getName().split("\\.")[0]
+                            + "." + tempList[i].getName().split("\\.")[1];
+                    renameFile(STUDENT_IMG_DIR_NUMBER,tempList[i].getName(),newName);
+                    countRenamed ++;
+
+                } else {
+                    logger.warn("根据文件 姓名 " + tempList[i].getName() + "，找到多个同名的学生, " + studentList.size());
+                }
+
+                if(student != null) {
+
+                } else {
+                    count ++;
+                    logger.warn("根据文件 学号 " + tempList[i].getName() + "，找不到对应的学生, " + count);
+                    list.add(tempList[i].getName());
+                }
+            }
+        }
+        logger.info("countRenamed " + countRenamed);
+        return list;
+    }
+
+
+    /** 文件重命名
+	 * @param path 文件路径
+	 * @param oldname 原有的文件名
+	 * @param newname 新的文件名
+	 */
+    private boolean renameFile(String path, String oldname, String newname) {
+        if (!oldname.equals(newname)) {
+            File oldfile = new File(path + "/" + oldname);
+            File newfile = new File(path + "/" + newname);
+            if (!oldfile.exists()) {
+                logger.error("需要重命名的文件不存在");
+                return false;// 重命名文件不存在
+            }
+            if (newfile.exists()) {// 若在该目录下已经有一个文件和新文件名相同，则不允许重命名
+                logger.error(newname + "已经存在！");
+                return false;
+            } else {
+                boolean isSuccess = oldfile.renameTo(newfile);
+                return isSuccess;
+            }
+        } else {
+            logger.error("新文件名和旧文件名相同...");
+        }
+        return false;
     }
 }
