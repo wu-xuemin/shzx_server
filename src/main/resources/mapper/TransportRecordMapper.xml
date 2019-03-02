@@ -176,7 +176,7 @@
   </insert>
   <select id="getStudentsByTransportRecordId" resultMap="com.eservice.api.dao.StudentMapper.StudentInfoResultMap">
     SELECT
-        tr.*, psi.*, student.*, banji.*
+        tr.*, psi.*, student.*, banji.*,banji.class_name as banji_name
     FROM
         transport_record AS tr
     LEFT JOIN picked_students_info AS psi ON psi.transport_record_id = tr.id
@@ -184,6 +184,9 @@
     LEFT JOIN banji ON banji.id = student.banji
     WHERE
         tr.id = #{TransportRecordId}
+-- 晚班选了已选 ，但是没有学生上车，等没有学生上车记录的情况
+        and student.id is not null
+
   </select>
 
 </mapper>

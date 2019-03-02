@@ -45,6 +45,7 @@
     <result column="bus_plate_number" jdbcType="VARCHAR" property="busPlateNumber" />
     <result column="charge_teacher_name" jdbcType="VARCHAR" property="chargeTeacherName" />
     <result column="charge_teacher_phone" jdbcType="VARCHAR" property="chargeTeacherPhone" />
+    <result column="board_time" jdbcType="VARCHAR" property="boardTime" />
   </resultMap>
 
   <select id="getPlannedStudentsMorningByBusNumber" resultMap="StudentInfoResultMap">

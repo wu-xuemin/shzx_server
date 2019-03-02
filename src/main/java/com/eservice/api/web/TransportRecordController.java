@@ -96,26 +96,26 @@ public class TransportRecordController {
             transportRecord.setBeginTime( new java.sql.Timestamp(date.getTime()));
 //            transportRecordObj.setFlag(flag);
             if(flag.equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT)) {
-                //晚班是在选择线路时创建record,所以需要判断线路是否被占用
-                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-                List<TransportRecord> nightRecordList = transportRecordService.getTransportRecord(null,null,Constant.BUS_MODE_NIGHT,sdf1.format(date));
-                String busNumberAlreadySelected = "";
-                Integer transportRecordId = null;
-                if(nightRecordList != null) {
-                    for (int i = 0; i < nightRecordList.size(); i++) {
-                        if(nightRecordList.get(i).getBusLine().equals(transportRecord.getBusLine())) {
-                            busNumberAlreadySelected = nightRecordList.get(i).getBusNumberInTR();
-                            transportRecordId = nightRecordList.get(i).getId();
-                            break;
-                        }
-                    }
-                    if(!"".equals(busNumberAlreadySelected)) {
-                        logger.info("线路已被" + busNumberAlreadySelected + "选择, 对应的transportRecord的ID为 " + transportRecordId);
-                        return ResultGenerator.genFailResult("线路已被[" + busNumberAlreadySelected + "]选择, 对应的transportRecord的ID为 " + transportRecordId);
-                    } else {
+                //--> 晚班一些线路需要多辆校车 ，改为不需要判断是否已占线路
+//                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+//                List<TransportRecord> nightRecordList = transportRecordService.getTransportRecord(null,null,Constant.BUS_MODE_NIGHT,sdf1.format(date));
+//                String busNumberAlreadySelected = "";
+//                Integer transportRecordId = null;
+//                if(nightRecordList != null) {
+//                    for (int i = 0; i < nightRecordList.size(); i++) {
+//                        if(nightRecordList.get(i).getBusLine().equals(transportRecord.getBusLine())) {
+//                            busNumberAlreadySelected = nightRecordList.get(i).getBusNumberInTR();
+//                            transportRecordId = nightRecordList.get(i).getId();
+//                            break;
+//                        }
+//                    }
+//                    if(!"".equals(busNumberAlreadySelected)) {
+//                        logger.info("线路已被" + busNumberAlreadySelected + "选择, 对应的transportRecord的ID为 " + transportRecordId);
+//                        return ResultGenerator.genFailResult("线路已被[" + busNumberAlreadySelected + "]选择, 对应的transportRecord的ID为 " + transportRecordId);
+//                    } else {
                         transportRecord.setStatus(Constant.TRANSPORT_RECORD_STATUS_NIGHT_LINE_SELECTED);
-                    }
-                }
+//                    }
+//                }
             } else {
                 transportRecord.setStatus(Constant.TRANSPORT_RECORD_STATUS_RUNNING);
             }
@@ -138,7 +138,7 @@ public class TransportRecordController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "Id", value = " ID",required = true),
             @ApiImplicitParam(paramType = "query",name = "busLine", value = " 线路ID",required = true),
-            @ApiImplicitParam(paramType = "query",name = "currentStation", value = " 站点 ID",required = true),
+            @ApiImplicitParam(paramType = "query",name = "currentStation", value = " 站点 ID"),
             @ApiImplicitParam(paramType = "query",name = "busNumberInTR", value = " 校车编号 ",required = true),
             @ApiImplicitParam(paramType = "query",name = "flag", value = " 早班、午班上车、午班下车、晚班 ",required = true),
             @ApiImplicitParam(paramType = "query",name = "status", value = "行程进行中、行程已结束、晚班行程已选 ",required = true)})
@@ -502,7 +502,6 @@ public class TransportRecordController {
 
     }
 
-
     @ApiOperation("根据校车编号 获取校车 当天此时 所处状态（比如 早班待发车、早班进行中、早班已结束...），" +
             "如果早班没使用APP，下午午班才开始用，这是应该根据时间返回午班未开始状态" +
             "比如前端APP意外退出之后，如果是当天重启则返回奔溃前的状态，" +
@@ -516,10 +515,11 @@ public class TransportRecordController {
         return status;
     }
 
+    // never used
     @ApiOperation("根据线路名称（是唯一的）获取校车当天此时所处状态（晚班待发车、晚班线路已选、晚班进行中、晚班已结束等）" )
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busLineName", value = "线路名称", required = true)})
-    @PostMapping("/getBusStatusByBusLineName")
+    @PostMapping("/getBusStatusByBusLineName") // never used
     public Result getBusStatusByBusLineName(@RequestParam() String busLineName) {
         Result status = transportRecordService.getBusStatusByBusLineName(busLineName);
         logger.info("getBusStatusByBusLineName " + busLineName + ",got status: " + status.getData());
@@ -665,8 +665,10 @@ public class TransportRecordController {
                     listActualStudentsRemain.add(studentInfoActualWubanUp);
                 }
             }
-
             stationPickingInfo.setRemainList(listActualStudentsRemain);
+            List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, Constant.BUS_MODE_AFTERNOON, stationsArr[i]);
+            stationPickingInfo.setPlanList(listPlannedStudents);
+            stationPickingInfo.setPickedList(listActualStudentsWubanUp);
             pickingInfoArrayList.add(stationPickingInfo);
             allPickingInfo.setStationPickingInfoList(pickingInfoArrayList);
         }

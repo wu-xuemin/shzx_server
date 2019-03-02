@@ -1,5 +1,9 @@
 package com.eservice.api.model.student;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
+import java.util.Date;
+
 public class StudentInfo extends Student {
 
     private String banjiName;
@@ -47,6 +51,20 @@ public class StudentInfo extends Student {
     private String chargeTeacherName;
 
     private String chargeTeacherPhone;
+
+    public Date getBoardTime() {
+        return boardTime;
+    }
+
+    public void setBoardTime(Date boardTime) {
+        this.boardTime = boardTime;
+    }
+
+    /**
+     * 上或下车时间
+     */
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    private Date boardTime;
 
     public String getBusPlateNumber() {
         return busPlateNumber;
