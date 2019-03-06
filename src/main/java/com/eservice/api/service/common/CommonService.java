@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.net.ssl.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.ConnectException;
 import java.net.URL;
@@ -75,6 +77,37 @@ public class CommonService {
             throw e;
         }
         return targetFileName;
+    }
+
+    public void reduceImg(String srcImageFile, String destImageFile, int width, int height, boolean isScale)
+            throws IOException {
+
+        InputStream inputStream = new FileInputStream(srcImageFile);
+        OutputStream outputStream = new FileOutputStream(destImageFile);
+
+        BufferedImage bufferedImage = ImageIO.read(inputStream);
+        int sWidth = bufferedImage.getWidth();
+        int sHeight = bufferedImage.getHeight();
+        int diffWidth = 0;
+        int diffHeight = 0;
+        if (isScale) {
+            if ((double) sWidth / width > (double) sHeight / height) {
+                int height2 = width * sHeight / sWidth;
+                diffHeight = (height - height2) / 2;
+            } else if ((double) sWidth / width < (double) sHeight / height) {
+                int width2 = height * sWidth / sHeight;
+                diffWidth = (width - width2) / 2;
+            }
+        }
+        BufferedImage nbufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        //填充整个屏幕
+        nbufferedImage.getGraphics().fillRect(0, 0, width, height);
+        // 绘制缩小后的图
+        nbufferedImage.getGraphics().drawImage(bufferedImage, diffWidth, diffHeight, width - diffWidth * 2,
+                height - diffHeight * 2, null);
+        ImageIO.write(nbufferedImage, "JPEG", outputStream);
+        outputStream.close();
+        inputStream.close();
     }
 
     public String formatFileName(String tag1, String tag2) {

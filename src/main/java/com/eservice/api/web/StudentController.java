@@ -155,6 +155,28 @@ public class StudentController {
         return ResultGenerator.genSuccessResult(student);
     }
 
+    @PostMapping("/transferPhoto")
+    public Result transferPhoto(@RequestParam String srcDirName, @RequestParam String desDirName) {
+        File srcDir = new File(studentImgDir + srcDirName);
+        if(srcDir.exists()) {
+            File desDir = new File(studentImgDir + desDirName);
+            if(!desDir.exists()) {
+                desDir.mkdirs();
+            } else {
+                File[] photoFiles = srcDir.listFiles();
+                for (int i = 0; i < photoFiles.length; i++) {
+                    try {
+                        commonService.reduceImg(photoFiles[i].getAbsolutePath(),desDir + "/" + photoFiles[i].getName(), 1000, 1200, false);
+                    } catch (IOException e) {
+                        System.out.println("转换错误：" + photoFiles[i].getName());
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return ResultGenerator.genSuccessResult("转换完成");
+    }
+
     @PostMapping("/list")
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
