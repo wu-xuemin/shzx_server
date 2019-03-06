@@ -406,6 +406,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
 
     /**
      * 返回学生照片文件存在，但是在数据库中不存在的照片文件名
+     *  12345_张三.jpg
      */
     public List<String> getAndInsertStudentHeadImg() {
         File dir = new File(STUDENT_IMG_DIR);
@@ -420,12 +421,15 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         Integer count = 0;
         for (int i = 0; i < tempList.length; i++) {
             if (tempList[i].isFile()) {
-                student = studentService.getStudentInfo(tempList[i].getName().split("\\.")[0]);
+                /*
+                 *根据学号查学生
+                 */
+                student = studentService.getStudentInfo(tempList[i].getName().split("_")[0]);
                 if(student != null) {
                     if(urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
-                        student.setHeadImg( tempList[i].getName().split("\\.")[0] + "_"  + student.getName() + "." + tempList[i].getName().split("\\.")[1]);
+                        student.setHeadImg( tempList[i].getName().split("_")[0] + "_"  + student.getName() + "." + tempList[i].getName().split("\\.")[1]);
                     } else {
-                        student.setHeadImg(studentImgUrlPrefix  + tempList[i].getName().split("\\.")[0] + "_"  + student.getName() + "." + tempList[i].getName().split("\\.")[1]);
+                        student.setHeadImg(studentImgUrlPrefix  + tempList[i].getName().split("_")[0] + "_"  + student.getName() + "." + tempList[i].getName().split("\\.")[1]);
                     }
                     student.setUpdateTime(new Date());
                     studentService.update(student);
@@ -491,8 +495,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         File file = new File(STUDENT_IMG_DIR_NAME);
         File[] tempList = file.listFiles();
 
-        Student student = null;
-        Integer count = 0;
+        Integer countNotFound = 0;
         Integer countRenamed = 0;
         for (int i = 0; i < tempList.length; i++) {
             if (tempList[i].isFile()) {
@@ -501,28 +504,24 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                  */
                 List<StudentInfo> studentList = studentService.getStudents(null,null,tempList[i].getName().split("\\.")[0]);
                 if(studentList.isEmpty()){
-                    logger.warn("根据文件 姓名 " + tempList[i].getName() + "，找不到对应的学生, " + count);
+                    countNotFound ++;
+                    logger.warn("根据文件 " + tempList[i].getName() + "，找不到对应的学生, " + countNotFound);
+                    list.add(tempList[i].getName());
                 } else if(studentList.size() ==1) {
                     /**
                      * 改名： 张三.xxx --> 2344_张三.xxx
                      */
-                    String newName = student.getStudentNumber()
+                    String newName = studentList.get(0).getStudentNumber()
                             + "_" + tempList[i].getName().split("\\.")[0]
                             + "." + tempList[i].getName().split("\\.")[1];
-                    renameFile(STUDENT_IMG_DIR_NUMBER,tempList[i].getName(),newName);
+                    renameFile(STUDENT_IMG_DIR_NAME,tempList[i].getName(),newName);
                     countRenamed ++;
+                    logger.info("重命名OK: " + tempList[i].getName() + "==>" + newName + " :" + countRenamed);
 
                 } else {
                     logger.warn("根据文件 姓名 " + tempList[i].getName() + "，找到多个同名的学生, " + studentList.size());
                 }
-
-                if(student != null) {
-
-                } else {
-                    count ++;
-                    logger.warn("根据文件 学号 " + tempList[i].getName() + "，找不到对应的学生, " + count);
-                    list.add(tempList[i].getName());
-                }
+ 
             }
         }
         logger.info("countRenamed " + countRenamed);
