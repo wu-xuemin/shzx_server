@@ -136,6 +136,71 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     /**
+     * 根据表格去更新老师的电话
+     */
+    public Result parseChargeTeacherPhoneFromExcel(@RequestParam String fileName ) {
+        // 返回 表格中没有电话的老师的姓名
+        List<String> listUserNameNoPhone =   new ArrayList<String>();
+        BanjiExcel banjiExcel = null;
+        User bzr = null;
+        DecimalFormat format = new DecimalFormat("#");
+
+        File file =  new File(fileName);
+        try {
+
+            InputStream is = new FileInputStream(file);
+            HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
+            HSSFSheet hssfSheet = hssfWorkbook.getSheet("老师信息");
+
+            if (hssfSheet == null) {
+                return ResultGenerator.genFailResult("No 老师信息 sheet found");
+            }
+            // 循环行Row
+            for (int rowNum = 0; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
+                HSSFRow hssfRow = hssfSheet.getRow(rowNum);
+                if (hssfRow != null) {
+                    banjiExcel = new BanjiExcel();
+                    bzr = new User();
+                    HSSFCell bzrNameCell = hssfRow.getCell(9);
+                    HSSFCell bzrPhoneCell = hssfRow.getCell(11);
+                    banjiExcel.setChargeTeacherName(CommonService.getValue(bzrNameCell));
+                    if(bzrPhoneCell != null) {
+                        banjiExcel.setChargeTeacherPhone(format.format(bzrPhoneCell.getNumericCellValue()));
+                    } else {
+                        logger.info("the user no phone found " + banjiExcel.getChargeTeacherName());
+                        listUserNameNoPhone.add(banjiExcel.getChargeTeacherName());
+                    }
+                    Class cl = Class.forName("com.eservice.api.model.user.User");
+                    Field fieldUserAccount = cl.getDeclaredField("account");//成员名
+                    User userExist = null;
+                    userExist = findBy(fieldUserAccount.getName(), banjiExcel.getChargeTeacherName());
+                    /**
+                     * 用户名称不存在，则无视,用户存在，则更新
+                     */
+                    if ((null == userExist)) {
+                        logger.info("charge teacher no found: =====" + rowNum + ":" + bzr.getAccount());
+                    } else {
+                        //只更新电话
+                        userExist.setPhone(banjiExcel.getChargeTeacherPhone());
+                        update(userExist);
+                        logger.info("charge teacher Phone Updated: =====" + rowNum + ":" + bzr.getAccount());
+                    }
+                }
+            }
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        PageInfo pageInfo = new PageInfo(listUserNameNoPhone);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    /**
      * 解析bus妈妈和司机的信息
      */
     public Result parseBusMomDriverFromExcel(@RequestParam String fileName ) {

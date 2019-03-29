@@ -15,6 +15,8 @@ public class BanjiExcel {
     private String chargeTeacherName;
     //班主任工号
     private String chargeTeacherCode;
+    //班主任电话
+    private String chargeTeacherPhone;
 
     public String getGrade() {
         return grade;
@@ -48,4 +50,11 @@ public class BanjiExcel {
         this.chargeTeacherCode = chargeTeacherCode;
     }
 
+    public String getChargeTeacherPhone() {
+        return chargeTeacherPhone;
+    }
+
+    public void setChargeTeacherPhone(String chargeTeacherPhone) {
+        this.chargeTeacherPhone = chargeTeacherPhone;
+    }
 }

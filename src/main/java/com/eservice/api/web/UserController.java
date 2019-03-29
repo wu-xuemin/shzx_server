@@ -173,6 +173,19 @@ public class UserController {
         return ResultGenerator.genSuccessResult(banji);
     }
 
+    /**
+     * 更新从另一个 xls excel里读取班主任信息,因为班主任的手机信息和前面不是同一个文件.
+     * 这个excel是根据 http://app.shs.cn/ydpt/ws/buse/classes?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761
+     * 的返回结果制作的excel。
+     */
+    @ApiOperation("更新从另一个 xls excel里读取班主任信息,因为班主任的手机信息和前面不是同一个文件")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\老师信息20190329.xls") })
+    @PostMapping("/parseChargeTeacherPhoneFromExcel")
+    public Result parseChargeTeacherPhoneFromExcel(@RequestParam String fileName) {
+        Result banji = userService.parseChargeTeacherPhoneFromExcel(fileName);
+        return ResultGenerator.genSuccessResult(banji);
+    }
+
     @ApiOperation("从xls excel里读取巴士妈妈和司机信息")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName",
             value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\校车线路上传模版_需求_2019_0201-新格式.xls") })
