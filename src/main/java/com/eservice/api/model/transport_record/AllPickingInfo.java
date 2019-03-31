@@ -6,6 +6,9 @@ import java.util.List;
 
 public class AllPickingInfo {
 
+    /**
+     * StationPickingInfo：某站点的 名称，计划乘坐的学生List，实际乘坐的学生List
+     */
     private List<StationPickingInfo> stationPickingInfoList;
 
     private String currentStation;

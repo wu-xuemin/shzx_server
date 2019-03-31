@@ -9,6 +9,7 @@ import com.eservice.api.model.user.User;
 import com.eservice.api.service.UserService;
 import com.eservice.api.core.AbstractService;
 import com.eservice.api.service.common.CommonService;
+import com.eservice.api.service.common.Constant;
 import com.github.pagehelper.PageInfo;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -16,6 +17,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 /**
 * Class Description: xxx
 * @author Wilson Hu
@@ -42,6 +43,18 @@ import java.util.List;
 public class UserServiceImpl extends AbstractService<User> implements UserService,UserDetailsService {
     @Resource
     private UserMapper userMapper;
+
+    @Value("${user_img_dir}")
+    private String USER_IMG_DIR;
+
+    @Resource
+    private UserServiceImpl userService;
+
+    @Value("${url_style}")
+    private String urlStyle;
+
+    @Value("${user_img_url_prefix}")
+    private String userImgUrlPrefix;
 
     private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -202,6 +215,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
     /**
      * 解析bus妈妈和司机的信息
+     * TODO: 去除各种空格
      */
     public Result parseBusMomDriverFromExcel(@RequestParam String fileName ) {
         List<BusLineExcelHelper> list =   new ArrayList<BusLineExcelHelper>();
@@ -299,4 +313,54 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
+    /**
+     * 返回User照片文件存在，但是在数据库中不存在的照片文件名
+     *  busMom4_张三.jpg
+     */
+    public List<String> getAndInsertUserHeadImg() {
+        File dir = new File(USER_IMG_DIR);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+        List<String> list = new ArrayList<String>();
+        File file = new File(USER_IMG_DIR);
+        File[] tempList = file.listFiles();
+
+        User user = null;
+        Integer count = 0;
+        for (int i = 0; i < tempList.length; i++) {
+            if (tempList[i].isFile()) {
+                /*
+                 *根据姓名查user.  busmom91_李玲红.jpg   driver28_郭银祥.jpg
+                 */
+                User userExist = null;
+                Class cl = null;
+                try {
+                    cl = Class.forName("com.eservice.api.model.user.User");
+                    Field fieldHeadImage = cl.getDeclaredField("name");
+                    userExist = userService.findBy(fieldHeadImage.getName(), tempList[i].getName().split("_")[1].split("\\.")[0]);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                }
+                if(userExist != null) {
+                    if(urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
+                        userExist.setHeadImage( tempList[i].getName());
+                    } else {
+                        userExist.setHeadImage(userImgUrlPrefix  + tempList[i].getName());
+                    }
+                    userService.update(userExist);
+                    logger.info("User：" + tempList[i].getName() + " 已更新head_image");
+                } else {
+                    count ++;
+                    logger.warn("根据照片 " + tempList[i].getName() + "，找不到对应的用户, " + count);
+                    list.add(tempList[i].getName());
+                }
+            }
+        }
+        return list;
+    }
+
 }

@@ -194,4 +194,11 @@ public class UserController {
         Result banji = userService.parseBusMomDriverFromExcel(fileName);
         return ResultGenerator.genSuccessResult(banji);
     }
+
+    @ApiOperation("读取user的头像文件（放在特定目录下user_img_dir）的命名来填充头像字段，比如某user头像文件为 busmom11_谢正明.jpg 则在该user的head_img字段填入busmom11_谢正明.jpg;返回列表显示照片存在，但是数据库中不存在的文件名。")
+    @PostMapping("/getAndInsertUserHeadImg")
+    public Result getAndInsertUserHeadImg() {
+        List<String> notDBExistList = userService.getAndInsertUserHeadImg();
+        return ResultGenerator.genSuccessResult(notDBExistList);
+    }
 }
