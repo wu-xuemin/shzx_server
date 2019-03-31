@@ -330,4 +330,31 @@ public class CommonService {
         }
     }
 
+
+    /** 文件重命名
+     * @param path 文件路径
+     * @param oldname 原有的文件名
+     * @param newname 新的文件名
+     */
+    public static boolean renameFile(String path, String oldname, String newname) {
+        if (!oldname.equals(newname)) {
+            File oldfile = new File(path + "/" + oldname);
+            File newfile = new File(path + "/" + newname);
+            if (!oldfile.exists()) {
+                logger.error("需要重命名的文件不存在");
+                return false;// 重命名文件不存在
+            }
+            if (newfile.exists()) {// 若在该目录下已经有一个文件和新文件名相同，则不允许重命名
+                logger.error(newname + "已经存在！");
+                return false;
+            } else {
+                boolean isSuccess = oldfile.renameTo(newfile);
+                return isSuccess;
+            }
+        } else {
+            logger.error("新文件名和旧文件名相同...");
+        }
+        return false;
+    }
+
 }

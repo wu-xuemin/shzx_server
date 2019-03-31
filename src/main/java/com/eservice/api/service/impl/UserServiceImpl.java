@@ -332,14 +332,14 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         for (int i = 0; i < tempList.length; i++) {
             if (tempList[i].isFile()) {
                 /*
-                 *根据姓名查user.  busmom91_李玲红.jpg   driver28_郭银祥.jpg
+                 *根据姓名查user.  13800002222_busmom91_李玲红.jpg   13011112222_driver28_郭银祥.jpg
                  */
                 User userExist = null;
                 Class cl = null;
                 try {
                     cl = Class.forName("com.eservice.api.model.user.User");
                     Field fieldHeadImage = cl.getDeclaredField("name");
-                    userExist = userService.findBy(fieldHeadImage.getName(), tempList[i].getName().split("_")[1].split("\\.")[0]);
+                    userExist = userService.findBy(fieldHeadImage.getName(), tempList[i].getName().split("_")[2].split("\\.")[0]);
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 } catch (NoSuchFieldException e) {
@@ -363,4 +363,46 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         return list;
     }
 
+    public List<String> renameUserPic() {
+        File dir = new File(USER_IMG_DIR);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+        List<String> list = new ArrayList<String>();
+        File file = new File(USER_IMG_DIR);
+        File[] tempList = file.listFiles();
+
+        User user = null;
+        Integer count = 0;
+        for (int i = 0; i < tempList.length; i++) {
+            if (tempList[i].isFile()) {
+                /*
+                 * driver50_沈勇.jpg  改为--> 139xxxxyyyy_driver50_沈勇.jpg
+                 */
+                User userExist = null;
+                Class cl = null;
+                try {
+                    cl = Class.forName("com.eservice.api.model.user.User");
+                    Field fieldHeadImage = cl.getDeclaredField("name");
+                    userExist = userService.findBy(fieldHeadImage.getName(), tempList[i].getName().split("_")[1].split("\\.")[0]);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                }
+                if(userExist != null) {
+                    String newName = userExist.getPhone()
+                            + "_" + tempList[i].getName();
+                    CommonService.renameFile(USER_IMG_DIR,tempList[i].getName(),newName);
+                    logger.info("User：" + tempList[i].getName() + " 已重命名： " + newName);
+                } else {
+                    count ++;
+                    logger.warn("根据照片 " + tempList[i].getName() + "，找不到对应的用户, " + count);
+                    list.add(tempList[i].getName());
+                }
+
+            }
+        }
+        return list;
+    }
 }
