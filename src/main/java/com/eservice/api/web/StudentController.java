@@ -226,11 +226,15 @@ public class StudentController {
     }
 
     @ApiOperation("根据班级名称获取学生列表")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "className", value = "班级名称") })
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级名称,比如 1年级"),
+            @ApiImplicitParam(paramType = "query",name = "className", value = "班级名称，比如 1(2)"),
+            @ApiImplicitParam(paramType = "query",name = "queryKey", value = "关键字，包括学号，包括学生姓名，比如张三" +
+                    "包括站点名称，比如 中山南一路500弄，校车编号 比如 1 ，任何一个匹配都会返回")})
     @PostMapping("/getStudents")
     public Result getStudents(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
-                              @RequestParam(defaultValue = "") String gradeName, @RequestParam(defaultValue = "") String className,
-                              @RequestParam(defaultValue = "") String queryKey) {
+                              String gradeName,
+                              String className,
+                              String queryKey) {
 
         PageHelper.startPage(page, size);
         List<StudentInfo> students = studentService.getStudents(gradeName,className,queryKey);
