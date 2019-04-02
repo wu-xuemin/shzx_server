@@ -242,18 +242,22 @@ public class StudentController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    @ApiOperation("根据校车编号+模式（早班午班）+站点 查找计划乘坐的学生列表,不传参数则不限制对应的条件")
+    @ApiOperation("根据校车编号+模式（早班午班）+站点 等等 查找计划乘坐的学生列表,不传参数则不限制对应的条件")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号" ),
             @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，内容限于“早班”、“午班”两种，早班午班每个学生都是同辆车，这个参数传不传都一样"),
-            @ApiImplicitParam(paramType = "query",name = "busStation", value = "校车站点名称，比如1号路口" )})
+            @ApiImplicitParam(paramType = "query",name = "busStation", value = "校车站点名称，比如1号路口" ),
+            @ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级"),
+            @ApiImplicitParam(paramType = "query",name = "className", value = "班级，比如 1(1) ，注意括号小写")})
     @PostMapping("/getPlannedStudents")
     public Result getPlannedStudents(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                                      String busNumber,
                                      String busMode,
-                                     String busStation) {
+                                     String busStation,
+                                     String gradeName,
+                                     String className) {
         PageHelper.startPage(page, size);
-        List<StudentInfo> list = studentService.getPlannedStudents(busNumber, busMode,busStation);
+        List<StudentInfo> list = studentService.getPlannedStudents(busNumber, busMode,busStation,gradeName,className);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

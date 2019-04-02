@@ -15,11 +15,14 @@ public interface StudentMapper extends Mapper<Student> {
 
     StudentInfo getStudentInfo(@Param("studentNumber") String studentNumber);
 
-    List<StudentInfo> getPlannedStudentsMorning(@Param("busNumber") String busNumber,@Param("busStation") String busStation);
+    List<StudentInfo> getPlannedStudentsMorning(@Param("busNumber") String busNumber,@Param("busStation") String busStation,
+                                                @Param("gradeName") String gradeName,@Param("className") String className);
 
-    List<StudentInfo> getPlannedStudentsAfternoon(@Param("busNumber") String busNumber,@Param("busStation") String busStation);
+    List<StudentInfo> getPlannedStudentsAfternoon(@Param("busNumber") String busNumber,@Param("busStation") String busStation,
+                                                  @Param("gradeName") String gradeName,@Param("className") String className);
 
-    List<StudentInfo> getPlannedStudents(@Param("busNumber") String busNumber,@Param("busStation") String busStation);
+    List<StudentInfo> getPlannedStudents(@Param("busNumber") String busNumber,@Param("busStation") String busStation,
+                                         @Param("gradeName") String gradeName,@Param("className") String className);
 
     List<StudentInfo> getStudents(@Param("gradeName") String gradeName, @Param("className") String className, @Param("queryKey") String queryKey);
 }

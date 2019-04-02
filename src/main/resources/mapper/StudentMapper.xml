@@ -168,6 +168,14 @@
     <if test="busStation != null and busStation != ''">
       AND bus_stations.station_name = #{busStation}
     </if>
+
+    <if test="gradeName != null and gradeName != ''">
+      AND banji.grade = #{gradeName}
+    </if>
+
+    <if test="className != null and className != ''">
+      AND banji.class_name = #{className}
+    </if>
       AND bus_line.`mode` = '早班'
   </select>
   <select id="getPlannedStudentsAfternoon" resultMap="StudentInfoResultMap">
@@ -191,6 +199,14 @@
     </if>
     <if test="busStation != null and busStation != ''">
       AND bus_stations.station_name = #{busStation}
+    </if>
+
+    <if test="gradeName != null and gradeName != ''">
+      AND banji.grade = #{gradeName}
+    </if>
+
+    <if test="className != null and className != ''">
+      AND banji.class_name = #{className}
     </if>
       AND bus_line.`mode` = '午班'
   </select>
@@ -216,6 +232,14 @@
     </if>
     <if test="busStation != null and busStation != ''">
       AND bus_stations.station_name = #{busStation}
+    </if>
+
+    <if test="gradeName != null and gradeName != ''">
+      AND banji.grade = #{gradeName}
+    </if>
+
+    <if test="className != null and className != ''">
+      AND banji.class_name = #{className}
     </if>
   </select>
 

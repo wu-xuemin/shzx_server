@@ -214,19 +214,23 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    @ApiOperation("根据日期+校车编号+班次 查询缺乘学生信息")
+    @ApiOperation("根据日期+校车编号+班次等 查询缺乘学生信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "要查询的起始时间，比如 2018-12-19 00:00:00 ",required = true),
             @ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "要查询的结束时间，比如 2018-12-20 00:00:00 ",required = true),
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号，比如 xc001，不填则查所有校车"),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“早班”、“午班”两种，晚班不支持 ",required = true)
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“早班”、“午班”两种，晚班不支持 ",required = true),
+            @ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级"),
+            @ApiImplicitParam(paramType = "query",name = "className", value = "班级，比如 1(1)，注意括号小写")
     })
     @PostMapping("/selectAbsenceStudentInfo")
     public Result selectAbsenceStudentInfo(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
                                            @RequestParam String queryStartTime,
                                            @RequestParam String queryFinishTime,
                                            String busNumber,
-                                           @RequestParam String busMode ) {
+                                           @RequestParam String busMode,
+                                           String gradeName,
+                                           String className) {
         PageHelper.startPage(page, size);
 
         if(busMode.equals(Constant.BUS_MODE_AFTERNOON) || busMode.equals(Constant.BUS_MODE_MORNING)){
@@ -237,7 +241,7 @@ public class TransportRecordController {
         /**
          * 先获取计划乘坐该校车该班次的所有学生，再获取该日期该班次的乘车记录
          */
-        List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, busMode,null);
+        List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, busMode,null,gradeName,className);
 
         if(debugFlag.equalsIgnoreCase("true")) {
             logger.info("selectAbsenceStudentInfo，校车 " + busNumber + busMode + "班次" + " 计划乘坐学生人数 " + listPlannedStudents.size());
@@ -252,8 +256,8 @@ public class TransportRecordController {
                 busNumber,
                 busMode,
                 null,
-                null,
-                null,
+                gradeName,
+                className,
                 null,
                 null);
         if(debugFlag.equalsIgnoreCase("true")) {
@@ -483,7 +487,7 @@ public class TransportRecordController {
                 stationPickingInfo.setPickedList(listActualStudents);
 
                 //计划乘坐的学生
-                List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, busMode, stationsArr[i]);
+                List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, busMode, stationsArr[i],null,null);
                 stationPickingInfo.setPlanList(listPlannedStudents);
                 pickingInfoArrayList.add(stationPickingInfo);
             }
@@ -666,7 +670,7 @@ public class TransportRecordController {
                 }
             }
             stationPickingInfo.setRemainList(listActualStudentsRemain);
-            List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, Constant.BUS_MODE_AFTERNOON, stationsArr[i]);
+            List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, Constant.BUS_MODE_AFTERNOON, stationsArr[i],null,null);
             stationPickingInfo.setPlanList(listPlannedStudents);
             stationPickingInfo.setPickedList(listActualStudentsWubanUp);
             pickingInfoArrayList.add(stationPickingInfo);

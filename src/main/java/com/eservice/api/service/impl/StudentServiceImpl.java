@@ -106,13 +106,14 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
      * @param busMode 早班午班每个学生都是同辆车，这个参数传不传都一样, 都返回相同的学生
      * @param busStation
      */
-    public List<StudentInfo> getPlannedStudents(String busNumber, String busMode,String busStation){
+    public List<StudentInfo> getPlannedStudents(String busNumber, String busMode,String busStation,
+                                                String gradeName, String className){
         if(busMode == null){
-            return studentMapper.getPlannedStudents(busNumber,busStation);
+            return studentMapper.getPlannedStudents(busNumber,busStation,gradeName,className);
         } else if(busMode.equals(Constant.BUS_MODE_MORNING)){
-            return studentMapper.getPlannedStudentsMorning(busNumber,busStation);
+            return studentMapper.getPlannedStudentsMorning(busNumber,busStation,gradeName,className);
         } else if(busMode.equals(Constant.BUS_MODE_AFTERNOON)){
-            return studentMapper.getPlannedStudentsAfternoon(busNumber,busStation);
+            return studentMapper.getPlannedStudentsAfternoon(busNumber,busStation,gradeName,className);
         } else {
             return null;
         }
