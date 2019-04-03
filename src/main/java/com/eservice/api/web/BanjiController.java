@@ -5,6 +5,7 @@ import com.eservice.api.model.banji.Banji;
 import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.model.user.User;
 import com.eservice.api.service.common.Constant;
+import com.eservice.api.service.common.SMSUtils;
 import com.eservice.api.service.common.SendSMS;
 import com.eservice.api.service.impl.BanjiServiceImpl;
 import com.eservice.api.service.impl.TransportRecordServiceImpl;
@@ -92,6 +93,7 @@ public class BanjiController {
         logger.info( strAbsenceDetail);
 
         //todo: SMS message
+        SMSUtils.send(null,"本消息来自shangzhong_server");
         return ResultGenerator.genSuccessResult(strAbsenceDetail);
     }
 

@@ -4,7 +4,6 @@ import com.eservice.api.model.banji.Banji;
 import com.eservice.api.model.user.User;
 import com.eservice.api.service.impl.BanjiServiceImpl;
 import com.eservice.api.service.impl.TransportRecordServiceImpl;
-import com.eservice.api.service.impl.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +25,7 @@ public class SendSMS {
     @Value("${debug.flag}")
     private String Time1ToSendSMS;
     @Resource
-    private BanjiServiceImpl banjiService; 
+    private BanjiServiceImpl banjiService;
 
     /**
      * 测试

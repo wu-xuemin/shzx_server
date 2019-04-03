@@ -5,12 +5,9 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
 
-import javax.imageio.ImageIO;
 import javax.net.ssl.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.ConnectException;
 import java.net.URL;
@@ -36,22 +33,22 @@ public class CommonService {
 
     /**
      * @param path      保存文件的总路径
-     * @param rowData 照片文件的base64
+     * @param rowData   照片文件的base64
      * @param tag1，比如学号
-     * @param tag2  比如姓名
+     * @param tag2      比如姓名
      * @return 文件路径
      * eg: xh333.jpg
      */
     public String saveFile(String path,
                            String rowData,
                            @RequestParam(defaultValue = "") String tag1,
-                           @RequestParam(defaultValue = "") String tag2 ) throws IOException {
+                           @RequestParam(defaultValue = "") String tag2) throws IOException {
         String targetFileName = null;
         try {
             if (path != null) {
                 //防止学号和姓名中有“/”
                 targetFileName = path + formatFileName(tag1.replaceAll("/", "-"), tag2.replaceAll("/", "-"));
-                if(debugFlag.equalsIgnoreCase("true")) {
+                if (debugFlag.equalsIgnoreCase("true")) {
                     logger.info("====CommonService.saveFile(): targetFileName  ========" + targetFileName);
                 }
                 BufferedOutputStream out = new BufferedOutputStream(
@@ -68,7 +65,7 @@ public class CommonService {
                 out.write(b);
                 out.flush();
                 out.close();
-                if(debugFlag.equalsIgnoreCase("true")) {
+                if (debugFlag.equalsIgnoreCase("true")) {
                     logger.info("====CommonService.saveFile(): success ========" + targetFileName);
                 }
             }

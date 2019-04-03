@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.user.User;
-import com.eservice.api.model.user.UserDetail;
-import com.eservice.api.service.UserService;
 import com.eservice.api.service.impl.DeviceServiceImpl;
 import com.eservice.api.service.impl.UserServiceImpl;
 import com.eservice.api.service.park.SyncBusMomService;
