@@ -231,83 +231,14 @@ public class TransportRecordController {
                                            @RequestParam String busMode,
                                            String gradeName,
                                            String className) {
-        PageHelper.startPage(page, size);
-
         if(busMode.equals(Constant.BUS_MODE_AFTERNOON) || busMode.equals(Constant.BUS_MODE_MORNING)){
         } else {
             return ResultGenerator.genFailResult("busMode 只能是 " +  Constant.BUS_MODE_MORNING + " / " + Constant.BUS_MODE_AFTERNOON  );
         }
+        PageHelper.startPage(page, size);
+        List<StudentInfo> absenceStudentInfoList = transportRecordService.selectAbsenceStudentInfo( queryStartTime,queryFinishTime,busNumber,busMode,gradeName,className);
 
-        /**
-         * 先获取计划乘坐该校车该班次的所有学生，再获取该日期该班次的乘车记录
-         */
-        List<StudentInfo> listPlannedStudents = studentService.getPlannedStudents(busNumber, busMode,null,gradeName,className);
-
-        if(debugFlag.equalsIgnoreCase("true")) {
-            logger.info("selectAbsenceStudentInfo，校车 " + busNumber + busMode + "班次" + " 计划乘坐学生人数 " + listPlannedStudents.size());
-            for (StudentInfo st : listPlannedStudents) {
-                logger.info(" 具体学号：" + st.getStudentNumber() + st.getName());
-            }
-        }
-        List<TransportRecordInfo> listActualRecordInfo = transportRecordService.selectTransportRecord(queryStartTime,
-                queryFinishTime,
-                null,
-                null,
-                busNumber,
-                busMode,
-                null,
-                gradeName,
-                className,
-                null,
-                null);
-        if(debugFlag.equalsIgnoreCase("true")) {
-            logger.info("selectAbsenceStudentInfo by 校车 " + busNumber + "在" + busMode + " " +  queryStartTime + " 实际乘坐人数 " + listActualRecordInfo.size());
-            for (TransportRecordInfo tr: listActualRecordInfo) {
-                logger.info(" 具体学号：" + tr.getStudentNumber());
-            }
-        }
-
-        List<StudentInfo> listActualStudents = new ArrayList<>();
-        for (TransportRecordInfo tri:listActualRecordInfo) {
-            StudentInfo studentInfo = new StudentInfo();
-            studentInfo.setBanjiName(tri.getStudentBanji());
-            studentInfo.setBoardStationAfternoonName(tri.getBoardStationNameAfternoon());
-            studentInfo.setBoardStationMorningName(tri.getBoardStationNameMorning());
-            studentInfo.setBusNumber(tri.getBusNumber());
-            studentInfo.setName(tri.getStudentName());
-            studentInfo.setStudentNumber(tri.getStudentNumber());
-            listActualStudents.add(studentInfo);
-        }
-
-        /**
-         * 缺乘学生 = 计划乘坐学生 - 实际乘坐
-         */
-        List<StudentInfo> listAbsenceStudents = new ArrayList<>();
-        for (StudentInfo plannedStudent: listPlannedStudents) {
-
-            boolean absence = true;
-            for (StudentInfo actualStudent: listActualStudents) {
-                /**
-                 * 在实际乘坐的名单中找到，表示没有缺乘
-                 */
-                if(plannedStudent.getStudentNumber().equalsIgnoreCase( actualStudent.getStudentNumber())){
-                    absence = false;
-                }
-            }
-
-            if(absence){
-                listAbsenceStudents.add(plannedStudent);
-            }
-        }
-
-        if(debugFlag.equalsIgnoreCase("true")) {
-            logger.info("selectAbsenceStudentInfo by 校车 " + busNumber + "在" + busMode + " " + queryStartTime + " 缺乘人数 " + listAbsenceStudents.size());
-            for (StudentInfo st : listAbsenceStudents) {
-                logger.info(" 缺乘：" + st.getStudentNumber() + studentService.getStudentInfo(st.getStudentNumber()).getName());
-            }
-        }
-        PageInfo pageInfo = new PageInfo(listAbsenceStudents);
-        return ResultGenerator.genSuccessResult(pageInfo);
+        return ResultGenerator.genSuccessResult(absenceStudentInfoList);
     }
 
     @ApiOperation("获取乘坐计划外的学生（临时乘坐）信息")

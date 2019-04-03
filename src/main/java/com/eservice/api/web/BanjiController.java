@@ -2,16 +2,25 @@ package com.eservice.api.web;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.banji.Banji;
+import com.eservice.api.model.student.StudentInfo;
+import com.eservice.api.service.common.Constant;
+import com.eservice.api.service.common.SendSMS;
 import com.eservice.api.service.impl.BanjiServiceImpl;
+import com.eservice.api.service.impl.TransportRecordServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +36,8 @@ public class BanjiController {
     @Resource
     private BanjiServiceImpl banjiService;
 
+
+    private final static Logger logger = LoggerFactory.getLogger(BanjiController.class);
     @PostMapping("/add")
     public Result add(Banji banji) {
         banji.setCreateTime(new Date());
@@ -69,4 +80,10 @@ public class BanjiController {
         return ResultGenerator.genSuccessResult(banji);
     }
 
+    @PostMapping("/sendSMStest")
+    public Result sendSMStest() {
+        String str = banjiService.getAllAbsenceToday();
+        //todo: SMS message
+        return ResultGenerator.genSuccessResult(str);
+    }
 }

@@ -56,4 +56,7 @@ public class Constant {
     public static final String FAIL = "FAIL";
 
     public static final String URL_PATH_STYLE_RELATIVE = "relativePath";
+
+    public static final String SMS_MESSAGE_ABSENCE = "TEACHER老师，截止TIME，你班搭乘校车的同学中，DETAILS";
+    public static final String SMS_MESSAGE_NO_ABSENCE = "TEACHER老师，截止TIME，你班学生来校校车乘坐无异常。";
 }

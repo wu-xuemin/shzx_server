@@ -107,6 +107,10 @@ public class UserController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "account", value = "账号"),
+            @ApiImplicitParam(paramType = "query",name = "name", value = "姓名"),
+            @ApiImplicitParam(paramType = "query",name = "roleId", value = "角色，2:管理员,3:busMom,4:班主任,5:司机"),
+            @ApiImplicitParam(paramType = "query",name = "valid", value = "是否在职， “1”:在职 “0”:离职")})
     @PostMapping("/selectUsers")
     public Result selectUsers(@RequestParam(defaultValue = "0") Integer page,
                               @RequestParam(defaultValue = "0") Integer size,

@@ -5,10 +5,12 @@ import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.dao.BanjiMapper;
 import com.eservice.api.model.banji.Banji;
 import com.eservice.api.model.banji.BanjiExcel;
+import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.model.user.User;
 import com.eservice.api.service.BanjiService;
 import com.eservice.api.core.AbstractService;
 import com.eservice.api.service.common.CommonService;
+import com.eservice.api.service.common.Constant;
 import com.github.pagehelper.PageInfo;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -24,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Resource;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +48,8 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
     private BanjiServiceImpl banjiService;
     @Resource
     private UserServiceImpl userService;
+    @Resource
+    private TransportRecordServiceImpl transportRecordService;
 
     private final Logger logger = LoggerFactory.getLogger(BanjiServiceImpl.class);
     public Result readFromExcel(@RequestParam String fileName ) {
@@ -141,5 +147,42 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         }
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    public String getAllAbsenceToday( ) {
+        String allMessage = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String queryStartTime = sdf.format(new Date());
+        String queryFinishTime = null;
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        Date tomorrow = c.getTime();
+        queryFinishTime = sdf.format(tomorrow);
+
+        List<Banji> banjiList = banjiService.findAll();;
+        List<Result>  resultList = new ArrayList<>();
+        List<StudentInfo> absenceStudentInfoList;
+        String strTmp = null;
+        for (int i = 0; i <banjiList.size() ; i++) {
+            absenceStudentInfoList = transportRecordService.selectAbsenceStudentInfo( queryStartTime, queryFinishTime,
+                    null, Constant.BUS_MODE_MORNING, null, banjiList.get(i).getClassName());
+//            logger.info(banjiList.get(i).getClassName() + " 缺乘人数： " + absenceStudentInfoList.size());
+
+            for (int j = 0; j <absenceStudentInfoList.size() ; j++) {
+                if (strTmp == null) {
+                    strTmp = absenceStudentInfoList.get(j).getName();
+                } else {
+                    strTmp = strTmp + ";" + absenceStudentInfoList.get(j).getName();
+                }
+            }
+
+            String messageOfSMS = "  班级: " + banjiList.get(i).getClassName() + " 缺乘人数： " + absenceStudentInfoList.size() + strTmp;
+            logger.info(messageOfSMS);
+            allMessage = allMessage + messageOfSMS + "\r\n";
+        }
+        return allMessage;
+
     }
 }
