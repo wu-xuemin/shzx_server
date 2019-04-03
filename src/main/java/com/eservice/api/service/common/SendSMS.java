@@ -26,9 +26,7 @@ public class SendSMS {
     @Value("${debug.flag}")
     private String Time1ToSendSMS;
     @Resource
-    private BanjiServiceImpl banjiService;
-    @Resource
-    private UserServiceImpl userService;
+    private BanjiServiceImpl banjiService; 
 
     /**
      * 测试
@@ -46,15 +44,17 @@ public class SendSMS {
         //所有班级
         List<Banji> banjiList = banjiService.findAll();
         //在职的班主任
-        List<User> bzrList = userService.selectUsers(null,null,4,1);;
+        List<User> bzrList = banjiService.getChargeTeachers();
     }
     @Scheduled(cron = "0 30 17 ? * MON-FRI")
     public void sendOnAfternoon() {
 
         //所有班级
         List<Banji> banjiList = banjiService.findAll();
+
         //在职的班主任
-        List<User> bzrList = userService.selectUsers(null,null,4,1);;
+        List<User> bzrList = banjiService.getChargeTeachers();
+
     }
 
 }

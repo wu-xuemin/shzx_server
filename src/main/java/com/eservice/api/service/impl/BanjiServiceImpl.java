@@ -162,7 +162,6 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         queryFinishTime = sdf.format(tomorrow);
 
         List<Banji> banjiList = banjiService.findAll();;
-        List<Result>  resultList = new ArrayList<>();
         List<StudentInfo> absenceStudentInfoList;
         String strTmp = null;
         for (int i = 0; i <banjiList.size() ; i++) {
@@ -184,5 +183,42 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         }
         return allMessage;
 
+    }
+
+    public String getAbsenceTodayByGradeClass(String gradeName, String banjiName ) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String queryStartTime = sdf.format(new Date());
+        String queryFinishTime = null;
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        Date tomorrow = c.getTime();
+        queryFinishTime = sdf.format(tomorrow);
+
+        List<StudentInfo> absenceStudentInfoList;
+        String strTmp = null;
+        absenceStudentInfoList = transportRecordService.selectAbsenceStudentInfo(queryStartTime, queryFinishTime,
+                null, Constant.BUS_MODE_MORNING, gradeName, banjiName);
+
+        for (int j = 0; j < absenceStudentInfoList.size(); j++) {
+            if (strTmp == null) {
+                strTmp = absenceStudentInfoList.get(j).getName();
+            } else {
+                strTmp = strTmp + ";" + absenceStudentInfoList.get(j).getName();
+            }
+        }
+        String messageOfSMS = "年级：" + gradeName + "  班级: " + banjiName
+                + "，缺乘总人数： " + absenceStudentInfoList.size() + "，具体名单：" + strTmp;
+
+        logger.info(messageOfSMS);
+        return messageOfSMS;
+
+    }
+
+
+    public List<User> getChargeTeachers() {
+        return banjiMapper.getChargeTeachers();
     }
 }

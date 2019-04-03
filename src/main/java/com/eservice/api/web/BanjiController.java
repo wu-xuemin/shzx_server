@@ -3,6 +3,7 @@ import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.banji.Banji;
 import com.eservice.api.model.student.StudentInfo;
+import com.eservice.api.model.user.User;
 import com.eservice.api.service.common.Constant;
 import com.eservice.api.service.common.SendSMS;
 import com.eservice.api.service.impl.BanjiServiceImpl;
@@ -80,10 +81,26 @@ public class BanjiController {
         return ResultGenerator.genSuccessResult(banji);
     }
 
+    @ApiOperation("根据年级、班级查询当天缺乘，并发送短信")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级"),
+            @ApiImplicitParam(paramType = "query",name = "banjiName", value = "班级，比如 1(1)，注意括号小写") })
     @PostMapping("/sendSMStest")
-    public Result sendSMStest() {
-        String str = banjiService.getAllAbsenceToday();
+    public Result sendSMStest(String gradeName, String banjiName) {
+        String strAbsenceDetail = null;
+//        str = banjiService.getAllAbsenceToday();
+        strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(gradeName,banjiName);
+        logger.info( strAbsenceDetail);
+
         //todo: SMS message
-        return ResultGenerator.genSuccessResult(str);
+        return ResultGenerator.genSuccessResult(strAbsenceDetail);
+    }
+
+    @ApiOperation("返回所有班级的当前的班主任(而非仅仅是班主任就返回)")
+    @PostMapping("/getChargeTeachers")
+    public Result getChargeTeachers(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
+        PageHelper.startPage(page, size);
+        List<User> list = banjiService.getChargeTeachers();
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
     }
 }
