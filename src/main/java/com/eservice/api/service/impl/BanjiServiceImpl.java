@@ -5,6 +5,8 @@ import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.dao.BanjiMapper;
 import com.eservice.api.model.banji.Banji;
 import com.eservice.api.model.banji.BanjiExcel;
+import com.eservice.api.model.bus_base_info.BusBaseInfo;
+import com.eservice.api.model.bus_line.BusLine;
 import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.model.user.User;
 import com.eservice.api.service.BanjiService;
@@ -43,13 +45,16 @@ import java.util.List;
 public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiService {
     @Resource
     private BanjiMapper banjiMapper;
-
     @Resource
     private BanjiServiceImpl banjiService;
     @Resource
     private UserServiceImpl userService;
     @Resource
     private TransportRecordServiceImpl transportRecordService;
+    @Resource
+    private BusLineServiceImpl busLineService;
+    @Resource
+    private BusBaseInfoServiceImpl busBaseInfoService;
 
     private final Logger logger = LoggerFactory.getLogger(BanjiServiceImpl.class);
     public Result readFromExcel(@RequestParam String fileName ) {
@@ -197,6 +202,11 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         Date tomorrow = c.getTime();
         queryFinishTime = sdf.format(tomorrow);
 
+        User bzr = banjiService.getTheChargeTeacher(gradeName,banjiName);
+        if(bzr == null){
+            logger.error(" could not get the charge teacher for grade: " + gradeName + " banji: " + banjiName);
+        }
+
         List<StudentInfo> absenceStudentInfoList;
         String strTmp = null;
         absenceStudentInfoList = transportRecordService.selectAbsenceStudentInfo(queryStartTime, queryFinishTime,
@@ -204,21 +214,46 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
 
         for (int j = 0; j < absenceStudentInfoList.size(); j++) {
             if (strTmp == null) {
-                strTmp = absenceStudentInfoList.get(j).getName();
+                strTmp = absenceStudentInfoList.get(j).getName()
+                        + "(校车：" + absenceStudentInfoList.get(j).getBusNumber() + ")";
             } else {
-                strTmp = strTmp + ";" + absenceStudentInfoList.get(j).getName();
+                strTmp = strTmp + ";" + absenceStudentInfoList.get(j).getName()
+                        + "(校车：" + absenceStudentInfoList.get(j).getBusNumber() + ")";
             }
         }
-        String messageOfSMS = "年级：" + gradeName + "  班级: " + banjiName
-                + "，缺乘总人数： " + absenceStudentInfoList.size() + "，具体名单：" + strTmp;
+        /**
+         *  1.**号张三，已上车未到校；2.**号车李四，未上校车。3、**号车王五，出现异常乘车情况。
+         * todo ? 按校车分组缺乘学生
+         */
+//        String s = null;
+//        List<BusBaseInfo> busAllList = busBaseInfoService.findAll();
+//        for (int i = 0; i <busAllList.size() ; i++) {
+//            for (int k = 0; k < absenceStudentInfoList.size(); k++) {
+//                if(absenceStudentInfoList.get(k).getBusNumber().equals(busAllList.get(i).getNumber())){
+//                    s = i +"号车"
+//                }
+//            }
+//
+//        }
+
+        String messageOfSMS = null;
+        Date now = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        messageOfSMS = bzr.getName() + "老师，截止" + formatter.format(now) + "，你班搭乘校车的同学中"
+           +  "，缺乘总人数： " + absenceStudentInfoList.size() + "，具体名单：" + strTmp;
 
         logger.info(messageOfSMS);
         return messageOfSMS;
 
     }
 
-
     public List<User> getChargeTeachers() {
         return banjiMapper.getChargeTeachers();
     }
+
+    public User getTheChargeTeacher(String gradeName, String banjiName) {
+        return banjiMapper.getTheChargeTeacher(gradeName,banjiName);
+    }
+
 }

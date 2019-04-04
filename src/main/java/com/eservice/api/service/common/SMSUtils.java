@@ -3,12 +3,14 @@ package com.eservice.api.service.common;
 import com.wondertek.esmp.esms.empp.EMPPConnectResp;
 import com.wondertek.esmp.esms.empp.EmppApi;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SMSUtils {
 
     @Value("${passwordSMS}")
-    private static String passwordSMS;
-    public static void send( String[] phone, String msg) {
+    private String passwordSMS; //Shzx20191
+    public void send( String[] phone, String msg) {
 
         String host = "211.136.163.68";
         int port = 9981;
@@ -41,8 +43,9 @@ public class SMSUtils {
         if (emppApi.isSubmitable()) {
 
             //简单方式发送短信,支持长短信
-            try{
-                emppApi.submitMsgAsync(msg,new String[]{"13588027825"},serviceId);
+            try{//13588027825 15715766877
+//                emppApi.submitMsgAsync(msg,new String[]{"13588027825"},serviceId);
+                emppApi.submitMsgAsync(msg,phone,serviceId);
 
                 //同步发送方式update 20060307
                 //EMPPSubmitSMResp []  resp = emppApi.submitMsg(content,mobiles,serviceId);

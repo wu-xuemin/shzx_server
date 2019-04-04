@@ -2,13 +2,9 @@ package com.eservice.api.web;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.banji.Banji;
-import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.model.user.User;
-import com.eservice.api.service.common.Constant;
 import com.eservice.api.service.common.SMSUtils;
-import com.eservice.api.service.common.SendSMS;
 import com.eservice.api.service.impl.BanjiServiceImpl;
-import com.eservice.api.service.impl.TransportRecordServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -20,9 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +31,8 @@ public class BanjiController {
     @Resource
     private BanjiServiceImpl banjiService;
 
+    @Resource
+    private SMSUtils smsUtils;
 
     private final static Logger logger = LoggerFactory.getLogger(BanjiController.class);
     @PostMapping("/add")
@@ -88,12 +83,10 @@ public class BanjiController {
     @PostMapping("/sendSMStest")
     public Result sendSMStest(String gradeName, String banjiName) {
         String strAbsenceDetail = null;
-//        str = banjiService.getAllAbsenceToday();
         strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(gradeName,banjiName);
         logger.info( strAbsenceDetail);
 
-        //todo: SMS message
-        SMSUtils.send(null,"本消息来自shangzhong_server");
+        smsUtils.send(new String[]{"13588027825"},strAbsenceDetail);
         return ResultGenerator.genSuccessResult(strAbsenceDetail);
     }
 
@@ -104,5 +97,14 @@ public class BanjiController {
         List<User> list = banjiService.getChargeTeachers();
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    @ApiOperation("根据班级返回 对应的班主任")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级"),
+                        @ApiImplicitParam(paramType = "query",name = "banjiName", value = "班级，比如 1(1)，注意括号小写") })
+    @PostMapping("/getTheChargeTeacher")
+    public Result getTheChargeTeacher(String gradeName, String banjiName) {
+        User bzr = banjiService.getTheChargeTeacher(gradeName,banjiName);
+        return ResultGenerator.genSuccessResult(bzr);
     }
 }
