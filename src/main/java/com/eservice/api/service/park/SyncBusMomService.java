@@ -187,7 +187,7 @@ public class SyncBusMomService {
                 if(!dir.exists()) {
                     dir.mkdirs();
                 }
-                File picFile = new File(USER_IMG_DIR + needSyncBusMomList.get(i).getPhone() + "_" + needSyncBusMomList.get(i).getName() + ".png");
+                File picFile = new File(USER_IMG_DIR + needSyncBusMomList.get(i).getPhone() + "_" + needSyncBusMomList.get(i).getName() + ".jpg");
                 if(!picFile.exists()) {
                     picNotExistList.add(needSyncBusMomList.get(i));
                 } else {

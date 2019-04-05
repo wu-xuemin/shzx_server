@@ -214,6 +214,20 @@
 			<artifactId>imageio-tiff</artifactId>
 			<version>3.4.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.yidong</groupId>
+			<artifactId>empp</artifactId>
+			<version>20180816</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/jar/empp.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.yidong</groupId>
+			<artifactId>jdom</artifactId>
+			<version>20180816</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/jar/jdom-1.0b8.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>

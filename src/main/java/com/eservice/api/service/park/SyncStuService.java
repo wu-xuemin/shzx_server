@@ -189,7 +189,7 @@ public class SyncStuService {
                 if(!dir.exists()) {
                     dir.mkdirs();
                 }
-                File picFile = new File(STUDENT_IMG_DIR + needSyncStuList.get(i).getStudentNumber() + ".jpg");
+                File picFile = new File(STUDENT_IMG_DIR + needSyncStuList.get(i).getHeadImg());
                 if(!picFile.exists()) {
                     picNotExistList.add(needSyncStuList.get(i));
                 } else {

@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.net.ssl.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.ConnectException;
 import java.net.URL;
