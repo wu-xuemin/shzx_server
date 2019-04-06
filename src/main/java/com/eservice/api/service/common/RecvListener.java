@@ -27,6 +27,7 @@ public class RecvListener implements EMPPRecvListener {
     }
 
     // 处理接收到的消息
+    @Override
     public void onMessage(EMPPObject message) {
         if(message instanceof EMPPUnAuthorization){
             EMPPUnAuthorization unAuth=(EMPPUnAuthorization)message;
@@ -62,8 +63,9 @@ public class RecvListener implements EMPPRecvListener {
         }
         if(message instanceof EMPPSyncAddrBookResp){
             EMPPSyncAddrBookResp resp=(EMPPSyncAddrBookResp)message;
-            if(resp.getResult()!=EMPPSyncAddrBookResp.RESULT_OK)
+            if(resp.getResult()!=EMPPSyncAddrBookResp.RESULT_OK) {
                 System.out.println("同步通讯录失败");
+            }
             else{
                 System.out.println("收到服务器发送的通讯录信息");
                 System.out.println("通讯录类型为："+resp.getAddrBookType());
@@ -72,10 +74,10 @@ public class RecvListener implements EMPPRecvListener {
         }
         if(message instanceof EMPPChangePassResp){
             EMPPChangePassResp resp=(EMPPChangePassResp)message;
-            if(resp.getResult()==EMPPChangePassResp.RESULT_VALIDATE_ERROR)
+            if(resp.getResult()==EMPPChangePassResp.RESULT_VALIDATE_ERROR) {
                 System.out.println("更改密码：验证失败");
-            if(resp.getResult()==EMPPChangePassResp.RESULT_OK)
-            {
+            }
+            if(resp.getResult()==EMPPChangePassResp.RESULT_OK) {
                 System.out.println("更改密码成功,新密码为："+resp.getPassword());
                 emppApi.setPassword(resp.getPassword());
             }
@@ -84,9 +86,9 @@ public class RecvListener implements EMPPRecvListener {
         }
         if(message instanceof EMPPReqNoticeResp){
             EMPPReqNoticeResp response=(EMPPReqNoticeResp)message;
-            if(response.getResult()!=EMPPReqNoticeResp.RESULT_OK)
+            if(response.getResult()!=EMPPReqNoticeResp.RESULT_OK){
                 System.out.println("查询运营商发布信息失败");
-            else{
+            } else {
                 System.out.println("收到运营商发布的信息");
                 System.out.println(response.getNotice());
             }
@@ -102,6 +104,7 @@ public class RecvListener implements EMPPRecvListener {
 
     }
     //处理连接断掉事件
+    @Override
     public void OnClosed(Object object) {
         // 该连接是被服务器主动断掉，不需要重连
         if(object instanceof EMPPTerminate){
@@ -125,6 +128,7 @@ public class RecvListener implements EMPPRecvListener {
     }
 
     //处理错误事件
+    @Override
     public void OnError(Exception e) {
         e.printStackTrace();
     }
