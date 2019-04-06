@@ -221,28 +221,17 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
                         + "(校车：" + absenceStudentInfoList.get(j).getBusNumber() + ")";
             }
         }
-        /**
-         *  1.**号张三，已上车未到校；2.**号车李四，未上校车。3、**号车王五，出现异常乘车情况。
-         * todo ? 按校车分组缺乘学生
-         */
-//        String s = null;
-//        List<BusBaseInfo> busAllList = busBaseInfoService.findAll();
-//        for (int i = 0; i <busAllList.size() ; i++) {
-//            for (int k = 0; k < absenceStudentInfoList.size(); k++) {
-//                if(absenceStudentInfoList.get(k).getBusNumber().equals(busAllList.get(i).getNumber())){
-//                    s = i +"号车"
-//                }
-//            }
-//
-//        }
 
         String messageOfSMS = null;
         Date now = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        messageOfSMS = bzr.getName() + "老师，截止" + formatter.format(now) + "，你班搭乘校车的同学中"
-           +  "，缺乘总人数： " + absenceStudentInfoList.size() + "，具体名单：" + strTmp;
-
+        if(absenceStudentInfoList.size() >0 ) {
+            messageOfSMS = bzr.getName() + "老师，截止" + formatter.format(now) + "，你班搭乘校车的同学中"
+                    + "，缺乘总人数： " + absenceStudentInfoList.size() + "，具体名单：" + strTmp;
+        } else {
+            messageOfSMS = bzr.getName() + "老师，截止" + formatter.format(now) + "你班学生来校校车乘坐无异常";
+        }
         logger.info(messageOfSMS);
         return messageOfSMS;
 
@@ -250,6 +239,10 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
 
     public List<User> getChargeTeachers() {
         return banjiMapper.getChargeTeachers();
+    }
+
+    public List<User> get1To8GradeChargeTeachers() {
+        return banjiMapper.get1To8GradeChargeTeachers();
     }
 
     public User getTheChargeTeacher(String gradeName, String banjiName) {

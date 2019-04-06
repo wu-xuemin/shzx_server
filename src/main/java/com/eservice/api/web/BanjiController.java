@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -81,7 +82,7 @@ public class BanjiController {
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级"),
             @ApiImplicitParam(paramType = "query",name = "banjiName", value = "班级，比如 1(1)，注意括号小写") })
     @PostMapping("/sendSMStest")
-    public Result sendSMStest(String gradeName, String banjiName) {
+    public Result sendSMStest(@RequestParam String gradeName, @RequestParam String banjiName) {
         String strAbsenceDetail = null;
         strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(gradeName,banjiName);
         logger.info( strAbsenceDetail);
@@ -95,6 +96,15 @@ public class BanjiController {
     public Result getChargeTeachers(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
         List<User> list = banjiService.getChargeTeachers();
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    @ApiOperation("返回1-8年级的当前的班主任 ")
+    @PostMapping("/get1To8GradeChargeTeachers")
+    public Result get1To8GradeChargeTeachers(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
+        PageHelper.startPage(page, size);
+        List<User> list = banjiService.get1To8GradeChargeTeachers();
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

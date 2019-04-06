@@ -15,4 +15,8 @@ public interface BanjiMapper extends Mapper<Banji> {
 
     @Select("SELECT * from banji LEFT JOIN user on banji.charge_teacher = `user`.id where banji.class_name = #{banjiName} and banji.grade = #{gradeName}")
     User getTheChargeTeacher(@Param("gradeName") String gradeName, @Param("banjiName") String banjiName);
+
+    // <9 刚好可以查出来低于9的年级
+    @Select("SELECT * from banji LEFT JOIN user on banji.charge_teacher = `user`.id WHERE banji.grade < 9 ")
+    List<User> get1To8GradeChargeTeachers();
 }

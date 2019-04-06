@@ -143,16 +143,22 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "flag", value = " 早班、午班上车、午班下车、晚班 ",required = true),
             @ApiImplicitParam(paramType = "query",name = "status", value = "行程进行中、行程已结束、晚班行程已选 ",required = true)})
     @PostMapping("/update")
-    public Result update(TransportRecord transportRecord) {
+    public Result update( TransportRecord transportRecord) {
+
+        if(transportRecord.getId() == null || transportRecord.getId() == 0){
+            logger.error(" null or zero transportRecord id");
+            return ResultGenerator.genFailResult(" null or zero transportRecord id");
+        }
         if(transportRecord.getStatus().equals(Constant.TRANSPORT_RECORD_STATUS_DONE)){
             Date date = new Date();
             transportRecord.setEndTime( new java.sql.Timestamp(date.getTime()));
         }
-        transportRecordService.update(transportRecord);
         logger.info("update tr.id "+ transportRecord.getId()
                 + " name: " + busLineService.findById(transportRecord.getBusLine()).getName()
                 + " Flag:"+ transportRecord.getFlag() + "status:" + transportRecord.getStatus()
-                + "  busNumber:" + transportRecord.getBusNumberInTR());
+                + "  busNumber:" + transportRecord.getBusNumberInTR()
+                + " currentStation:" + transportRecord.getCurrentStation()); 
+        transportRecordService.update(transportRecord);
 
         return ResultGenerator.genSuccessResult();
     }
