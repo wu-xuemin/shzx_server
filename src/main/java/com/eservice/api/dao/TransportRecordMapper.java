@@ -2,6 +2,7 @@ package com.eservice.api.dao;
 
 import com.eservice.api.core.Mapper;
 import com.eservice.api.model.student.Student;
+import com.eservice.api.model.student.StudentBusInfo;
 import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.model.transport_record.TransportRecord;
 import com.eservice.api.model.transport_record.TransportRecordInfo;
@@ -39,4 +40,10 @@ public interface TransportRecordMapper extends Mapper<TransportRecord> {
     void saveAndGetID(TransportRecord transportRecord);
 
     List<StudentInfo> getStudentsByTransportRecordId(@Param("TransportRecordId") String TransportRecordId);
+
+    List<TransportRecordInfo> selectRecordStudent( @Param("gradeName") String grade,
+                                              @Param("className") String className ,
+                                              @Param("queryKey")String queryKey,
+                                              @Param("queryStartTime") String queryStartTime,
+                                              @Param("queryFinishTime")String queryFinishTime);
 }

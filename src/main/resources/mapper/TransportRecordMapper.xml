@@ -113,6 +113,54 @@
     ORDER BY tr.begin_time desc
   </select>
 
+  <select id="selectRecordStudent" resultMap="TransportRecordInfoResultMap">
+    SELECT
+    tr.*,
+    bbi.number as bus_number ,
+    bus_stations_m.station_name as  board_station_name_morning,
+    bus_stations_a.station_name as board_station_name_afternoon,
+    bus_stations_c.station_name as current_station_name,
+    psi.board_time,
+    banji.grade as student_grade,
+    banji.class_name as student_banji,
+    student.student_number,
+    student.`name` as student_name,
+    bus_line.`mode`,
+    bus_line.stations as bus_line_stations,
+    bus_line.`name` as bus_line_name
+    FROM transport_record AS tr
+    LEFT JOIN bus_line on tr.bus_line = bus_line.id
+    LEFT JOIN bus_base_info as bbi on bus_line.bus_base_info=bbi.id
+    LEFT JOIN picked_students_info as psi on psi.transport_record_id = tr.id
+    LEFT JOIN student on psi.student_id = student.id
+    LEFT JOIN bus_stations as bus_stations_m on bus_stations_m.id = student.board_station_morning
+    LEFT JOIN bus_stations as bus_stations_a on bus_stations_a.id = student.board_station_afternoon
+    LEFT JOIN bus_stations as bus_stations_c on bus_stations_c.id = tr.current_station
+    LEFT JOIN banji on banji.id = student.banji
+    WHERE
+    1 = 1
+    <if test="queryKey != null and queryKey != ''">
+      AND (student.student_number LIKE CONCAT('%', '${queryKey}', '%')
+      OR student.name LIKE CONCAT('%', '${queryKey}', '%')
+      OR bbi.number LIKE CONCAT('%', '${queryKey}', '%'))
+    </if>
+    <if test="queryStartTime != null and queryStartTime != ''">
+      AND UNIX_TIMESTAMP( psi.board_time ) >= #{queryStartTime}
+    </if>
+    <if test="queryFinishTime != null and queryFinishTime != ''">
+      AND UNIX_TIMESTAMP( psi.board_time ) &lt;= #{queryFinishTime}
+    </if>
+    <if test="gradeName != null and gradeName != ''">
+      AND banji.grade = #{gradeName}
+    </if>
+
+    <if test="className != null and className != ''">
+      AND banji.class_name = #{className}
+    </if>
+
+  </select>
+
+
   <select id="getUnplannedStudentsMorning" resultMap="com.eservice.api.dao.StudentMapper.BaseResultMap">
     SELECT
     bbi.*, tr.*, student.*
@@ -154,7 +202,7 @@
     LEFT JOIN bus_base_info AS bbi ON bbi.id = bl.bus_base_info
     WHERE  1=1
     <if test="busNumber != null and busNumber != ''">
-      AND tr.bus_number_in_tr = #{busNumber}
+      AND   bbi.number = #{busNumber}
     </if>
     <if test="busMode != null and busMode != ''">
       AND bl.`mode` = #{busMode}

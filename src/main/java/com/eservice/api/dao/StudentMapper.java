@@ -2,6 +2,7 @@ package com.eservice.api.dao;
 
 import com.eservice.api.core.Mapper;
 import com.eservice.api.model.student.Student;
+import com.eservice.api.model.student.StudentBusInfo;
 import com.eservice.api.model.student.StudentInfo;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,4 +26,6 @@ public interface StudentMapper extends Mapper<Student> {
                                          @Param("gradeName") String gradeName,@Param("className") String className);
 
     List<StudentInfo> getStudents(@Param("gradeName") String gradeName, @Param("className") String className, @Param("queryKey") String queryKey);
+
+    List<StudentInfo> getPlannedClassStudents(@Param("gradeName") String gradeName, @Param("className") String className, @Param("queryKey") String queryKey);
 }
