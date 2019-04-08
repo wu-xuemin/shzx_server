@@ -117,4 +117,16 @@ public class BanjiController {
         User bzr = banjiService.getTheChargeTeacher(gradeName,banjiName);
         return ResultGenerator.genSuccessResult(bzr);
     }
+
+
+    @ApiOperation("根据年级返回年级的所有班级 ")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级")})
+    @PostMapping("/getBanjiListByGrade")
+    public Result getBanjiListByGrade(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                      String gradeName) {
+        PageHelper.startPage(page, size);
+        List<Banji> list = banjiService.getBanjiListByGrade(gradeName);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
 }

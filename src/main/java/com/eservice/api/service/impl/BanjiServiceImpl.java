@@ -249,4 +249,8 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         return banjiMapper.getTheChargeTeacher(gradeName,banjiName);
     }
 
+    public List<Banji> getBanjiListByGrade(String gradeName) {
+        return banjiMapper.getBanjiListByGrade(gradeName);
+    }
+
 }
