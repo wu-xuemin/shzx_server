@@ -57,9 +57,12 @@ public class SendSMSTimer {
         //  班主任电话，size为1的数组
         ArrayList< String[] > bzrPhoneList = new ArrayList<>();
         for (int i = 0; i <bzrList.size() ; i++) {
-            //“Fake” 只是为了转为数组形式
-            bzrPhoneList.add(bzrList.get(i).getPhone().split("Fake") );
-            logger.info(bzrPhoneList.get(i)[0]);
+            if(bzrList.get(i).getPhone() != null) {
+                //“Fake” 只是为了转为数组形式
+                bzrPhoneList.add(bzrList.get(i).getPhone().split("Fake"));
+            } else {
+                logger.info(bzrList.get(i).getName() + ", Phone is empty");
+            }
         }
 
         String strAbsenceDetail = null;
@@ -96,9 +99,12 @@ public class SendSMSTimer {
         //  班主任电话，size为1的数组
         ArrayList< String[] > bzr1To8GradePhoneList = new ArrayList<>();
         for (int i = 0; i <bzr1To8GradeList.size() ; i++) {
-            //“Fake” 只是为了转为数组形式
-            bzr1To8GradePhoneList.add(bzr1To8GradeList.get(i).getPhone().split("Fake") );
-            logger.info(bzr1To8GradePhoneList.get(i)[0]);
+            if(bzr1To8GradeList.get(i).getPhone() != null) {
+                //“Fake” 只是为了转为数组形式
+                bzr1To8GradePhoneList.add(bzr1To8GradeList.get(i).getPhone().split("Fake"));
+            } else {
+                logger.info(bzr1To8GradeList.get(i).getName() + ", Phone is empty");
+            }
         }
 
         String strAbsenceDetail = null;

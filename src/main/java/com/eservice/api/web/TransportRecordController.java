@@ -157,7 +157,8 @@ public class TransportRecordController {
                 + " name: " + busLineService.findById(transportRecord.getBusLine()).getName()
                 + " Flag:"+ transportRecord.getFlag() + "status:" + transportRecord.getStatus()
                 + "  busNumber:" + transportRecord.getBusNumberInTR()
-                + " currentStation:" + transportRecord.getCurrentStation()); 
+                + " currentStation:" + transportRecord.getCurrentStation()
+        + " getBeginTime: " + transportRecord.getBeginTime());
         transportRecordService.update(transportRecord);
 
         return ResultGenerator.genSuccessResult();

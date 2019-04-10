@@ -110,7 +110,8 @@
     AND tr.`status` = #{recordStatus}
     </if>
 
-</select>
+    ORDER BY tr.begin_time desc
+  </select>
 
   <select id="getUnplannedStudentsMorning" resultMap="com.eservice.api.dao.StudentMapper.BaseResultMap">
     SELECT

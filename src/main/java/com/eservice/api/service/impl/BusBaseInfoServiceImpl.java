@@ -158,5 +158,7 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-
+    public String getBusNumberByBusMomAccount(String busMomAccount){
+        return busBaseInfoMapper.getBusNumberByBusMomAccount(busMomAccount);
+    }
 }

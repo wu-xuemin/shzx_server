@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.model.user.User;
+import com.eservice.api.service.impl.BusBaseInfoServiceImpl;
 import com.eservice.api.service.park.model.Condition;
 import com.eservice.api.service.park.model.RepoIdBean;
 import com.eservice.api.service.park.model.ResponseModel;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,10 +63,12 @@ public class SyncBusMomService {
 
     private ThreadPoolTaskExecutor mExecutor;
 
+    @Resource
+    private BusBaseInfoServiceImpl busBaseInfoService;
     /**
      * 每分钟获取一次员工信息
      */
-    @Scheduled(fixedRate = 1000 * 60)
+    @Scheduled(fixedRate = 1000 * 60 * 2000)
     public void fetchBusMomScheduled() {
         token = tokenService.getToken();
         if (token != null) {
@@ -187,7 +191,10 @@ public class SyncBusMomService {
                 if(!dir.exists()) {
                     dir.mkdirs();
                 }
-                File picFile = new File(USER_IMG_DIR + needSyncBusMomList.get(i).getPhone() + "_" + needSyncBusMomList.get(i).getName() + ".jpg");
+                // e.g. 18019008369_busmom36_孙美燕.jpg
+                File picFile = new File(USER_IMG_DIR + needSyncBusMomList.get(i).getPhone()
+                        + "_busmom" + busBaseInfoService.getBusNumberByBusMomAccount(needSyncBusMomList.get(i).getAccount())
+                        + "_" + needSyncBusMomList.get(i).getName() + ".jpg");
                 if(!picFile.exists()) {
                     picNotExistList.add(needSyncBusMomList.get(i));
                 } else {

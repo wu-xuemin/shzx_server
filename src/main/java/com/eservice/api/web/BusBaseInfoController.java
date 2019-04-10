@@ -103,13 +103,20 @@ public class BusBaseInfoController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-
     @ApiOperation("从xls excel里读取校车信息")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\xxxx.xls") })
     @PostMapping("/parseInfoFromExcel")
     public Result parseInfoFromExcel(@RequestParam String fileName) {
         Result banji = busBaseInfoService.readFromExcel(fileName);
         return ResultGenerator.genSuccessResult(banji);
+    }
+
+    @ApiOperation("根据busMom账号获取其所在校车的编号")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "busMomAccount", value = "busMom的账号，比如高明娟") })
+    @PostMapping("/getBusNumberByBusMomAccount")
+    public Result getBusNumberByBusMomAccount(@RequestParam String busMomAccount) {
+        String busNumber = busBaseInfoService.getBusNumberByBusMomAccount(busMomAccount);
+        return ResultGenerator.genSuccessResult(busNumber);
     }
 
 }
