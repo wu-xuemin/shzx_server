@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -21,4 +22,7 @@ public class MessagesServiceImpl extends AbstractService<Messages> implements Me
     @Resource
     private MessagesMapper messagesMapper;
 
+    public List<Messages> getMessages(String title){
+        return  messagesMapper.getMessages(title);
+    }
 }

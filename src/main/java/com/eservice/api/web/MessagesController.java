@@ -3,9 +3,13 @@ import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.messages.Messages;
 import com.eservice.api.service.MessagesService;
+import com.eservice.api.service.impl.MessagesServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +28,7 @@ import java.util.List;
 @Api(description = "推送消息的管理")
 public class MessagesController {
     @Resource
-    private MessagesService messagesService;
+    private MessagesServiceImpl messagesService;
 
     @PostMapping("/add")
     public Result add(Messages messages) {
@@ -57,4 +61,16 @@ public class MessagesController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
+    @ApiOperation("根据条件查询信息，目前参数 标题")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "title", value = "标题关键字")})
+    @PostMapping("/getMessages")
+    public Result getMessages(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                      String title) {
+        PageHelper.startPage(page, size);
+        List<Messages> list = messagesService.getMessages(title);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
 }
