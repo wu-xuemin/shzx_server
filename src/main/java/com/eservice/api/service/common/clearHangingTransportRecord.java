@@ -16,7 +16,7 @@ import java.util.List;
  * 定时把未结束的行程结束掉
  */
 @Component
-public class ClearHangingTransportRecord {
+class ClearHangingTransportRecord {
     private final static Logger logger = LoggerFactory.getLogger(ClearHangingTransportRecord.class);
     @Resource
     private TransportRecordServiceImpl transportRecordService;
