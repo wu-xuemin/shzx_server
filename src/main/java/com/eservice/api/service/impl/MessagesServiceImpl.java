@@ -25,4 +25,8 @@ public class MessagesServiceImpl extends AbstractService<Messages> implements Me
     public List<Messages> getMessages(String title){
         return  messagesMapper.getMessages(title);
     }
+
+    public void saveAndGetID(Messages messages){
+        messagesMapper.saveAndGetID(messages);
+    }
 }

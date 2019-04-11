@@ -2,8 +2,13 @@ package com.eservice.api.web;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.messages.Messages;
+import com.eservice.api.model.user.User;
+import com.eservice.api.model.user_msg_status_info.UserMsgStatusInfo;
 import com.eservice.api.service.MessagesService;
+import com.eservice.api.service.common.Constant;
 import com.eservice.api.service.impl.MessagesServiceImpl;
+import com.eservice.api.service.impl.UserMsgStatusInfoServiceImpl;
+import com.eservice.api.service.impl.UserServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -29,10 +34,26 @@ import java.util.List;
 public class MessagesController {
     @Resource
     private MessagesServiceImpl messagesService;
+    @Resource
+    private UserMsgStatusInfoServiceImpl userMsgStatusInfoService;
+    @Resource
+    private UserServiceImpl userService;
 
     @PostMapping("/add")
     public Result add(Messages messages) {
-        messagesService.save(messages);
+        messagesService.saveAndGetID(messages);
+
+        /**
+         * 增加消息时，也新增已读未读（每个busMom都增加一条未读）
+         */
+        List<User> allBusMom = userService.findAllBusMom();
+        for (int i = 0; i <allBusMom.size(); i++) {
+            UserMsgStatusInfo userMsgStatusInfo = new UserMsgStatusInfo();
+            userMsgStatusInfo.setMessageId(messages.getId());
+            userMsgStatusInfo.setStatus(Constant.MSG_STATUS_UNREAD);
+            userMsgStatusInfo.setUser(allBusMom.get(i).getId());
+            userMsgStatusInfoService.save(userMsgStatusInfo);
+        }
         return ResultGenerator.genSuccessResult();
     }
 

@@ -10,4 +10,6 @@ import java.util.List;
 public interface MessagesMapper extends Mapper<Messages> {
 
     List<Messages> getMessages(@Param("title")String title);
+
+    void saveAndGetID(Messages messages);
 }

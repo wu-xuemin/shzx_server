@@ -57,4 +57,6 @@ public class Constant {
 
     public static final String URL_PATH_STYLE_RELATIVE = "relativePath";
 
+    public static final String MSG_STATUS_UNREAD = "未读";
+    public static final String MSG_STATUS_IS_READ = "已读";
 }
