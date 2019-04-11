@@ -35,4 +35,10 @@
     messages(send_time, title, publisher, read_count, content)
     values( #{sendTime}, #{title}, #{publisher}, #{readCount}, #{content})
   </insert>
+  <select id="getMessages" resultMap="MessagesInfoResultMap">
+      SELECT * from Messages where 1=1
+      <if test="title!=null and title!=''">
+          and title LIKE CONCAT('%','${title}','%')
+      </if>
+  </select>
 </mapper>

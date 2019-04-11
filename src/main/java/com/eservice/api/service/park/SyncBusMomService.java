@@ -68,7 +68,7 @@ public class SyncBusMomService {
     /**
      * 每分钟获取一次员工信息
      */
-    @Scheduled(fixedRate = 1000 * 60 * 2000)
+    @Scheduled(fixedRate = 1000 * 60 * 10)
     public void fetchBusMomScheduled() {
         token = tokenService.getToken();
         if (token != null) {
