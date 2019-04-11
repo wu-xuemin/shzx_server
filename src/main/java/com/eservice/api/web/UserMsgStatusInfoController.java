@@ -66,27 +66,39 @@ public class UserMsgStatusInfoController {
             @ApiImplicitParam(paramType = "query",name = "messageId", value = "消息的ID",required = true),
             @ApiImplicitParam(paramType = "query",name = "msgStatus", value = "消息的状态，只能是“已读”或者“未读” ",required = true)})
     @PostMapping("/updateUserMsgStatus")
-    public Result updateUserMsgStatus(String userAccount, Integer msgId,String msgStatus) {
+    public Result updateUserMsgStatus(String userAccount, Integer messageId,String msgStatus) {
         User user = userService.selectByAccount(userAccount);
         if(user == null) {
+            logger.info("Can not find the user by account: " + userAccount);
             return ResultGenerator.genFailResult("Can not find the user by account: " + userAccount);
         }
-        Messages message = messagesService.findById(msgId);
+        Messages message = messagesService.findById(messageId);
         if(message == null){
-            return ResultGenerator.genFailResult("Can not find the msg by msgId: " + msgId);
+            logger.info("Can not find the msg by msgId: " + messageId);
+            return ResultGenerator.genFailResult("Can not find the msg by msgId: " + messageId);
         }
         if(! (msgStatus.equals(Constant.MSG_STATUS_UNREAD) || msgStatus.equals(Constant.MSG_STATUS_IS_READ))){
             return ResultGenerator.genFailResult(" 消息的状态，只能是“已读”或者“未读”");
         }
-        UserMsgStatusInfo userMsgStatusInfo = new UserMsgStatusInfo();
-        userMsgStatusInfo.setUser(user.getId());
-        userMsgStatusInfo.setMessageId(msgId);
+        UserMsgStatusInfo userMsgStatusInfo = userMsgStatusInfoService.getTheUserMsgStatusInfo(user.getId(), messageId);
+        if(userMsgStatusInfo == null) {
+            logger.warn("can not find the userMsgStatusInfo by " + userAccount + " and messageId " + messageId);
+            return ResultGenerator.genFailResult("can not find the userMsgStatusInfo by " + userAccount + " and messageId " + messageId);
+        }
         userMsgStatusInfo.setStatus(msgStatus);
-        logger.info("updateUserMsgStatus: " + user.getAccount() + ", msgId:" + msgId + ", msgStatus " + msgStatus);
+        logger.info("updateUserMsgStatus: " + user.getAccount() + ", msgId:" + messageId + ", msgStatus " + msgStatus);
         userMsgStatusInfoService.update(userMsgStatusInfo);
         return ResultGenerator.genSuccessResult();
     }
 
+    @ApiOperation("根据用户账号ID和messageID获取该条userMsgStatusInfo ")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "userID", value = "用户ID", required = true),
+            @ApiImplicitParam(paramType = "query",name = "messageId", value = "消息的ID",required = true)})
+    @PostMapping("/getTheUserMsgStatusInfo")
+    public Result getTheUserMsgStatusInfo(@RequestParam Integer userID,@RequestParam Integer messageId) {
+        UserMsgStatusInfo userMsgStatusInfo = userMsgStatusInfoService.getTheUserMsgStatusInfo(userID, messageId);
+        return ResultGenerator.genSuccessResult(userMsgStatusInfo);
+    }
 
     @PostMapping("/detail")
     public Result detail(@RequestParam Integer id) {

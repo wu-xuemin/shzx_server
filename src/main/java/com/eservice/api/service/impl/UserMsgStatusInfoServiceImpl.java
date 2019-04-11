@@ -5,6 +5,7 @@ import com.eservice.api.model.messages.MessagesInfo;
 import com.eservice.api.model.user_msg_status_info.UserMsgStatusInfo;
 import com.eservice.api.service.UserMsgStatusInfoService;
 import com.eservice.api.core.AbstractService;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,5 +26,9 @@ public class UserMsgStatusInfoServiceImpl extends AbstractService<UserMsgStatusI
 
     public List<MessagesInfo> getMessageInfo(String userAccount){
         return userMsgStatusInfoMapper.getMessageInfo(userAccount);
+    }
+
+    public UserMsgStatusInfo getTheUserMsgStatusInfo(Integer userID, Integer messageId){
+        return userMsgStatusInfoMapper.getTheUserMsgStatusInfo(userID, messageId);
     }
 }

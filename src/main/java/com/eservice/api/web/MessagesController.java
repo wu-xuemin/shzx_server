@@ -15,6 +15,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,8 +41,16 @@ public class MessagesController {
     @Resource
     private UserServiceImpl userService;
 
+    private final Logger logger = LoggerFactory.getLogger(MessagesController.class);
     @PostMapping("/add")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "sendTime", value = "发布时间, 比如 Tue Apr 11 2019 11:12:12 GMT+0800 ", required = true),
+            @ApiImplicitParam(paramType = "query",name = "title", value = "标题", required = true),
+            @ApiImplicitParam(paramType = "query",name = "publisher", value = "发布者", required = true),
+            @ApiImplicitParam(paramType = "query",name = "readCount", value = "已读次数，这里是新增，后台会强设为0"),
+            @ApiImplicitParam(paramType = "query",name = "content", value = "消息内容", required = true)})
     public Result add(Messages messages) {
+        messages.setReadCount(0);
+        logger.info("add Message: " + messages.getTitle() + ", " + messages.getContent() + ", by " + messages.getPublisher() );
         messagesService.saveAndGetID(messages);
 
         /**
