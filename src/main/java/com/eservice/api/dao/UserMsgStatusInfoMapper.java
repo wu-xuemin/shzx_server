@@ -13,4 +13,7 @@ public interface UserMsgStatusInfoMapper extends Mapper<UserMsgStatusInfo> {
     List<MessagesInfo> getMessageInfo(@Param("userAccount") String userAccount);
     @Select("SELECT * FROM user_msg_status_info where user_msg_status_info.message_id = #{messageId} and user_msg_status_info.`user` = #{userID}")
     UserMsgStatusInfo getTheUserMsgStatusInfo(@Param("userID") Integer userID, @Param("messageId") Integer messageId);
+    @Select("SELECT user_msg_status_info.*  from user_msg_status_info  LEFT JOIN user on user_msg_status_info.`user` = `user`.id " +
+            "where user.account = #{userAccount}")
+    List<UserMsgStatusInfo> getTheUserAllMsgStatusInfo(@Param("userAccount") String userAccount);
 }

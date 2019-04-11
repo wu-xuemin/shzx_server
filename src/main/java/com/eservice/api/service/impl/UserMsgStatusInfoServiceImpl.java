@@ -31,4 +31,8 @@ public class UserMsgStatusInfoServiceImpl extends AbstractService<UserMsgStatusI
     public UserMsgStatusInfo getTheUserMsgStatusInfo(Integer userID, Integer messageId){
         return userMsgStatusInfoMapper.getTheUserMsgStatusInfo(userID, messageId);
     }
+	
+    public List<UserMsgStatusInfo> getTheUserAllMsgStatusInfo(String userAccount){
+        return userMsgStatusInfoMapper.getTheUserAllMsgStatusInfo(userAccount);
+    }
 }

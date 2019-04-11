@@ -100,6 +100,17 @@ public class UserMsgStatusInfoController {
         return ResultGenerator.genSuccessResult(userMsgStatusInfo);
     }
 
+    @ApiOperation("查看某用户 所有的 消息的已读未读状态")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "userAccount", value = "用户账号", required = true)})
+    @PostMapping("/getTheUserAllMsgStatusInfo")
+    public Result getTheUserAllMsgStatusInfo(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                             @RequestParam String userAccount ) {
+        PageHelper.startPage(page, size);
+        List<UserMsgStatusInfo> list = userMsgStatusInfoService.getTheUserAllMsgStatusInfo(userAccount);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
     @PostMapping("/detail")
     public Result detail(@RequestParam Integer id) {
         UserMsgStatusInfo userMsgStatusInfo = userMsgStatusInfoService.findById(id);
