@@ -377,7 +377,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         for (int i = 0; i < tempList.length; i++) {
             if (tempList[i].isFile()) {
                 /*
-                 * driver50_沈勇.jpg  改为--> 139xxxxyyyy_driver50_沈勇.jpg
+                 * driver50_沈勇.jpg  改为--> 139xxxxyyyy_沈勇.jpg
                  */
                 User userExist = null;
                 Class cl = null;
@@ -392,7 +392,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 }
                 if(userExist != null) {
                     String newName = userExist.getPhone()
-                            + "_" + tempList[i].getName();
+                            + "_" + tempList[i].getName().split("_")[1];
                     CommonService.renameFile(USER_IMG_DIR,tempList[i].getName(),newName);
                     logger.info("User：" + tempList[i].getName() + " 已重命名： " + newName);
                 } else {

@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 public interface MessagesMapper extends Mapper<Messages> {
-    @Select("SELECT * from messages WHERE messages.title like CONCAT('%', '${title}', '%')")
+
     List<Messages> getMessages(@Param("title")String title);
+
+    void saveAndGetID(Messages messages);
 }

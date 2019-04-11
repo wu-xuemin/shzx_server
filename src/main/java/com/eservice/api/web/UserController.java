@@ -204,7 +204,7 @@ public class UserController {
         return ResultGenerator.genSuccessResult(notDBExistList);
     }
 
-    @ApiOperation("user的头像文件（放在特定目录下user_img_dir）重新命名为 类似 手机号_busMom11_姓名.jpg")
+    @ApiOperation("user的头像文件（放在特定目录下user_img_dir）重新命名为 类似 手机号_姓名.jpg")
     @PostMapping("/renameUserPic")
     public Result renameUserPic() {
         List<String> notDBExistList = userService.renameUserPic();

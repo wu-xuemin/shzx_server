@@ -29,4 +29,10 @@
     <result column="message_user_account" jdbcType="VARCHAR" property="messageUserAccount" />
 
   </resultMap>
+  <insert id="saveAndGetID" useGeneratedKeys="true" parameterType="com.eservice.api.model.messages.Messages"
+          keyProperty="id">
+    insert into
+    messages(send_time, title, publisher, read_count, content)
+    values( #{sendTime}, #{title}, #{publisher}, #{readCount}, #{content})
+  </insert>
 </mapper>
