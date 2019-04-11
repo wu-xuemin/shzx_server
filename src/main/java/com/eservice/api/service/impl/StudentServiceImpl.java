@@ -10,6 +10,7 @@ import com.eservice.api.model.bus_line.BusLine;
 import com.eservice.api.model.bus_line.BusLineExcelHelper;
 import com.eservice.api.model.bus_stations.BusStations;
 import com.eservice.api.model.student.Student;
+import com.eservice.api.model.student.StudentBusInfo;
 import com.eservice.api.model.student.StudentExcel;
 import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.model.user.User;
@@ -527,6 +528,23 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         }
         logger.info("countRenamed " + countRenamed);
         return list;
+    }
+
+    public List<StudentBusInfo> getPlannedClassStudent(String queryKey,String className,String gradeName){
+        List<StudentInfo> info=  studentMapper.getPlannedClassStudents(gradeName,className,queryKey);
+        List<StudentBusInfo> infos=new ArrayList<>();
+        for (StudentInfo studentInfo:info){
+            StudentBusInfo studentBusInfo=new StudentBusInfo();
+            studentBusInfo.setBanjiName(studentInfo.getBanjiName());
+            studentBusInfo.setBanji(studentInfo.getBanji());
+            studentBusInfo.setBusNumber(studentInfo.getBusNumber());
+            studentBusInfo.setName(studentInfo.getName());
+            studentBusInfo.setHeadImg(studentInfo.getHeadImg());
+            studentBusInfo.setStudentNumber(studentInfo.getStudentNumber());
+            studentBusInfo.setBanjiName(studentInfo.getBanjiName());
+            infos.add(studentBusInfo);
+        }
+        return infos;
     }
 
 }

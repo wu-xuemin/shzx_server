@@ -243,4 +243,37 @@
     </if>
   </select>
 
+  <select id="getPlannedClassStudents" resultMap="StudentInfoResultMap">
+    SELECT
+    student.*, banji.class_name AS banji_name,
+    bus_base_info.number AS bus_number,
+    bs_a.station_name AS board_station_afternoon_name,
+    bs_m.station_name AS board_station_morning_name
+    FROM
+    student
+    LEFT JOIN banji ON banji.id = student.banji
+    LEFT JOIN bus_line as bl_a ON bl_a.id = student.bus_line_afternoon --  早班午班同一辆车
+    LEFT JOIN bus_base_info ON bus_base_info.id = bl_a.bus_base_info  -- 早班午班同一辆车
+
+    LEFT JOIN bus_stations as bs_a ON bs_a.id = student.board_station_afternoon  -- 早班午班同一站
+    LEFT JOIN bus_stations as bs_m ON bs_m.id = student.board_station_morning -- 早班午班同一站
+    WHERE
+    student.valid = 1
+
+    <if test="queryKey != null and queryKey != ''">
+      AND (student.student_number LIKE CONCAT('%', '${queryKey}', '%')
+      OR student.name LIKE CONCAT('%', '${queryKey}', '%')
+      OR bs_a.station_name LIKE CONCAT('%', '${queryKey}', '%')
+      OR bus_base_info.number LIKE CONCAT('%', '${queryKey}', '%'))
+    </if>
+
+    <if test="gradeName != null and gradeName != ''">
+      AND banji.grade = #{gradeName}
+    </if>
+
+    <if test="className != null and className != ''">
+      AND banji.class_name = #{className}
+    </if>
+  </select>
+
 </mapper>

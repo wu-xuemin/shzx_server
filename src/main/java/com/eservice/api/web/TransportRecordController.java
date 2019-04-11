@@ -7,6 +7,7 @@ import com.eservice.api.model.bus_base_info.BusBaseInfo;
 import com.eservice.api.model.bus_line.BusLine;
 import com.eservice.api.model.bus_stations.BusStations;
 import com.eservice.api.model.student.Student;
+import com.eservice.api.model.student.StudentBusInfo;
 import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.model.transport_record.AllPickingInfo;
 import com.eservice.api.model.transport_record.StationPickingInfo;
@@ -221,6 +222,24 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
+    @ApiOperation("根据日期 查询学生乘车信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "要查询的起始时间，比如 2018-12-19 00:00:00 ",required = true),
+            @ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "要查询的结束时间，比如 2018-12-20 00:00:00 ",required = true),
+            @ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级"),
+            @ApiImplicitParam(paramType = "query",name = "className", value = "班级，比如 1(1)，注意括号小写"),
+            @ApiImplicitParam(paramType = "query",name = "queryKey", value = "查询条件，可以是班车，姓名"),
+    })
+    @PostMapping("/selectAbsenceClassStudentInfo")
+    public Result selectAbsenceClassStudentInfo(
+                                           @RequestParam String queryStartTime,
+                                           @RequestParam String queryFinishTime,
+                                           String gradeName,
+                                           String className,
+                                           String queryKey) {
+         List<StudentBusInfo> absenceStudentInfoList = transportRecordService.selectAbsenceClassStudentInfo(queryStartTime,queryFinishTime,gradeName,className,queryKey);
+        return ResultGenerator.genSuccessResult(absenceStudentInfoList);
+    }
     @ApiOperation("根据日期+校车编号+班次等 查询缺乘学生信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "要查询的起始时间，比如 2018-12-19 00:00:00 ",required = true),

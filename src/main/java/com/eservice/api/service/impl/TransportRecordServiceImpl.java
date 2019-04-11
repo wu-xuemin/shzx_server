@@ -6,6 +6,7 @@ import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.dao.TransportRecordMapper;
 import com.eservice.api.model.student.Student;
+import com.eservice.api.model.student.StudentBusInfo;
 import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.model.transport_record.TransportRecord;
 import com.eservice.api.model.transport_record.TransportRecordInfo;
@@ -388,5 +389,50 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
             }
         }
         return listAbsenceStudents;
+    }
+
+    /**
+     * 按班级查询学生乘车情况
+     * @param queryStartTime 开始时间戳
+     * @param queryFinishTime 结束时间戳
+     * @param gradeName 年级
+     * @param className 班级
+     * @param queryKey 查询条件
+     * @return
+     */
+    public List<StudentBusInfo> selectAbsenceClassStudentInfo(String queryStartTime,
+                                                           String queryFinishTime,
+                                                           String gradeName,
+                                                           String className,
+                                                           String queryKey){
+        List<StudentBusInfo> listPlannedStudents= studentService.getPlannedClassStudent(queryKey,className,gradeName);
+        /*if(debugFlag.equalsIgnoreCase("true")) {
+            logger.info("selectAbsenceClassStudentInfo by 查询内容 " + queryKey +"时间"+  queryStartTime );
+            for (StudentBusInfo tr: listPlannedStudents) {
+                logger.info(" 具体学号：" + tr.getStudentNumber());
+            }
+        }*/
+
+        List<TransportRecordInfo> listActualRecordInfo = transportRecordMapper.selectRecordStudent(gradeName,className,queryKey,queryStartTime,queryFinishTime);
+        /**
+         * 判断是缺乘记录，有记录则为true，没有为false
+         */
+        for (int i=0;i<listPlannedStudents.size();i++){
+            for (TransportRecordInfo transportRecordInfo:
+            listActualRecordInfo) {
+                if(listPlannedStudents.get(i).getStudentNumber().equalsIgnoreCase(transportRecordInfo.getStudentNumber())){
+                    StudentBusInfo studentBusInfo= listPlannedStudents.get(i);
+                    if (transportRecordInfo.getMode().equals("早班")){
+                        studentBusInfo.setMorningAttendance(true);
+                        listPlannedStudents.set(i,studentBusInfo);
+                    }else if(transportRecordInfo.getMode().equals("午班")){
+                        studentBusInfo.setAfterAttendance(true);
+                        listPlannedStudents.set(i,studentBusInfo);
+                    }
+                }
+            }
+        }
+
+        return listPlannedStudents;
     }
 }
