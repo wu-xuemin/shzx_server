@@ -327,9 +327,9 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
 
         if(debugFlag.equalsIgnoreCase("true")) {
             logger.info("selectAbsenceStudentInfo，校车 " + busNumber + busMode + "班次" + " 计划乘坐学生人数 " + listPlannedStudents.size());
-            for (StudentInfo st : listPlannedStudents) {
-                logger.info(" 具体学号：" + st.getStudentNumber() + st.getName());
-            }
+//            for (StudentInfo st : listPlannedStudents) {
+//                logger.info(" 具体学号：" + st.getStudentNumber() + st.getName());
+//            }
         }
         List<TransportRecordInfo> listActualRecordInfo = transportRecordService.selectTransportRecord(queryStartTime,
                 queryFinishTime,
@@ -344,9 +344,9 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
                 null);
         if(debugFlag.equalsIgnoreCase("true")) {
             logger.info("selectAbsenceStudentInfo by 校车 " + busNumber + "在" + busMode + " " +  queryStartTime + " 实际乘坐人数 " + listActualRecordInfo.size());
-            for (TransportRecordInfo tr: listActualRecordInfo) {
-                logger.info(" 具体学号：" + tr.getStudentNumber());
-            }
+//            for (TransportRecordInfo tr: listActualRecordInfo) {
+//                logger.info(" 具体学号：" + tr.getStudentNumber());
+//            }
         }
 
         List<StudentInfo> listActualStudents = new ArrayList<>();
