@@ -155,15 +155,33 @@ public class UserController {
         return ResultGenerator.genSuccessResult(syncBusMomService.syncBusMomPicToFacePlatform(platformBusMomList));
     }
 
-    @PostMapping("totalBusMomNumber")
+    @PostMapping("/syncDriverPicToFacePlatform")
+    public Result syncDriverPicToFacePlatform() {
+        List<User> platformDriverList = userService.findAllDriver();
+        return ResultGenerator.genSuccessResult(syncBusMomService.syncDriverPicToFacePlatform(platformDriverList));
+    }
+
+    @PostMapping("/totalBusMomNumber")
     public Result totalBusMomNumber() {
         List<User> platformBusMomList = userService.findAllBusMom();
         return ResultGenerator.genSuccessResult(platformBusMomList.size());
     }
 
-    @PostMapping("totalBusMomFaceNumber")
+    @PostMapping("/totalBusMomFaceNumber")
     public Result totalBusMomFaceNumber() {
         List<WinVisitorRecord> platformBusMomList = syncBusMomService.getBusMonList();
+        return ResultGenerator.genSuccessResult(platformBusMomList.size());
+    }
+
+    @PostMapping("/totalDriverNumber")
+    public Result totalDriverNumber() {
+        List<User> platformDriverList = userService.findAllDriver();
+        return ResultGenerator.genSuccessResult(platformDriverList.size());
+    }
+
+    @PostMapping("/totalDriverFaceNumber")
+    public Result totalDriverFaceNumber() {
+        List<WinVisitorRecord> platformBusMomList = syncBusMomService.getDriverList();
         return ResultGenerator.genSuccessResult(platformBusMomList.size());
     }
 

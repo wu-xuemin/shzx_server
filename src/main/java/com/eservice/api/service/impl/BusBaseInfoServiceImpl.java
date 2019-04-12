@@ -161,4 +161,7 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
     public String getBusNumberByBusMomAccount(String busMomAccount){
         return busBaseInfoMapper.getBusNumberByBusMomAccount(busMomAccount);
     }
+    public String getBusNumberByDriverAccount(String driverAccount){
+        return busBaseInfoMapper.getBusNumberByDriverAccount(driverAccount);
+    }
 }

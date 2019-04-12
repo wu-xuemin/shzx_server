@@ -17,4 +17,7 @@ public interface UserMapper extends Mapper<User> {
 
     @Select("select * from user where role_id = 3")
     List<User> findAllBusMom();
+
+    @Select("select * from user where role_id = 5")
+    List<User> findAllDriver();
 }

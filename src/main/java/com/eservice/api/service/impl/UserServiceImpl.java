@@ -83,6 +83,10 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         return userMapper.findAllBusMom();
     }
 
+    public List<User> findAllDriver() {
+        return userMapper.findAllDriver();
+    }
+
     public Result parseChargeTeacherFromExcel(@RequestParam String fileName ) {
         List<BanjiExcel> list =   new ArrayList<BanjiExcel>();
         BanjiExcel banjiExcel = null;

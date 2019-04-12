@@ -63,9 +63,9 @@ public class SyncStuService {
     private static boolean SYNCING = false;
 
     /**
-     * 每分钟获取一次员工信息
+     * 每小时获取一次员工信息
      */
-    @Scheduled(initialDelay = 5000, fixedRate = 1000 * 60)
+    @Scheduled(initialDelay = 5000, fixedRate = 1000 * 60 * 60)
     public void fetchStaffScheduled() {
         token = tokenService.getToken();
         if (token != null) {
