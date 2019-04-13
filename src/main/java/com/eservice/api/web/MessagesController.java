@@ -97,7 +97,7 @@ public class MessagesController {
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "title", value = "标题关键字")})
     @PostMapping("/getMessages")
     public Result getMessages(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
-                              @RequestParam String title) {
+                              String title) {
         PageHelper.startPage(page, size);
         List<Messages> list = messagesService.getMessages(title);
         PageInfo pageInfo = new PageInfo(list);

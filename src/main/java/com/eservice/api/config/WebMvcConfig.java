@@ -70,7 +70,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         FastJsonHttpMessageConverter4 converter = new FastJsonHttpMessageConverter4();
         FastJsonConfig config = new FastJsonConfig();
         //保留空的字段：String null -> ""，Number null -> 0
-        config.setSerializerFeatures(SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero);
+        // DisableCircularReferenceDetect：关闭FastJson的循环引用
+        config.setSerializerFeatures(SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero,SerializerFeature.DisableCircularReferenceDetect);
         converter.setFastJsonConfig(config);
         converter.setDefaultCharset(Charset.forName("UTF-8"));
         converters.add(converter);
