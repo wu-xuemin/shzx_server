@@ -136,13 +136,14 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
             logger.info("getBusStatusByBusNumber "+busNumber+", today last record id/flag/status is " +latestRecord.getId() + "/" +latestRecord.getFlag() + "/" + latestRecord.getStatus());
             if (latestRecord != null) {
                 String recordStatus = latestRecord.getStatus();
+                jsonObject.put("TransportRecord", latestRecord.getId());
                 switch (recordStatus) {
                     case Constant.TRANSPORT_RECORD_STATUS_NIGHT_LINE_SELECTED:
-                        jsonObject.put("TransportRecord", latestRecord.getId());
+//                        jsonObject.put("TransportRecord", latestRecord.getId());
                         jsonObject.put("busStatus", Constant.BUS_STATUS_WANBAN_LINE_SELECTED);
                         return ResultGenerator.genSuccessResult(jsonObject);
                     case Constant.TRANSPORT_RECORD_STATUS_RUNNING:
-                        jsonObject.put("TransportRecord", latestRecord.getId());
+//                        jsonObject.put("TransportRecord", latestRecord.getId());
                         if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_MORNING)) {
                             jsonObject.put("busStatus", Constant.BUS_STATUS_ZAOBAN_RUNNING);
                         } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP) ) {
