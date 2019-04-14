@@ -115,7 +115,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     //班主任的账号设为和姓名一样
                     bzr.setAccount(banjiExcel.getChargeTeacherName());
                     bzr.setName(banjiExcel.getChargeTeacherName());
-                    bzr.setPassword("shzx");
+                    bzr.setPassword(Constant.USER_DEFAULT_PASSWORD);
                     bzr.setRoleId(4);
                     bzr.setCreateTime(new Date());
                     bzr.setValid(1);
@@ -260,7 +260,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     busMom.setAccount(busLineExcelHelper.getBusMomAccount());
                     busMom.setName(busLineExcelHelper.getBusMomName());
                     busMom.setPhone(busLineExcelHelper.getBusMomPhone());
-                    busMom.setPassword("shzx");
+                    busMom.setPassword(Constant.USER_DEFAULT_PASSWORD);
                     busMom.setRoleId(3);
                     busMom.setCreateTime(new Date());
                     busMom.setValid(1);
@@ -268,7 +268,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     busDriver.setAccount(busLineExcelHelper.getBusDriverAccount());
                     busDriver.setName(busLineExcelHelper.getBusDriverName());
                     busDriver.setPhone(busLineExcelHelper.getBusDriverPhone());
-                    busDriver.setPassword("shzx");
+                    busDriver.setPassword(Constant.USER_DEFAULT_PASSWORD);
                     busDriver.setRoleId(5);
                     busDriver.setCreateTime(new Date());
                     busDriver.setValid(1);

@@ -6,6 +6,7 @@ import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.user.User;
 import com.eservice.api.service.common.CommonService;
+import com.eservice.api.service.common.Constant;
 import com.eservice.api.service.impl.DeviceServiceImpl;
 import com.eservice.api.service.impl.UserServiceImpl;
 import com.eservice.api.service.park.SyncBusMomService;
@@ -257,7 +258,7 @@ public class UserController {
                 bzr.setAccount(teacher_name);
                 bzr.setName(teacher_name);
                 bzr.setPhone(teacher_phone);
-                bzr.setPassword("shzx");
+                bzr.setPassword(Constant.USER_DEFAULT_PASSWORD);
                 bzr.setRoleId(4);
                 bzr.setCreateTime(new Date());
                 bzr.setValid(1);
@@ -280,5 +281,50 @@ public class UserController {
             logger.warn(" exception: " + e.toString());
         }
         return ResultGenerator.genSuccessResult("addedBzrSum " + addedBzrSum + " is added");
+    }
+
+
+    @ApiOperation("参数传入上中的班车URL， 根据URL返回的数据，创建BusMom（包括账号，姓名，角色，密码，电话，创建时间，在职）。返回新增的 busMom数量 ")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
+    @PostMapping("/getURLContentAndCreateBusMoms")
+    public Result getURLContentAndCreateBusMoms(@RequestParam(defaultValue = "http://app.shs.cn/ydpt/ws/buse/buses?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761")
+                                                        String urlStr) {
+
+        Integer addedBusMomSum = 0;
+        String strFromUrl = CommonService.getUrlResponse(urlStr);
+        try {
+            JSONObject jsonObject= JSON.parseObject(strFromUrl);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            for (int i = 0; i < ja.size(); i++) {
+                User busMom = new User();
+                JSONObject jo = ja.getJSONObject(i);
+                String busMomName = jo.getString("bus_mom_name");
+                String busMomPhone = jo.getString("bus_mom_phone");
+
+                busMom.setAccount(busMomName);
+                busMom.setName(busMomName);
+                busMom.setRoleId(3);
+                busMom.setPassword(Constant.USER_DEFAULT_PASSWORD);
+                busMom.setPhone(busMomPhone);
+                busMom.setCreateTime(new Date());
+                busMom.setValid(1);
+
+                Class cl = Class.forName("com.eservice.api.model.user.User");
+                Field fieldUserAccount = cl.getDeclaredField("account");
+                User busMomExist = null;
+                busMomExist = userService.findBy(fieldUserAccount.getName(), busMomName);
+                if(busMomExist == null) {
+                    userService.save(busMom);
+                    logger.info("added busMom: " + busMom.getAccount());
+                    addedBusMomSum ++;
+                } else {
+                    logger.info(" already exist busMom: " +  busMom.getAccount());
+                }
+            }
+
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+        }
+        return ResultGenerator.genSuccessResult("addedBusMomSum " + addedBusMomSum + " is added");
     }
 }

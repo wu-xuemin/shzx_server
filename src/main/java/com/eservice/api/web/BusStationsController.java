@@ -1,9 +1,13 @@
 package com.eservice.api.web;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.bus_stations.BusStations;
+import com.eservice.api.model.user.User;
 import com.eservice.api.service.BusStationsService;
+import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.impl.BusStationsServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -11,12 +15,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +39,8 @@ import java.util.List;
 public class BusStationsController {
     @Resource
     private BusStationsServiceImpl busStationsService;
+
+    private final static Logger logger = LoggerFactory.getLogger(BusStationsController.class);
 
     @PostMapping("/add")
     public Result add(String busStation) {
@@ -100,6 +109,49 @@ public class BusStationsController {
     public Result parseInfoFromExcel(@RequestParam String fileName) {
         Result banji = busStationsService.readFromExcel(fileName);
         return ResultGenerator.genSuccessResult(banji);
+    }
+
+    @ApiOperation("参数传入上中的班车URL， 根据URL返回的数据，创建站点（包括站点名称，费率，remark上车时间，创建时间，是否有效）。返回新增的 站点数量 ")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
+    @PostMapping("/getURLContentAndCreateBusStations")
+    public Result getURLContentAndCreateBusStations(@RequestParam(defaultValue = "http://app.shs.cn/ydpt/ws/buse/buses?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761")
+                                                    String urlStr) {
+
+        Integer addedBusStationSum = 0;
+        String strFromUrl = CommonService.getUrlResponse(urlStr);
+        try {
+            JSONObject jsonObject= JSON.parseObject(strFromUrl);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            for (int i = 0; i < ja.size(); i++) {
+                BusStations busStations = new BusStations();
+                JSONObject jo = ja.getJSONObject(i);
+                String fareRate = jo.getString("fare_rate");
+                String stationName = jo.getString("station_name");
+                String remark = jo.getString("remark");
+
+                busStations.setStationName(stationName);
+                busStations.setFareRate(fareRate);
+                busStations.setRemark(remark);
+                busStations.setCreateTime(new Date());
+                busStations.setValid(1);
+
+                Class cl = Class.forName("com.eservice.api.model.bus_stations.BusStations");
+                Field fieldUserAccount = cl.getDeclaredField("stationName");
+                BusStations busStationsExist = null;
+                busStationsExist = busStationsService.findBy(fieldUserAccount.getName(), stationName);
+                if(busStationsExist == null) {
+                    busStationsService.save(busStations);
+                    logger.info("added station: " + busStations.getStationName());
+                    addedBusStationSum ++;
+                } else {
+                    logger.info(" already exist station: " +  busStations.getStationName());
+                }
+            }
+
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+        }
+        return ResultGenerator.genSuccessResult("addedBusStationSum " + addedBusStationSum + " is added");
     }
 
 }

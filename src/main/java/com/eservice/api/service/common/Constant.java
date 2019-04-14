@@ -59,4 +59,6 @@ public class Constant {
 
     public static final String MSG_STATUS_UNREAD = "未读";
     public static final String MSG_STATUS_IS_READ = "已读";
+
+    public static final String USER_DEFAULT_PASSWORD = "shzx";
 }
