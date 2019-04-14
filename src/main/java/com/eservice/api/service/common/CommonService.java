@@ -12,6 +12,7 @@ import javax.net.ssl.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.ConnectException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.cert.CertificateException;
@@ -162,7 +163,7 @@ public class CommonService {
         } catch (Exception e) {
             System.out.print(e.getMessage());
             message = "sendPost error, " + e.getMessage();
-            return  message;
+            return message;
         }
         //使用finally块来关闭输出流、输入流
         finally {
@@ -182,7 +183,8 @@ public class CommonService {
 
     /**
      * 发起Https请求
-     * @param reqUrl 请求的URL地址
+     *
+     * @param reqUrl        请求的URL地址
      * @param requestMethod
      * @return 响应后的字符串
      */
@@ -219,7 +221,7 @@ public class CommonService {
             /**
              * 中文支持，比如微信nickname
              */
-            InputStreamReader isr = new InputStreamReader(is,"UTF-8");
+            InputStreamReader isr = new InputStreamReader(is, "UTF-8");
             BufferedReader bufferReader = new BufferedReader(isr);
             String inputLine;
             while ((inputLine = bufferReader.readLine()) != null) {
@@ -250,7 +252,7 @@ public class CommonService {
         }
     };
 
-    public String httpsRequest(String requestUrl, String requestMethod, String outputStr){
+    public String httpsRequest(String requestUrl, String requestMethod, String outputStr) {
         try {
             URL url = new URL(requestUrl);
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
@@ -305,7 +307,7 @@ public class CommonService {
         }
     }
 
-    public static String getBusModeByTime( HSSFCell stationTimeRemarkCell ) {//Date time, SimpleDateFormat sdf
+    public static String getBusModeByTime(HSSFCell stationTimeRemarkCell) {//Date time, SimpleDateFormat sdf
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
         Date time = null;
         try {
@@ -330,8 +332,10 @@ public class CommonService {
     }
 
 
-    /** 文件重命名
-     * @param path 文件路径
+    /**
+     * 文件重命名
+     *
+     * @param path    文件路径
      * @param oldname 原有的文件名
      * @param newname 新的文件名
      */
@@ -356,4 +360,34 @@ public class CommonService {
         return false;
     }
 
+    /**
+     * 从URL读取返回
+     */
+    public static String getUrlResponse(String urlStr) {
+
+        URL url = null;
+        HttpURLConnection httpConn = null;
+        BufferedReader in = null;
+        StringBuffer sb = new StringBuffer();
+        try{
+            url = new URL(urlStr);
+            in = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8") );
+            String str = null;
+            //一行一行进行读入
+            while((str = in.readLine()) != null) {
+                sb.append( str );
+            }
+        } catch (Exception ex) {
+        } finally{
+            try{
+                if(in!=null) {
+                    in.close(); //关闭流
+                }
+            }catch(IOException ex) {
+
+            }
+        }
+
+        return sb.toString();
+    }
 }

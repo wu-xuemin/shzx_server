@@ -244,5 +244,18 @@ public class User implements UserDetails {
         return true;
     }
 
+    /**
+     * 学校的登录账户，比如教师工号
+     */
+    @Column(name = "school_staff_code")
+    private String schoolStaffCode;
+
+    public String getSchoolStaffCode() {
+        return schoolStaffCode;
+    }
+
+    public void setSchoolStaffCode(String schoolStaffCode) {
+        this.schoolStaffCode = schoolStaffCode;
+    }
 
 }

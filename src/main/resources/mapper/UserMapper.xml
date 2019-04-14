@@ -15,6 +15,7 @@
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="valid" jdbcType="VARCHAR" property="valid" />
+    <result column="school_staff_code" jdbcType="VARCHAR" property="schoolStaffCode" />
   </resultMap>
 
   <select id="selectByAccount" resultMap="BaseResultMap">

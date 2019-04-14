@@ -1,10 +1,15 @@
 package com.eservice.api.web;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.banji.Banji;
 import com.eservice.api.model.user.User;
+import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.common.SMSUtils;
 import com.eservice.api.service.impl.BanjiServiceImpl;
+import com.eservice.api.service.impl.UserServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -17,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +37,8 @@ import java.util.List;
 public class BanjiController {
     @Resource
     private BanjiServiceImpl banjiService;
+    @Resource
+    private UserServiceImpl userService;
 
     @Resource
     private SMSUtils smsUtils;
@@ -139,5 +146,64 @@ public class BanjiController {
         List<Banji> list = banjiService.getBanjiListByGrade(gradeName);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    @ApiOperation("查看指定了年级和班级名称的班级是否存在")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级",required = true),
+            @ApiImplicitParam(paramType = "query",name = "banjiName", value = "班级，比如 1(1)，注意括号小写",required = true)})
+    @PostMapping("/isBanjiExist")
+    public Result isBanjiExist(@RequestParam String gradeName,@RequestParam String banjiName) {
+        boolean isExist = banjiService.isBanjiExist(gradeName, banjiName);
+        return ResultGenerator.genSuccessResult(isExist);
+    }
+
+    @ApiOperation("参数传入上中班级URL， 根据URL返回的数据，创建班级（包括年级名称，班级名称，班主任，创建时间）（注意班主任要先创建）。返回新增的班级数量 ")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
+    @PostMapping("/getURLContentAndCreateBanji")
+    public Result getURLContentAndCreateBanji(@RequestParam(defaultValue = "http://app.shs.cn/ydpt/ws/buse/classes?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761")
+                                                          String urlStr) {
+
+        Integer addedBanjiSum = 0;
+        String strFromUrl = CommonService.getUrlResponse(urlStr);
+        try {
+            JSONObject jsonObject = JSON.parseObject(strFromUrl);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            logger.info(" banji fake sum: " + ja.size());
+            for (int i = 0; i < ja.size(); i++) {
+                Banji banji = new Banji();
+                JSONObject jo = ja.getJSONObject(i);
+                String grade = jo.getString("grade");
+                String banjiName = jo.getString("name");
+                String teacher_name = jo.getString("teacher_name");
+                banji.setGrade(grade);
+                banji.setClassName(banjiName);
+                banji.setCreateTime(new Date());
+
+                Class cl = Class.forName("com.eservice.api.model.user.User");
+                Field fieldUserAccount = cl.getDeclaredField("account");
+                User userExist = null;
+                userExist = userService.findBy(fieldUserAccount.getName(), teacher_name);
+                if (userExist == null) {
+                    return ResultGenerator.genFailResult("Can not find the user by account " + teacher_name);
+                } else {
+                    banji.setChargeTeacher(userExist.getId());
+                }
+
+                /**
+                 * 班级不存在时，增加班级
+                 */
+                if (banjiService.isBanjiExist(grade, banjiName)) {
+                    logger.info(" already exist banji: " + banji.getGrade() + "," + banji.getClassName());
+                } else {
+                    banjiService.save(banji);
+                    logger.info("Add banji: " + banji.getGrade() + "," + banji.getClassName());
+                    addedBanjiSum++;
+                }
+            }
+
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+        }
+        return ResultGenerator.genSuccessResult("addedBanjiSum " + addedBanjiSum + " is added");
     }
 }

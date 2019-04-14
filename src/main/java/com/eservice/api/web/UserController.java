@@ -1,9 +1,11 @@
 package com.eservice.api.web;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.user.User;
+import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.impl.DeviceServiceImpl;
 import com.eservice.api.service.impl.UserServiceImpl;
 import com.eservice.api.service.park.SyncBusMomService;
@@ -14,10 +16,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +48,7 @@ public class UserController {
      * 该值为default值， Android端传入的参数不能为“0”
      */
     private static String ZERO_STRING = "0";
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @ApiOperation("新增用户")
     @PostMapping("/add")
@@ -227,5 +233,52 @@ public class UserController {
     public Result renameUserPic() {
         List<String> notDBExistList = userService.renameUserPic();
         return ResultGenerator.genSuccessResult(notDBExistList);
+    }
+
+    @ApiOperation("参数传入上中的班级URL， 根据URL返回的数据（不包含教师工号），创建班主任（包括账号，姓名，角色，密码，电话，创建时间，在职，不包括教师的工号）。返回新增的 班主任数量 ")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
+    @PostMapping("/getURLContentAndCreateBZR")
+    public Result getURLContentAndCreateBZR(@RequestParam(defaultValue = "http://app.shs.cn/ydpt/ws/buse/classes?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761")
+                                                      String urlStr) {
+
+        Integer addedBzrSum = 0;
+        String strFromUrl = CommonService.getUrlResponse(urlStr);
+        try {
+            JSONObject jsonObject= JSON.parseObject(strFromUrl);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            for (int i = 0; i < ja.size(); i++) {
+                User bzr = new User();
+                JSONObject jo = ja.getJSONObject(i);
+                String teacher_name = jo.getString("teacher_name");
+                String teacher_phone = jo.getString("teacher_phone");
+
+                bzr.setCreateTime(new Date());
+                //班主任的账号设为和姓名一样
+                bzr.setAccount(teacher_name);
+                bzr.setName(teacher_name);
+                bzr.setPhone(teacher_phone);
+                bzr.setPassword("shzx");
+                bzr.setRoleId(4);
+                bzr.setCreateTime(new Date());
+                bzr.setValid(1);
+//                bzr.setSchoolStaffCode();
+
+                Class cl = Class.forName("com.eservice.api.model.user.User");
+                Field fieldUserAccount = cl.getDeclaredField("account");
+                User userExist = null;
+                userExist = userService.findBy(fieldUserAccount.getName(), teacher_name);
+                if(userExist == null) {
+                    userService.save(bzr);
+                    logger.info("added bzr: " + bzr.getAccount());
+                    addedBzrSum ++;
+                } else {
+                    logger.info(" already exist account: " + bzr.getAccount() + ",name " + bzr.getName() );
+                }
+            }
+
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+        }
+        return ResultGenerator.genSuccessResult("addedBzrSum " + addedBzrSum + " is added");
     }
 }

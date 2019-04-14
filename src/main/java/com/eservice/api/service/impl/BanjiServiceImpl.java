@@ -253,4 +253,11 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         return banjiMapper.getBanjiListByGrade(gradeName);
     }
 
+    public boolean isBanjiExist(String gradeName,String banjiName){
+        if( banjiMapper.isBanjiExist(gradeName,banjiName).isEmpty()){
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
