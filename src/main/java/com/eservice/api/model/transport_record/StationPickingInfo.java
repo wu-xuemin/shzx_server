@@ -23,7 +23,7 @@ public class StationPickingInfo {
     private List<StudentInfo> pickedList;
 
     /**
-     * 该站点 等待下车的学生， 在午班下车时统计车上剩下的学生
+     * 该站点 等待下车的学生， 在放学下车时统计车上剩下的学生
      */
     private List<StudentInfo> remainList;
 

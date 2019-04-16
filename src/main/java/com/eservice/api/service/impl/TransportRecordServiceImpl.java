@@ -103,12 +103,12 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
     }
 
     /**
-     *  根据校车编号 获取校车当天此时所处状态（比如早班未开始、早班进行中、早班已结束...）
+     *  根据校车编号 获取校车当天此时所处状态（比如上学未开始、上学进行中、上学已结束...）
      *  不返回String类型，是因为通过Sting转换后，Json的引号前都会多了斜杆，不方便前端处理。
      */
     public Result getBusStatusByBusNumber(String busNumber){
         /**
-         * 如果前面没用车，比如早班没使用APP，下午午班才开始用，这是应该根据时间返回午班未开始状态
+         * 如果前面没用车，比如上学没使用APP，下午放学才开始用，这是应该根据时间返回放学未开始状态
          * 比如前端APP意外退出之后，如果是当天重启则返回奔溃前的状态，如果是第2天或之后重启，则当作新的一天来处理
          */
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -120,7 +120,7 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
         if(recordList.isEmpty()){
             /**
              * 如果该车在当天的 transport_record里不存在记录，表示当天没有发过车
-             * 则根据时间来返回:早班待发车/午班待发车/晚班待发车 （即使存在情况：早班没使用APP，直接使用午班/晚班）
+             * 则根据时间来返回:上学待发车/放学待发车/晚班待发车 （即使存在情况：上学没使用APP，直接使用放学/晚班）
              */
             logger.info("today record is empty by busNumber " + busNumber);
             jsonObject.put("busStatus",getBusInitialStatusByTime(new Date()));
@@ -159,26 +159,26 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
 //                        break;
                     case Constant.TRANSPORT_RECORD_STATUS_DONE:
                         /*
-                           如果已经结束的是早班，早班就被排除，根据时间来判断是午班还是晚班；
-                           如果已经结束的是午班，则只考虑晚班
+                           如果已经结束的是上学，上学就被排除，根据时间来判断是放学还是晚班；
+                           如果已经结束的是放学，则只考虑晚班
                          */
                         if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_MORNING)) {
-                            //最后的记录是早班已完成
+                            //最后的记录是上学已完成
                             String tmpStatus = getBusInitialStatusByTime(new Date());
                             if (tmpStatus.equals(Constant.BUS_STATUS_ZAOBAN_WAIT_START)) {
                                 jsonObject.put("busStatus", Constant.BUS_STATUS_WUBAN_WAIT_START);
                                 return ResultGenerator.genSuccessResult(jsonObject);
                             } else {
-                                //如果是其他的状态(午班待发车，晚班待发车)，则不变
+                                //如果是其他的状态(放学待发车，晚班待发车)，则不变
                                 jsonObject.put("busStatus", tmpStatus);
                                 return ResultGenerator.genSuccessResult(jsonObject);
                             }
                         } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)) {
-                            //最后的记录是 午班上车已完成
+                            //最后的记录是 放学上车已完成
                             jsonObject.put("busStatus", Constant.BUS_STATUS_WUBAN_RUNNING);
                             return ResultGenerator.genSuccessResult(jsonObject);
                         } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)) {
-                            //最后的记录是 午班下车已完成
+                            //最后的记录是 放学下车已完成
                             jsonObject.put("busStatus", Constant.BUS_STATUS_WANBAN_WAIT_START);
                             return ResultGenerator.genSuccessResult(jsonObject);
                         } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT)) {
@@ -204,7 +204,7 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
      */
     public Result getBusStatusByBusLineName(String busLineName){
         /**
-         * 如果前面没用车，比如早班没使用APP，下午午班才开始用，这是应该根据时间返回午班未开始状态
+         * 如果前面没用车，比如上学没使用APP，下午放学才开始用，这是应该根据时间返回放学未开始状态
          * 比如前端APP意外退出之后，如果是当天重启则返回奔溃前的状态，如果是第2天或之后重启，则当作新的一天来处理
          */
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -216,7 +216,7 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
         if(recordList.isEmpty()){
             /**
              * 如果该车在当天的 transport_record里不存在记录，表示当天没有发过车
-             * 则根据时间来返回:早班待发车/午班待发车/晚班待发车 （即使存在情况：早班没使用APP，直接使用午班/晚班）
+             * 则根据时间来返回:上学待发车/放学待发车/晚班待发车 （即使存在情况：上学没使用APP，直接使用放学/晚班）
              */
             logger.info("today record is empty by busLineName " + busLineName);
             jsonObject.put("busStatus",getBusInitialStatusByTime(new Date()));
@@ -251,26 +251,26 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
 //                        break;
                     case Constant.TRANSPORT_RECORD_STATUS_DONE:
                         /*
-                           如果已经结束的是早班，早班就被排除，根据时间来判断是午班还是晚班；
-                           如果已经结束的是午班，则只考虑晚班
+                           如果已经结束的是上学，上学就被排除，根据时间来判断是放学还是晚班；
+                           如果已经结束的是放学，则只考虑晚班
                          */
                         if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_MORNING)) {
-                            //最后的记录是早班已完成
+                            //最后的记录是上学已完成
                             String tmpStatus = getBusInitialStatusByTime(new Date());
                             if (tmpStatus.equals(Constant.BUS_STATUS_ZAOBAN_WAIT_START)) {
                                 jsonObject.put("busStatus", Constant.BUS_STATUS_WUBAN_WAIT_START);
                                 return ResultGenerator.genSuccessResult(jsonObject);
                             } else {
-                                //如果是其他的状态(午班待发车，晚班待发车)，则不变
+                                //如果是其他的状态(放学待发车，晚班待发车)，则不变
                                 jsonObject.put("busStatus", tmpStatus);
                                 return ResultGenerator.genSuccessResult(jsonObject);
                             }
                         } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP)) {
-                            //最后的记录是 午班上车已完成
+                            //最后的记录是 放学上车已完成
                             jsonObject.put("busStatus", Constant.BUS_STATUS_WUBAN_RUNNING);
                             return ResultGenerator.genSuccessResult(jsonObject);
                         } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN)) {
-                            //最后的记录是 午班下车已完成
+                            //最后的记录是 放学下车已完成
                             jsonObject.put("busStatus", Constant.BUS_STATUS_WANBAN_WAIT_START);
                             return ResultGenerator.genSuccessResult(jsonObject);
                         } else if (latestRecord.getFlag().equals(Constant.TRANSPORT_RECORD_FLAG_NIGHT)) {
@@ -292,7 +292,7 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
 
     /**
      * 在没有当天的发车记录的情况下
-     * 根据时间 自动判断处于 早班待发车、午班待发车、晚班待发车哪个阶段
+     * 根据时间 自动判断处于 上学待发车、放学待发车、晚班待发车哪个阶段
      */
     private String getBusInitialStatusByTime( Date date ) {//Date time, SimpleDateFormat sdf
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
@@ -423,10 +423,10 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
             listActualRecordInfo) {
                 if(listPlannedStudents.get(i).getStudentNumber().equalsIgnoreCase(transportRecordInfo.getStudentNumber())){
                     StudentBusInfo studentBusInfo= listPlannedStudents.get(i);
-                    if (transportRecordInfo.getMode().equals("早班")){
+                    if (transportRecordInfo.getMode().equals(Constant.BUS_MODE_MORNING)){
                         studentBusInfo.setMorningAttendance(true);
                         listPlannedStudents.set(i,studentBusInfo);
-                    }else if(transportRecordInfo.getMode().equals("午班")){
+                    }else if(transportRecordInfo.getMode().equals(Constant.BUS_MODE_AFTERNOON)){
                         studentBusInfo.setAfterAttendance(true);
                         listPlannedStudents.set(i,studentBusInfo);
                     }

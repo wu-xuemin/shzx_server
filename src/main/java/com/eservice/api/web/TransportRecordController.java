@@ -61,12 +61,12 @@ public class TransportRecordController {
     @Value("${debug.flag}")
     private String debugFlag;
 
-    @ApiOperation("增加接送班次记录，早班开始行程/午班开始行程/晚班选择线时会调用该接口, flag值必须带上(早班、午班上车、午班下车、晚班) 注意参数中的日期会在服务端重置，即以服务端时间为准")
+    @ApiOperation("增加接送班次记录，上学开始行程/放学开始行程/晚班选择线时会调用该接口, flag值必须带上(上学、放学上车、放学下车、晚班) 注意参数中的日期会在服务端重置，即以服务端时间为准")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busLine", value = " 线路ID",required = true),
             @ApiImplicitParam(paramType = "query",name = "currentStation", value = " 站点 ID",required = true),
             @ApiImplicitParam(paramType = "query",name = "busNumberInTR", value = " 校车编号 ",required = true),
-            @ApiImplicitParam(paramType = "query",name = "flag", value = " 早班、午班上车、午班下车、晚班 ",required = true),
+            @ApiImplicitParam(paramType = "query",name = "flag", value = " 上学、放学上车、放学下车、晚班 ",required = true),
             //todo 这个status,由前端传入还是统一后端维护？
             @ApiImplicitParam(paramType = "query",name = "status", value = "行程进行中、行程已结束、晚班行程已选 ",required = true)})
     @PostMapping("/add")
@@ -135,13 +135,13 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult();
     }
 
-    @ApiOperation("早班结束行程/午班结束行程/晚班结束行程；特殊情况是晚班开始行程时也是调用此接口")
+    @ApiOperation("上学结束行程/放学结束行程/晚班结束行程；特殊情况是晚班开始行程时也是调用此接口")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "Id", value = " ID",required = true),
             @ApiImplicitParam(paramType = "query",name = "busLine", value = " 线路ID",required = true),
             @ApiImplicitParam(paramType = "query",name = "currentStation", value = " 站点 ID"),
             @ApiImplicitParam(paramType = "query",name = "busNumberInTR", value = " 校车编号 ",required = true),
-            @ApiImplicitParam(paramType = "query",name = "flag", value = " 早班、午班上车、午班下车、晚班 ",required = true),
+            @ApiImplicitParam(paramType = "query",name = "flag", value = " 上学、放学上车、放学下车、晚班 ",required = true),
             @ApiImplicitParam(paramType = "query",name = "status", value = "行程进行中、行程已结束、晚班行程已选 ",required = true)})
     @PostMapping("/update")
     public Result update( TransportRecord transportRecord) {
@@ -186,11 +186,11 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "studentName", value = "查询的学生姓名（模糊查询），比如 小明"),
             @ApiImplicitParam(paramType = "query",name = "studentNumber", value = "查询的学生学号"),
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "查询的校车编号，比如 XC001"),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次，限于 “早班”、“午班"),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次，限于 “上学”、“放学"),
             @ApiImplicitParam(paramType = "query",name = "busStationName", value = "查询的校车站点名称（包括了上车、下车），比如 11路口"),
             @ApiImplicitParam(paramType = "query",name = "grade", value = "查询的年级，比如 1，比如2"),
             @ApiImplicitParam(paramType = "query",name = "className", value = "查询的班级名称，比如1年级2班，比如 2年级2班"),
-            @ApiImplicitParam(paramType = "query",name = "recordFlag", value = "早班、午班上车、午班下车、晚班"),
+            @ApiImplicitParam(paramType = "query",name = "recordFlag", value = "上学、放学上车、放学下车、晚班"),
             @ApiImplicitParam(paramType = "query",name = "recordStatus", value = "行程进行中、行程已结束、晚班行程已选")
     })
     @PostMapping("/selectTransportRecord")
@@ -245,7 +245,7 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "要查询的起始时间，比如 2018-12-19 00:00:00 ",required = true),
             @ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "要查询的结束时间，比如 2018-12-20 00:00:00 ",required = true),
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号，比如 xc001，不填则查所有校车"),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“早班”、“午班”两种，晚班不支持 ",required = true),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“上学”、“放学”两种，晚班不支持 ",required = true),
             @ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级"),
             @ApiImplicitParam(paramType = "query",name = "className", value = "班级，比如 1(1)，注意括号小写")
     })
@@ -270,7 +270,7 @@ public class TransportRecordController {
     @ApiOperation("获取乘坐计划外的学生（临时乘坐）信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号", required = true),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“早班”、“午班”两种，晚班不支持 ", required = true),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "校车班次，限于“上学”、“放学”两种，晚班不支持 ", required = true),
             @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "要查询的起始时间，比如 2018-12-19 00:00:00 ", required = true),
             @ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "要查询的结束时间，比如 2018-12-20 00:00:00 ", required = true) })
     @PostMapping("/getUnplannedStudents")
@@ -285,7 +285,7 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    @ApiOperation("根据校车编号 + 模式（早班、午班）+日期 获取车次记录信息（包括了当前站点等）")
+    @ApiOperation("根据校车编号 + 模式（上学、放学）+日期 获取车次记录信息（包括了当前站点等）")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号" ),
             @ApiImplicitParam(paramType = "query",name = "busLineName", value = "线路名称" ),
@@ -308,7 +308,7 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "查询的起始时间，比如2019-01-11 00:00:00",required = true),
             @ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "查询的结束时间，比如2019-01-12 00:00:00",required = true),
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "查询的校车编号，比如 XC006",required = true),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次，限于 “早班”、“午班”，如果指定了班次 ",required = true)
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次，限于 “上学”、“放学”，如果指定了班次 ",required = true)
     })
     @PostMapping("/getCurrentTransportRecord")
     public Result getCurrentTransportRecord(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
@@ -346,7 +346,7 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "queryStartTime", value = "查询的起始时间，比如 2019-01-11，参数为空则默认当天"),
             @ApiImplicitParam(paramType = "query",name = "queryFinishTime", value = "查询的结束时间，比如2019-01-12，参数为空则默认当天+1"),
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "查询的校车编号，比如 XC002",required = true),
-            @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次， 只能“早班”、“午班”，不能查晚班因为晚班和校车没有绑定 ",required = true),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次， 只能“上学”、“放学”，不能查晚班因为晚班和校车没有绑定 ",required = true),
     })
     @PostMapping("/getPickingInfo")
     public Result getPickingInfo(String queryStartTime,
@@ -354,7 +354,7 @@ public class TransportRecordController {
                                  @RequestParam String busNumber,
                                  @RequestParam String busMode ) {
         if( !busMode.equals(Constant.BUS_MODE_AFTERNOON) && !busMode.equals(Constant.BUS_MODE_MORNING)) {
-            return ResultGenerator.genFailResult("busMode 错误，限于 “早班”、“午班” ");
+            return ResultGenerator.genFailResult("busMode 错误，限于 “上学”、“放学” ");
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if(null == queryStartTime){
@@ -463,8 +463,8 @@ public class TransportRecordController {
 
     }
 
-    @ApiOperation("根据校车编号 获取校车 当天此时 所处状态（比如 早班待发车、早班进行中、早班已结束...），" +
-            "如果早班没使用APP，下午午班才开始用，这是应该根据时间返回午班未开始状态" +
+    @ApiOperation("根据校车编号 获取校车 当天此时 所处状态（比如 上学待发车、上学进行中、上学已结束...），" +
+            "如果上学没使用APP，下午放学才开始用，这是应该根据时间返回放学未开始状态" +
             "比如前端APP意外退出之后，如果是当天重启则返回奔溃前的状态，" +
             "如果是第2天或之后重启，则当作新的一天来处理")
     @ApiImplicitParams({
@@ -499,7 +499,7 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    @ApiOperation("午班下车过程中，分子（当前站点还没下车的）变小，根据校车获取当天午班的分子")
+    @ApiOperation("放学下车过程中，分子（当前站点还没下车的）变小，根据校车获取当天放学的分子")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号" ) })
     @PostMapping("/getStudentsWaitGetOff")
@@ -531,14 +531,14 @@ public class TransportRecordController {
                 stationPickingInfo.setStationId(busStations.getId());
             }
             /**
-             * 午班上车记录
+             * 放学上车记录
              */
             List<TransportRecordInfo> listActualRecordInfoWubanUp = transportRecordService.selectTransportRecord(queryStartTime,
                     queryFinishTime,
                     null,
                     null,
                     busNumber,
-                    //目前app传的busline参数 为早班的，不正确，这里先用null
+                    //目前app传的busline参数 为上学的，不正确，这里先用null
                     null,//Constant.BUS_MODE_AFTERNOON,
                     stationsArr[i],
                     null,
@@ -546,14 +546,14 @@ public class TransportRecordController {
                     Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_UP,
                     null);
             if (debugFlag.equalsIgnoreCase("true")) {
-                logger.info("getStudentsWaitGetOff，校车 " + busNumber + " 午班上车 " + stationsArr[i] + queryStartTime + " 实际上车人数 " + listActualRecordInfoWubanUp.size());
+                logger.info("getStudentsWaitGetOff，校车 " + busNumber + " 放学上车 " + stationsArr[i] + queryStartTime + " 实际上车人数 " + listActualRecordInfoWubanUp.size());
                 for (TransportRecordInfo tr : listActualRecordInfoWubanUp) {
-                    logger.info("实际午班上车：" + studentService.getStudentInfo(tr.getStudentNumber()).getName());
+                    logger.info("实际放学上车：" + studentService.getStudentInfo(tr.getStudentNumber()).getName());
                 }
             }
 
             /**
-             * 午班上车已上车的学生
+             * 放学上车已上车的学生
              */
             List<StudentInfo> listActualStudentsWubanUp = new ArrayList<>();
             for (TransportRecordInfo tri : listActualRecordInfoWubanUp) {
@@ -569,14 +569,14 @@ public class TransportRecordController {
             }
 
             /**
-             * 午班下车记录
+             * 放学下车记录
              */
             List<TransportRecordInfo> listActualRecordInfoWubanDown = transportRecordService.selectTransportRecord(queryStartTime,
                     queryFinishTime,
                     null,
                     null,
                     busNumber,
-                    //目前app传的busline参数 为早班的，不正确，这里先用null
+                    //目前app传的busline参数 为上学的，不正确，这里先用null
                     null,//Constant.BUS_MODE_AFTERNOON,
                     stationsArr[i],
                     null,
@@ -584,14 +584,14 @@ public class TransportRecordController {
                     Constant.TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN,
                     null);
             if (debugFlag.equalsIgnoreCase("true")) {
-                logger.info("getStudentsWaitGetOff，校车 " + busNumber + " 午班下车 " + stationsArr[i] + queryStartTime + " 实际下车人数 " + listActualRecordInfoWubanDown.size());
+                logger.info("getStudentsWaitGetOff，校车 " + busNumber + " 放学下车 " + stationsArr[i] + queryStartTime + " 实际下车人数 " + listActualRecordInfoWubanDown.size());
                 for (TransportRecordInfo tr : listActualRecordInfoWubanDown) {
-                    logger.info("实际午班下车：" + studentService.getStudentInfo(tr.getStudentNumber()).getName());
+                    logger.info("实际放学下车：" + studentService.getStudentInfo(tr.getStudentNumber()).getName());
                 }
             }
 
             /**
-             * 午班下车 已下车的学生
+             * 放学下车 已下车的学生
              */
             List<StudentInfo> listActualStudentsWubanDown = new ArrayList<>();
             for (TransportRecordInfo tri : listActualRecordInfoWubanDown) {
@@ -607,7 +607,7 @@ public class TransportRecordController {
             }
 
             /**
-             * 午班上车已上车的学生 - 午班下车已下车的学生
+             * 放学上车已上车的学生 - 放学下车已下车的学生
              */
             List<StudentInfo> listActualStudentsRemain = new ArrayList<>();
             for (StudentInfo studentInfoActualWubanUp: listActualStudentsWubanUp) {
@@ -615,7 +615,7 @@ public class TransportRecordController {
                 boolean isInBus = true;
                 for (StudentInfo studentInfoActualWubanDown: listActualStudentsWubanDown) {
                     /**
-                     * 在实际午班下车名单中找到，表示不再在车上
+                     * 在实际放学下车名单中找到，表示不再在车上
                      */
                     if(studentInfoActualWubanUp.getStudentNumber().equalsIgnoreCase( studentInfoActualWubanDown.getStudentNumber())){
                         isInBus = false;

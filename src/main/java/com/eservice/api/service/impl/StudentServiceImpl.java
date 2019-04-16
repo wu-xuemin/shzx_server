@@ -104,7 +104,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
 
     /**
      * @param busNumber
-     * @param busMode 早班午班每个学生都是同辆车，这个参数传不传都一样, 都返回相同的学生
+     * @param busMode 上学放学每个学生都是同辆车，这个参数传不传都一样, 都返回相同的学生
      * @param busStation
      */
     public List<StudentInfo> getPlannedStudents(String busNumber, String busMode,String busStation,
@@ -356,10 +356,10 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                             busLineExcelHelper.getBusNumber().split("\\.")[0] + "号车_" + CommonService.getBusModeByTime(stationTimeRemarkCell));
                     if (busLineExist != null) {
                         student.setBusLineMorning(busLineExist.getId());
-                        // 午班和早班不同。目前表格里只有早班
+                        // 放学和上学不同。目前表格里只有上学
                         BusLine busLineExistWuban = null;
                         busLineExistWuban = busLineService.findBy(fieldBusLineName.getName(),
-                                busLineExcelHelper.getBusNumber().split("\\.")[0] + "号车_午班" );
+                                busLineExcelHelper.getBusNumber().split("\\.")[0] + "号车_放学" );
                         student.setBusLineAfternoon(busLineExistWuban.getId());
                     }
 

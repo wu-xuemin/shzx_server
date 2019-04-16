@@ -33,12 +33,12 @@ public class Student {
     private Integer banji;
 
     /**
-     * 早班乘坐车的ID，外键
+     * 上学乘坐车的ID，外键
      */
     private Integer busLineMorning;
 
     /**
-     * 午班乘坐车的ID，外键
+     * 放学乘坐车的ID，外键
      */
     private Integer busLineAfternoon;
 
@@ -51,13 +51,13 @@ public class Student {
     }
 
     /**
-     * 上午班车上车站点
+     * 上午 上学 班车上车站点
      */
     @Column(name = "board_station_morning")
     private Integer boardStationMorning;
 
     /**
-     * 下午班车下车站点
+     * 下午 放学 班车下车站点
      */
     @Column(name = "board_station_afternoon")
     private Integer boardStationAfternoon;
@@ -155,7 +155,7 @@ public class Student {
     }
 
     /**
-     * 获取早班乘坐车的ID，外键
+     * 获取上学乘坐车的ID，外键
      *
      * @return bus - 乘坐车的ID，外键
      */
@@ -173,36 +173,36 @@ public class Student {
     }
 
     /**
-     * 获取上午班车上车站点
+     * 获取上午 班车上车站点
      *
-     * @return board_station_morning - 上午班车上车站点
+     * @return board_station_morning - 上午 班车上车站点
      */
     public Integer getBoardStationMorning() {
         return boardStationMorning;
     }
 
     /**
-     * 设置上午班车上车站点
+     * 设置上午 班车上车站点
      *
-     * @param boardStationMorning 上午班车上车站点
+     * @param boardStationMorning 上午 班车上车站点
      */
     public void setBoardStationMorning(Integer boardStationMorning) {
         this.boardStationMorning = boardStationMorning;
     }
 
     /**
-     * 获取下午班车下车站点
+     * 获取下午 班车下车站点
      *
-     * @return board_station_afternoon - 下午班车下车站点
+     * @return board_station_afternoon - 下午 班车下车站点
      */
     public Integer getBoardStationAfternoon() {
         return boardStationAfternoon;
     }
 
     /**
-     * 设置下午班车下车站点
+     * 设置下午 班车下车站点
      *
-     * @param boardStationAfternoon 下午班车下车站点
+     * @param boardStationAfternoon 下午 班车下车站点
      */
     public void setBoardStationAfternoon(Integer boardStationAfternoon) {
         this.boardStationAfternoon = boardStationAfternoon;

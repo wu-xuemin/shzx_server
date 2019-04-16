@@ -22,7 +22,7 @@ public class TransportRecordInfo extends  TransportRecord {
     }
 
     /**
-     * 早班 上车或下车站点名称，注意，在午班记录里，早班的站点名字为空
+     * 上学上车站点名称，注意，在放学记录里，上学的站点名字为空
      */
     private String boardStationNameMorning;
 
@@ -35,7 +35,7 @@ public class TransportRecordInfo extends  TransportRecord {
     }
 
     /**
-     * 午班的 上车或下车站点名称，注意，在早班记录里，午班的站点名字为空
+     * 放学的下车站点名称，注意，在上学记录里，放学的站点名字为空
      */
     private String boardStationNameAfternoon;
 

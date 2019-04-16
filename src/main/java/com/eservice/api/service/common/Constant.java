@@ -9,19 +9,19 @@ package com.eservice.api.service.common;
 public class Constant {
 
     /**
-     * 校车接送模式，分为“早班”，“午班”，“晚班”
+     * 校车接送模式，分为“上学”，“放学”，“晚班”
      * 注意 Mapper.xml 里也有这些字符串
      */
-    public static final String BUS_MODE_MORNING = "早班";
-    public static final String BUS_MODE_AFTERNOON = "午班";
+    public static final String BUS_MODE_MORNING = "上学";
+    public static final String BUS_MODE_AFTERNOON = "放学";
     public static final String BUS_MODE_NIGHT = "晚班";
 
     /**
-     * 注意，transport_record的FLAG 是用来标识 TransportRecord的 发车记录的早班/午班/晚班
+     * 注意，transport_record的FLAG 是用来标识 TransportRecord的 发车记录的上学/放学/晚班
      */
-    public static final String TRANSPORT_RECORD_FLAG_MORNING = "早班";
-    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON_UP = "午班上车";
-    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN = "午班下车";
+    public static final String TRANSPORT_RECORD_FLAG_MORNING = "上学";
+    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON_UP = "放学上车";
+    public static final String TRANSPORT_RECORD_FLAG_AFTERNOON_DOWN = "放学下车";
     public static final String TRANSPORT_RECORD_FLAG_NIGHT = "晚班";
 
     /**
@@ -34,16 +34,16 @@ public class Constant {
     /**
      * 校车所处状态
      */
-    public static final String BUS_STATUS_ZAOBAN_WAIT_START = "早班待发车";
-    public static final String BUS_STATUS_ZAOBAN_RUNNING = "早班进行中";
-    public static final String BUS_STATUS_ZAOBAN_DONE = "早班已结束";
+    public static final String BUS_STATUS_ZAOBAN_WAIT_START = "上学待发车";
+    public static final String BUS_STATUS_ZAOBAN_RUNNING = "上学进行中";
+    public static final String BUS_STATUS_ZAOBAN_DONE = "上学已结束";
 
 
-    public static final String BUS_STATUS_WUBAN_WAIT_START = "午班待发车";
+    public static final String BUS_STATUS_WUBAN_WAIT_START = "放学待发车";
     //todo 相关的更新
-    public static final String BUS_STATUS_WUBAN_ABOARDING = "午班上车中";
-    public static final String BUS_STATUS_WUBAN_RUNNING = "午班进行中";
-    public static final String BUS_STATUS_WUBAN_DONE = "午班已结束";
+    public static final String BUS_STATUS_WUBAN_ABOARDING = "放学上车中";
+    public static final String BUS_STATUS_WUBAN_RUNNING = "放学进行中";
+    public static final String BUS_STATUS_WUBAN_DONE = "放学已结束";
 
     public static final String BUS_STATUS_WANBAN_WAIT_START = "晚班待发车";
     public static final String BUS_STATUS_WANBAN_LINE_SELECTED = "晚班线路已选";

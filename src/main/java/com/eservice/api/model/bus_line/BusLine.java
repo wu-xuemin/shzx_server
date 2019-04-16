@@ -18,7 +18,7 @@ public class BusLine {
     private Integer busBaseInfo;
 
     /**
-     * "早班“、”午班“、”晚班“
+     * "上学“、”放学“、”晚班“
      */
     private String mode;
 
@@ -55,18 +55,18 @@ public class BusLine {
     }
 
     /**
-     * 获取"早班“、”午班“、”晚班“
+     * 获取"上学“、”放学“、”晚班“
      *
-     * @return mode - "早班“、”午班“、”晚班“
+     * @return mode - "上学“、”放学“、”晚班“
      */
     public String getMode() {
         return mode;
     }
 
     /**
-     * 设置"早班“、”午班“、”晚班“
+     * 设置"上学“、”放学“、”晚班“
      *
-     * @param mode "早班“、”午班“、”晚班“
+     * @param mode "上学“、”放学“、”晚班“
      */
     public void setMode(String mode) {
         this.mode = mode;
@@ -75,8 +75,8 @@ public class BusLine {
     private String stations;
 
     /**
-     * 某校车，比如沪A34567，早上的车号是“1”，午班，晚班的车号也是“1”.
-     * 线路的名称则为 1号车_早班、1号车_午班。
+     * 某校车，比如沪A34567，早上的车号是“1”，放学，晚班的车号也是“1”.
+     * 线路的名称则为 1号车_上学、1号车_放学。
      */
     private String name;
 

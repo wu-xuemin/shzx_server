@@ -129,7 +129,7 @@ public class TransportRecord {
     }
 
     /**
-     * 早上、午班上车、午班下车、晚班
+     * 上学、放学上车、放学下车、晚班
      */
     @Column(name = "flag")
     private String flag;

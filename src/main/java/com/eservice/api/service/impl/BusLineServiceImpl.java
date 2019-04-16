@@ -242,20 +242,20 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
             busLineNoon.setValid(1);
             busLineService.save(busLineNoon);
             busLineListNoon.add(busLineNoon);
-            logger.info("add 午班： " + busLineNoon.getName() + "id:" + busLineNoon.getId());
+            logger.info("add 放学： " + busLineNoon.getName() + "id:" + busLineNoon.getId());
         }
     }
 
     /**
      * 需要倒序则返回true
-     * @param busLineName 待检查的早班线路名称
+     * @param busLineName 待检查的上学线路名称
      * @param busLineIDsNotReserve 不需要倒序的线路ID，以逗号分隔
      */
     public boolean isReserve(String busLineName, String busLineIDsNotReserve){
 
         String[] IdArr = busLineIDsNotReserve.split(",");
         for (int i=0; i < IdArr.length; i++) {
-            if(busLineName.replace("号车_早班", "").equals(IdArr[i])){
+            if(busLineName.replace("号车_上学", "").equals(IdArr[i])){
                 return false;
             }
         }
