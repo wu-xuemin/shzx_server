@@ -429,6 +429,9 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
                     }else if(transportRecordInfo.getMode().equals("午班")){
                         studentBusInfo.setAfterAttendance(true);
                         listPlannedStudents.set(i,studentBusInfo);
+                    }else if (transportRecordInfo.getMode().equals("晚班")){
+                        studentBusInfo.setNightAttendance(true);
+                        listPlannedStudents.set(i,studentBusInfo);
                     }
                 }
             }
