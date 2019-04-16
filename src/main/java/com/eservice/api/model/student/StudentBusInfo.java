@@ -8,6 +8,15 @@ public class StudentBusInfo extends Student{
     private String busNumber;
     private Boolean morningAttendance;
     private Boolean afterAttendance;
+    private Boolean nightAttendance;
+
+    public Boolean isNightAttendance() {
+        return nightAttendance;
+    }
+
+    public void setNightAttendance(Boolean nightAttendance) {
+        this.nightAttendance = nightAttendance;
+    }
 
     public String getBanjiName() {
         return banjiName;
