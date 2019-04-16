@@ -1,15 +1,17 @@
 package com.eservice.api.web;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
+import com.eservice.api.model.banji.Banji;
 import com.eservice.api.model.student.Student;
 import com.eservice.api.model.student.StudentInfo;
-import com.eservice.api.service.StudentService;
 import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.common.Constant;
+import com.eservice.api.service.impl.BanjiServiceImpl;
 import com.eservice.api.service.impl.StudentServiceImpl;
 import com.eservice.api.service.park.SyncStuService;
-import com.eservice.api.service.park.model.WinVisitorRecord;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -17,15 +19,16 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.util.TextUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 
@@ -48,9 +51,11 @@ public class StudentController {
     private String studentImgUrlPrefix;
     @Resource
     private CommonService commonService;
-
+    @Resource
+    private BanjiServiceImpl banjiService;
     @Resource
     private SyncStuService syncStuService;
+    private final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     @ApiOperation("增加学生信息，同时保存学生头像")
     @PostMapping("/add")
@@ -298,5 +303,56 @@ public class StudentController {
     public Result renameNameStudentPicFile() {
         List<String> notDBExistList = studentService.renameNameStudentPicFile();
         return ResultGenerator.genSuccessResult(notDBExistList);
+    }
+
+    @ApiOperation("参数传入上中的班车URL， 根据URL返回的数据，创建学生（URL只包括姓名，班级，学号）。返回新增的学生数量 ")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
+    @PostMapping("/getURLContentAndCreateStu")
+    public Result getURLContentAndCreateStu(@RequestParam(defaultValue = "http://app.shs.cn/ydpt/ws/buse/students?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761")
+                                                        String urlStr) {
+
+        Integer addedStuSum = 0;
+        String strFromUrl = CommonService.getUrlResponse(urlStr);
+        try {
+            JSONObject jsonObject= JSON.parseObject(strFromUrl);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            for (int i = 0; i < ja.size(); i++) {
+                Student student = new Student();
+                JSONObject jo = ja.getJSONObject(i);
+                String classId = jo.getString("class_id");
+                String stuName = jo.getString("name");
+                String stuNumber = jo.getString("student_number");
+
+                student.setName(stuName);
+                student.setStudentNumber(stuNumber);
+                student.setCreateTime(new Date());
+                student.setValid(1);
+
+                Class cl = Class.forName("com.eservice.api.model.banji.Banji");
+                Field field = cl.getDeclaredField("classIdFromUrl");
+                Banji banjiExist = banjiService.findBy(field.getName(), classId);
+                if(banjiExist == null) {
+                    logger.warn(" can not find banji by classId: " + classId);
+                } else {
+                    student.setBanji(banjiExist.getId());
+                }
+
+                Class cl2 = Class.forName("com.eservice.api.model.student.Student");
+                Field fieldStuNum = cl2.getDeclaredField("studentNumber");
+                Student studentExist = studentService.findBy(fieldStuNum.getName(), stuNumber);
+                if(studentExist == null) {
+                    studentService.save(student);
+                    logger.info("added student: " + student.getName());
+                    addedStuSum ++;
+                } else {
+                    logger.info(" already exist student: " +  student.getName());
+                }
+            }
+
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+            return ResultGenerator.genFailResult(" exception: " + e.toString());
+        }
+        return ResultGenerator.genSuccessResult("addedStuSum " + addedStuSum + " is added");
     }
 }

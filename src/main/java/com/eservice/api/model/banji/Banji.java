@@ -121,7 +121,6 @@ public class Banji {
     /**
      * 上中url里解析到的classId
      */
-
     @Column(name = "class_id_from_url")
     private String classIdFromUrl;
 

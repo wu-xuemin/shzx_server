@@ -633,7 +633,6 @@ public class TransportRecordController {
             pickingInfoArrayList.add(stationPickingInfo);
             allPickingInfo.setStationPickingInfoList(pickingInfoArrayList);
         }
-        //todo  这里显示的remainList是正常的，但是swagger和api调用时 显示 "$ref": "$.data.stationPickingInfoList[2].pickedList[0]"
         return ResultGenerator.genSuccessResult(allPickingInfo);
     }
 
