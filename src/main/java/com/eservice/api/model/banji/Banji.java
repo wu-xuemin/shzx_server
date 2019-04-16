@@ -117,4 +117,19 @@ public class Banji {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    /**
+     * 上中url里解析到的classId
+     */
+
+    @Column(name = "class_id_from_url")
+    private String classIdFromUrl;
+
+    public String getClassIdFromUrl() {
+        return classIdFromUrl;
+    }
+
+    public void setClassIdFromUrl(String classIdFromUrl) {
+        this.classIdFromUrl = classIdFromUrl;
+    }
 }

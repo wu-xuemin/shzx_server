@@ -175,9 +175,11 @@ public class BanjiController {
                 String grade = jo.getString("grade");
                 String banjiName = jo.getString("name");
                 String teacher_name = jo.getString("teacher_name");
+                String classId = jo.getString("id");
                 banji.setGrade(grade);
                 banji.setClassName(banjiName);
                 banji.setCreateTime(new Date());
+                banji.setClassIdFromUrl(classId);
 
                 Class cl = Class.forName("com.eservice.api.model.user.User");
                 Field fieldUserAccount = cl.getDeclaredField("account");
