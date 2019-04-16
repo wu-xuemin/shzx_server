@@ -37,6 +37,7 @@ CREATE TABLE `banji` (
   `charge_teacher` int(10) unsigned DEFAULT NULL COMMENT '班主任',
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
+  `class_id_from_url` varchar(255) DEFAULT NULL COMMENT '上中url里解析到的classId',
   PRIMARY KEY (`id`),
   KEY `fk_charge_teacher` (`charge_teacher`),
   CONSTRAINT `fk_charge_teacher` FOREIGN KEY (`charge_teacher`) REFERENCES `user` (`id`)
