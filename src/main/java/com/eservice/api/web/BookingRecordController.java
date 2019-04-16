@@ -2,7 +2,9 @@ package com.eservice.api.web;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.booking_record.BookingRecord;
+import com.eservice.api.model.booking_record.BookingRecordInfo;
 import com.eservice.api.service.BookingRecordService;
+import com.eservice.api.service.impl.BookingRecordServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -25,7 +27,7 @@ import java.util.List;
 @Api(description = "学生的班车预约变更")
 public class BookingRecordController {
     @Resource
-    private BookingRecordService bookingRecordService;
+    private BookingRecordServiceImpl bookingRecordService;
 
     @PostMapping("/add")
     public Result add(BookingRecord bookingRecord) {
@@ -57,6 +59,14 @@ public class BookingRecordController {
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
         List<BookingRecord> list = bookingRecordService.findAll();
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    @PostMapping("/getBookingRecord")
+    public Result getBookingRecord(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size){
+        PageHelper.startPage(page, size);
+        List<BookingRecordInfo> list =bookingRecordService.getBookingRecordInfo();
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

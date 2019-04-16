@@ -16,4 +16,48 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+
+  <resultMap id="BookingRecordInfoResultMap" type="com.eservice.api.model.booking_record.BookingRecordInfo">
+
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="change_date" jdbcType="DATE" property="changeDate" />
+    <result column="student" jdbcType="INTEGER" property="student" />
+    <result column="old_bus_line" jdbcType="INTEGER" property="oldBusLine" />
+    <result column="new_bus_line" jdbcType="INTEGER" property="newBusLine" />
+    <result column="new_station" jdbcType="INTEGER" property="newStation" />
+    <result column="change_content" jdbcType="VARCHAR" property="changeContent" />
+    <result column="confirm_status" jdbcType="VARCHAR" property="confirmStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+
+    <result column="stuname" jdbcType="VARCHAR" property="stuName"/>
+    <result column="bus_number" jdbcType="VARCHAR" property="oldBusNumber"/>
+    <result column="newNumber" jdbcType="VARCHAR" property="newBusNumber"/>
+    <result column="boardStationMorningName" jdbcType="VARCHAR" property="stationName"/>
+
+  </resultMap>
+
+  <select id="getBookingRecordInfo" resultMap="BookingRecordInfoResultMap">
+     SELECT
+      book.*,
+      student.`name` AS stuname,
+      bus_base_info.number AS bus_number,
+      info.`number` AS newNumber,
+      bus_stations.station_name AS boardStationMorningName
+    FROM
+        booking_record AS book
+        LEFT JOIN student ON student.id=book.`student`
+    LEFT JOIN bus_line ON bus_line.id = book.`old_bus_line`
+
+     LEFT JOIN bus_line AS bus_new ON bus_new.id = book.`new_bus_line`
+
+    LEFT JOIN bus_base_info ON bus_base_info.id = bus_line.bus_base_info
+
+    LEFT JOIN bus_base_info AS info ON info.id = bus_new.bus_base_info
+
+    LEFT JOIN bus_stations ON bus_stations.id = book.`new_station`
+
+    WHERE
+      1 = 1
+  </select>
 </mapper>
