@@ -2,6 +2,7 @@ package com.eservice.api.dao;
 
 import com.eservice.api.core.Mapper;
 import com.eservice.api.model.banji.Banji;
+import com.eservice.api.model.banji.BanjiInfo;
 import com.eservice.api.model.user.User;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -14,7 +15,7 @@ public interface BanjiMapper extends Mapper<Banji> {
     List<User> getChargeTeachers();
 
     @Select("SELECT * from banji LEFT JOIN user on banji.charge_teacher = `user`.id where banji.class_name = #{banjiName} and banji.grade = #{gradeName}")
-    User getTheChargeTeacher(@Param("gradeName") String gradeName, @Param("banjiName") String banjiName);
+    BanjiInfo getTheChargeTeacher(@Param("gradeName") String gradeName, @Param("banjiName") String banjiName);
 
     @Select("SELECT * from banji where banji.grade = #{gradeName}")
     List<Banji> getBanjiListByGrade(@Param("gradeName") String gradeName);

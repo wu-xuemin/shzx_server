@@ -5,6 +5,7 @@ import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.dao.BanjiMapper;
 import com.eservice.api.model.banji.Banji;
 import com.eservice.api.model.banji.BanjiExcel;
+import com.eservice.api.model.banji.BanjiInfo;
 import com.eservice.api.model.bus_base_info.BusBaseInfo;
 import com.eservice.api.model.bus_line.BusLine;
 import com.eservice.api.model.student.StudentInfo;
@@ -202,7 +203,7 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         Date tomorrow = c.getTime();
         queryFinishTime = sdf.format(tomorrow);
 
-        User bzr = banjiService.getTheChargeTeacher(gradeName,banjiName);
+        BanjiInfo bzr = banjiService.getTheChargeTeacher(gradeName,banjiName);
         if(bzr == null){
             logger.error(" could not get the charge teacher for grade: " + gradeName + " banji: " + banjiName);
         }
@@ -245,7 +246,7 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         return banjiMapper.get1To8GradeChargeTeachers();
     }
 
-    public User getTheChargeTeacher(String gradeName, String banjiName) {
+    public BanjiInfo getTheChargeTeacher(String gradeName, String banjiName) {
         return banjiMapper.getTheChargeTeacher(gradeName,banjiName);
     }
 

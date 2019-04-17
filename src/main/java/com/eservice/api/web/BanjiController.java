@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.banji.Banji;
+import com.eservice.api.model.banji.BanjiInfo;
 import com.eservice.api.model.user.User;
 import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.common.SMSUtils;
@@ -127,12 +128,12 @@ public class BanjiController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    @ApiOperation("根据班级返回 对应的班主任")
+    @ApiOperation("根据班级返回 该班级的详细信息（包括班主任）")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级"),
                         @ApiImplicitParam(paramType = "query",name = "banjiName", value = "班级，比如 1(1)，注意括号小写") })
     @PostMapping("/getTheChargeTeacher")
     public Result getTheChargeTeacher(String gradeName, String banjiName) {
-        User bzr = banjiService.getTheChargeTeacher(gradeName,banjiName);
+        BanjiInfo bzr = banjiService.getTheChargeTeacher(gradeName,banjiName);
         return ResultGenerator.genSuccessResult(bzr);
     }
 
