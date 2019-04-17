@@ -16,18 +16,7 @@ Date: 2019-02-11 14:45:20
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
-DROP TABLE IF EXISTS `afternoon_picked`;
-CREATE TABLE `afternoon_picked` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `student_number` varchar(150) NOT NULL,
-  `bus_number` varchar(255) NOT NULL,
-  `date` date NOT NULL,
-  `create_time` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_ap_student_number` (`student_number`),
-  CONSTRAINT `fk_ap_student_number` FOREIGN KEY (`student_number`) REFERENCES `student` (`student_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- Table structure for `banji`
+-- Table structure for banji
 -- ----------------------------
 DROP TABLE IF EXISTS `banji`;
 CREATE TABLE `banji` (
@@ -112,7 +101,7 @@ DROP TABLE IF EXISTS `bus_line`;
 CREATE TABLE `bus_line` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `bus_base_info` int(10) unsigned DEFAULT NULL COMMENT '校车基本信息；晚班和校车不绑定',
-  `mode` varchar(255) NOT NULL COMMENT '"早班“、”午班“、”晚班“',
+  `mode` varchar(255) NOT NULL COMMENT '"上学“、”放学“、”晚班“',
   `stations` text,
   `name` varchar(160) NOT NULL DEFAULT '',
   `valid` int(10) unsigned DEFAULT '1' COMMENT '1表示有效，0表示无效',
@@ -178,22 +167,6 @@ CREATE TABLE `messages` (
   `read_count` int(10) unsigned NOT NULL COMMENT '阅读次数',
   `content` text NOT NULL COMMENT '消息的内容',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of messages
--- ----------------------------
-DROP TABLE IF EXISTS `night_picked`;
-CREATE TABLE `night_picked` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `student_number` varchar(150) NOT NULL,
-  `bus_number` varchar(255) NOT NULL,
-  `bus_line` int(10) unsigned NOT NULL,
-  `date` date NOT NULL,
-  `create_time` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_np_stu_num` (`student_number`),
-  CONSTRAINT `fk_np_stu_num` FOREIGN KEY (`student_number`) REFERENCES `student` (`student_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
@@ -213,11 +186,7 @@ CREATE TABLE `picked_students_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Records of picked_students_info
--- ----------------------------
-
--- ----------------------------
--- Table structure for `role`
+-- Table structure for role
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
@@ -247,10 +216,10 @@ CREATE TABLE `student` (
   `head_img` varchar(255) DEFAULT NULL COMMENT '保存头像的URL',
   `name` varchar(255) DEFAULT NULL COMMENT '姓名',
   `banji` int(10) unsigned DEFAULT NULL COMMENT '班级,外键',
-  `bus_line_morning` int(10) unsigned DEFAULT NULL COMMENT '早班乘坐车的线路ID，外键',
-  `bus_line_afternoon` int(10) unsigned DEFAULT NULL COMMENT '午班乘坐车的线路ID，外键',
-  `board_station_morning` int(10) unsigned DEFAULT NULL COMMENT '上午班车上车站点',
-  `board_station_afternoon` int(10) unsigned DEFAULT NULL COMMENT '下午班车下车站点',
+  `bus_line_morning` int(10) unsigned DEFAULT NULL COMMENT '上学乘坐车的线路ID，外键',
+  `bus_line_afternoon` int(10) unsigned DEFAULT NULL COMMENT '放学乘坐车的线路ID，外键',
+  `board_station_morning` int(10) unsigned DEFAULT NULL COMMENT '上午 班车上车站点',
+  `board_station_afternoon` int(10) unsigned DEFAULT NULL COMMENT '下午 班车下车站点',
   `family_info` text COMMENT '家庭信息 JSON',
   `valid` int(10) DEFAULT '1' COMMENT '1表示有效，0表示无效',
   `create_time` datetime NOT NULL,
@@ -290,9 +259,9 @@ CREATE TABLE `transport_record` (
   `date` date NOT NULL COMMENT '接送日期',
   `bus_line` int(10) unsigned NOT NULL COMMENT '校车线路，外键，',
   `current_station` int(10) unsigned DEFAULT NULL COMMENT '校车所处的当前站点',
-  `flag` varchar(255) NOT NULL COMMENT '早上上车、午班上车、午班下车、晚班上车',
+  `flag` varchar(255) NOT NULL COMMENT '早上上车、放学上车、放学下车、晚班上车',
   `bus_number_in_tr` varchar(255) NOT NULL COMMENT '校车编号，因为晚班的线路和校车不绑定，所以需要记录校车. 命名后缀in_tr是为了不影响其他地方的bus_number',
-  `status` varchar(255) NOT NULL COMMENT '早班待开始/早班进行中/早班已结束 /午班进行中/午班已结束/晚班进行中/晚班已结束',
+  `status` varchar(255) NOT NULL COMMENT '上学待开始/上学进行中/上学已结束 /放学进行中/放学已结束/晚班进行中/晚班已结束',
   `begin_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `end_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),

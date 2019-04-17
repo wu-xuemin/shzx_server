@@ -112,7 +112,7 @@ public class StudentController {
         if(student != null) {
             Student studentObj = JSON.parseObject(student, Student.class);
             //TODO:需要删除对应照片以及人脸平台中对应的学生
-            studentObj.setValid(0);
+            studentObj.setValid(Constant.VALID_NO);
             studentService.update(studentObj);
         } else {
             ResultGenerator.genFailResult("参数不能为空！");
@@ -326,7 +326,7 @@ public class StudentController {
                 student.setName(stuName);
                 student.setStudentNumber(stuNumber);
                 student.setCreateTime(new Date());
-                student.setValid(1);
+                student.setValid(Constant.VALID_YES);
 
                 Class cl = Class.forName("com.eservice.api.model.banji.Banji");
                 Field field = cl.getDeclaredField("classIdFromUrl");

@@ -5,9 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.bus_stations.BusStations;
-import com.eservice.api.model.user.User;
-import com.eservice.api.service.BusStationsService;
 import com.eservice.api.service.common.CommonService;
+import com.eservice.api.service.common.Constant;
 import com.eservice.api.service.impl.BusStationsServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -57,7 +56,7 @@ public class BusStationsController {
     public Result delete(@RequestParam String busStation) {
         if(busStation != null){
             BusStations busStationObj = JSON.parseObject(busStation,BusStations.class);
-            busStationObj.setValid(0);
+            busStationObj.setValid(Constant.VALID_NO);
             busStationsService.update(busStationObj);
         } else {
             ResultGenerator.genFailResult("参数不能为空！");
@@ -133,7 +132,7 @@ public class BusStationsController {
                 busStations.setFareRate(fareRate);
                 busStations.setRemark(remark);
                 busStations.setCreateTime(new Date());
-                busStations.setValid(1);
+                busStations.setValid(Constant.VALID_YES);
 
                 Class cl = Class.forName("com.eservice.api.model.bus_stations.BusStations");
                 Field fieldUserAccount = cl.getDeclaredField("stationName");

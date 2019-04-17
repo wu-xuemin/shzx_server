@@ -8,6 +8,7 @@ import com.eservice.api.model.bus_stations.BusStations;
 import com.eservice.api.service.BusStationsService;
 import com.eservice.api.core.AbstractService;
 import com.eservice.api.service.common.CommonService;
+import com.eservice.api.service.common.Constant;
 import com.github.pagehelper.PageInfo;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -90,7 +91,7 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
                     busStations.setRemark(CommonService.getValue(timeRemarkCell));
                     busStations.setStationName(busLineExcelHelper.getStationName());
                     busStations.setFareRate(busLineExcelHelper.getFareRate().split("\\.")[0]);
-                    busStations.setValid(1);
+                    busStations.setValid(Constant.VALID_YES);
 
                     /**
                      * 站点目前不存在则增加

@@ -61,4 +61,9 @@ public class Constant {
     public static final String MSG_STATUS_IS_READ = "已读";
 
     public static final String USER_DEFAULT_PASSWORD = "shzx";
+    public static final Integer USER_ROLE_BUSMOM = 3;
+    public static final Integer USER_ROLE_TEACHER = 4;
+    public static final Integer USER_ROLE_DRIVER = 5;
+    public static final Integer VALID_YES = 1;
+    public static final Integer VALID_NO = 0;
 }

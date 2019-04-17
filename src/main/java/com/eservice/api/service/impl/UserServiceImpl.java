@@ -116,9 +116,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     bzr.setAccount(banjiExcel.getChargeTeacherName());
                     bzr.setName(banjiExcel.getChargeTeacherName());
                     bzr.setPassword(Constant.USER_DEFAULT_PASSWORD);
-                    bzr.setRoleId(4);
+                    bzr.setRoleId(Constant.USER_ROLE_TEACHER);
                     bzr.setCreateTime(new Date());
-                    bzr.setValid(1);
+                    bzr.setValid(Constant.VALID_YES);
                     list.add(banjiExcel);
 
                     Class cl = Class.forName("com.eservice.api.model.user.User");
@@ -261,17 +261,17 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                     busMom.setName(busLineExcelHelper.getBusMomName());
                     busMom.setPhone(busLineExcelHelper.getBusMomPhone());
                     busMom.setPassword(Constant.USER_DEFAULT_PASSWORD);
-                    busMom.setRoleId(3);
+                    busMom.setRoleId(Constant.USER_ROLE_BUSMOM);
                     busMom.setCreateTime(new Date());
-                    busMom.setValid(1);
+                    busMom.setValid(Constant.VALID_YES);
 
                     busDriver.setAccount(busLineExcelHelper.getBusDriverAccount());
                     busDriver.setName(busLineExcelHelper.getBusDriverName());
                     busDriver.setPhone(busLineExcelHelper.getBusDriverPhone());
                     busDriver.setPassword(Constant.USER_DEFAULT_PASSWORD);
-                    busDriver.setRoleId(5);
+                    busDriver.setRoleId(Constant.USER_ROLE_DRIVER);
                     busDriver.setCreateTime(new Date());
-                    busDriver.setValid(1);
+                    busDriver.setValid(Constant.VALID_YES);
 
                     list.add(busLineExcelHelper);
 

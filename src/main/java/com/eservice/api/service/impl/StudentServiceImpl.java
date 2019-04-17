@@ -258,7 +258,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                     }
                     student.setName(studentExcel.getName());
                     student.setStudentNumber(studentExcel.getStudentNumber().split("\\.")[0]);
-                    student.setValid(1);
+                    student.setValid(Constant.VALID_YES);
                     list.add(studentExcel);
 
                     Student studentExist = null;

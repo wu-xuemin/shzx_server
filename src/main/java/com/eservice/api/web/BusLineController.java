@@ -81,7 +81,7 @@ public class BusLineController {
     public Result delete(@RequestParam String busLine) {
         if(busLine != null) {
             BusLine busLineObj = JSON.parseObject(busLine, BusLine.class);
-            busLineObj.setValid(0);
+            busLineObj.setValid(Constant.VALID_NO);
             busLineService.update(busLineObj);
         } else {
             ResultGenerator.genFailResult("参数不能为空！");
@@ -245,7 +245,7 @@ public class BusLineController {
                     busLine.setBusBaseInfo(busBaseInfo.getId());
                 }
                 busLine.setMode(Constant.BUS_MODE_MORNING);
-                busLine.setValid(1);
+                busLine.setValid(Constant.VALID_YES);
                 busLine.setCreateTime(new Date());
 
                 /**

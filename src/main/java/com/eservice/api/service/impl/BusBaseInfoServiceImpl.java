@@ -11,6 +11,7 @@ import com.eservice.api.model.user.User;
 import com.eservice.api.service.BusBaseInfoService;
 import com.eservice.api.core.AbstractService;
 import com.eservice.api.service.common.CommonService;
+import com.eservice.api.service.common.Constant;
 import com.github.pagehelper.PageInfo;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -99,7 +100,7 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
                     busBaseInfo.setNumber(busLineExcelHelper.getBusNumber().split("\\.")[0]);
                     busBaseInfo.setPlateNumber(busLineExcelHelper.getPlateNumber());
                     busBaseInfo.setSchoolPartition(busLineExcelHelper.getSchoolPartition());
-                    busBaseInfo.setValid(1);
+                    busBaseInfo.setValid(Constant.VALID_YES);
 
                     /**
                      * 如果有对应的user 巴士妈妈/司机则保存

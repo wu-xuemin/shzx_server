@@ -136,7 +136,7 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
                     }
                     busLine.setMode(busLineExcelHelper.getMode());
                     busLine.setName(busLineExcelHelper.getName());
-                    busLine.setValid(1);
+                    busLine.setValid(Constant.VALID_YES);
 
                     /**
                      * 逐个加入站点
@@ -239,7 +239,7 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
 
             busLineNoon.setStations(strStationsNoon);
             busLineNoon.setCreateTime(new Date());
-            busLineNoon.setValid(1);
+            busLineNoon.setValid(Constant.VALID_YES);
             busLineService.save(busLineNoon);
             busLineListNoon.add(busLineNoon);
             logger.info("add 放学： " + busLineNoon.getName() + "id:" + busLineNoon.getId());

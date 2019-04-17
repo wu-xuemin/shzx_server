@@ -9,6 +9,7 @@ import com.eservice.api.model.bus_base_info.BusBaseFullInfo;
 import com.eservice.api.model.bus_base_info.BusBaseInfo;
 import com.eservice.api.model.user.User;
 import com.eservice.api.service.common.CommonService;
+import com.eservice.api.service.common.Constant;
 import com.eservice.api.service.impl.BusBaseInfoServiceImpl;
 import com.eservice.api.service.impl.UserServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -59,7 +60,7 @@ public class BusBaseInfoController {
     public Result delete(@RequestParam String busBaseInfo) {
         if(busBaseInfo != null) {
             BusBaseInfo busBaseInfoObj = JSON.parseObject(busBaseInfo, BusBaseInfo.class);
-            busBaseInfoObj.setValid(0);
+            busBaseInfoObj.setValid(Constant.VALID_NO);
             busBaseInfoService.update(busBaseInfoObj);
         } else {
             ResultGenerator.genFailResult("参数不能为空！");
@@ -164,7 +165,7 @@ public class BusBaseInfoController {
                     logger.warn(" no busMom found by account: " + busMomName);
                 }
                 busBaseInfo.setCreateTime(new Date());
-                busBaseInfo.setValid(1);
+                busBaseInfo.setValid(Constant.VALID_YES);
 
                 Class cl2 = Class.forName("com.eservice.api.model.bus_base_info.BusBaseInfo");
                 Field field = cl2.getDeclaredField("number");

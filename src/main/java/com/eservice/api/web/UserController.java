@@ -58,7 +58,7 @@ public class UserController {
             return ResultGenerator.genFailResult("用户名已存在！");
         }
       //  user.setPassword("password");
-        user.setValid(1);
+        user.setValid(Constant.VALID_YES);
         user.setCreateTime(new Date());
         userService.save(user);
         return ResultGenerator.genSuccessResult();
@@ -67,7 +67,7 @@ public class UserController {
     public Result delete(@RequestParam String user) {
         if(user != null) {
             User userObj = JSON.parseObject(user, User.class);
-            userObj.setValid(0);
+            userObj.setValid(Constant.VALID_NO);
             userService.update(userObj);
         } else {
             ResultGenerator.genFailResult("参数不能为空！");
@@ -250,24 +250,25 @@ public class UserController {
             for (int i = 0; i < ja.size(); i++) {
                 User bzr = new User();
                 JSONObject jo = ja.getJSONObject(i);
-                String teacher_name = jo.getString("teacher_name");
-                String teacher_phone = jo.getString("teacher_phone");
+                String teacherName = jo.getString("teacher_name");
+                String teacherPhone = jo.getString("teacher_phone");
+                String teacherUnionId = jo.getString("tunionId");
 
                 bzr.setCreateTime(new Date());
                 //班主任的账号设为和姓名一样
-                bzr.setAccount(teacher_name);
-                bzr.setName(teacher_name);
-                bzr.setPhone(teacher_phone);
+                bzr.setAccount(teacherName);
+                bzr.setName(teacherName);
+                bzr.setPhone(teacherPhone);
                 bzr.setPassword(Constant.USER_DEFAULT_PASSWORD);
-                bzr.setRoleId(4);
+                bzr.setRoleId(Constant.USER_ROLE_TEACHER);
                 bzr.setCreateTime(new Date());
-                bzr.setValid(1);
-//                bzr.setSchoolStaffCode();
+                bzr.setValid(Constant.VALID_YES);
+                bzr.setSchoolStaffCode(teacherUnionId);
 
                 Class cl = Class.forName("com.eservice.api.model.user.User");
                 Field fieldUserAccount = cl.getDeclaredField("account");
                 User userExist = null;
-                userExist = userService.findBy(fieldUserAccount.getName(), teacher_name);
+                userExist = userService.findBy(fieldUserAccount.getName(), teacherName);
                 if(userExist == null) {
                     userService.save(bzr);
                     logger.info("added bzr: " + bzr.getAccount());
@@ -303,11 +304,11 @@ public class UserController {
 
                 busMom.setAccount(busMomName);
                 busMom.setName(busMomName);
-                busMom.setRoleId(3);
+                busMom.setRoleId(Constant.USER_ROLE_BUSMOM);
                 busMom.setPassword(Constant.USER_DEFAULT_PASSWORD);
                 busMom.setPhone(busMomPhone);
                 busMom.setCreateTime(new Date());
-                busMom.setValid(1);
+                busMom.setValid(Constant.VALID_YES);
 
                 Class cl = Class.forName("com.eservice.api.model.user.User");
                 Field fieldUserAccount = cl.getDeclaredField("account");

@@ -395,7 +395,9 @@ public class TransportRecordController {
 
         //获取全部站点名称
         BusLine busLine = busLineService.getBusLineInfoByBusNumberAndBusMode(busNumber,busMode);
-
+        if(busLine == null){
+            return ResultGenerator.genFailResult("Can not find busLine by busNumber&busMode: " + busNumber + "&" + busMode);
+        }
 //        List<BusStations> stationsList = JSON.parseArray(busLine.getStations(), BusStations.class);
         //原先是JSON格式，现在是逗号分隔了站点
         if(!busMode.equals(Constant.BUS_MODE_NIGHT)) {
