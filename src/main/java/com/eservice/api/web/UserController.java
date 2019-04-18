@@ -239,7 +239,7 @@ public class UserController {
     @ApiOperation("参数传入上中的班级URL， 根据URL返回的数据（不包含教师工号），创建班主任（包括账号，姓名，角色，密码，电话，创建时间，在职，不包括教师的工号）。返回新增的 班主任数量 ")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
     @PostMapping("/getURLContentAndCreateBZR")
-    public Result getURLContentAndCreateBZR(@RequestParam(defaultValue = "http://app.shs.cn/ydpt/ws/buse/classes?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761")
+    public Result getURLContentAndCreateBZR(@RequestParam(defaultValue = Constant.SHZX_URL_GET_CLASS)
                                                       String urlStr) {
 
         Integer addedBzrSum = 0;
@@ -288,7 +288,7 @@ public class UserController {
     @ApiOperation("参数传入上中的班车URL， 根据URL返回的数据，创建BusMom（包括账号，姓名，角色，密码，电话，创建时间，在职）。返回新增的 busMom数量 ")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
     @PostMapping("/getURLContentAndCreateBusMoms")
-    public Result getURLContentAndCreateBusMoms(@RequestParam(defaultValue = "http://app.shs.cn/ydpt/ws/buse/buses?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761")
+    public Result getURLContentAndCreateBusMoms(@RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS)
                                                         String urlStr) {
 
         Integer addedBusMomSum = 0;

@@ -501,7 +501,7 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    @ApiOperation("放学下车过程中，分子（当前站点还没下车的）变小，根据校车获取当天放学的分子")
+    @ApiOperation("【放学下车】过程中，分子（当前站点还没下车的）变小，根据校车获取当天放学的分子")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "校车编号" ) })
     @PostMapping("/getStudentsWaitGetOff")
@@ -521,6 +521,10 @@ public class TransportRecordController {
         ArrayList<StationPickingInfo> pickingInfoArrayList = new ArrayList<>();
         //获取全部站点名称
         BusLine busLine = busLineService.getBusLineInfoByBusNumberAndBusMode(busNumber, Constant.BUS_MODE_AFTERNOON);
+        if(busLine == null){
+            logger.warn("Can not find the busLine by busNumber " + busNumber + " and " + Constant.BUS_MODE_AFTERNOON);
+            return ResultGenerator.genFailResult("Can not find the busLine by busNumber " + busNumber + " and " + Constant.BUS_MODE_AFTERNOON);
+        }
         String[] stationsArr = busLine.getStations().split("\\,");
 
         for (int i = 0; i < stationsArr.length; i++) {

@@ -176,7 +176,7 @@
     <if test="className != null and className != ''">
       AND banji.class_name = #{className}
     </if>
-      AND bus_line.`mode` = '早班'
+      AND bus_line.`mode` = '上学'
   </select>
   <select id="getPlannedStudentsAfternoon" resultMap="StudentInfoResultMap">
     SELECT
@@ -208,7 +208,7 @@
     <if test="className != null and className != ''">
       AND banji.class_name = #{className}
     </if>
-      AND bus_line.`mode` = '午班'
+      AND bus_line.`mode` = '放学'
   </select>
 
   <select id="getPlannedStudents" resultMap="StudentInfoResultMap">

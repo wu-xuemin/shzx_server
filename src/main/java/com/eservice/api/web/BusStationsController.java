@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -113,7 +112,7 @@ public class BusStationsController {
     @ApiOperation("参数传入上中的班车URL， 根据URL返回的数据，创建站点（包括站点名称，费率，remark上车时间，创建时间，是否有效）。返回新增的 站点数量 ")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
     @PostMapping("/getURLContentAndCreateBusStations")
-    public Result getURLContentAndCreateBusStations(@RequestParam(defaultValue = "http://app.shs.cn/ydpt/ws/buse/buses?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761")
+    public Result getURLContentAndCreateBusStations(@RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS)
                                                     String urlStr) {
 
         Integer addedBusStationSum = 0;

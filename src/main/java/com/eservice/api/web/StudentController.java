@@ -5,12 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.banji.Banji;
+import com.eservice.api.model.bus_base_info.BusBaseInfo;
+import com.eservice.api.model.bus_line.BusLine;
+import com.eservice.api.model.bus_stations.BusStations;
 import com.eservice.api.model.student.Student;
 import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.common.Constant;
-import com.eservice.api.service.impl.BanjiServiceImpl;
-import com.eservice.api.service.impl.StudentServiceImpl;
+import com.eservice.api.service.impl.*;
 import com.eservice.api.service.park.SyncStuService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -55,6 +57,10 @@ public class StudentController {
     private BanjiServiceImpl banjiService;
     @Resource
     private SyncStuService syncStuService;
+    @Resource
+    private BusStationsServiceImpl busStationsService;
+    @Resource
+    private BusLineServiceImpl busLineService;
     private final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     @ApiOperation("增加学生信息，同时保存学生头像")
@@ -305,14 +311,13 @@ public class StudentController {
         return ResultGenerator.genSuccessResult(notDBExistList);
     }
 
-    @ApiOperation("参数传入上中的班车URL， 根据URL返回的数据，创建学生（URL只包括姓名，班级，学号）。返回新增的学生数量 ")
+    @ApiOperation("参数传入上中的班车URL， 根据URL返回的数据，创建学生（学生URL只包括姓名，班级，学号，再跟进班车URL充学生的校车编号，站点等）返回新增的学生数量 ")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
     @PostMapping("/getURLContentAndCreateStu")
-    public Result getURLContentAndCreateStu(@RequestParam(defaultValue = "http://app.shs.cn/ydpt/ws/buse/students?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761")
-                                                        String urlStr) {
-
+    public Result getURLContentAndCreateStu(@RequestParam(defaultValue = Constant.SHZX_URL_GET_STUDENT) String urlStrStudent,
+                                            @RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS) String urlStrBus) {
         Integer addedStuSum = 0;
-        String strFromUrl = CommonService.getUrlResponse(urlStr);
+        String strFromUrl = CommonService.getUrlResponse(urlStrStudent);
         try {
             JSONObject jsonObject= JSON.parseObject(strFromUrl);
             JSONArray ja = jsonObject.getJSONArray("result");
@@ -349,6 +354,59 @@ public class StudentController {
                 }
             }
 
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+            return ResultGenerator.genFailResult(" exception: " + e.toString());
+        }
+        /**
+         * 获取学生的校车编号，站点，电话信息（放到family字段）
+         */
+        String strFromUrlBus = CommonService.getUrlResponse(urlStrBus);
+        try {
+            JSONObject jsonObject= JSON.parseObject(strFromUrlBus);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            for (int i = 0; i < ja.size(); i++) {
+                JSONObject jo = ja.getJSONObject(i);
+                Student studentInBusUrl = new Student();
+                String stuNumber = jo.getString("student_number");
+                String busNumber = jo.getString("id");
+                String stationName = jo.getString("station_name");
+                String phone = jo.getString("phone");
+
+                studentInBusUrl = studentService.getStudentInfo(stuNumber);
+                if(studentInBusUrl == null){
+                    logger.warn("Can not find student by studentNumber " + stuNumber);
+                } else{
+                    /**
+                     * 班次编号
+                     */
+                    BusLine busLineExist = busLineService.findBy("name", busNumber + "号车_上学" );
+
+                    if (busLineExist == null) {
+                        logger.warn("Can not find busLine by bus number " + busNumber);
+                    } else {
+                        studentInBusUrl.setBusLineMorning(busLineExist.getId());
+                        BusLine busLineExistWuban = null;
+                        busLineExistWuban = busLineService.findBy("name", busNumber + "号车_放学" );
+                        studentInBusUrl.setBusLineAfternoon(busLineExistWuban.getId());
+                    }
+                    /**
+                     * 站点
+                     */
+                    BusStations busStation = busStationsService.getBusStation(stationName);
+                    if(busStation == null){
+                        logger.warn("Can not find station by stationName " + stationName);
+                    } else {
+                        studentInBusUrl.setBoardStationMorning(busStation.getId());
+                        studentInBusUrl.setBoardStationAfternoon(busStation.getId());
+                    }
+                    /**
+                     * 电话信息（放到family字段）
+                     */
+                    studentInBusUrl.setFamilyInfo(phone);
+                    studentService.update(studentInBusUrl);
+                }
+            }
         } catch (Exception e) {
             logger.warn(" exception: " + e.toString());
             return ResultGenerator.genFailResult(" exception: " + e.toString());

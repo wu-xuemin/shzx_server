@@ -222,7 +222,7 @@ public class BusLineController {
     @ApiOperation("参数传入上中的班车URL， 根据URL返回的数据，创建线路（包括线路名称，校车，班次，是否有效，创建时间，站点列表）。返回新增的 线路数量 ")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
     @PostMapping("/getURLContentAndCreateBusSLine")
-    public Result getURLContentAndCreateBusSLine(@RequestParam(defaultValue = "http://app.shs.cn/ydpt/ws/buse/buses?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761")
+    public Result getURLContentAndCreateBusSLine(@RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS)
                                                             String urlStr) {
         Integer addedBusLineSum = 0;
         String strFromUrl = CommonService.getUrlResponse(urlStr);

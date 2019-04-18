@@ -66,4 +66,9 @@ public class Constant {
     public static final Integer USER_ROLE_DRIVER = 5;
     public static final Integer VALID_YES = 1;
     public static final Integer VALID_NO = 0;
+
+    public static final String SHZX_URL_GET_BUS = "http://app.shs.cn/ydpt/ws/buse/buses?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761";
+    public static final String SHZX_URL_GET_STUDENT = "http://app.shs.cn/ydpt/ws/buse/students?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761";
+    public static final String SHZX_URL_GET_CLASS = "http://app.shs.cn/ydpt/ws/buse/classes?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761";
+
 }

@@ -8,6 +8,7 @@ import com.eservice.api.model.banji.Banji;
 import com.eservice.api.model.banji.BanjiInfo;
 import com.eservice.api.model.user.User;
 import com.eservice.api.service.common.CommonService;
+import com.eservice.api.service.common.Constant;
 import com.eservice.api.service.common.SMSUtils;
 import com.eservice.api.service.impl.BanjiServiceImpl;
 import com.eservice.api.service.impl.UserServiceImpl;
@@ -158,10 +159,13 @@ public class BanjiController {
         return ResultGenerator.genSuccessResult(isExist);
     }
 
+    /**
+     * 注意生成顺序 班主任、busMom、班级、站点、校车、线路、学生 （目前少司机）
+     */
     @ApiOperation("参数传入上中班级URL， 根据URL返回的数据，创建班级（包括年级名称，班级名称，班主任，创建时间）（注意班主任要先创建）。返回新增的班级数量 ")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
     @PostMapping("/getURLContentAndCreateBanji")
-    public Result getURLContentAndCreateBanji(@RequestParam(defaultValue = "http://app.shs.cn/ydpt/ws/buse/classes?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761")
+    public Result getURLContentAndCreateBanji(@RequestParam(defaultValue = Constant.SHZX_URL_GET_CLASS)
                                                           String urlStr) {
 
         Integer addedBanjiSum = 0;

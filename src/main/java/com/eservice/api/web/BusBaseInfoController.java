@@ -135,7 +135,7 @@ public class BusBaseInfoController {
     @ApiOperation("参数传入上中的班车URL，根据URL返回的数据，创建校车信息（包括校区，校车编号，车牌号，busMom，创建时间，是否有效），不包括司机。返回新增的 校车数量 ")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
     @PostMapping("/getURLContentAndCreateBusBaseInfo")
-    public Result getURLContentAndCreateBusBaseInfo(@RequestParam(defaultValue = "http://app.shs.cn/ydpt/ws/buse/buses?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761")
+    public Result getURLContentAndCreateBusBaseInfo(@RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS)
                                                             String urlStr) {
 
         Integer addedBusBaseInfoSum = 0;
