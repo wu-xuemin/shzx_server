@@ -1,4 +1,5 @@
 package com.eservice.api.web;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -28,10 +29,11 @@ import java.util.Date;
 import java.util.List;
 
 /**
-* Class Description: xxx
-* @author Wilson Hu
-* @date 2018/12/17.
-*/
+ * Class Description: xxx
+ *
+ * @author Wilson Hu
+ * @date 2018/12/17.
+ */
 @RequestMapping("/user")
 @RestController
 @Api(description = "用户信息管理")
@@ -53,19 +55,22 @@ public class UserController {
 
     @ApiOperation("新增用户")
     @PostMapping("/add")
-    public Result addStaff(@RequestBody @NotNull User user) {
-        if(userService.selectByAccount(user.getAccount()) != null) {
+    public Result addStaff(@RequestParam String user) {
+        String userStr = user;
+        User userObj = JSON.parseObject(user, User.class);
+        if (userService.selectByAccount(userObj.getAccount()) != null) {
             return ResultGenerator.genFailResult("用户名已存在！");
         }
-      //  user.setPassword("password");
-        user.setValid(Constant.VALID_YES);
-        user.setCreateTime(new Date());
-        userService.save(user);
+        //  user.setPassword("password");
+        userObj.setValid(Constant.VALID_YES);
+        userObj.setCreateTime(new Date());
+        userService.save(userObj);
         return ResultGenerator.genSuccessResult();
     }
+
     @PostMapping("/delete")
     public Result delete(@RequestParam String user) {
-        if(user != null) {
+        if (user != null) {
             User userObj = JSON.parseObject(user, User.class);
             userObj.setValid(Constant.VALID_NO);
             userService.update(userObj);
@@ -74,22 +79,24 @@ public class UserController {
         }
         return ResultGenerator.genSuccessResult();
     }
+
     /**
      * 更新用户密码
      */
     @ApiOperation("更新用户密码")
     @PostMapping("/updatePassword")
-    public Result updatePassword(@RequestParam String account, @RequestParam String oldPassword,@RequestParam String newPassword) {
+    public Result updatePassword(@RequestParam String account, @RequestParam String oldPassword, @RequestParam String newPassword) {
 
-        User user  = userService.requestLogin(account, oldPassword);
-        if(user == null) {
+        User user = userService.requestLogin(account, oldPassword);
+        if (user == null) {
             return ResultGenerator.genFailResult("账号/密码 不正确！");
-        }else {
+        } else {
             user.setPassword(newPassword);
             userService.update(user);
             return ResultGenerator.genSuccessResult("密码更新成功");
         }
     }
+
     @ApiOperation("更新用户")
     @PostMapping("/update")
     public Result update(String user) {
@@ -103,6 +110,7 @@ public class UserController {
         User user = userService.findById(id);
         return ResultGenerator.genSuccessResult(user);
     }
+
     @ApiOperation("获取列表")
     @PostMapping("/list")
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
@@ -112,10 +120,10 @@ public class UserController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "account", value = "账号"),
-            @ApiImplicitParam(paramType = "query",name = "name", value = "姓名"),
-            @ApiImplicitParam(paramType = "query",name = "roleId", value = "角色，2:管理员,3:busMom,4:班主任,5:司机"),
-            @ApiImplicitParam(paramType = "query",name = "valid", value = "是否在职， “1”:在职 “0”:离职")})
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "account", value = "账号"),
+            @ApiImplicitParam(paramType = "query", name = "name", value = "姓名"),
+            @ApiImplicitParam(paramType = "query", name = "roleId", value = "角色，2:管理员,3:busMom,4:班主任,5:司机"),
+            @ApiImplicitParam(paramType = "query", name = "valid", value = "是否在职， “1”:在职 “0”:离职")})
     @PostMapping("/selectUsers")
     public Result selectUsers(@RequestParam(defaultValue = "0") Integer page,
                               @RequestParam(defaultValue = "0") Integer size,
@@ -124,32 +132,37 @@ public class UserController {
                               Integer roleId,
                               Integer valid) {
         PageHelper.startPage(page, size);
-        List<User> list = userService.selectUsers(account,name,roleId,valid);
+        List<User> list = userService.selectUsers(account, name, roleId, valid);
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getValid() == 0) {
+                list.remove(i);
+            }
+        }
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
     @ApiOperation("带meid登陆，如果参数meid号为空则不验证meid")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "meid", value = "设备的meid号") })
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "meid", value = "设备的meid号")})
     @PostMapping("/requestLogin")
     public Result requestLogin(@RequestParam String account, @RequestParam String password, @RequestParam(defaultValue = "0") String meid) {
         boolean result = true;
 
-        if(account == null || "".equals(account)) {
+        if (account == null || "".equals(account)) {
             return ResultGenerator.genFailResult("账号不能为空！");
-        } else if(password == null || "".equals(password)) {
+        } else if (password == null || "".equals(password)) {
             return ResultGenerator.genFailResult("密码不能为空！");
-        }else {
+        } else {
             //移动端MEID值需要传入，且不为“0”
-            if(!ZERO_STRING.equals(meid)) {
-                if(deviceService.findDeviceByMEID(meid) == null) {
+            if (!ZERO_STRING.equals(meid)) {
+                if (deviceService.findDeviceByMEID(meid) == null) {
                     return ResultGenerator.genFailResult("设备没有登陆权限！");
                 }
             }
             User user = userService.requestLogin(account, password);
-            if(user == null) {
+            if (user == null) {
                 return ResultGenerator.genFailResult("账号或密码不正确！");
-            }else {
+            } else {
                 ///mqttMessageHelper.sendToClient("topic/client/2", JSON.toJSONString(userDetail));
                 return ResultGenerator.genSuccessResult(user);
             }
@@ -193,7 +206,7 @@ public class UserController {
     }
 
     @ApiOperation("从xls excel里读取班主任信息")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\国际部学生基本信息20190126.xls") })
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\国际部学生基本信息20190126.xls")})
     @PostMapping("/parseChargeTeacherFromExcel")
     public Result parseChargeTeacherFromExcel(@RequestParam String fileName) {
         Result banji = userService.parseChargeTeacherFromExcel(fileName);
@@ -206,7 +219,7 @@ public class UserController {
      * 的返回结果制作的excel。
      */
     @ApiOperation("更新从另一个 xls excel里读取班主任信息,因为班主任的手机信息和前面不是同一个文件")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\老师信息20190329.xls") })
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "fileName", value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\老师信息20190329.xls")})
     @PostMapping("/parseChargeTeacherPhoneFromExcel")
     public Result parseChargeTeacherPhoneFromExcel(@RequestParam String fileName) {
         Result banji = userService.parseChargeTeacherPhoneFromExcel(fileName);
@@ -214,8 +227,8 @@ public class UserController {
     }
 
     @ApiOperation("从xls excel里读取巴士妈妈和司机信息")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "fileName",
-            value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\校车线路上传模版_需求_2019_0201-新格式.xls") })
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "fileName",
+            value = "excel带路径文件名，比如C:\\Users\\wxm\\Desktop\\shzx_doc\\校车线路上传模版_需求_2019_0201-新格式.xls")})
     @PostMapping("/parseBusMomDriverFromExcel")
     public Result parseBusMomDriverFromExcel(@RequestParam String fileName) {
         Result banji = userService.parseBusMomDriverFromExcel(fileName);
@@ -237,15 +250,15 @@ public class UserController {
     }
 
     @ApiOperation("参数传入上中的班级URL， 根据URL返回的数据（不包含教师工号），创建班主任（包括账号，姓名，角色，密码，电话，创建时间，在职，不包括教师的工号）。返回新增的 班主任数量 ")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "urlStr", value = " url地址 ")})
     @PostMapping("/getURLContentAndCreateBZR")
     public Result getURLContentAndCreateBZR(@RequestParam(defaultValue = Constant.SHZX_URL_GET_CLASS)
-                                                      String urlStr) {
+                                                    String urlStr) {
 
         Integer addedBzrSum = 0;
         String strFromUrl = CommonService.getUrlResponse(urlStr);
         try {
-            JSONObject jsonObject= JSON.parseObject(strFromUrl);
+            JSONObject jsonObject = JSON.parseObject(strFromUrl);
             JSONArray ja = jsonObject.getJSONArray("result");
             for (int i = 0; i < ja.size(); i++) {
                 User bzr = new User();
@@ -269,12 +282,12 @@ public class UserController {
                 Field fieldUserAccount = cl.getDeclaredField("account");
                 User userExist = null;
                 userExist = userService.findBy(fieldUserAccount.getName(), teacherName);
-                if(userExist == null) {
+                if (userExist == null) {
                     userService.save(bzr);
                     logger.info("added bzr: " + bzr.getAccount());
-                    addedBzrSum ++;
+                    addedBzrSum++;
                 } else {
-                    logger.info(" already exist account: " + bzr.getAccount() + ",name " + bzr.getName() );
+                    logger.info(" already exist account: " + bzr.getAccount() + ",name " + bzr.getName());
                 }
             }
 
@@ -286,7 +299,7 @@ public class UserController {
 
 
     @ApiOperation("参数传入上中的班车URL， 根据URL返回的数据，创建BusMom（包括账号，姓名，角色，密码，电话，创建时间，在职）。返回新增的 busMom数量 ")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "urlStr", value = " url地址 ")})
     @PostMapping("/getURLContentAndCreateBusMoms")
     public Result getURLContentAndCreateBusMoms(@RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS)
                                                         String urlStr) {
@@ -294,7 +307,7 @@ public class UserController {
         Integer addedBusMomSum = 0;
         String strFromUrl = CommonService.getUrlResponse(urlStr);
         try {
-            JSONObject jsonObject= JSON.parseObject(strFromUrl);
+            JSONObject jsonObject = JSON.parseObject(strFromUrl);
             JSONArray ja = jsonObject.getJSONArray("result");
             for (int i = 0; i < ja.size(); i++) {
                 User busMom = new User();
@@ -314,12 +327,12 @@ public class UserController {
                 Field fieldUserAccount = cl.getDeclaredField("account");
                 User busMomExist = null;
                 busMomExist = userService.findBy(fieldUserAccount.getName(), busMomName);
-                if(busMomExist == null) {
+                if (busMomExist == null) {
                     userService.save(busMom);
                     logger.info("added busMom: " + busMom.getAccount());
-                    addedBusMomSum ++;
+                    addedBusMomSum++;
                 } else {
-                    logger.info(" already exist busMom: " +  busMom.getAccount());
+                    logger.info(" already exist busMom: " + busMom.getAccount());
                 }
             }
 
