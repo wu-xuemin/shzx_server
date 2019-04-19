@@ -67,11 +67,9 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "currentStation", value = " 站点 ID",required = true),
             @ApiImplicitParam(paramType = "query",name = "busNumberInTR", value = " 校车编号 ",required = true),
             @ApiImplicitParam(paramType = "query",name = "flag", value = " 上学、放学上车、放学下车、晚班 ",required = true),
-            //todo 这个status,由前端传入还是统一后端维护？
             @ApiImplicitParam(paramType = "query",name = "status", value = "行程进行中、行程已结束、晚班行程已选 ",required = true)})
     @PostMapping("/add")
     public Result add(TransportRecord transportRecord) {
-        //todo, 检查记录的合理性，比如重复的.。。暂时先允许重复？
         if(transportRecord == null) {
             return ResultGenerator.genFailResult("transportRecord 为空");
         }
@@ -121,7 +119,8 @@ public class TransportRecordController {
                 transportRecord.setStatus(Constant.TRANSPORT_RECORD_STATUS_RUNNING);
             }
             transportRecordService.saveAndGetID(transportRecord);
-            logger.info("add record  " + " busLine:" + busLineService.findById(transportRecord.getBusLine()).getName()
+            logger.info("add record id: " + transportRecord.getId()
+                    + " busLine:" + busLineService.findById(transportRecord.getBusLine()).getName()
                     + " Flag:"+ transportRecord.getFlag() + "status-by-api:" + transportRecord.getStatus()
                     + "  busNumber:" + transportRecord.getBusNumberInTR()+ " begainTime " + transportRecord.getBeginTime());
 

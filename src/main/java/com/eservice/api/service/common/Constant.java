@@ -40,7 +40,6 @@ public class Constant {
 
 
     public static final String BUS_STATUS_WUBAN_WAIT_START = "放学待发车";
-    //todo 相关的更新
     public static final String BUS_STATUS_WUBAN_ABOARDING = "放学上车中";
     public static final String BUS_STATUS_WUBAN_RUNNING = "放学进行中";
     public static final String BUS_STATUS_WUBAN_DONE = "放学已结束";
@@ -71,4 +70,6 @@ public class Constant {
     public static final String SHZX_URL_GET_STUDENT = "http://app.shs.cn/ydpt/ws/buse/students?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761";
     public static final String SHZX_URL_GET_CLASS = "http://app.shs.cn/ydpt/ws/buse/classes?sign=865541ccd3e52ba8ad0d16052cc25903&sendTime=1551664022761";
 
+    //上学放学相同的线路，用逗号隔开
+    public static final String BUS_LINE_ZAOBAN_WUBAN_SAME = "1,8,10,11,16,17,20,31,41,60,67,74,86,97";
 }

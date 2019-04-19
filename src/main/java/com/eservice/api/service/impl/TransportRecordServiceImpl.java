@@ -385,9 +385,9 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
 
         if(debugFlag.equalsIgnoreCase("true")) {
             logger.info("selectAbsenceStudentInfo by 校车 " + busNumber + "在" + busMode + " " + queryStartTime + " 缺乘人数 " + listAbsenceStudents.size());
-            for (StudentInfo st : listAbsenceStudents) {
-                logger.info(" 缺乘：" + st.getStudentNumber() + studentService.getStudentInfo(st.getStudentNumber()).getName());
-            }
+//            for (StudentInfo st : listAbsenceStudents) {
+//                logger.info(" 缺乘：" + st.getStudentNumber() + studentService.getStudentInfo(st.getStudentNumber()).getName());
+//            }
         }
         return listAbsenceStudents;
     }

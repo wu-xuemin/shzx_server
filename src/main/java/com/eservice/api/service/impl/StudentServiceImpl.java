@@ -189,7 +189,6 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                     Field fieldClassName = cl.getDeclaredField("className");
 
                     if(studentExcel.getBanjiName() != null) {
-                        // todo 班级名称重复时
                         banjiExist = banjiService.findBy(fieldClassName.getName(), studentExcel.getBanjiName());
                     }
                     if(null != banjiExist){
@@ -251,7 +250,6 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
                     Banji banjiExist = null;
                     Class cl = Class.forName("com.eservice.api.model.banji.Banji");
                     Field fieldClassName = cl.getDeclaredField("className");
-                    // todo 班级名称重复时
                     banjiExist = banjiService.findBy(fieldClassName.getName(), studentExcel.getBanjiName());
                     if(null != banjiExist){
                         student.setBanji(banjiExist.getId());
@@ -545,6 +543,10 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
             infos.add(studentBusInfo);
         }
         return infos;
+    }
+
+    public Integer deleteStudentsNotRideSchoolBus(){
+        return studentMapper.deleteStudentsNotRideSchoolBus();
     }
 
 }

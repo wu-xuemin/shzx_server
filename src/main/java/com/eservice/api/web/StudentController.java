@@ -317,6 +317,7 @@ public class StudentController {
     public Result getURLContentAndCreateStu(@RequestParam(defaultValue = Constant.SHZX_URL_GET_STUDENT) String urlStrStudent,
                                             @RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS) String urlStrBus) {
         Integer addedStuSum = 0;
+        Integer noRideBusStuSum =0;
         String strFromUrl = CommonService.getUrlResponse(urlStrStudent);
         try {
             JSONObject jsonObject= JSON.parseObject(strFromUrl);
@@ -407,10 +408,24 @@ public class StudentController {
                     studentService.update(studentInBusUrl);
                 }
             }
+
+            /**
+             * 删除不坐班车的学生
+             */
+            noRideBusStuSum = studentService.deleteStudentsNotRideSchoolBus();
+            logger.info( noRideBusStuSum + " student(s) not riding school bus deleted");
+
         } catch (Exception e) {
             logger.warn(" exception: " + e.toString());
             return ResultGenerator.genFailResult(" exception: " + e.toString());
         }
-        return ResultGenerator.genSuccessResult("addedStuSum " + addedStuSum + " is added");
+        return ResultGenerator.genSuccessResult("Finally, " + (addedStuSum - noRideBusStuSum) + " is added");
+    }
+
+    @ApiOperation("删除不坐班车的学生")
+    @PostMapping("/deleteStudentsNotRideSchoolBus")
+    public Result deleteStudentsNotRideSchoolBus() {
+        Integer d = studentService.deleteStudentsNotRideSchoolBus();
+        return ResultGenerator.genSuccessResult(d + " student(s) deleted");
     }
 }

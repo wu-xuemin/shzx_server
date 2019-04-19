@@ -72,7 +72,6 @@
       and bus_base_info.number = #{busNumber}
     </if>
   </select>
-<!-- todo 测试afternoon-->
   <select id="getPlannedStudentsAfternoonByBusNumber" resultMap="StudentInfoResultMap">
     SELECT
       student.*,

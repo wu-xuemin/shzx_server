@@ -343,7 +343,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 try {
                     cl = Class.forName("com.eservice.api.model.user.User");
                     Field fieldHeadImage = cl.getDeclaredField("name");
-                    userExist = userService.findBy(fieldHeadImage.getName(), tempList[i].getName().split("_")[2].split("\\.")[0]);
+                    userExist = userService.findBy(fieldHeadImage.getName(), tempList[i].getName().split("_")[1].split("\\.")[0]);
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 } catch (NoSuchFieldException e) {
