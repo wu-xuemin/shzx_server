@@ -8,6 +8,7 @@ import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.user.User;
 import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.common.Constant;
+import com.eservice.api.service.impl.BanjiServiceImpl;
 import com.eservice.api.service.impl.DeviceServiceImpl;
 import com.eservice.api.service.impl.UserServiceImpl;
 import com.eservice.api.service.park.SyncBusMomService;
@@ -47,6 +48,8 @@ public class UserController {
     @Resource
     private SyncBusMomService syncBusMomService;
 
+    @Resource
+    private BanjiServiceImpl banjiService;
     /**
      * 该值为default值， Android端传入的参数不能为“0”
      */
@@ -146,8 +149,6 @@ public class UserController {
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "meid", value = "设备的meid号")})
     @PostMapping("/requestLogin")
     public Result requestLogin(@RequestParam String account, @RequestParam String password, @RequestParam(defaultValue = "0") String meid) {
-        boolean result = true;
-
         if (account == null || "".equals(account)) {
             return ResultGenerator.genFailResult("账号不能为空！");
         } else if (password == null || "".equals(password)) {
@@ -163,9 +164,39 @@ public class UserController {
             if (user == null) {
                 return ResultGenerator.genFailResult("账号或密码不正确！");
             } else {
-                ///mqttMessageHelper.sendToClient("topic/client/2", JSON.toJSONString(userDetail));
                 return ResultGenerator.genSuccessResult(user);
+
             }
+        }
+    }
+
+    @ApiOperation("上中系统单点登录如果是老师，返回老师以及其班级信息，非老师则返回用户信息")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "shzxStaffCode", value = "从上中那边登录后传来的身份ID")})
+    @PostMapping("/ShzxCASLogin")
+    public Result ShzxCASLogin(@RequestParam String shzxStaffCode) {
+        Class cl = null;
+        try {
+            cl = Class.forName("com.eservice.api.model.user.User");
+            Field field = cl.getDeclaredField("schoolStaffCode");
+            User user = userService.findBy(field.getName(),shzxStaffCode);
+            if(user != null) {
+                if (user.getRoleId() == Constant.USER_ROLE_TEACHER) {
+                    /**
+                     * 如果是老师，带上班级信息
+                     */
+                    return ResultGenerator.genSuccessResult(banjiService.getBanjiInfoByBzr(user.getAccount()));
+                } else {
+                    return ResultGenerator.genSuccessResult(user);
+                }
+            } else {
+                return ResultGenerator.genSuccessResult("No user find by shzxStaffCode " + shzxStaffCode);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return ResultGenerator.genFailResult("exception : " + e.toString());
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            return ResultGenerator.genFailResult("exception : " + e.toString());
         }
     }
 

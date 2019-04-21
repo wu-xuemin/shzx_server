@@ -213,4 +213,12 @@ public class BanjiController {
         }
         return ResultGenerator.genSuccessResult("addedBanjiSum " + addedBanjiSum + " is added");
     }
+
+    @ApiOperation("根据班主任账号返回班级详情")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "bzrAccount", value = "班主任账号 比如宋丽萍",required = true)})
+    @PostMapping("/getBanjiInfoByBzr")
+    public Result getBanjiInfoByBzr(@RequestParam String gradeName,@RequestParam String bzrAccount) {
+        BanjiInfo banjiInfo = banjiService.getBanjiInfoByBzr(bzrAccount);
+        return ResultGenerator.genSuccessResult(banjiInfo);
+    }
 }
