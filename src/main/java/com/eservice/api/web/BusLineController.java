@@ -98,9 +98,7 @@ public class BusLineController {
         PageHelper.startPage(page, size);
         List<BusLine> list;
         if ("".equals(queryKey)) {
-            Condition condition = new Condition(BusLine.class);
-            condition.createCriteria().andCondition("valid = ", 1);
-            list = busLineService.findByCondition(condition);
+            list = busLineService.listByName();
         } else {
             list = busLineService.list(queryKey);
         }

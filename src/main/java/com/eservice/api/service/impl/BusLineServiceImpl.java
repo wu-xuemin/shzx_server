@@ -14,7 +14,10 @@ import com.eservice.api.service.BusLineService;
 import com.eservice.api.core.AbstractService;
 import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.common.Constant;
+import org.fusesource.jansi.internal.Kernel32;
+import tk.mybatis.mapper.entity.Condition;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -260,6 +263,22 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
             }
         }
         return true;
+    }
+
+    /**
+     *   将变更消息修改至student表中时，根据路线查匹配的校车信息
+     * @param busline
+     * @return
+     */
+    public List<BusLine> foundBusLine(Integer busline){
+        Condition condition=new Condition(BusLine.class);
+        condition.createCriteria().andEqualTo("stations",busline);
+        List<BusLine> list=busLineService.findByCondition(condition);
+        return list;
+    }
+	
+	 public  List<BusLine> listByName(){
+        return busLineMapper.listByName();
     }
 
 }

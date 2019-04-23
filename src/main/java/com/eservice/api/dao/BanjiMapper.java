@@ -29,4 +29,7 @@ public interface BanjiMapper extends Mapper<Banji> {
 
     @Select("SELECT * from banji LEFT JOIN user on banji.charge_teacher = `user`.id where user.account = #{bzrAccount}")
     BanjiInfo getBanjiInfoByBzr(@Param("bzrAccount") String bzrAccount);
+
+    @Select("SELECT * from banji ORDER BY class_name+0")
+    List<Banji> listByClassName();
 }

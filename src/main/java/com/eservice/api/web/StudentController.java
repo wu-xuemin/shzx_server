@@ -403,6 +403,7 @@ public class StudentController {
                     }
                     /**
                      * 电话信息（放到family字段）
+                     * TODO: URL ready后改为JSON格式
                      */
                     studentInBusUrl.setFamilyInfo(phone);
                     studentService.update(studentInBusUrl);

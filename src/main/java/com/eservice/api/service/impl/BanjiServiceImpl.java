@@ -261,7 +261,12 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
             return true;
         }
     }
+
     public BanjiInfo getBanjiInfoByBzr(String bzrAccount) {
         return banjiMapper.getBanjiInfoByBzr(bzrAccount);
+    }
+
+    public List<Banji> listByClassName(){
+        return banjiMapper.listByClassName();
     }
 }
