@@ -165,4 +165,8 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
     public String getBusNumberByDriverAccount(String driverAccount){
         return busBaseInfoMapper.getBusNumberByDriverAccount(driverAccount);
     }
+
+    public List<BusBaseInfo> listByNumber(){
+        return busBaseInfoMapper.listByNumber();
+    }
 }

@@ -22,4 +22,6 @@ public interface BusBaseInfoMapper extends Mapper<BusBaseInfo> {
 
     @Select("SELECT bus_base_info.number from bus_base_info LEFT JOIN user on bus_driver = `user`.id  where `user`.account = #{driverAccount}")
     String getBusNumberByDriverAccount (@Param("driverAccount") String driverAccount);
+    @Select("SELECT * from bus_base_info ORDER BY number+0")
+    List<BusBaseInfo> listByNumber();
 }

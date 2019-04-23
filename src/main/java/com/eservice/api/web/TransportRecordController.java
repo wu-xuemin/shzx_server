@@ -187,8 +187,8 @@ public class TransportRecordController {
             @ApiImplicitParam(paramType = "query",name = "busNumber", value = "查询的校车编号，比如 XC001"),
             @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次，限于 “上学”、“放学"),
             @ApiImplicitParam(paramType = "query",name = "busStationName", value = "查询的校车站点名称（包括了上车、下车），比如 11路口"),
-            @ApiImplicitParam(paramType = "query",name = "grade", value = "查询的年级，比如 1，比如2"),
-            @ApiImplicitParam(paramType = "query",name = "className", value = "查询的班级名称，比如1年级2班，比如 2年级2班"),
+            @ApiImplicitParam(paramType = "query",name = "grade", value = "查询的年级，比如 1年级，比如(zj) 2年级"),
+            @ApiImplicitParam(paramType = "query",name = "className", value = "查询的班级名称，比如1(1)"),
             @ApiImplicitParam(paramType = "query",name = "recordFlag", value = "上学、放学上车、放学下车、晚班"),
             @ApiImplicitParam(paramType = "query",name = "recordStatus", value = "行程进行中、行程已结束、晚班行程已选")
     })

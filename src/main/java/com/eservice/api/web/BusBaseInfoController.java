@@ -85,7 +85,7 @@ public class BusBaseInfoController {
     @PostMapping("/list")
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
-        List<BusBaseInfo> list = busBaseInfoService.findAll();
+        List<BusBaseInfo> list = busBaseInfoService.listByNumber();
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

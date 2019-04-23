@@ -262,4 +262,7 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
         return true;
     }
 
+    public  List<BusLine> listByName(){
+        return busLineMapper.listByName();
+    }
 }

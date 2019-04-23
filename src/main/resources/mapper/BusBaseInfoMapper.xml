@@ -59,7 +59,7 @@
     WHERE
       bbi.valid = 1
     <if test="schoolPartition != null and schoolPartition != ''">
-      AND bbi.school_partition =  #{schoolPartition}
+      AND bbi.school_partition LIKE CONCAT('%', '${schoolPartition}', '%')
     </if>
 
     <if test="keyWord == null or keyWord == ''">
@@ -85,12 +85,13 @@
     </if>
     <if test="keyWord != null and keyWord != ''">
       and
-       (bl.`name`  LIKE CONCAT('%', '${keyWord}', '%')
+       (bl.`name` LIKE CONCAT('%', '${keyWord}', '%')
       OR bbi.number LIKE CONCAT('%', '${keyWord}', '%')
       OR user_bus_mom.account LIKE CONCAT('%', '${keyWord}', '%')
       OR bbi.`bus_supplier` LIKE  CONCAT('%', '${keyWord}', '%')
       )
     </if>
     GROUP BY bbi.id
+    ORDER BY number +0
   </select>
 </mapper>
