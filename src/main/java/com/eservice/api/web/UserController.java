@@ -329,22 +329,25 @@ public class UserController {
     }
 
 
-    @ApiOperation("参数传入上中的班车URL， 根据URL返回的数据，创建BusMom（包括账号，姓名，角色，密码，电话，创建时间，在职）。返回新增的 busMom数量 ")
+    @ApiOperation("参数传入上中的班车URL， 根据URL返回的数据，创建BusMom,司机（包括账号，姓名，角色，密码，电话，创建时间，在职）。返回新增的 busMom数量 ")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "urlStr", value = " url地址 ")})
-    @PostMapping("/getURLContentAndCreateBusMoms")
-    public Result getURLContentAndCreateBusMoms(@RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS)
+    @PostMapping("/getURLContentAndCreateBusMomAndDriver")
+    public Result getURLContentAndCreateBusMomAndDriver(@RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS)
                                                         String urlStr) {
-
         Integer addedBusMomSum = 0;
+        Integer addedBusDriverSum = 0;
         String strFromUrl = CommonService.getUrlResponse(urlStr);
         try {
             JSONObject jsonObject = JSON.parseObject(strFromUrl);
             JSONArray ja = jsonObject.getJSONArray("result");
             for (int i = 0; i < ja.size(); i++) {
                 User busMom = new User();
+                User busDriver = new User();
                 JSONObject jo = ja.getJSONObject(i);
                 String busMomName = jo.getString("bus_mom_name");
                 String busMomPhone = jo.getString("bus_mom_phone");
+                String busdriverName = jo.getString("driver_name");
+                String busdriverPhone = jo.getString("driver_phone");
 
                 busMom.setAccount(busMomName);
                 busMom.setName(busMomName);
@@ -353,6 +356,14 @@ public class UserController {
                 busMom.setPhone(busMomPhone);
                 busMom.setCreateTime(new Date());
                 busMom.setValid(Constant.VALID_YES);
+
+                busDriver.setAccount(busdriverName);
+                busDriver.setName(busdriverName);
+                busDriver.setRoleId(Constant.USER_ROLE_DRIVER);
+                busDriver.setPassword(Constant.USER_DEFAULT_PASSWORD);
+                busDriver.setPhone(busdriverPhone);
+                busDriver.setCreateTime(new Date());
+                busDriver.setValid(Constant.VALID_YES);
 
                 Class cl = Class.forName("com.eservice.api.model.user.User");
                 Field fieldUserAccount = cl.getDeclaredField("account");
@@ -365,11 +376,21 @@ public class UserController {
                 } else {
                     logger.info(" already exist busMom: " + busMom.getAccount());
                 }
+
+                User busDriverExist = null;
+                busDriverExist = userService.findBy(fieldUserAccount.getName(), busdriverName);
+                if (busDriverExist == null) {
+                    userService.save(busDriver);
+                    logger.info("added driver: " + busdriverName);
+                    addedBusDriverSum++;
+                } else {
+                    logger.info(" already exist driver: " + busdriverName);
+                }
             }
 
         } catch (Exception e) {
             logger.warn(" exception: " + e.toString());
         }
-        return ResultGenerator.genSuccessResult("addedBusMomSum " + addedBusMomSum + " is added");
+        return ResultGenerator.genSuccessResult("addedBusMomSum: " + addedBusMomSum + "  ,addedBusDriverSum: " + addedBusDriverSum );
     }
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-04-19 22:21:42
+Date: 2019-04-24 11:08:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -209,105 +209,105 @@ CREATE TABLE `bus_base_info` (
 -- ----------------------------
 -- Records of bus_base_info
 -- ----------------------------
-INSERT INTO `bus_base_info` VALUES ('989', '1', '沪D56758', null, null, '380', null, '浦西校区', null, '1', '2019-04-19 21:05:08', null);
-INSERT INTO `bus_base_info` VALUES ('990', '86', '沪EE0300', null, null, '381', null, '浦西校区', null, '1', '2019-04-19 21:05:08', null);
-INSERT INTO `bus_base_info` VALUES ('991', '87', '沪D45330', null, null, '382', null, '浦西校区', null, '1', '2019-04-19 21:05:08', null);
-INSERT INTO `bus_base_info` VALUES ('992', '88', '沪BT7696', null, null, '383', null, '浦西校区', null, '1', '2019-04-19 21:05:08', null);
-INSERT INTO `bus_base_info` VALUES ('993', '10', '沪D59966', null, null, '384', null, '浦西校区', null, '1', '2019-04-19 21:05:08', null);
-INSERT INTO `bus_base_info` VALUES ('994', '2', '沪BT7607', null, null, '385', null, '浦西校区', null, '1', '2019-04-19 21:05:08', null);
-INSERT INTO `bus_base_info` VALUES ('995', '3', '沪D42545', null, null, '386', null, '浦西校区', null, '1', '2019-04-19 21:05:08', null);
-INSERT INTO `bus_base_info` VALUES ('996', '17', '沪DK5928', null, null, '387', null, '浦西校区', null, '1', '2019-04-19 21:05:08', null);
-INSERT INTO `bus_base_info` VALUES ('997', '4', '沪D45333', null, null, '388', null, '浦西校区', null, '1', '2019-04-19 21:05:08', null);
-INSERT INTO `bus_base_info` VALUES ('998', '5', '沪BT1548', null, null, '389', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('999', '6', '沪D42540', null, null, '390', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1000', '7', '沪AZ0007', null, null, '391', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1001', '8', '沪D59950', null, null, '392', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1002', '79', '沪EE6252', null, null, '393', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1003', '9', '沪D59969', null, null, '394', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1004', '20', '沪EL8870', null, null, '395', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1005', '11', '沪EH6717', null, null, '396', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1006', '12', '沪D41740', null, null, '397', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('989', '1', '沪D56758', null, null, '380', '731', '浦西校区', null, '1', '2019-04-19 21:05:08', null);
+INSERT INTO `bus_base_info` VALUES ('990', '86', '沪EE0300', null, null, '381', '636', '浦西校区', null, '1', '2019-04-19 21:05:08', null);
+INSERT INTO `bus_base_info` VALUES ('991', '87', '沪D45330', null, null, '382', '638', '浦西校区', null, '1', '2019-04-19 21:05:08', null);
+INSERT INTO `bus_base_info` VALUES ('992', '88', '沪BT7696', null, null, '383', '640', '浦西校区', null, '1', '2019-04-19 21:05:08', null);
+INSERT INTO `bus_base_info` VALUES ('993', '10', '沪D59966', null, null, '384', '740', '浦西校区', null, '1', '2019-04-19 21:05:08', null);
+INSERT INTO `bus_base_info` VALUES ('994', '2', '沪BT7607', null, null, '385', '732', '浦西校区', null, '1', '2019-04-19 21:05:08', null);
+INSERT INTO `bus_base_info` VALUES ('995', '3', '沪D42545', null, null, '386', '733', '浦西校区', null, '1', '2019-04-19 21:05:08', null);
+INSERT INTO `bus_base_info` VALUES ('996', '17', '沪DK5928', null, null, '387', '747', '浦西校区', null, '1', '2019-04-19 21:05:08', null);
+INSERT INTO `bus_base_info` VALUES ('997', '4', '沪D45333', null, null, '388', '734', '浦西校区', null, '1', '2019-04-19 21:05:08', null);
+INSERT INTO `bus_base_info` VALUES ('998', '5', '沪BT1548', null, null, '389', '735', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('999', '6', '沪D42540', null, null, '390', '736', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1000', '7', '沪AZ0007', null, null, '391', '737', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1001', '8', '沪D59950', null, null, '392', '738', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1002', '79', '沪EE6252', null, null, '393', '622', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1003', '9', '沪D59969', null, null, '394', '739', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1004', '20', '沪EL8870', null, null, '395', '750', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1005', '11', '沪EH6717', null, null, '396', '741', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1006', '12', '沪D41740', null, null, '397', '742', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
 INSERT INTO `bus_base_info` VALUES ('1007', '13', '沪EE9696', null, null, '398', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1008', '14', '沪BT7633', null, null, '399', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1009', '15', '沪D56790', null, null, '400', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1010', '16', '沪DC0625', null, null, '401', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1011', '18', '沪D14145', null, null, '402', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1008', '14', '沪BT7633', null, null, '399', '744', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1009', '15', '沪D56790', null, null, '400', '745', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1010', '16', '沪DC0625', null, null, '401', '746', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1011', '18', '沪D14145', null, null, '402', '748', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
 INSERT INTO `bus_base_info` VALUES ('1012', '19', '沪BT7593', null, null, '403', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1013', '24', '沪BR3811', null, null, '404', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1014', '31', '沪D04007', null, null, '405', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1015', '21', '沪DF4409', null, null, '406', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1016', '64', '沪D83748', null, null, '407', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1017', '22', '沪BT1796', null, null, '408', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1018', '23', '沪DC0318', null, null, '409', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1019', '25', '沪DB5317', null, null, '410', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1013', '24', '沪BR3811', null, null, '404', '754', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1014', '31', '沪D04007', null, null, '405', '761', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1015', '21', '沪DF4409', null, null, '406', '751', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1016', '64', '沪D83748', null, null, '407', '793', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1017', '22', '沪BT1796', null, null, '408', '752', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1018', '23', '沪DC0318', null, null, '409', '753', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
+INSERT INTO `bus_base_info` VALUES ('1019', '25', '沪DB5317', null, null, '410', '755', '浦西校区', null, '1', '2019-04-19 21:05:09', null);
 INSERT INTO `bus_base_info` VALUES ('1020', '26', '沪BD0679', null, null, '411', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
 INSERT INTO `bus_base_info` VALUES ('1021', '28', '沪D84251', null, null, '412', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
 INSERT INTO `bus_base_info` VALUES ('1022', '27', '沪BT1147', null, null, '413', null, '浦西校区', null, '1', '2019-04-19 21:05:09', null);
-INSERT INTO `bus_base_info` VALUES ('1023', '29', '沪D04131', null, null, '414', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1024', '30', '沪D84240', null, null, '415', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1025', '43', '沪BT1147', null, null, '416', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1026', '32', '沪D04122', null, null, '417', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1027', '33', '沪DG7265', null, null, '418', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1028', '34', '沪DG4852', null, null, '419', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1029', '35', '沪DB0520', null, null, '420', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1030', '36', '沪D59846', null, null, '421', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1031', '37', '沪D56642', null, null, '422', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1032', '38', '沪D59873', null, null, '423', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1033', '39', '沪D41540', null, null, '424', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1034', '40', '沪D04171', null, null, '425', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1035', '41', '沪BT7522', null, null, '426', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1036', '77', '沪EL8862', null, null, '427', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1037', '42', '沪D04133', null, null, '428', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1038', '59', '沪D18226', null, null, '429', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1039', '45', '沪D04057', null, null, '430', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1023', '29', '沪D04131', null, null, '414', '759', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1024', '30', '沪D84240', null, null, '415', '760', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1025', '43', '沪BT1147', null, null, '416', '773', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1026', '32', '沪D04122', null, null, '417', '762', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1027', '33', '沪DG7265', null, null, '418', '763', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1028', '34', '沪DG4852', null, null, '419', '764', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1029', '35', '沪DB0520', null, null, '420', '765', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1030', '36', '沪D59846', null, null, '421', '766', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1031', '37', '沪D56642', null, null, '422', '767', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1032', '38', '沪D59873', null, null, '423', '768', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1033', '39', '沪D41540', null, null, '424', '769', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1034', '40', '沪D04171', null, null, '425', '770', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1035', '41', '沪BT7522', null, null, '426', '771', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1036', '77', '沪EL8862', null, null, '427', '618', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1037', '42', '沪D04133', null, null, '428', '772', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1038', '59', '沪D18226', null, null, '429', '788', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1039', '45', '沪D04057', null, null, '430', '774', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
 INSERT INTO `bus_base_info` VALUES ('1040', '46', '沪D56810', null, null, '431', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1041', '53', '沪D28749', null, null, '432', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1042', '47', '沪AZ0301', null, null, '433', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1043', '48', '沪EK9225', null, null, '434', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1044', '49', '沪DP2769', null, null, '435', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1045', '50', '沪D28819', null, null, '436', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1046', '51', '沪D18171', null, null, '437', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1047', '52', '沪D18233', null, null, '438', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1048', '54', '沪D28817', null, null, '439', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1049', '55', '沪D25987', null, null, '440', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1050', '56', '沪D18217', null, null, '441', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1051', '57', '沪D18222', null, null, '442', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1052', '58', '沪D18218', null, null, '443', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1053', '72', '沪AZ0078', null, null, '444', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1054', '60', '沪D18219', null, null, '445', null, '浦西校区', null, '1', '2019-04-19 21:05:10', null);
-INSERT INTO `bus_base_info` VALUES ('1055', '61', '沪D28813', null, null, '446', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1056', '62', '沪D18215', null, null, '447', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1057', '63', '沪D25925', null, null, '448', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1058', '65', '沪D28816', null, null, '449', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1059', '66', '沪D28825', null, null, '450', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1060', '67', '沪D18227', null, null, '451', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1061', '68', '沪DA8242', null, null, '452', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1062', '69', '沪AZ0379', null, null, '453', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1063', '70', '沪EC3007', null, null, '454', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1064', '71', '沪EL8190', null, null, '455', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1065', '73', '沪EG9203', null, null, '456', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1066', '84', '沪EE6257', null, null, '457', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1067', '74', '沪AZ0066', null, null, '458', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1068', '78', '沪EE6252', null, null, '459', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1069', '75', '沪EL8122', null, null, '460', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1070', '76', '沪D40447', null, null, '461', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1071', '89', '沪BT7613', null, null, '462', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1072', '80', '沪D56758', null, null, '463', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1073', '81', '沪ET9272', null, null, '464', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1074', '82', '沪D59925', null, null, '465', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1075', '83', '沪D59965', null, null, '466', null, '浦西校区', null, '1', '2019-04-19 21:05:11', null);
-INSERT INTO `bus_base_info` VALUES ('1076', '85', '沪AZ0118', null, null, '467', null, '浦西校区', null, '1', '2019-04-19 21:05:12', null);
-INSERT INTO `bus_base_info` VALUES ('1077', '100', '沪DK5938', null, null, '468', null, '浦西校区', null, '1', '2019-04-19 21:05:12', null);
+INSERT INTO `bus_base_info` VALUES ('1041', '53', '沪D28749', null, null, '432', '782', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1042', '47', '沪AZ0301', null, null, '433', '776', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1043', '48', '沪EK9225', null, null, '434', '777', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1044', '49', '沪DP2769', null, null, '435', '778', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1045', '50', '沪D28819', null, null, '436', '779', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1046', '51', '沪D18171', null, null, '437', '780', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1047', '52', '沪D18233', null, null, '438', '781', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1048', '54', '沪D28817', null, null, '439', '783', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1049', '55', '沪D25987', null, null, '440', '784', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1050', '56', '沪D18217', null, null, '441', '785', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1051', '57', '沪D18222', null, null, '442', '786', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1052', '58', '沪D18218', null, null, '443', '787', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1053', '72', '沪AZ0078', null, null, '444', '608', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1054', '60', '沪D18219', null, null, '445', '789', '浦西校区', null, '1', '2019-04-19 21:05:10', null);
+INSERT INTO `bus_base_info` VALUES ('1055', '61', '沪D28813', null, null, '446', '790', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1056', '62', '沪D18215', null, null, '447', '791', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1057', '63', '沪D25925', null, null, '448', '792', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1058', '65', '沪D28816', null, null, '449', '794', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1059', '66', '沪D28825', null, null, '450', '795', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1060', '67', '沪D18227', null, null, '451', '796', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1061', '68', '沪DA8242', null, null, '452', '600', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1062', '69', '沪AZ0379', null, null, '453', '602', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1063', '70', '沪EC3007', null, null, '454', '604', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1064', '71', '沪EL8190', null, null, '455', '606', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1065', '73', '沪EG9203', null, null, '456', '610', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1066', '84', '沪EE6257', null, null, '457', '632', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1067', '74', '沪AZ0066', null, null, '458', '612', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1068', '78', '沪EE6252', null, null, '459', '620', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1069', '75', '沪EL8122', null, null, '460', '614', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1070', '76', '沪D40447', null, null, '461', '616', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1071', '89', '沪BT7613', null, null, '462', '642', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1072', '80', '沪D56758', null, null, '463', '624', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1073', '81', '沪ET9272', null, null, '464', '626', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1074', '82', '沪D59925', null, null, '465', '628', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1075', '83', '沪D59965', null, null, '466', '630', '浦西校区', null, '1', '2019-04-19 21:05:11', null);
+INSERT INTO `bus_base_info` VALUES ('1076', '85', '沪AZ0118', null, null, '467', '634', '浦西校区', null, '1', '2019-04-19 21:05:12', null);
+INSERT INTO `bus_base_info` VALUES ('1077', '100', '沪DK5938', null, null, '468', '664', '浦西校区', null, '1', '2019-04-19 21:05:12', null);
 INSERT INTO `bus_base_info` VALUES ('1078', '90', '沪D84248', null, null, '469', null, '浦西校区', null, '1', '2019-04-19 21:05:12', null);
-INSERT INTO `bus_base_info` VALUES ('1079', '91', '沪DF4460', null, null, '470', null, '浦西校区', null, '1', '2019-04-19 21:05:12', null);
-INSERT INTO `bus_base_info` VALUES ('1080', '92', '沪EL9685', null, null, '471', null, '浦西校区', null, '1', '2019-04-19 21:05:12', null);
-INSERT INTO `bus_base_info` VALUES ('1081', '93', '沪DF4469', null, null, '472', null, '浦西校区', null, '1', '2019-04-19 21:05:12', null);
-INSERT INTO `bus_base_info` VALUES ('1082', '94', '沪EL3207', null, null, '473', null, '浦西校区', null, '1', '2019-04-19 21:05:12', null);
-INSERT INTO `bus_base_info` VALUES ('1083', '95', '沪ER9625', null, null, '474', null, '浦西校区', null, '1', '2019-04-19 21:05:12', null);
-INSERT INTO `bus_base_info` VALUES ('1084', '96', '沪AV3269', null, null, '475', null, '浦西校区', null, '1', '2019-04-19 21:05:12', null);
-INSERT INTO `bus_base_info` VALUES ('1085', '97', '沪EE6276', null, null, '476', null, '浦西校区', null, '1', '2019-04-19 21:05:12', null);
-INSERT INTO `bus_base_info` VALUES ('1086', '98', '沪DF4445', null, null, '477', null, '浦西校区', null, '1', '2019-04-19 21:05:12', null);
-INSERT INTO `bus_base_info` VALUES ('1087', '99', '沪BT7655', null, null, '478', null, '浦西校区', null, '1', '2019-04-19 21:05:12', null);
+INSERT INTO `bus_base_info` VALUES ('1079', '91', '沪DF4460', null, null, '470', '646', '浦西校区', null, '1', '2019-04-19 21:05:12', null);
+INSERT INTO `bus_base_info` VALUES ('1080', '92', '沪EL9685', null, null, '471', '648', '浦西校区', null, '1', '2019-04-19 21:05:12', null);
+INSERT INTO `bus_base_info` VALUES ('1081', '93', '沪DF4469', null, null, '472', '650', '浦西校区', null, '1', '2019-04-19 21:05:12', null);
+INSERT INTO `bus_base_info` VALUES ('1082', '94', '沪EL3207', null, null, '473', '652', '浦西校区', null, '1', '2019-04-19 21:05:12', null);
+INSERT INTO `bus_base_info` VALUES ('1083', '95', '沪ER9625', null, null, '474', '654', '浦西校区', null, '1', '2019-04-19 21:05:12', null);
+INSERT INTO `bus_base_info` VALUES ('1084', '96', '沪AV3269', null, null, '475', '656', '浦西校区', null, '1', '2019-04-19 21:05:12', null);
+INSERT INTO `bus_base_info` VALUES ('1085', '97', '沪EE6276', null, null, '476', '658', '浦西校区', null, '1', '2019-04-19 21:05:12', null);
+INSERT INTO `bus_base_info` VALUES ('1086', '98', '沪DF4445', null, null, '477', '660', '浦西校区', null, '1', '2019-04-19 21:05:12', null);
+INSERT INTO `bus_base_info` VALUES ('1087', '99', '沪BT7655', null, null, '478', '662', '浦西校区', null, '1', '2019-04-19 21:05:12', null);
 
 -- ----------------------------
 -- Table structure for bus_line
@@ -325,7 +325,7 @@ CREATE TABLE `bus_line` (
   PRIMARY KEY (`id`,`name`),
   KEY `fk_bus_base_info` (`bus_base_info`),
   CONSTRAINT `fk_bus_base_info` FOREIGN KEY (`bus_base_info`) REFERENCES `bus_base_info` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1450 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1456 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of bus_line
@@ -1778,7 +1778,7 @@ INSERT INTO `student` VALUES ('25613', 'G2014010025', 'G2014010025_崔雨轩.JPG
 INSERT INTO `student` VALUES ('25614', 'G2014010026', 'G2014010026_戴佳睿.JPG', '戴佳睿', '399', '1268', '1367', '576', '576', '62983264,13501761241', '1', '2019-04-19 21:48:31', '2019-04-19 22:03:18');
 INSERT INTO `student` VALUES ('25615', 'G2017010307', 'G2017010307_文东贤.JPG', '文东贤', '399', '1346', '1445', '1000', '1000', '18601608742，13701880432', '1', '2019-04-19 21:48:31', '2019-04-19 22:03:20');
 INSERT INTO `student` VALUES ('25617', 'G2016010170', 'G2016010170_Jung, Heesuk.JPG', 'Jung, Heesuk', '397', '1266', '1365', '570', '570', '13120527905', '1', '2019-04-19 21:48:31', '2019-04-19 22:03:19');
-INSERT INTO `student` VALUES ('25618', 'G2013010049', null, '金致', '397', '1317', '1416', '859', '859', '54652621，13788925089', '1', '2019-04-19 21:48:31', null);
+INSERT INTO `student` VALUES ('25618', 'G2013010049', 'G2013010049_金致.jpg', '金致', '397', '1317', '1416', '859', '859', '54652621，13788925089', '1', '2019-04-19 21:48:31', null);
 INSERT INTO `student` VALUES ('25619', 'G2013010748', 'G2013010748_李臻圣.jpg', '李臻圣', '397', '1340', '1439', '1020', '1020', '33847011，17702156111，18621835895', '1', '2019-04-19 21:48:31', '2019-04-19 22:03:18');
 INSERT INTO `student` VALUES ('25621', 'G2018010143', 'G2018010143_曾川.jpg', '曾川', '397', '1301', '1400', '850', '850', '18616339835，', '1', '2019-04-19 21:48:31', '2019-04-19 22:03:20');
 INSERT INTO `student` VALUES ('25624', 'G2013010408', 'G2013010408_马菀婷.jpg', '马菀婷', '365', '1318', '1417', '867', '867', '64831209,15800613308', '1', '2019-04-19 21:48:31', '2019-04-19 22:03:18');
@@ -2139,7 +2139,7 @@ INSERT INTO `student` VALUES ('26034', 'G2013010110', 'G2013010110_吴瑜涵.JPG
 INSERT INTO `student` VALUES ('26035', 'G2016010179', 'G2016010179_杨涵宇.JPG', '杨涵宇', '409', '1337', '1436', '951', '951', '13817262408', '1', '2019-04-19 21:48:33', '2019-04-19 22:03:19');
 INSERT INTO `student` VALUES ('26036', 'G2015010135', 'G2015010135_张茜雯.JPG', '张茜雯', '396', '1317', '1416', '857', '857', '64325913,15801770963', '1', '2019-04-19 21:48:33', '2019-04-19 22:03:18');
 INSERT INTO `student` VALUES ('26038', 'G2015010130', 'G2015010130_曾泽静.JPG', '曾泽静', '396', '1260', '1359', '547', '547', '13681877189', '1', '2019-04-19 21:48:33', '2019-04-19 22:03:18');
-INSERT INTO `student` VALUES ('26039', 'G2015010025', null, '陈晓', '396', '1301', '1400', '777', '777', '62809810,13701934490', '1', '2019-04-19 21:48:33', null);
+INSERT INTO `student` VALUES ('26039', 'G2015010025', 'G2015010025_陈晓.JPG', '陈晓', '396', '1301', '1400', '777', '777', '62809810,13701934490', '1', '2019-04-19 21:48:33', null);
 INSERT INTO `student` VALUES ('26040', 'G2015010072', 'G2015010072_梁璟瀚.JPG', '梁璟瀚', '396', '1288', '1387', '719', '719', '13918081663', '1', '2019-04-19 21:48:33', '2019-04-19 22:03:18');
 INSERT INTO `student` VALUES ('26041', 'G2015010142', 'G2015010142_郑浩然.JPG', '郑浩然', '396', '1337', '1436', '953', '953', '62259093,13681876527', '1', '2019-04-19 21:48:33', '2019-04-19 22:03:18');
 INSERT INTO `student` VALUES ('26043', 'G2015010137', 'G2015010137_张睿泽.JPG', '张睿泽', '396', '1322', '1421', '885', '885', '50899686,13917391082', '1', '2019-04-19 21:48:33', '2019-04-19 22:03:18');
@@ -2366,7 +2366,7 @@ INSERT INTO `student` VALUES ('26321', 'G2017010327', 'G2017010327_邵海洋.JPG
 INSERT INTO `student` VALUES ('26322', 'G2016010102', 'G2016010102_谭轶文.JPG', '谭轶文', '425', '1261', '1360', '551', '551', '13916061696,13601860323', '1', '2019-04-19 21:48:34', '2019-04-19 22:03:19');
 INSERT INTO `student` VALUES ('26323', 'G2016010103', 'G2016010103_唐诚.JPG', '唐诚', '425', '1271', '1370', '590', '590', '64281532,13816397820母', '1', '2019-04-19 21:48:34', '2019-04-19 22:03:19');
 INSERT INTO `student` VALUES ('26324', 'G2016010104', 'G2016010104_唐羽音.JPG', '唐羽音', '425', '1326', '1425', '910', '910', '68508363，,13817007683', '1', '2019-04-19 21:48:34', '2019-04-19 22:03:19');
-INSERT INTO `student` VALUES ('26325', 'G2016010057', null, '李想', '426', '1318', '1417', '868', '868', '13801727570', '1', '2019-04-19 21:48:34', null);
+INSERT INTO `student` VALUES ('26325', 'G2016010057', 'G2016010057_李想.JPG', '李想', '426', '1318', '1417', '868', '868', '13801727570', '1', '2019-04-19 21:48:34', null);
 INSERT INTO `student` VALUES ('26326', 'G2016010413', 'G2016010413_杨熠理.JPG', '杨熠理', '426', '1320', '1419', '873', '873', '15216863921母', '1', '2019-04-19 21:48:34', '2019-04-19 22:03:20');
 INSERT INTO `student` VALUES ('26327', 'G2016010136', 'G2016010136_郑朝源.JPG', '郑朝源', '426', '1287', '1386', '708', '708', '18019360398,18616369078母', '1', '2019-04-19 21:48:34', '2019-04-19 22:03:19');
 INSERT INTO `student` VALUES ('26328', 'G2016010135', 'G2016010135_赵尼雅.JPG', '赵尼雅', '426', '1343', '1442', '991', '991', '13621845788,13512178456', '1', '2019-04-19 21:48:34', '2019-04-19 22:03:19');
@@ -3354,7 +3354,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   KEY `fk_u_role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=595 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=797 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of user
@@ -3453,7 +3453,7 @@ INSERT INTO `user` VALUES ('469', '刘莉华', '刘莉华', null, '3', 'shzx', '
 INSERT INTO `user` VALUES ('470', '李玲红', '李玲红', null, '3', 'shzx', '13917968198_李玲红.jpg', '13917968198', '2019-04-14 14:46:15', '1', null);
 INSERT INTO `user` VALUES ('471', '陈惠娟', '陈惠娟', null, '3', 'shzx', '13032195025_陈惠娟.jpg', '13032195025', '2019-04-14 14:46:15', '1', null);
 INSERT INTO `user` VALUES ('472', '刘根妹', '刘根妹', null, '3', 'shzx', '15221466967_刘根妹.jpg', '15221466967', '2019-04-14 14:46:15', '1', null);
-INSERT INTO `user` VALUES ('473', '霍建琴', '霍建琴', null, '3', 'shzx', null, '13621726872', '2019-04-14 14:46:15', '1', null);
+INSERT INTO `user` VALUES ('473', '霍建琴', '霍建琴', null, '3', 'shzx', '13621726872_霍建琴.jpg', '13621726872', '2019-04-14 14:46:15', '1', null);
 INSERT INTO `user` VALUES ('474', '武美林', '武美林', null, '3', 'shzx', '15800646395_武美林.jpg', '13003290722', '2019-04-14 14:46:15', '1', null);
 INSERT INTO `user` VALUES ('475', '刘雅琴', '刘雅琴', null, '3', 'shzx', 'busmom4_刘雅琴.jpg', '13661882316', '2019-04-14 14:46:15', '1', null);
 INSERT INTO `user` VALUES ('476', '陆秀芳', '陆秀芳', null, '3', 'shzx', '13564851317_陆秀芳.jpg', '13564851317', '2019-04-14 14:46:15', '1', null);
@@ -3575,6 +3575,105 @@ INSERT INTO `user` VALUES ('591', '顾敦罡', '顾敦罡', null, '4', 'shzx', n
 INSERT INTO `user` VALUES ('592', '吴晓冬', '吴晓冬', null, '4', 'shzx', null, '13764206446', '2019-04-19 20:08:48', '1', 'T2010100003');
 INSERT INTO `user` VALUES ('593', '高玙婷', '高玙婷', null, '4', 'shzx', null, '', '2019-04-19 20:08:48', '1', 'T2017110035');
 INSERT INTO `user` VALUES ('594', '杨村', '杨村', null, '4', 'shzx', null, '', '2019-04-19 20:08:48', '1', 'T2014110001');
+INSERT INTO `user` VALUES ('600', '梅学成', '梅学成', null, '5', 'shzx', '13817098393_driver68_梅学成.jpg', '13817098393', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('602', '姜在清', '姜在清', null, '5', 'shzx', '13801641074_driver69_姜在清.jpg', '13801641074', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('604', '许月莉', '许月莉', null, '5', 'shzx', '13127890358_driver70_许月莉.jpg', '13127890358', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('606', '沈自康', '沈自康', null, '5', 'shzx', null, '13127556758', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('608', '曾健', '曾健', null, '5', 'shzx', '13124828492_driver72_曾健.jpg', '13124828492', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('610', '田广华', '田广华', null, '5', 'shzx', '15800300492_driver73_田广华.jpg', '15800300492', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('612', '胡海祥', '胡海祥', null, '5', 'shzx', '13816390328_driver74_胡海祥.jpg', '13816390328', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('614', '沈荣', '沈荣', null, '5', 'shzx', '13916971654_driver75_沈荣.jpg', '13916971654', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('616', '杨义明', '杨义明', null, '5', 'shzx', '13621772487_driver76_杨义明.jpg', '13621772487', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('618', '王诚', '王诚', null, '5', 'shzx', '13501622363_driver77_王诚.jpg', '13501622363', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('620', '徐保根', '徐保根', null, '5', 'shzx', '13472406748_driver78_徐保根.jpg', '13472406748', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('622', '姜伟达', '姜伟达', null, '5', 'shzx', '13816960785_driver79_姜伟达.jpg', '13816960785', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('624', '孙伟成', '孙伟成', null, '5', 'shzx', '13917079908_driver80_孙伟成.jpg', '13917079908', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('626', '侯臻', '侯臻', null, '5', 'shzx', null, '15921189160', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('628', '吴爱强', '吴爱强', null, '5', 'shzx', '13311957505_driver82_吴爱强.jpg', '13311957505', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('630', '孙国平', '孙国平', null, '5', 'shzx', '18901648687_driver83_孙国平.jpg', '18901648687', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('632', '陆叶', '陆叶', null, '5', 'shzx', '13301682308_driver84_陆叶.jpg', '13301682308', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('634', '高四清', '高四清', null, '5', 'shzx', '13661462068_driver85_高四清.jpg', '13661462068', '2019-02-21 13:21:30', '1', null);
+INSERT INTO `user` VALUES ('636', '周涛', '周涛', null, '5', 'shzx', '15900750835_driver86_周涛.jpg', '15900750835', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('638', '盛蒙书', '盛蒙书', null, '5', 'shzx', '13641725032_driver87_盛蒙书.jpg', '13641725032', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('640', '张志刚', '张志刚', null, '5', 'shzx', '13061632119_driver88_张志刚.jpg', '13061632119', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('642', '韩健平', '韩健平', null, '5', 'shzx', '13611754881_driver89_韩健平.jpg', '13611754881', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('644', '章侠左', '章侠左', null, '5', 'shzx', '13611803138_driver90_章侠左.jpg', '13611803138', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('646', '朱金良', '朱金良', null, '5', 'shzx', '13564809110_driver91_朱金良.jpg', '13564809110', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('648', '张建新', '张建新', null, '5', 'shzx', '13818272157_driver92_张建新.jpg', '13818272157', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('650', '吴景令', '吴景令', null, '5', 'shzx', '18964670057_driver93_吴景令.jpg', '18964670057', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('652', '朱林华', '朱林华', null, '5', 'shzx', '13024103057_driver94_朱林华.jpg', '13024103057', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('654', '陈金龙', '陈金龙', null, '5', 'shzx', '18964347638_driver95_陈金龙.jpg', '18964347638', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('656', '马金标', '马金标', null, '5', 'shzx', '18918351421_driver96_马金标.jpg', '18918351421', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('658', '倪建平', '倪建平', null, '5', 'shzx', '13386007923_driver97_倪建平.jpg', '13386007923', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('660', '徐国明', '徐国明', null, '5', 'shzx', '13801907644_driver98_徐国明.jpg', '13801907644', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('662', '刘俊平', '刘俊平', null, '5', 'shzx', '13381797155_driver99_刘俊平.jpg', '13381797155', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('664', '严军', '严军', null, '5', 'shzx', null, '13701859792', '2019-02-21 13:21:31', '1', null);
+INSERT INTO `user` VALUES ('731', '刘志勋', '刘志勋', null, '5', 'shzx', '13636413259_driver1_刘志勋.jpg', '13636413259', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('732', '印正银', '印正银', null, '5', 'shzx', '13321936422_driver2_印正银.jpg', '13321936422', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('733', '印国武', '印国武', null, '5', 'shzx', '13671851670_driver3_印国武.jpg', '13671851670', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('734', '浦红涛', '浦红涛', null, '5', 'shzx', '15301609834_driver4_浦红涛.jpg', '15301609834', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('735', '邱海林', '邱海林', null, '5', 'shzx', '18918671805_driver5_邱海林.jpg', '18918671805', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('736', '薛鋆', '薛鋆', null, '5', 'shzx', '13391252523_driver6_薛鋆.jpg', '13391252523', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('737', '钱景利', '钱景利', null, '5', 'shzx', '13801862913_driver7_钱景利.jpg', '13801862913', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('738', '马国平', '马国平', null, '5', 'shzx', '13003211112_driver8_马国平.jpg', '13003211112', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('739', '韩建平', '韩建平', null, '5', 'shzx', '18017853309_driver9_韩建平.jpg', '18017853309', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('740', '余解宝', '余解宝', null, '5', 'shzx', '18964604797_余解宝.jpg', '18964604797', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('741', '夏有良', '夏有良', null, '5', 'shzx', '15026646577_driver11_夏有良.jpg', '15026646577', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('742', '姜华', '姜华', null, '5', 'shzx', '13361865259_driver12_姜华.jpg', '13361865259', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('743', '曹卫中', '曹卫中', null, '5', 'shzx', '13801857669_driver13_曹卫中.jpg', '13801857669', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('744', '杨彬', '杨彬', null, '5', 'shzx', '13918069099_driver14_杨彬.jpg', '13918069099', '2019-02-21 13:21:26', '1', null);
+INSERT INTO `user` VALUES ('745', '曹陈波', '曹陈波', null, '5', 'shzx', '13917474825_driver15_曹陈波.jpg', '13917474825', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('746', '张国强', '张国强', null, '5', 'shzx', '13816906301_driver16_张国强.jpg', '13816906301', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('747', '荀军', '荀军', null, '5', 'shzx', '13701644889_driver17_荀军.jpg', '13701644889', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('748', '沈玲', '沈玲', null, '5', 'shzx', '18918001809_driver18_沈玲.jpg', '18918001809', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('749', '周志祥', '周志祥', null, '5', 'shzx', '13701678473_driver19_周志祥.jpg', '13701678473', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('750', '朱荣其', '朱荣其', null, '5', 'shzx', '18016239992_driver20_朱荣其.jpg', '18016239992', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('751', '韩俊波', '韩俊波', null, '5', 'shzx', '13801675178_韩俊波.jpg', '13801675178', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('752', '陈正华', '陈正华', null, '5', 'shzx', '13501916031_driver22_陈正华.jpg', '13501916031', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('753', '鲁华民', '鲁华民', null, '5', 'shzx', '15800328775_driver23_鲁华民.jpg', '15800328775', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('754', '韩国良', '韩国良', null, '5', 'shzx', '13311863675_driver24_韩国良.jpg', '13311863675', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('755', '高建华', '高建华', null, '5', 'shzx', null, '13801671931', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('756', '王国华', '王国华', null, '5', 'shzx', '13817506076_driver26_王国华.jpg', '13817506076', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('757', '朱立新', '朱立新', null, '5', 'shzx', null, '13585851141', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('758', '郭银祥', '郭银祥', null, '5', 'shzx', '15021503470_driver28_郭银祥.jpg', '15021503470', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('759', '凌翌', '凌翌', null, '5', 'shzx', '13761118801_driver29_凌翌.jpg', '13761118801', '2019-02-21 13:21:27', '1', null);
+INSERT INTO `user` VALUES ('760', '候健玲', '候健玲', null, '5', 'shzx', '13761910209_driver30_候健玲.jpg', '13761910209', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('761', '潘伟昌', '潘伟昌', null, '5', 'shzx', '13901872182_driver31_潘伟昌.jpg', '13901872182', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('762', '钮琦', '钮琦', null, '5', 'shzx', '13311765918_driver32_钮琦.jpg', '13311765918', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('763', '谢元才', '谢元才', null, '5', 'shzx', '13918247551_driver33_谢元才.jpg', '13918247551', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('764', '陈伟', '陈伟', null, '5', 'shzx', '13701639076_driver34_陈伟.jpg', '13701639076', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('765', '张希', '张希', null, '5', 'shzx', '15800836033_driver35_张希.jpg', '15800836033', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('766', '赵成庚', '赵成庚', null, '5', 'shzx', '13331882620_driver36_赵成庚.jpg', '13331882620', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('767', '张存兴', '张存兴', null, '5', 'shzx', '13818928988_driver37_张存兴.jpg', '13818928988', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('768', '倪胜明', '倪胜明', null, '5', 'shzx', '13801867152_driver38_倪胜明.jpg', '13801867152', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('769', '慕晓云', '慕晓云', null, '5', 'shzx', '13816286628_driver39_慕晓云.jpg', '13816286628', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('770', '张昇荣', '张昇荣', null, '5', 'shzx', '13501747575_driver40_张昇荣.jpg', '13501747575', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('771', '陆伟民', '陆伟民', null, '5', 'shzx', '18101659229_driver41_陆伟民.jpg', '18101659229', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('772', '陆伯华', '陆伯华', null, '5', 'shzx', '18019080672_driver42_陆伯华.jpg', '18019080672', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('773', '孙鸿文', '孙鸿文', null, '5', 'shzx', '13361902591_driver43_孙鸿文.jpg', '13361902591', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('774', '谈国庆', '谈国庆', null, '5', 'shzx', '15026588518_driver45_谈国庆.jpg', '15026588518', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('775', '李玉忠', '李玉忠', null, '5', 'shzx', '18930241281_driver46_李玉忠.jpg', '18930241281', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('776', '邵维君', '邵维君', null, '5', 'shzx', '13611733497_driver47_邵维君.jpg', '13611733497', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('777', '段峰', '段峰', null, '5', 'shzx', '18317138861_driver48_段峰.jpg', '18317138861', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('778', '高芳', '高芳', null, '5', 'shzx', '13162025200_driver49_高芳.jpg', '13162025200', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('779', '沈勇', '沈勇', null, '5', 'shzx', '13301699019_driver50_沈勇.jpg', '13301699019', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('780', '周才冬', '周才冬', null, '5', 'shzx', '18018604028_driver51_周才冬.jpg', '18018604028', '2019-02-21 13:21:28', '1', null);
+INSERT INTO `user` VALUES ('781', '汤明', '汤明', null, '5', 'shzx', '13601716741_driver52_汤明.jpg', '13601716741', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('782', '刘建平', '刘建平', null, '5', 'shzx', '13501903247_driver53_刘建平.jpg', '13501903247', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('783', '吴汉丰', '吴汉丰', null, '5', 'shzx', '15921545481_driver54_吴汉丰.jpg', '15921545481', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('784', '许文亮', '许文亮', null, '5', 'shzx', null, '13917018725', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('785', '杨秋勇', '杨秋勇', null, '5', 'shzx', '13701832978_driver56_杨秋勇.jpg', '13701832978', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('786', '康宝', '康宝', null, '5', 'shzx', '13611793251_driver57_康宝.jpg', '13611793251', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('787', '张国定', '张国定', null, '5', 'shzx', '13774442882_driver58_张国定.jpg', '13774442882', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('788', '顾纯荣', '顾纯荣', null, '5', 'shzx', '13661741985_driver59_顾纯荣.jpg', '13661741985', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('789', '王觉敏', '王觉敏', null, '5', 'shzx', '13916107981_driver60_王觉敏.jpg', '13916107981', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('790', '曹玉华', '曹玉华', null, '5', 'shzx', '13501789196_driver61_曹玉华.jpg', '13501789196', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('791', '顾士华', '顾士华', null, '5', 'shzx', '13761678606_driver62_顾士华.jpg', '13761678606', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('792', '周国樑', '周国樑', null, '5', 'shzx', '13040661560_driver63_周国樑.jpg', '13040661560', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('793', '章煜', '章煜', null, '5', 'shzx', '13052097300_driver64_章煜.jpg', '13052097300', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('794', '王遵鸿', '王遵鸿', null, '5', 'shzx', '13386137383_driver65_王遵鸿.jpg', '13386137383', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('795', '周沪平', '周沪平', null, '5', 'shzx', '13916089596_driver66_周沪平.jpg', '13916089596', '2019-02-21 13:21:29', '1', null);
+INSERT INTO `user` VALUES ('796', '顾佳龙', '顾佳龙', null, '5', 'shzx', '15821231678_driver67_顾佳龙.jpg', '15821231678', '2019-02-21 13:21:29', '1', null);
 
 -- ----------------------------
 -- Table structure for user_msg_status_info

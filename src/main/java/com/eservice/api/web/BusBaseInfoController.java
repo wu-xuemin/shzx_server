@@ -186,4 +186,51 @@ public class BusBaseInfoController {
         return ResultGenerator.genSuccessResult("busBaseInfo " + addedBusBaseInfoSum + " is added");
     }
 
+    @ApiOperation("更新校车的司机字段，其实这些接口是可以不需要的，但是目前的excel/URL前前后后不同造成")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "urlStr", value = " url地址 ") })
+    @PostMapping("/updateBusBaseInfoDriver")
+    public Result updateBusBaseInfoDriver(@RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS)
+                                                      String urlStr) {
+        Integer updatedBusDriverSum = 0;
+        String strFromUrl = CommonService.getUrlResponse(urlStr);
+        try {
+            JSONObject jsonObject = JSON.parseObject(strFromUrl);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            for (int i = 0; i < ja.size(); i++) {
+                JSONObject jo = ja.getJSONObject(i);
+                String number = jo.getString("id");
+                String busDriverName = jo.getString("driver_name");
+
+                Class classBusBaseInfo = Class.forName("com.eservice.api.model.bus_base_info.BusBaseInfo");
+                Field fieldNumber = classBusBaseInfo.getDeclaredField("number");
+                BusBaseInfo busBaseInfo = busBaseInfoService.findBy(fieldNumber.getName(), number);
+                if (busBaseInfo == null) {
+                    logger.info("can not find busBaseInfo by bus number " + number);
+                    continue;
+                } else {
+                    Class cl = Class.forName("com.eservice.api.model.user.User");
+                    Field fieldUserAccount = cl.getDeclaredField("account");
+                    User busDriverExist = null;
+                    busDriverExist = userService.findBy(fieldUserAccount.getName(), busDriverName);
+                    if (busDriverExist != null) {
+                        // driver字段为空时才更新，便于统计数量
+                        if (busBaseInfo.getBusDriver() == null) {
+                            busBaseInfo.setBusDriver(busDriverExist.getId());
+                            busBaseInfoService.update(busBaseInfo);
+                            logger.info("update busBaseInof.bus_driver: " + busDriverName + " for bus " + busBaseInfo.getNumber());
+                            updatedBusDriverSum++;
+                        } else {
+                            logger.info("driver already exist in bus " + number);
+                        }
+                    } else {
+                        logger.info(" can not find driver by: " + busDriverName);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+        }
+        return ResultGenerator.genSuccessResult("updatedBusDriverSum: " + updatedBusDriverSum);
+    }
 }
