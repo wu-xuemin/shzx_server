@@ -37,7 +37,7 @@ public class UpdateStudentTimer {
     private List<BookingRecord> list = new ArrayList<>();
 
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 1 * * ?")
     public void fetchBookingRecord() {
         Date date=new Date();
         String yesterdayDate = sdf.format(date);
@@ -52,11 +52,11 @@ public class UpdateStudentTimer {
         }
         Student stu = new Student();
         for (BookingRecord book : list) {
-            List<BusLine> busLines = busLineService.foundBusLine(book.getNewBusLine());
-            stu.setBusLineMorning(busLines.get(0).getBusBaseInfo());
-            stu.setBusLineAfternoon(busLines.get(1).getBusBaseInfo());
-            stu.setBoardStationAfternoon(book.getNewStation());
+            List<BusLine> busLines = busLineService.getBusId(book.getNewBusLine().toString());
+            stu.setBusLineMorning(busLines.get(0).getId());
+            stu.setBusLineAfternoon(busLines.get(1).getId());
             stu.setBoardStationMorning(book.getNewStation());
+            stu.setBoardStationAfternoon(book.getNewStation());
             stu.setUpdateTime(new Date());
         }
 

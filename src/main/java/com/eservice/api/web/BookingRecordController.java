@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.List;
 @RequestMapping("/booking/record")
 @Api(description = "学生的班车预约变更")
 public class BookingRecordController {
+
     @Resource
     private BookingRecordServiceImpl bookingRecordService;
 
@@ -70,4 +72,5 @@ public class BookingRecordController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
 }

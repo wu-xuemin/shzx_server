@@ -24,4 +24,5 @@ public interface BusLineMapper extends Mapper<BusLine> {
     List<BusLine> getBusLineByBusNumber(@Param("busNumber")String busNumber);
     @Select("SELECT * from bus_line WHERE (`mode` = '上学' or `mode` = '放学' )ORDER BY `mode`,name +0 ")
     List<BusLine> listByName();
+    List<BusLine> getBusId(@Param("busline") String busline);
 }

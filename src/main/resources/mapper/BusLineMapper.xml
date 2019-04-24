@@ -149,4 +149,8 @@
          bl.`mode` = #{busMode}
   </select>
 
+  <select id="getBusId" resultMap="BaseResultMap">
+     SELECT * FROM bus_line WHERE bus_base_info=(SELECT bus_line.`bus_base_info` FROM bus_line WHERE id=#{busline})
+  </select>
+
 </mapper>

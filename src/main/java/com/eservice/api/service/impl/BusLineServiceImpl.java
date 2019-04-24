@@ -270,10 +270,8 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
      * @param busline
      * @return
      */
-    public List<BusLine> foundBusLine(Integer busline){
-        Condition condition=new Condition(BusLine.class);
-        condition.createCriteria().andEqualTo("stations",busline);
-        List<BusLine> list=busLineService.findByCondition(condition);
+    public List<BusLine> getBusId(String busline){
+        List<BusLine> list=busLineMapper.getBusId(busline);
         return list;
     }
 	
