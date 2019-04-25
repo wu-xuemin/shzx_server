@@ -30,6 +30,7 @@ public interface BanjiMapper extends Mapper<Banji> {
     @Select("SELECT * from banji LEFT JOIN user on banji.charge_teacher = `user`.id where user.account = #{bzrAccount}")
     BanjiInfo getBanjiInfoByBzr(@Param("bzrAccount") String bzrAccount);
 
-    @Select("SELECT * from banji ORDER BY class_name+0, class_name")
+    // (10)班级也排在(9)之后
+    @Select("SELECT * from banji ORDER BY class_name+0, substring_index(substring_index(class_name,\"(\",-1),\")\",1)+0")
     List<Banji> listByClassName();
 }

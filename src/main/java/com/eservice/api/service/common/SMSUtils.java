@@ -2,6 +2,8 @@ package com.eservice.api.service.common;
 
 import com.wondertek.esmp.esms.empp.EMPPConnectResp;
 import com.wondertek.esmp.esms.empp.EmppApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ public class SMSUtils {
 
     @Value("${passwordSMS}")
     private String passwordSMS; //Shzx20191
+    private final static Logger logger = LoggerFactory.getLogger(SMSUtils.class);
     public void send( String[] phone, String msg) {
 
         String host = "211.136.163.68";
@@ -26,18 +29,22 @@ public class SMSUtils {
                     passwordSMS, listener);
             System.out.println(response);
             if (response == null) {
-                System.out.println(" connect time out");
+                logger.warn("error: connect time out");
                 return;
             }
             if (!emppApi.isConnected()) {
-                System.out.println("connect failed : response =" + response.getStatus());
+                logger.warn("error: connect failed, response =" + response.getStatus());
                 return;
             }
         } catch (Exception e) {
-            System.out.println("Exception，cause connect fail");
+            logger.warn("error: Exception，cause connect fail");
             e.printStackTrace();
             return;
         }
+
+        /**
+         * 这个类的被注释掉的代码，来自中国移动的原始文件，保留这些有助于以后参考。
+         */
 
 //		发送短信
         if (emppApi.isSubmitable()) {
@@ -46,12 +53,13 @@ public class SMSUtils {
             try{//13588027825 15715766877
 //                emppApi.submitMsgAsync(msg,new String[]{"13588027825"},serviceId);
                 emppApi.submitMsgAsync(msg,phone,serviceId);
-
+                logger.info("sendTo: " + phone + "短信内容：" + msg);
                 //同步发送方式update 20060307
                 //EMPPSubmitSMResp []  resp = emppApi.submitMsg(content,mobiles,serviceId);
                 //System.out.println("resp result:"+resp[0].getResult());
 
             }catch (Exception e1) {
+                logger.warn("sent error: exception " + e1.toString());
                 e1.printStackTrace();
             }
 
@@ -79,6 +87,8 @@ public class SMSUtils {
 //				e.printStackTrace();
 //			}
 
+        } else {
+            logger.warn("emppApi.isSubmitable() is false, no send");
         }
 
     }
