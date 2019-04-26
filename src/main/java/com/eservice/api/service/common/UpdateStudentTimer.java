@@ -53,6 +53,7 @@ public class UpdateStudentTimer {
         Student stu = new Student();
         for (BookingRecord book : list) {
             List<BusLine> busLines = busLineService.getBusId(book.getNewBusLine().toString());
+            stu.setId(book.getStudent());
             stu.setBusLineMorning(busLines.get(0).getId());
             stu.setBusLineAfternoon(busLines.get(1).getId());
             stu.setBoardStationMorning(book.getNewStation());
@@ -61,5 +62,6 @@ public class UpdateStudentTimer {
         }
 
         studentService.update(stu);
+        logger.info("修改学生信息成功");
     }
 }
