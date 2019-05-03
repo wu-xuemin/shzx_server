@@ -71,7 +71,7 @@ public class SendSMSTimer {
             String[] testerPhoneArr = new String[]{"13588027825"}; //{"15715766877","13588027825"}
             for (int i = 0; i <3; i++) {
                 strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName());
-                logger.info( strAbsenceDetail);
+                logger.info("Try sendTo: " + testerPhoneArr + "短信内容：" + strAbsenceDetail);
                 smsUtils.send(testerPhoneArr,strAbsenceDetail);
             }
         } else {

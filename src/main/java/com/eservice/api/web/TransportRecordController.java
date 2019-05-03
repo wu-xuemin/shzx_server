@@ -122,7 +122,7 @@ public class TransportRecordController {
             logger.info("add record id: " + transportRecord.getId()
                     + " busLine:" + busLineService.findById(transportRecord.getBusLine()).getName()
                     + " Flag:"+ transportRecord.getFlag() + "status-by-api:" + transportRecord.getStatus()
-                    + "  busNumber:" + transportRecord.getBusNumberInTR()+ " begainTime " + transportRecord.getBeginTime());
+                    + "  busNumber:" + transportRecord.getBusNumberInTR()+ " beginTime " + transportRecord.getBeginTime());
 
             return ResultGenerator.genSuccessResult(transportRecord.getId());
         }
@@ -152,6 +152,12 @@ public class TransportRecordController {
         if(transportRecord.getStatus().equals(Constant.TRANSPORT_RECORD_STATUS_DONE)){
             Date date = new Date();
             transportRecord.setEndTime( new java.sql.Timestamp(date.getTime()));
+        }
+        if( transportRecord.getBeginTime() == null){
+            /**
+             * 前端传了的begin时间不应该为Null
+             */
+            transportRecord.setBeginTime(transportRecordService.findById(transportRecord.getId()).getBeginTime());
         }
         logger.info("update tr.id "+ transportRecord.getId()
                 + " name: " + busLineService.findById(transportRecord.getBusLine()).getName()

@@ -31,6 +31,6 @@ public interface BanjiMapper extends Mapper<Banji> {
     BanjiInfo getBanjiInfoByBzr(@Param("bzrAccount") String bzrAccount);
 
     // (10)班级也排在(9)之后
-    @Select("SELECT * from banji ORDER BY class_name+0, substring_index(substring_index(class_name,\"(\",-1),\")\",1)+0")
+    @Select("SELECT * from banji ORDER BY  grade+0, class_name+0, substring_index(substring_index(class_name,\"(\",-1),\")\",1)+0")
     List<Banji> listByClassName();
 }
