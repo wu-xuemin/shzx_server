@@ -50,8 +50,9 @@ public class UpdateStudentTimer {
                 list.add(bookingRecord);
             }
         }
-        Student stu = new Student();
+
         for (BookingRecord book : list) {
+            Student stu = new Student();
             List<BusLine> busLines = busLineService.getBusId(book.getNewBusLine().toString());
             stu.setId(book.getStudent());
             stu.setBusLineMorning(busLines.get(0).getId());
@@ -59,9 +60,11 @@ public class UpdateStudentTimer {
             stu.setBoardStationMorning(book.getNewStation());
             stu.setBoardStationAfternoon(book.getNewStation());
             stu.setUpdateTime(new Date());
+            studentService.update(stu);
+            logger.info("修改学生信息成功");
         }
 
-        studentService.update(stu);
-        logger.info("修改学生信息成功");
+
+
     }
 }
