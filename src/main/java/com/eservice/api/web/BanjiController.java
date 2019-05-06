@@ -107,7 +107,7 @@ public class BanjiController {
         strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(gradeName,banjiName);
         logger.info( strAbsenceDetail);
 
-        smsUtils.send(new String[]{"13588027825"},strAbsenceDetail);
+        smsUtils.send(new String[]{"15715766877","13588027825"},strAbsenceDetail);
         return ResultGenerator.genSuccessResult(strAbsenceDetail);
     }
 

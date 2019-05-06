@@ -336,7 +336,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         for (int i = 0; i < tempList.length; i++) {
             if (tempList[i].isFile()) {
                 /*
-                 *根据姓名查user.  13800002222_busmom91_李玲红.jpg   13011112222_driver28_郭银祥.jpg
+                 *根据姓名查user.  13800002222_李玲红.jpg   13011112222_郭银祥.jpg
                  */
                 User userExist = null;
                 Class cl = null;
