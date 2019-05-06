@@ -89,6 +89,7 @@
       OR bbi.number LIKE CONCAT('%', '${keyWord}', '%')
       OR user_bus_mom.account LIKE CONCAT('%', '${keyWord}', '%')
       OR bbi.`bus_supplier` LIKE  CONCAT('%', '${keyWord}', '%')
+      OR user_driver.account LIKE CONCAT('%', '${keyWord}', '%')
       )
     </if>
     GROUP BY bbi.id

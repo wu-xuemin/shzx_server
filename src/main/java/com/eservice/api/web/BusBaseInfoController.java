@@ -98,7 +98,7 @@ public class BusBaseInfoController {
             @ApiImplicitParam(paramType = "query", name = "busMomAccount", value = " 巴士妈妈账号"),
             @ApiImplicitParam(paramType = "query", name = "busSupplierName", value = " 供应商名称"),
             @ApiImplicitParam(paramType = "query", name = "schoolPartition", value = " 校区"),
-            @ApiImplicitParam(paramType = "query", name = "keyWord", value = " 关键字, 查询线路名称、校车编号、busMom账号、校车供应商名称")
+            @ApiImplicitParam(paramType = "query", name = "keyWord", value = " 关键字, 查询线路名称、校车编号、busMom账号、司机账号、校车供应商名称")
     })
     @PostMapping("/getBusBaseInfo")
     public Result getBusBaseInfo(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
