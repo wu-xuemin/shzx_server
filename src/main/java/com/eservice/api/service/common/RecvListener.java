@@ -7,6 +7,8 @@
 package com.eservice.api.service.common;
 
 import com.wondertek.esmp.esms.empp.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 
@@ -17,7 +19,9 @@ public class RecvListener implements EMPPRecvListener {
     private EmppApi emppApi = null;
     
     private int closedCount = 0;
-    
+
+    private final static Logger logger = LoggerFactory.getLogger(RecvListener.class);
+
     protected RecvListener(){
         
     }
@@ -109,11 +113,12 @@ public class RecvListener implements EMPPRecvListener {
         // 该连接是被服务器主动断掉，不需要重连
         if(object instanceof EMPPTerminate){
             System.out.println("收到服务器发送的Terminate消息，连接终止");
+            logger.warn("收到服务器发送的Terminate消息，连接终止");
             return;
         }
         //这里注意要将emppApi做为参数传入构造函数
-        RecvListener listener = new RecvListener(emppApi)
-                ;
+        RecvListener listener = new RecvListener(emppApi);
+        logger.warn("连接断掉次数："+(++closedCount));
         System.out.println("连接断掉次数："+(++closedCount));
         for(int i = 1;!emppApi.isConnected();i++){
             try {
@@ -124,6 +129,7 @@ public class RecvListener implements EMPPRecvListener {
                 e.printStackTrace();
             }
         }
+        logger.info("重连成功");
         System.out.println("重连成功");
     }
 

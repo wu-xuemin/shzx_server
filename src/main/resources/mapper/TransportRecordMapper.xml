@@ -109,8 +109,7 @@
     <if test="recordStatus != null and recordStatus != ''">
     AND tr.`status` = #{recordStatus}
     </if>
-
-    ORDER BY tr.begin_time desc
+    ORDER BY psi.board_time desc
   </select>
 
   <select id="selectRecordStudent" resultMap="TransportRecordInfoResultMap">

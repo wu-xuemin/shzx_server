@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.model.banji.Banji;
-import com.eservice.api.model.bus_base_info.BusBaseInfo;
 import com.eservice.api.model.bus_line.BusLine;
 import com.eservice.api.model.bus_stations.BusStations;
 import com.eservice.api.model.student.Student;
@@ -311,8 +310,9 @@ public class StudentController {
         return ResultGenerator.genSuccessResult(notDBExistList);
     }
 
-    @ApiOperation("参数传入上中的班车URL， 根据URL返回的数据，创建学生（学生URL只包括姓名，班级，学号，再跟进班车URL充学生的校车编号，站点等）返回新增的学生数量 ")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStr", value = " url地址 ")})
+    @ApiOperation("根据【学生】URL返回的数据，创建学生（学生URL只包括姓名，班级，学号，再根据班车URL充学生的校车编号，站点等）返回新增的学生数量 ")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStrStudent", value = " 获取学生信息的url地址 "),
+                        @ApiImplicitParam(paramType = "query",name = "urlStrBus", value = "获取bus信息的url地址 ")})
     @PostMapping("/getURLContentAndCreateStu")
     public Result getURLContentAndCreateStu(@RequestParam(defaultValue = Constant.SHZX_URL_GET_STUDENT) String urlStrStudent,
                                             @RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS) String urlStrBus) {
@@ -428,5 +428,44 @@ public class StudentController {
     public Result deleteStudentsNotRideSchoolBus() {
         Integer d = studentService.deleteStudentsNotRideSchoolBus();
         return ResultGenerator.genSuccessResult(d + " student(s) deleted");
+    }
+
+    @ApiOperation("参数传入上中的【班车】URL， 根据URL返回的数据， 验证两个URL的学生数据的差异，just for checking ")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "urlStrBus", value = "获取bus信息的url地址 ")})
+    @PostMapping("/getURLContentAndCreateStu2")
+    public Result getURLContentAndCreateStu2(@RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS) String urlStrBus) {
+        Integer addedStuSum = 0;
+        String strFromUrl = CommonService.getUrlResponse(urlStrBus);
+        try {
+            JSONObject jsonObject= JSON.parseObject(strFromUrl);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            for (int i = 0; i < ja.size(); i++) {
+                Student student = new Student();
+                JSONObject jo = ja.getJSONObject(i);
+                String stuName = jo.getString("student_name");
+                String stuNumber = jo.getString("student_number");
+
+                student.setName(stuName);
+                student.setStudentNumber(stuNumber);
+                student.setCreateTime(new Date());
+                student.setValid(Constant.VALID_YES);
+
+                Class cl2 = Class.forName("com.eservice.api.model.student.Student");
+                Field fieldStuNum = cl2.getDeclaredField("studentNumber");
+                Student studentExist = studentService.findBy(fieldStuNum.getName(), stuNumber);
+                if(studentExist == null) {
+                    studentService.save(student);
+                    logger.info("added student: " + student.getName());
+                    addedStuSum ++;
+                } else {
+                    logger.info(" already exist student: " +  student.getName());
+                }
+            }
+
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+            return ResultGenerator.genFailResult(" exception: " + e.toString());
+        }
+        return ResultGenerator.genSuccessResult( addedStuSum + " added" );
     }
 }

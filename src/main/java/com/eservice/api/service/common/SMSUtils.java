@@ -23,6 +23,9 @@ public class SMSUtils {
         EmppApi emppApi = new EmppApi();
         RecvListener listener = new RecvListener(emppApi);
 
+        if(listener == null){
+            logger.warn(" make new RecvListener fail");
+        }
         try {
             // /建立同服务器的连接
             EMPPConnectResp response = emppApi.connect(host, port, accountId,
