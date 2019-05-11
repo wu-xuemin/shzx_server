@@ -19,12 +19,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.http.util.TextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
@@ -50,21 +52,89 @@ public class UserController {
 
     @Resource
     private BanjiServiceImpl banjiService;
+
+    @Resource
+    private CommonService commonService;
+
+    @Value("${user_img_dir}")
+    private String userImgDir;
+
+    @Value("${busmom_repo_id}")
+    private Integer BUSMOM_REPO_ID;
+
+    @Value("${driver_repo_id}")
+    private Integer DRIVER_REPO_ID;
+
+    @Value("${url_style}")
+    private String urlStyle;
+
+    @Value("${user_img_url_prefix}")
+    private String userImgUrlPrefix;
     /**
      * 该值为default值， Android端传入的参数不能为“0”
      */
     private static String ZERO_STRING = "0";
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @ApiOperation("新增用户")
+    @ApiOperation("新增用户,用户照片上传(可选),如果是busMom/司机，则同步到人脸平台")
     @PostMapping("/add")
-    public Result addStaff(@RequestParam String user) {
+    public Result addStaff(@RequestParam String user,
+                           String photoData) {
         String userStr = user;
+        Boolean needSyncToFacePlatform = false;
         User userObj = JSON.parseObject(user, User.class);
         if (userService.selectByAccount(userObj.getAccount()) != null) {
             return ResultGenerator.genFailResult("用户名已存在！");
         }
-        //  user.setPassword("password");
+        String message = null;
+        if (!TextUtils.isEmpty(photoData)) {
+            try {
+                String base64RowData = photoData.substring(photoData.indexOf(",") + 1);
+                Integer repoId = 0;
+                /**
+                 * 如果是busMom/司机，则同步到人脸平台
+                 */
+                if (userObj.getRoleId() == Constant.USER_ROLE_BUSMOM) {
+                    repoId = BUSMOM_REPO_ID;
+                    needSyncToFacePlatform = true;
+                } else if (userObj.getRoleId() == Constant.USER_ROLE_DRIVER) {
+                    repoId = DRIVER_REPO_ID;
+                    needSyncToFacePlatform = true;
+                }
+                if (needSyncToFacePlatform) {
+                    if (syncBusMomService.uploadPic(base64RowData, userObj, repoId)) {
+                        String fileNameWithPath = commonService.saveFile(userImgDir, base64RowData, userObj.getPhone(), userObj.getName());
+                        if (fileNameWithPath != null) {
+                            if (urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
+                                /**
+                                 * HeadImg，不保存绝对路径，只保存文件名，方便windows调试。
+                                 * 方式： 13500001111_张三.jpg， 学号1234_小明.jpg
+                                 */
+                                userObj.setHeadImage(userObj.getPhone().replaceAll("/", "_") + userObj.getName() + ".jpg");
+                            } else {
+                                /**
+                                 * HeadImg，保存绝对路径，方便APP/web调用
+                                 * 方式：https://eservice-tech.cn/userImg/13500001111_张三.jpg，
+                                 */
+                                userObj.setHeadImage(userImgUrlPrefix + userObj.getPhone().replaceAll("/", "_") + userObj.getName() + ".jpg");
+                            }
+                        } else {
+                            message = "failed to save file, no user added of " + userObj.getName();
+                            throw new RuntimeException();
+                        }
+                    } else {
+                        message = "Upload to  face platform failed, user name: " + userObj.getName();
+                        throw new RuntimeException();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResultGenerator.genFailResult(e.getMessage() + "," + message);
+            }
+            logger.info("增加带照片用户 " + userObj.getName());
+        } else {
+            logger.info("增加无照片用户 " + userObj.getName());
+        }
         userObj.setValid(Constant.VALID_YES);
         userObj.setCreateTime(new Date());
         userService.save(userObj);
@@ -100,10 +170,46 @@ public class UserController {
         }
     }
 
-    @ApiOperation("更新用户")
+    @ApiOperation("更新用户, 如果带了照片参数则也保存照片且同步到人脸平台")
     @PostMapping("/update")
-    public Result update(String user) {
+    public Result update(String user,String photoData) {
         User userObj = JSONObject.parseObject(user, User.class);
+        String message = null;
+        if (!TextUtils.isEmpty(photoData)) {
+            try {
+                String base64RowData = photoData.substring(photoData.indexOf(",") + 1);
+                if (syncBusMomService.uploadPic(base64RowData, userObj, BUSMOM_REPO_ID)) {
+                    String fileNameWithPath = commonService.saveFile(userImgDir, base64RowData, userObj.getPhone(), userObj.getName());
+                    if (fileNameWithPath != null) {
+                        if (urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
+                            /**
+                             * HeadImg，不保存绝对路径，只保存文件名，方便windows调试。
+                             * 方式：13500001111_张三.jpg
+                             */
+                            userObj.setHeadImage(userObj.getPhone().replaceAll("/", "_") + userObj.getName() + ".jpg");
+                        } else {
+                            /**
+                             * HeadImg，保存绝对路径，方便APP/web调用
+                             * 方式：https://eservice-tech.cn/userImg/13500001111_张三.jpg
+                             */
+                            userObj.setHeadImage(userImgUrlPrefix + userObj.getPhone().replaceAll("/", "_") + userObj.getName() + ".jpg");
+                        }
+                    } else {
+                        message = "failed to save file, no user is updated of " + userObj.getName();
+                        throw new RuntimeException();
+                    }
+                } else {
+                    message = "Upload to  face platform failed, user name: " + userObj.getName();
+                    throw new RuntimeException();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResultGenerator.genFailResult(e.getMessage() + "," + message);
+            }
+            logger.info("更新带照片用户 " + userObj.getName());
+        } else {
+            logger.info("更新无照片用户 " + userObj.getName());
+        }
         userService.update(userObj);
         return ResultGenerator.genSuccessResult();
     }

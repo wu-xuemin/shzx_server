@@ -416,7 +416,7 @@ public class SyncBusMomService {
         return result;
     }
 
-    private boolean uploadPic(String base64Data, User user, Integer repoId) {
+    public boolean uploadPic(String base64Data, User user, Integer repoId) {
         token = tokenService.getToken();
         if (token != null) {
             HashMap<String, Object> postParameters = new HashMap<>();
