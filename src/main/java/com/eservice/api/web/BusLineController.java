@@ -259,7 +259,20 @@ public class BusLineController {
                     addedBusLineSum++;
                 } else {
                     String currentStations = busLineExist.getStations();
-                    if (busLineExist.getStations().contains(stationName)) {
+                    if (currentStations == null) {
+                        /**
+                         * 如果线路存在，而该站点为空，则增加站点（目前用逗号隔离站点），并更新线路
+                         * （这个只是为了单独更新站点字段，因为URL的站点信息改了，清掉这个字段内容，重新导入时用到）
+                         */
+                        logger.info("站点 " + stationName + ", 还不存在，现在加入");
+                        currentStations = stationName;
+
+                        busLine.setId(busLineExist.getId());
+                        busLine.setStations(currentStations);
+                        busLine.setUpdateTime(new Date());
+                        logger.info("now, currentStations: " + currentStations + "is updated to busLine " + busLine.getName());
+                        busLineService.update(busLine);
+                    } else if (busLineExist.getStations().contains(stationName)) {
                         /**
                          * 如果线路存在，而该站点也存在，则不做处理
                          */
@@ -287,7 +300,7 @@ public class BusLineController {
             /**
              * 放学线路生成
              */
-            busLineService.cleanAndCreateAfternoonBusLine(Constant.BUS_LINE_ZAOBAN_WUBAN_SAME);
+//            busLineService.cleanAndCreateAfternoonBusLine(Constant.BUS_LINE_ZAOBAN_WUBAN_SAME);
 
         } catch (Exception e) {
             logger.warn(" exception: " + e.toString());
