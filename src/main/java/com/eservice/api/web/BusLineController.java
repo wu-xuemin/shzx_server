@@ -298,9 +298,13 @@ public class BusLineController {
              */
 
             /**
-             * 放学线路生成
+             * 放学线路重新生成
              */
 //            busLineService.cleanAndCreateAfternoonBusLine(Constant.BUS_LINE_ZAOBAN_WUBAN_SAME);
+            /**
+             * 放学线路更新站点
+             */
+            busLineService.updateAfternoonBusLineStation(Constant.BUS_LINE_ZAOBAN_WUBAN_SAME);
 
         } catch (Exception e) {
             logger.warn(" exception: " + e.toString());

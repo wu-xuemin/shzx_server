@@ -8,6 +8,7 @@ import com.eservice.api.service.impl.TransportRecordServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.retry.backoff.Sleeper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -73,6 +74,12 @@ public class SendSMSTimer {
                 strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName());
                 logger.info("Try send 短信内容：" + strAbsenceDetail);
                 smsUtils.send(testerPhoneArr,strAbsenceDetail);
+                try {
+                    //连续不停的发送，会丢失短信
+                    Thread.sleep(10*1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         } else {
             // 正式用
@@ -81,6 +88,12 @@ public class SendSMSTimer {
                 // bzrPhoneList 和 banjiList 一一对应
                 logger.info(i + "Try send 短信内容：" + strAbsenceDetail);
                 smsUtils.send(bzrPhoneList.get(i),strAbsenceDetail);
+                try {
+                    //连续不停的发送，会丢失短信
+                    Thread.sleep(10*1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 logger.info( "Sent SMS to " + bzrPhoneList.get(i) + strAbsenceDetail);
             }
         }
@@ -116,6 +129,12 @@ public class SendSMSTimer {
                 strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName());
                 logger.info("Try send 短信内容：" + strAbsenceDetail);
                 smsUtils.send(testerPhoneArr,strAbsenceDetail);
+                try {
+                    //连续不停的发送，会丢失短信
+                    Thread.sleep(10*1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         } else {
             // 正式用。 1-8年级才需要发送缺乘短信
@@ -123,6 +142,12 @@ public class SendSMSTimer {
                 strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName());
                 logger.info(i + "下午 Try send 短信内容：" + strAbsenceDetail);
                 smsUtils.send(bzr1To8GradePhoneList.get(i),strAbsenceDetail);
+                try {
+                    //连续不停的发送，会丢失短信
+                    Thread.sleep(10*1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 logger.info( "Sent SMS to " + bzr1To8GradePhoneList.get(i) + strAbsenceDetail);
             }
         }

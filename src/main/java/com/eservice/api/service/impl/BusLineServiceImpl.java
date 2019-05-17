@@ -250,6 +250,51 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
     }
 
     /**
+     * 只更新站点，不是删除重新建
+     */
+    public void updateAfternoonBusLineStation(String busLineIDsNotReserve) {
+        String strStationsNoon = null;
+        List<BusLine> busLineListMorning = busLineService.getBusLinesByMode(Constant.BUS_MODE_MORNING);
+        List<BusLine> busLineListNoon = new ArrayList<>();
+        List<BusLine> busLineListNoonOld = busLineService.getBusLinesByMode(Constant.BUS_MODE_AFTERNOON);
+
+        String[] stationsArrMorning;
+        //改 stations,
+        for (BusLine blm : busLineListMorning) {
+            //找到对应的放学线路
+            BusLine busLineNoon = busLineService.findBy("name", blm.getName().replace(Constant.BUS_MODE_MORNING, Constant.BUS_MODE_AFTERNOON));
+            if (busLineListNoon == null) {
+                logger.error("Can not find the noon line by name " + blm.getName().replace(Constant.BUS_MODE_MORNING, Constant.BUS_MODE_AFTERNOON));
+                continue;
+            }
+            /**
+             * 站点倒个序 （默认除了1,8,10,11,16,17,20,31,41,60,67,74,86,97之外的都倒序）
+             */
+            if (isReserve(blm.getName(), busLineIDsNotReserve)) {
+                stationsArrMorning = blm.getStations().split(",");
+                List<String> stationListNoon = new ArrayList<>();
+                for (int i = stationsArrMorning.length; i > 0; i--) {
+                    stationListNoon.add(stationsArrMorning[i - 1]);
+                }
+                for (int i = 0; i < stationListNoon.size(); i++) {
+                    if (i == 0) {
+                        strStationsNoon = stationListNoon.get(i);
+                    } else {
+                        strStationsNoon = strStationsNoon + "," + stationListNoon.get(i);
+                    }
+                }
+            } else {
+                strStationsNoon = blm.getStations();
+            }
+
+            busLineNoon.setStations(strStationsNoon);
+            busLineNoon.setUpdateTime(new Date());
+            busLineService.update(busLineNoon);
+            logger.info("update 放学： " + busLineNoon.getName() + "id:" + busLineNoon.getId());
+        }
+    }
+
+    /**
      * 需要倒序则返回true
      * @param busLineName 待检查的上学线路名称
      * @param busLineIDsNotReserve 不需要倒序的线路ID，以逗号分隔
