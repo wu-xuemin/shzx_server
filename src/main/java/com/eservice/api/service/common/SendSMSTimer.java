@@ -47,6 +47,7 @@ public class SendSMSTimer {
      */
     @Scheduled(cron = "0 30 08 * * ?")
     public void sendOnMorning() {
+        logger.info("cron coming ： 0 30 08 * * ? ");
         if(!todayIsSchoolDay()){
             logger.info("Not school day " + new Date());
             return;
@@ -101,6 +102,7 @@ public class SendSMSTimer {
     }
     @Scheduled(cron = "0 30 17 * * ?")
     public void sendOnAfternoon() {
+        logger.info("cron coming ： 0 30 17 * * ? ");
         if(!todayIsSchoolDay()){
             logger.info("Not school day " + new Date());
             return;
