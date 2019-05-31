@@ -230,7 +230,7 @@ INSERT INTO `bus_base_info` VALUES ('1006', '12', '沪D41740', null, null, '1307
 INSERT INTO `bus_base_info` VALUES ('1007', '13', '沪EE9696', null, null, '1309', '1310', '浦西校区', null, '1', '2019-04-19 21:05:09', '2019-05-14 17:39:21');
 INSERT INTO `bus_base_info` VALUES ('1008', '14', '沪BT7633', null, null, '1311', '1312', '浦西校区', null, '1', '2019-04-19 21:05:09', '2019-05-14 17:39:21');
 INSERT INTO `bus_base_info` VALUES ('1009', '15', '沪D56790', null, null, '1313', '1314', '浦西校区', null, '1', '2019-04-19 21:05:09', '2019-05-14 17:39:21');
-INSERT INTO `bus_base_info` VALUES ('1010', '16', '沪DC0625', null, null, '1315', '1485', '浦西校区', null, '1', '2019-04-19 21:05:09', '2019-05-14 17:39:21');
+INSERT INTO `bus_base_info` VALUES ('1010', '16', '沪DC0625', null, null, '1315', '1486', '浦西校区', null, '1', '2019-04-19 21:05:09', '2019-05-14 17:39:21');
 INSERT INTO `bus_base_info` VALUES ('1011', '18', '沪D14145', null, null, '1317', '1318', '浦西校区', null, '1', '2019-04-19 21:05:09', '2019-05-14 17:39:21');
 INSERT INTO `bus_base_info` VALUES ('1012', '19', '沪BT7593', null, null, '1319', '1320', '浦西校区', null, '1', '2019-04-19 21:05:09', '2019-05-14 17:39:21');
 INSERT INTO `bus_base_info` VALUES ('1013', '24', '沪BR3811', null, null, '1321', '1322', '浦西校区', null, '1', '2019-04-19 21:05:09', '2019-05-14 17:39:21');
@@ -316,7 +316,7 @@ INSERT INTO `bus_base_info` VALUES ('1093', '202', '沪AZ0128', null, null, '147
 INSERT INTO `bus_base_info` VALUES ('1094', '203', '沪D04140', null, null, '1475', '1476', '浦东校区', null, '1', '2019-05-08 17:55:30', '2019-05-14 17:39:27');
 INSERT INTO `bus_base_info` VALUES ('1095', '204', '沪BT1740', null, null, '1477', '1478', '浦东校区', null, '1', '2019-05-08 17:55:30', '2019-05-14 17:39:27');
 INSERT INTO `bus_base_info` VALUES ('1096', '205', '沪BT1743', null, null, '1479', '1309', '浦东校区', null, '1', '2019-05-08 17:55:30', '2019-05-14 17:39:28');
-INSERT INTO `bus_base_info` VALUES ('1097', '209', '沪BT7689', null, null, '1480', '1486', '浦东校区', null, '1', '2019-05-08 17:55:30', '2019-05-14 17:39:28');
+INSERT INTO `bus_base_info` VALUES ('1097', '209', '沪BT7689', null, null, '1480', '1485', '浦东校区', null, '1', '2019-05-08 17:55:30', '2019-05-14 17:39:28');
 
 -- ----------------------------
 -- Table structure for bus_line
@@ -3807,7 +3807,6 @@ INSERT INTO `user` VALUES ('1312', '杨彬', '杨彬', null, '5', 'shzx', '13918
 INSERT INTO `user` VALUES ('1313', '李志娟', '李志娟', null, '3', 'shzx', '15802149891_李志娟.jpg', '15802149891', '2019-05-14 16:17:46', '1', null);
 INSERT INTO `user` VALUES ('1314', '曹陈波', '曹陈波', null, '5', 'shzx', '13917474825_曹陈波.jpg', '13917474825', '2019-05-14 16:17:46', '1', null);
 INSERT INTO `user` VALUES ('1315', '蒋月英', '蒋月英', null, '3', 'shzx', '13162021619_蒋月英.jpg', '13162021619', '2019-05-14 16:17:46', '1', null);
-INSERT INTO `user` VALUES ('1316', '浦西张国强', '浦西张国强', null, '5', 'shzx', '13816906301_浦西张国强.jpg', '13816906301', '2019-05-14 16:17:46', '1', null);
 INSERT INTO `user` VALUES ('1317', '郭玉萍', '郭玉萍', null, '3', 'shzx', '13916165010_郭玉萍.jpg', '13916165010', '2019-05-14 16:17:46', '1', null);
 INSERT INTO `user` VALUES ('1318', '沈玲', '沈玲', null, '5', 'shzx', '18918001809_沈玲.jpg', '18918001809', '2019-05-14 16:17:46', '1', null);
 INSERT INTO `user` VALUES ('1319', '陈惠娟', '陈惠娟', null, '3', 'shzx', '13032195025_陈惠娟.jpg', '13032195025', '2019-05-14 16:17:47', '1', null);
@@ -3977,7 +3976,7 @@ INSERT INTO `user` VALUES ('1482', '郭银强', '郭银强', null, '5', 'shzx', 
 INSERT INTO `user` VALUES ('1483', '周启文', '周启文', null, '3', 'shzx', '13918487578_周启文.jpg', '13918487578', '2019-05-14 16:17:51', '1', null);
 INSERT INTO `user` VALUES ('1484', '凌翌', '凌翌', null, '5', 'shzx', '13761118801_凌翌.jpg', '13761118801', '2019-05-14 16:17:51', '1', null);
 INSERT INTO `user` VALUES ('1485', '浦东张国强', '浦东张国强', null, '5', 'shzx', '13901889207_浦东张国强.jpg', '13901889207', '2019-05-14 16:27:19', '1', null);
-INSERT INTO `user` VALUES ('1486', '浦西张国强', '浦西张国强', null, '5', 'shzx', '13816906301_浦西张国强.jpg', '13816906301', '0000-00-00 00:00:00', '1', null);
+INSERT INTO `user` VALUES ('1486', '浦西张国强', '浦西张国强', null, '5', 'shzx', '13816906301_浦西张国强.jpg', '13816906301', '2019-05-31 10:12:50', '1', null);
 
 -- ----------------------------
 -- Table structure for user_msg_status_info
