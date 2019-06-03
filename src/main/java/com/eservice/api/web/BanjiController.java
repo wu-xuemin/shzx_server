@@ -98,13 +98,16 @@ public class BanjiController {
         return ResultGenerator.genSuccessResult(banji);
     }
 
-    @ApiOperation("根据年级、班级查询当天缺乘，并发送短信")
+    @ApiOperation("根据年级、班级查询当天缺乘(分上学、放学)，并发送短信")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级"),
-            @ApiImplicitParam(paramType = "query",name = "banjiName", value = "班级，比如 1(1)，注意括号小写") })
+            @ApiImplicitParam(paramType = "query",name = "banjiName", value = "班级，比如 1(1)，注意括号小写"),
+            @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次， 只能“上学”、“放学”，不能查晚班没有缺乘概念 ",required = true)})
     @PostMapping("/sendSMStest")
-    public Result sendSMStest(@RequestParam String gradeName, @RequestParam String banjiName) {
+    public Result sendSMStest(@RequestParam String gradeName,
+                              @RequestParam String banjiName,
+                              @RequestParam String busMode) {
         String strAbsenceDetail = null;
-        strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(gradeName,banjiName);
+        strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(gradeName,banjiName,busMode);
         logger.info( strAbsenceDetail);
 
         smsUtils.send(new String[]{"15715766877","13588027825"},strAbsenceDetail);

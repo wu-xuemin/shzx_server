@@ -72,7 +72,7 @@ public class SendSMSTimer {
             // 测试用
             String[] testerPhoneArr = new String[]{"15715766877","13588027825"};//{"13588027825"}; //
             for (int i = 0; i <3; i++) {
-                strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName());
+                strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName(),Constant.BUS_MODE_MORNING);
                 logger.info("Try send 短信内容：" + strAbsenceDetail);
                 smsUtils.send(testerPhoneArr,strAbsenceDetail);
                 try {
@@ -85,7 +85,7 @@ public class SendSMSTimer {
         } else {
             // 正式用
             for (int i = 0; i <banjiList.size() ; i++) {
-                strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName());
+                strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName(),Constant.BUS_MODE_MORNING);
                 // bzrPhoneList 和 banjiList 一一对应
                 logger.info(i + "Try send 短信内容：" + strAbsenceDetail);
                 smsUtils.send(bzrPhoneList.get(i),strAbsenceDetail);
@@ -128,7 +128,7 @@ public class SendSMSTimer {
             // 测试用
             String[] testerPhoneArr = new String[]{"15715766877","13588027825"}; //{"15715766877","13588027825"}
             for (int i = 0; i <2; i++) {
-                strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName());
+                strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName(),Constant.BUS_MODE_AFTERNOON);
                 logger.info("Try send 短信内容：" + strAbsenceDetail);
                 smsUtils.send(testerPhoneArr,strAbsenceDetail);
                 try {
@@ -141,7 +141,7 @@ public class SendSMSTimer {
         } else {
             // 正式用。 1-8年级才需要发送缺乘短信
             for (int i = 0; i <bzr1To8GradePhoneList.size() ; i++) {
-                strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName());
+                strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName(),Constant.BUS_MODE_AFTERNOON);
                 logger.info(i + "下午 Try send 短信内容：" + strAbsenceDetail);
                 smsUtils.send(bzr1To8GradePhoneList.get(i),strAbsenceDetail);
                 try {

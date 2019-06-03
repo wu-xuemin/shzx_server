@@ -191,7 +191,7 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
 
     }
 
-    public String getAbsenceTodayByGradeClass(String gradeName, String banjiName ) {
+    public String getAbsenceTodayByGradeClass(String gradeName, String banjiName,String busMode) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String queryStartTime = sdf.format(new Date());
@@ -203,15 +203,15 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         Date tomorrow = c.getTime();
         queryFinishTime = sdf.format(tomorrow);
 
-        BanjiInfo bzr = banjiService.getTheChargeTeacher(gradeName,banjiName);
-        if(bzr == null){
+        BanjiInfo bzr = banjiService.getTheChargeTeacher(gradeName, banjiName);
+        if (bzr == null) {
             logger.error(" could not get the charge teacher for grade: " + gradeName + " banji: " + banjiName);
         }
 
         List<StudentInfo> absenceStudentInfoList;
         String strTmp = null;
         absenceStudentInfoList = transportRecordService.selectAbsenceStudentInfo(queryStartTime, queryFinishTime,
-                null, Constant.BUS_MODE_MORNING, gradeName, banjiName);
+                null, busMode, gradeName, banjiName);
 
         for (int j = 0; j < absenceStudentInfoList.size(); j++) {
             if (strTmp == null) {
@@ -227,7 +227,7 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         Date now = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        if(absenceStudentInfoList.size() >0 ) {
+        if (absenceStudentInfoList.size() > 0) {
             messageOfSMS = bzr.getName() + "老师，截止" + formatter.format(now) + "，你班搭乘校车的同学中"
                     + "，缺乘总人数： " + absenceStudentInfoList.size() + "，具体名单：" + strTmp;
         } else {
