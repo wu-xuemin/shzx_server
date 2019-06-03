@@ -81,15 +81,15 @@ public class StudentController {
                         if(urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
                             /**
                              * HeadImg，不保存绝对路径，只保存文件名，方便windows调试。
-                             * 方式：xh123456.jpg
+                             * 方式：xh123456_张三.jpg
                              */
-                            studentObj.setHeadImg(studentObj.getStudentNumber().replaceAll("/", "_") + ".jpg");
+                            studentObj.setHeadImg(studentObj.getStudentNumber().replaceAll("/", "-") + "_" + studentObj.getName() + ".jpg");
                         } else {
                             /**
                              * HeadImg，保存绝对路径，方便APP/web调用
-                             * 方式：https://eservice-tech.cn/studentImg/10812.jpg
+                             * 方式：https://eservice-tech.cn/studentImg/10812_张三.jpg
                              */
-                            studentObj.setHeadImg(studentImgUrlPrefix + studentObj.getStudentNumber().replaceAll("/", "_") + ".jpg");
+                            studentObj.setHeadImg(studentImgUrlPrefix + studentObj.getStudentNumber().replaceAll("/", "-") + "_" + studentObj.getName() +  ".jpg");
                         }
                     } else {
                         message = "failed to save file, no student added of " + studentObj.getName();

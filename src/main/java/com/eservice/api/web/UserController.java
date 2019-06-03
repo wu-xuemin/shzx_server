@@ -108,15 +108,15 @@ public class UserController {
                             if (urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
                                 /**
                                  * HeadImg，不保存绝对路径，只保存文件名，方便windows调试。
-                                 * 方式： 13500001111_张三.jpg， 学号1234_小明.jpg
+                                 * 方式： 13500001111_张三.jpg， 13500001234_小明.jpg
                                  */
-                                userObj.setHeadImage(userObj.getPhone().replaceAll("/", "_") + userObj.getName() + ".jpg");
+                                userObj.setHeadImage(userObj.getPhone().replaceAll("/", "-") + "_" + userObj.getName() + ".jpg");
                             } else {
                                 /**
                                  * HeadImg，保存绝对路径，方便APP/web调用
                                  * 方式：https://eservice-tech.cn/userImg/13500001111_张三.jpg，
                                  */
-                                userObj.setHeadImage(userImgUrlPrefix + userObj.getPhone().replaceAll("/", "_") + userObj.getName() + ".jpg");
+                                userObj.setHeadImage(userImgUrlPrefix + userObj.getPhone().replaceAll("/", "-") + "_" + userObj.getName() + ".jpg");
                             }
                         } else {
                             message = "failed to save file, no user added of " + userObj.getName();
@@ -186,13 +186,13 @@ public class UserController {
                              * HeadImg，不保存绝对路径，只保存文件名，方便windows调试。
                              * 方式：13500001111_张三.jpg
                              */
-                            userObj.setHeadImage(userObj.getPhone().replaceAll("/", "_") + userObj.getName() + ".jpg");
+                            userObj.setHeadImage(userObj.getPhone().replaceAll("/", "-") + "_" + userObj.getName() + ".jpg");
                         } else {
                             /**
                              * HeadImg，保存绝对路径，方便APP/web调用
                              * 方式：https://eservice-tech.cn/userImg/13500001111_张三.jpg
                              */
-                            userObj.setHeadImage(userImgUrlPrefix + userObj.getPhone().replaceAll("/", "_") + userObj.getName() + ".jpg");
+                            userObj.setHeadImage(userImgUrlPrefix + userObj.getPhone().replaceAll("/", "-") + "_" + userObj.getName() + ".jpg");
                         }
                     } else {
                         message = "failed to save file, no user is updated of " + userObj.getName();

@@ -90,4 +90,18 @@ public class PickedStudentsInfo {
     public void setStudentId(Integer studentId) {
         this.studentId = studentId;
     }
+
+    /**
+     * 1: 刷脸，2：手动 (处理刷脸没成功识别的情况)
+     */
+    @Column(name = "check_mode")
+    private Integer checkMode;
+
+    public Integer getCheckMode() {
+        return checkMode;
+    }
+
+    public void setCheckMode(Integer checkMode) {
+        this.checkMode = checkMode;
+    }
 }

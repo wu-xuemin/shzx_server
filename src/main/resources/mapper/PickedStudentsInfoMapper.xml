@@ -9,6 +9,7 @@
 		<result column="transport_record_id" jdbcType="INTEGER" property="transportRecordId"/>
 		<result column="board_time" jdbcType="TIMESTAMP" property="boardTime"/>
 		<result column="student_id" jdbcType="INTEGER" property="studentId"/>
+		<result column="check_mode" jdbcType="INTEGER" property="checkMode"/>
 	</resultMap>
 
 	<resultMap id="StudentBusViewMap" type="com.eservice.api.model.picked_students_info.PickedStudentsBusView">
@@ -16,6 +17,7 @@
 		<result column="transport_record_id" jdbcType="INTEGER" property="transportRecordId"/>
 		<result column="board_time" jdbcType="TIMESTAMP" property="boardTime"/>
 		<result column="student_id" jdbcType="INTEGER" property="studentId"/>
+		<result column="check_mode" jdbcType="INTEGER" property="checkMode"/>
 		<result column="bus_line" jdbcType="INTEGER" property="busLine"/>
 		<result column="current_station" jdbcType="INTEGER" property="currentStation"/>
 		<result column="station_name" jdbcType="VARCHAR" property="currentStationName"/>
