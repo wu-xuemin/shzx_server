@@ -1190,6 +1190,7 @@ CREATE TABLE `picked_students_info` (
   `transport_record_id` int(10) unsigned NOT NULL COMMENT 'transport_record的id，也可以据此查到线路信息，再进一步可以查到该学生是否乘坐该线路',
   `board_time` datetime NOT NULL COMMENT '上下车时间',
   `student_id` int(10) unsigned NOT NULL COMMENT '学生(用ID表示）',
+  `check_mode` int(10) DEFAULT '1' COMMENT '1: 刷脸，2：手动',
   PRIMARY KEY (`id`),
   KEY `fk_student_id` (`student_id`),
   KEY `fk_transport_record_id` (`transport_record_id`),
