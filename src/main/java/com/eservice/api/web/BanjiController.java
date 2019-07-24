@@ -25,6 +25,7 @@ import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -99,8 +100,8 @@ public class BanjiController {
     }
 
     @ApiOperation("根据年级、班级查询当天缺乘(分上学、放学)，并发送短信")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级"),
-            @ApiImplicitParam(paramType = "query",name = "banjiName", value = "班级，比如 1(1)，注意括号小写"),
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",name = "gradeName", value = "年级，比如 1年级，(zj) 1年级",required = true),
+            @ApiImplicitParam(paramType = "query",name = "banjiName", value = "班级，比如 1(1)，注意括号小写",required = true),
             @ApiImplicitParam(paramType = "query",name = "busMode", value = "查询的班次， 只能“上学”、“放学”，不能查晚班没有缺乘概念 ",required = true)})
     @PostMapping("/sendSMStest")
     public Result sendSMStest(@RequestParam String gradeName,
@@ -110,7 +111,40 @@ public class BanjiController {
         strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(gradeName,banjiName,busMode);
         logger.info( strAbsenceDetail);
 
-        smsUtils.send(new String[]{"15715766877","13588027825"},strAbsenceDetail);
+//        smsUtils.send(new String[]{"15715766877","13588027825"},strAbsenceDetail);
+
+
+        List<Banji> banji1to8List = banjiService.getBanji1to8List();
+        //9-12年级除外的班级，即1-8年级才需要发送缺乘短信
+        List<User> bzr1To8GradeList = banjiService.get1To8GradeChargeTeachers();
+
+        for (int k= 0; k< banji1to8List.size(); k++) {
+            logger.info(banji1to8List.get(k).getClassName());
+        }
+        for (int j=0;j < bzr1To8GradeList.size(); j++){
+            logger.info(bzr1To8GradeList.get(j).getName() + "/" + bzr1To8GradeList.get(j).getPhone());
+        }
+
+        //  班主任电话，size为1的数组
+        ArrayList< String[] > bzr1To8GradePhoneList = new ArrayList<>();
+        for (int i = 0; i <bzr1To8GradeList.size() ; i++) {
+            if(bzr1To8GradeList.get(i).getPhone() != null) { // && !bzr1To8GradeList.get(i).getPhone().isEmpty()
+                //“Fake” 只是为了转为数组形式
+                //// 这里todo
+                bzr1To8GradePhoneList.add(bzr1To8GradeList.get(i).getPhone().split("Fake"));
+            } else {
+                logger.info(bzr1To8GradeList.get(i).getName() + ", Phone is empty");
+            }
+        }
+
+        // 正式用。 1-8年级才需要发送缺乘短信
+        for (int i = 0; i <bzr1To8GradePhoneList.size() ; i++) {
+            strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banji1to8List.get(i).getGrade(),banji1to8List.get(i).getClassName(),Constant.BUS_MODE_AFTERNOON);
+            logger.info(i + "下午 Try send 短信内容：" + strAbsenceDetail);
+//            smsUtils.send(bzr1To8GradePhoneList.get(i),strAbsenceDetail);
+
+            logger.info( "Sent SMS to " + bzr1To8GradePhoneList.get(i)[0] + ":" + strAbsenceDetail);
+        }
         return ResultGenerator.genSuccessResult(strAbsenceDetail);
     }
 
@@ -128,6 +162,15 @@ public class BanjiController {
     public Result get1To8GradeChargeTeachers(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
         List<User> list = banjiService.get1To8GradeChargeTeachers();
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    @ApiOperation("返回1-8年级的班级 ")
+    @PostMapping("/getBanji1to8List")
+    public Result getBanji1to8List(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
+        PageHelper.startPage(page, size);
+        List<Banji> list = banjiService.getBanji1to8List();
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
@@ -170,50 +213,8 @@ public class BanjiController {
     @PostMapping("/getURLContentAndCreateBanji")
     public Result getURLContentAndCreateBanji(@RequestParam(defaultValue = Constant.SHZX_URL_GET_CLASS)
                                                           String urlStr) {
-
         Integer addedBanjiSum = 0;
-        String strFromUrl = CommonService.getUrlResponse(urlStr);
-        try {
-            JSONObject jsonObject = JSON.parseObject(strFromUrl);
-            JSONArray ja = jsonObject.getJSONArray("result");
-            logger.info(" banji fake sum: " + ja.size());
-            for (int i = 0; i < ja.size(); i++) {
-                Banji banji = new Banji();
-                JSONObject jo = ja.getJSONObject(i);
-                String grade = jo.getString("grade");
-                String banjiName = jo.getString("name");
-                String teacher_name = jo.getString("teacher_name");
-                String classId = jo.getString("id");
-                banji.setGrade(grade);
-                banji.setClassName(banjiName);
-                banji.setCreateTime(new Date());
-                banji.setClassIdFromUrl(classId);
-
-                Class cl = Class.forName("com.eservice.api.model.user.User");
-                Field fieldUserAccount = cl.getDeclaredField("account");
-                User userExist = null;
-                userExist = userService.findBy(fieldUserAccount.getName(), teacher_name);
-                if (userExist == null) {
-                    return ResultGenerator.genFailResult("Can not find the user by account " + teacher_name);
-                } else {
-                    banji.setChargeTeacher(userExist.getId());
-                }
-
-                /**
-                 * 班级不存在时，增加班级
-                 */
-                if (banjiService.isBanjiExist(grade, banjiName)) {
-                    logger.info(" already exist banji: " + banji.getGrade() + "," + banji.getClassName());
-                } else {
-                    banjiService.save(banji);
-                    logger.info("Add banji: " + banji.getGrade() + "," + banji.getClassName());
-                    addedBanjiSum++;
-                }
-            }
-
-        } catch (Exception e) {
-            logger.warn(" exception: " + e.toString());
-        }
+        addedBanjiSum = banjiService.getURLContentAndCreateBanji(urlStr);
         return ResultGenerator.genSuccessResult("addedBanjiSum " + addedBanjiSum + " is added");
     }
 

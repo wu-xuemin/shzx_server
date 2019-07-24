@@ -1,5 +1,8 @@
 package com.eservice.api.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.dao.BanjiMapper;
@@ -254,6 +257,10 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         return banjiMapper.getBanjiListByGrade(gradeName);
     }
 
+    public List<Banji> getBanji1to8List() {
+        return banjiMapper.getBanji1to8List();
+    }
+
     public boolean isBanjiExist(String gradeName,String banjiName){
         if( banjiMapper.isBanjiExist(gradeName,banjiName).isEmpty()){
             return false;
@@ -268,5 +275,57 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
 
     public List<Banji> listByClassName(){
         return banjiMapper.listByClassName();
+    }
+
+    /**
+     * 从URL里创建班级
+     * @param urlStr
+     * @return 返回创建的班级数量
+     */
+    public Integer getURLContentAndCreateBanji(String urlStr) {
+        Integer addedBanjiSum = 0;
+        String strFromUrl = CommonService.getUrlResponse(urlStr);
+        try {
+            JSONObject jsonObject = JSON.parseObject(strFromUrl);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            logger.info(" banji fake sum: " + ja.size());
+            for (int i = 0; i < ja.size(); i++) {
+                Banji banji = new Banji();
+                JSONObject jo = ja.getJSONObject(i);
+                String grade = jo.getString("grade");
+                String banjiName = jo.getString("name");
+                String teacher_name = jo.getString("teacher_name");
+                String classId = jo.getString("id");
+                banji.setGrade(grade);
+                banji.setClassName(banjiName);
+                banji.setCreateTime(new Date());
+                banji.setClassIdFromUrl(classId);
+
+                Class cl = Class.forName("com.eservice.api.model.user.User");
+                Field fieldUserAccount = cl.getDeclaredField("account");
+                User userExist = null;
+                userExist = userService.findBy(fieldUserAccount.getName(), teacher_name);
+                if (userExist == null) {
+                    logger.warn("Can not find the user by account " + teacher_name);
+                } else {
+                    banji.setChargeTeacher(userExist.getId());
+                }
+
+                /**
+                 * 班级不存在时，增加班级
+                 */
+                if (banjiService.isBanjiExist(grade, banjiName)) {
+                    logger.info(" already exist banji: " + banji.getGrade() + "," + banji.getClassName());
+                } else {
+                    banjiService.save(banji);
+                    logger.info("Add banji: " + banji.getGrade() + "," + banji.getClassName());
+                    addedBanjiSum++;
+                }
+            }
+
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+        }
+        return addedBanjiSum;
     }
 }

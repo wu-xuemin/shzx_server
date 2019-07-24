@@ -1,5 +1,7 @@
 package com.eservice.api.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
@@ -549,4 +551,111 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         return studentMapper.deleteStudentsNotRideSchoolBus();
     }
 
+    public String getURLContentAndCreateStu(String urlStrStudent, String urlStrBus){
+        Integer addedStuSum = 0;
+        Integer noRideBusStuSum =0;
+        String strFromUrl = CommonService.getUrlResponse(urlStrStudent);
+        try {
+            JSONObject jsonObject= JSON.parseObject(strFromUrl);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            for (int i = 0; i < ja.size(); i++) {
+                Student student = new Student();
+                JSONObject jo = ja.getJSONObject(i);
+                String classId = jo.getString("class_id");
+                String stuName = jo.getString("name");
+                String stuNumber = jo.getString("student_number");
+
+                student.setName(stuName);
+                student.setStudentNumber(stuNumber);
+                student.setCreateTime(new Date());
+                student.setValid(Constant.VALID_YES);
+
+                Class cl = Class.forName("com.eservice.api.model.banji.Banji");
+                Field field = cl.getDeclaredField("classIdFromUrl");
+                Banji banjiExist = banjiService.findBy(field.getName(), classId);
+                if(banjiExist == null) {
+                    logger.warn(" can not find banji by classId: " + classId);
+                } else {
+                    student.setBanji(banjiExist.getId());
+                }
+
+                Class cl2 = Class.forName("com.eservice.api.model.student.Student");
+                Field fieldStuNum = cl2.getDeclaredField("studentNumber");
+                Student studentExist = studentService.findBy(fieldStuNum.getName(), stuNumber);
+                if(studentExist == null) {
+                    studentService.save(student);
+                    logger.info("added student: " + student.getName());
+                    addedStuSum ++;
+                } else {
+                    logger.info(" already exist student: " +  student.getName());
+                }
+            }
+
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+            return (" exception: " + e.toString());
+        }
+        /**
+         * 获取学生的校车编号，站点，电话信息（放到family字段）
+         */
+        String strFromUrlBus = CommonService.getUrlResponse(urlStrBus);
+        try {
+            JSONObject jsonObject= JSON.parseObject(strFromUrlBus);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            for (int i = 0; i < ja.size(); i++) {
+                JSONObject jo = ja.getJSONObject(i);
+                Student studentInBusUrl = new Student();
+                String stuNumber = jo.getString("student_number");
+                String busNumber = jo.getString("id");
+                String stationName = jo.getString("station_name");
+                String phone = jo.getString("phone");
+
+                studentInBusUrl = studentService.getStudentInfo(stuNumber);
+                if(studentInBusUrl == null){
+                    logger.warn("Can not find student by studentNumber " + stuNumber);
+                } else{
+                    /**
+                     * 班次编号
+                     */
+                    BusLine busLineExist = busLineService.findBy("name", busNumber + "号车_上学" );
+
+                    if (busLineExist == null) {
+                        logger.warn("Can not find busLine by bus number " + busNumber);
+                    } else {
+                        studentInBusUrl.setBusLineMorning(busLineExist.getId());
+                        BusLine busLineExistWuban = null;
+                        busLineExistWuban = busLineService.findBy("name", busNumber + "号车_放学" );
+                        studentInBusUrl.setBusLineAfternoon(busLineExistWuban.getId());
+                    }
+                    /**
+                     * 站点
+                     */
+                    BusStations busStation = busStationsService.getBusStation(stationName);
+                    if(busStation == null){
+                        logger.warn("Can not find station by stationName " + stationName);
+                    } else {
+                        studentInBusUrl.setBoardStationMorning(busStation.getId());
+                        studentInBusUrl.setBoardStationAfternoon(busStation.getId());
+                    }
+                    /**
+                     * 电话信息（放到family字段）
+                     * TODO: URL ready后改为JSON格式
+                     */
+                    studentInBusUrl.setFamilyInfo(phone);
+                    studentService.update(studentInBusUrl);
+                }
+            }
+
+            /**
+             * 删除不坐班车的学生
+             */
+            noRideBusStuSum = studentService.deleteStudentsNotRideSchoolBus();
+            logger.info( noRideBusStuSum + " student(s) not riding school bus deleted");
+
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+            return (" exception: " + e.toString());
+        }
+        return "Finally, " + (addedStuSum - noRideBusStuSum) + " is added";
+    }
 }

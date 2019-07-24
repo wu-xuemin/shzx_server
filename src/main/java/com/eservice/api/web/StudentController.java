@@ -315,111 +315,8 @@ public class StudentController {
     @PostMapping("/getURLContentAndCreateStu")
     public Result getURLContentAndCreateStu(@RequestParam(defaultValue = Constant.SHZX_URL_GET_STUDENT) String urlStrStudent,
                                             @RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS) String urlStrBus) {
-        Integer addedStuSum = 0;
-        Integer noRideBusStuSum =0;
-        String strFromUrl = CommonService.getUrlResponse(urlStrStudent);
-        try {
-            JSONObject jsonObject= JSON.parseObject(strFromUrl);
-            JSONArray ja = jsonObject.getJSONArray("result");
-            for (int i = 0; i < ja.size(); i++) {
-                Student student = new Student();
-                JSONObject jo = ja.getJSONObject(i);
-                String classId = jo.getString("class_id");
-                String stuName = jo.getString("name");
-                String stuNumber = jo.getString("student_number");
-
-                student.setName(stuName);
-                student.setStudentNumber(stuNumber);
-                student.setCreateTime(new Date());
-                student.setValid(Constant.VALID_YES);
-
-                Class cl = Class.forName("com.eservice.api.model.banji.Banji");
-                Field field = cl.getDeclaredField("classIdFromUrl");
-                Banji banjiExist = banjiService.findBy(field.getName(), classId);
-                if(banjiExist == null) {
-                    logger.warn(" can not find banji by classId: " + classId);
-                } else {
-                    student.setBanji(banjiExist.getId());
-                }
-
-                Class cl2 = Class.forName("com.eservice.api.model.student.Student");
-                Field fieldStuNum = cl2.getDeclaredField("studentNumber");
-                Student studentExist = studentService.findBy(fieldStuNum.getName(), stuNumber);
-                if(studentExist == null) {
-                    studentService.save(student);
-                    logger.info("added student: " + student.getName());
-                    addedStuSum ++;
-                } else {
-                    logger.info(" already exist student: " +  student.getName());
-                }
-            }
-
-        } catch (Exception e) {
-            logger.warn(" exception: " + e.toString());
-            return ResultGenerator.genFailResult(" exception: " + e.toString());
-        }
-        /**
-         * 获取学生的校车编号，站点，电话信息（放到family字段）
-         */
-        String strFromUrlBus = CommonService.getUrlResponse(urlStrBus);
-        try {
-            JSONObject jsonObject= JSON.parseObject(strFromUrlBus);
-            JSONArray ja = jsonObject.getJSONArray("result");
-            for (int i = 0; i < ja.size(); i++) {
-                JSONObject jo = ja.getJSONObject(i);
-                Student studentInBusUrl = new Student();
-                String stuNumber = jo.getString("student_number");
-                String busNumber = jo.getString("id");
-                String stationName = jo.getString("station_name");
-                String phone = jo.getString("phone");
-
-                studentInBusUrl = studentService.getStudentInfo(stuNumber);
-                if(studentInBusUrl == null){
-                    logger.warn("Can not find student by studentNumber " + stuNumber);
-                } else{
-                    /**
-                     * 班次编号
-                     */
-                    BusLine busLineExist = busLineService.findBy("name", busNumber + "号车_上学" );
-
-                    if (busLineExist == null) {
-                        logger.warn("Can not find busLine by bus number " + busNumber);
-                    } else {
-                        studentInBusUrl.setBusLineMorning(busLineExist.getId());
-                        BusLine busLineExistWuban = null;
-                        busLineExistWuban = busLineService.findBy("name", busNumber + "号车_放学" );
-                        studentInBusUrl.setBusLineAfternoon(busLineExistWuban.getId());
-                    }
-                    /**
-                     * 站点
-                     */
-                    BusStations busStation = busStationsService.getBusStation(stationName);
-                    if(busStation == null){
-                        logger.warn("Can not find station by stationName " + stationName);
-                    } else {
-                        studentInBusUrl.setBoardStationMorning(busStation.getId());
-                        studentInBusUrl.setBoardStationAfternoon(busStation.getId());
-                    }
-                    /**
-                     * 电话信息（放到family字段）
-                     * TODO: URL ready后改为JSON格式
-                     */
-                    studentInBusUrl.setFamilyInfo(phone);
-                    studentService.update(studentInBusUrl);
-                }
-            }
-
-            /**
-             * 删除不坐班车的学生
-             */
-            noRideBusStuSum = studentService.deleteStudentsNotRideSchoolBus();
-            logger.info( noRideBusStuSum + " student(s) not riding school bus deleted");
-
-        } catch (Exception e) {
-            logger.warn(" exception: " + e.toString());
-            return ResultGenerator.genFailResult(" exception: " + e.toString());
-        }
-        return ResultGenerator.genSuccessResult("Finally, " + (addedStuSum - noRideBusStuSum) + " is added");
+        String str = studentService.getURLContentAndCreateStu(urlStrStudent,urlStrBus);
+        return ResultGenerator.genSuccessResult(str);
     }
 
     @ApiOperation("删除不坐班车的学生")
@@ -466,5 +363,21 @@ public class StudentController {
             return ResultGenerator.genFailResult(" exception: " + e.toString());
         }
         return ResultGenerator.genSuccessResult( addedStuSum + " added" );
+    }
+
+    @ApiOperation("从上中URL获取所有数据，会替换旧数据")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "refresh",name = "password", value = "防止误操作，设置了密码 ")})
+    @PostMapping("/refreshAllDataFromURL")
+    public Result refreshAllDataFromURL(@RequestParam String password) {
+        //step0. 备份数据库，清除数据(乘车记录，学生老师班级校车信息等等)。
+
+        //step1 班级信息 (banji)
+        banjiService.getURLContentAndCreateBanji(null);
+
+        //step2 站点信息 (station_name/remark/fare_rate)
+
+        // 照片
+        //todo...
+        return ResultGenerator.genSuccessResult("detail info...");
     }
 }

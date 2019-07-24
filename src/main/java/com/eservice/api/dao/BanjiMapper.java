@@ -20,8 +20,11 @@ public interface BanjiMapper extends Mapper<Banji> {
     @Select("SELECT * from banji where banji.grade = #{gradeName}")
     List<Banji> getBanjiListByGrade(@Param("gradeName") String gradeName);
 
+    @Select("SELECT * from banji where banji.grade <9 ORDER BY class_name")
+    List<Banji> getBanji1to8List();
+
     // <9 刚好可以查出来低于9的年级
-    @Select("SELECT * from banji LEFT JOIN user on banji.charge_teacher = `user`.id WHERE banji.grade < 9 ")
+    @Select("SELECT * from banji LEFT JOIN user on banji.charge_teacher = `user`.id WHERE banji.grade < 9 ORDER BY class_name")
     List<User> get1To8GradeChargeTeachers();
 
     @Select("SELECT * from banji WHERE banji.grade = #{gradeName} and banji.class_name = #{banjiName} ")

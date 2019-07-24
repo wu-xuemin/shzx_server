@@ -108,8 +108,8 @@ public class SendSMSTimer {
             return;
         }
 
-        //所有班级：
-        List<Banji> banjiList = banjiService.findAll();
+        //1-8年级的班级：
+        List<Banji> banji1to8List = banjiService.getBanji1to8List();
         //9-12年级除外的班级，即1-8年级才需要发送缺乘短信
         List<User> bzr1To8GradeList = banjiService.get1To8GradeChargeTeachers();
         //  班主任电话，size为1的数组
@@ -128,11 +128,11 @@ public class SendSMSTimer {
             // 测试用
             String[] testerPhoneArr = new String[]{"15715766877","13588027825"}; //{"15715766877","13588027825"}
             for (int i = 0; i <2; i++) {
-                strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName(),Constant.BUS_MODE_AFTERNOON);
+                strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banji1to8List.get(i).getGrade(),banji1to8List.get(i).getClassName(),Constant.BUS_MODE_AFTERNOON);
                 logger.info("Try send 短信内容：" + strAbsenceDetail);
                 smsUtils.send(testerPhoneArr,strAbsenceDetail);
                 try {
-                    //连续不停的发送，会丢失短信
+                    //连续不停的发送，会丢失短信; 另外短信本身有一定的丢失率。目前看百十来次有一次。
                     Thread.sleep(10*1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -141,16 +141,16 @@ public class SendSMSTimer {
         } else {
             // 正式用。 1-8年级才需要发送缺乘短信
             for (int i = 0; i <bzr1To8GradePhoneList.size() ; i++) {
-                strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banjiList.get(i).getGrade(),banjiList.get(i).getClassName(),Constant.BUS_MODE_AFTERNOON);
+                strAbsenceDetail = banjiService.getAbsenceTodayByGradeClass(banji1to8List.get(i).getGrade(),banji1to8List.get(i).getClassName(),Constant.BUS_MODE_AFTERNOON);
                 logger.info(i + "下午 Try send 短信内容：" + strAbsenceDetail);
                 smsUtils.send(bzr1To8GradePhoneList.get(i),strAbsenceDetail);
                 try {
-                    //连续不停的发送，会丢失短信
+                    //连续不停的发送，会丢失短信；另外短信本身有一定的丢失率。
                     Thread.sleep(10*1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                logger.info( "Sent SMS to " + bzr1To8GradePhoneList.get(i) + strAbsenceDetail);
+                logger.info( "Sent SMS to " + bzr1To8GradePhoneList.get(i)[0] + "，内容:" + strAbsenceDetail);
             }
         }
 

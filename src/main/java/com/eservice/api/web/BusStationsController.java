@@ -114,41 +114,8 @@ public class BusStationsController {
     @PostMapping("/getURLContentAndCreateBusStations")
     public Result getURLContentAndCreateBusStations(@RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS)
                                                     String urlStr) {
-
         Integer addedBusStationSum = 0;
-        String strFromUrl = CommonService.getUrlResponse(urlStr);
-        try {
-            JSONObject jsonObject= JSON.parseObject(strFromUrl);
-            JSONArray ja = jsonObject.getJSONArray("result");
-            for (int i = 0; i < ja.size(); i++) {
-                BusStations busStations = new BusStations();
-                JSONObject jo = ja.getJSONObject(i);
-                String fareRate = jo.getString("fare_rate");
-                String stationName = jo.getString("station_name");
-                String remark = jo.getString("remark");
-
-                busStations.setStationName(stationName);
-                busStations.setFareRate(fareRate);
-                busStations.setRemark(remark);
-                busStations.setCreateTime(new Date());
-                busStations.setValid(Constant.VALID_YES);
-
-                Class cl = Class.forName("com.eservice.api.model.bus_stations.BusStations");
-                Field fieldUserAccount = cl.getDeclaredField("stationName");
-                BusStations busStationsExist = null;
-                busStationsExist = busStationsService.findBy(fieldUserAccount.getName(), stationName);
-                if(busStationsExist == null) {
-                    busStationsService.save(busStations);
-                    logger.info("added station: " + busStations.getStationName());
-                    addedBusStationSum ++;
-                } else {
-                    logger.info(" already exist station: " +  busStations.getStationName());
-                }
-            }
-
-        } catch (Exception e) {
-            logger.warn(" exception: " + e.toString());
-        }
+       addedBusStationSum = busStationsService.getURLContentAndCreateBusStations(urlStr);
         return ResultGenerator.genSuccessResult("addedBusStationSum " + addedBusStationSum + " is added");
     }
 

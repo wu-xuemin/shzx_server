@@ -172,7 +172,7 @@ public class UserController {
 
     @ApiOperation("更新用户, 如果带了照片参数则也保存照片且同步到人脸平台")
     @PostMapping("/update")
-    public Result update(String user,String photoData) {
+    public Result update(String user, String photoData) {
         User userObj = JSONObject.parseObject(user, User.class);
         String message = null;
         if (!TextUtils.isEmpty(photoData)) {
@@ -284,8 +284,8 @@ public class UserController {
         try {
             cl = Class.forName("com.eservice.api.model.user.User");
             Field field = cl.getDeclaredField("schoolStaffCode");
-            User user = userService.findBy(field.getName(),shzxStaffCode);
-            if(user != null) {
+            User user = userService.findBy(field.getName(), shzxStaffCode);
+            if (user != null) {
                 if (user.getRoleId() == Constant.USER_ROLE_TEACHER) {
                     /**
                      * 如果是老师，带上班级信息
@@ -391,47 +391,8 @@ public class UserController {
     @PostMapping("/getURLContentAndCreateBZR")
     public Result getURLContentAndCreateBZR(@RequestParam(defaultValue = Constant.SHZX_URL_GET_CLASS)
                                                     String urlStr) {
-
-        Integer addedBzrSum = 0;
-        String strFromUrl = CommonService.getUrlResponse(urlStr);
-        try {
-            JSONObject jsonObject = JSON.parseObject(strFromUrl);
-            JSONArray ja = jsonObject.getJSONArray("result");
-            for (int i = 0; i < ja.size(); i++) {
-                User bzr = new User();
-                JSONObject jo = ja.getJSONObject(i);
-                String teacherName = jo.getString("teacher_name");
-                String teacherPhone = jo.getString("teacher_phone");
-                String teacherUnionId = jo.getString("tunionId");
-
-                bzr.setCreateTime(new Date());
-                //班主任的账号设为和姓名一样
-                bzr.setAccount(teacherName);
-                bzr.setName(teacherName);
-                bzr.setPhone(teacherPhone);
-                bzr.setPassword(Constant.USER_DEFAULT_PASSWORD);
-                bzr.setRoleId(Constant.USER_ROLE_TEACHER);
-                bzr.setCreateTime(new Date());
-                bzr.setValid(Constant.VALID_YES);
-                bzr.setSchoolStaffCode(teacherUnionId);
-
-                Class cl = Class.forName("com.eservice.api.model.user.User");
-                Field fieldUserAccount = cl.getDeclaredField("account");
-                User userExist = null;
-                userExist = userService.findBy(fieldUserAccount.getName(), teacherName);
-                if (userExist == null) {
-                    userService.save(bzr);
-                    logger.info("added bzr: " + bzr.getAccount());
-                    addedBzrSum++;
-                } else {
-                    logger.info(" already exist account: " + bzr.getAccount() + ",name " + bzr.getName());
-                }
-            }
-
-        } catch (Exception e) {
-            logger.warn(" exception: " + e.toString());
-        }
-        return ResultGenerator.genSuccessResult("addedBzrSum " + addedBzrSum + " is added");
+        String str = userService.getURLContentAndCreateBZR(urlStr);
+        return ResultGenerator.genSuccessResult(str);
     }
 
 
@@ -439,64 +400,9 @@ public class UserController {
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "urlStr", value = " url地址 ")})
     @PostMapping("/getURLContentAndCreateBusMomAndDriver")
     public Result getURLContentAndCreateBusMomAndDriver(@RequestParam(defaultValue = Constant.SHZX_URL_GET_BUS)
-                                                        String urlStr) {
-        Integer addedBusMomSum = 0;
-        Integer addedBusDriverSum = 0;
-        String strFromUrl = CommonService.getUrlResponse(urlStr);
-        try {
-            JSONObject jsonObject = JSON.parseObject(strFromUrl);
-            JSONArray ja = jsonObject.getJSONArray("result");
-            for (int i = 0; i < ja.size(); i++) {
-                User busMom = new User();
-                User busDriver = new User();
-                JSONObject jo = ja.getJSONObject(i);
-                String busMomName = jo.getString("bus_mom_name");
-                String busMomPhone = jo.getString("bus_mom_phone");
-                String busdriverName = jo.getString("driver_name");
-                String busdriverPhone = jo.getString("driver_phone");
-
-                busMom.setAccount(busMomName);
-                busMom.setName(busMomName);
-                busMom.setRoleId(Constant.USER_ROLE_BUSMOM);
-                busMom.setPassword(Constant.USER_DEFAULT_PASSWORD);
-                busMom.setPhone(busMomPhone);
-                busMom.setCreateTime(new Date());
-                busMom.setValid(Constant.VALID_YES);
-
-                busDriver.setAccount(busdriverName);
-                busDriver.setName(busdriverName);
-                busDriver.setRoleId(Constant.USER_ROLE_DRIVER);
-                busDriver.setPassword(Constant.USER_DEFAULT_PASSWORD);
-                busDriver.setPhone(busdriverPhone);
-                busDriver.setCreateTime(new Date());
-                busDriver.setValid(Constant.VALID_YES);
-
-                Class cl = Class.forName("com.eservice.api.model.user.User");
-                Field fieldUserAccount = cl.getDeclaredField("account");
-                User busMomExist = null;
-                busMomExist = userService.findBy(fieldUserAccount.getName(), busMomName);
-                if (busMomExist == null) {
-                    userService.save(busMom);
-                    logger.info("added busMom: " + busMom.getAccount());
-                    addedBusMomSum++;
-                } else {
-                    logger.info(" already exist busMom: " + busMom.getAccount());
-                }
-
-                User busDriverExist = null;
-                busDriverExist = userService.findBy(fieldUserAccount.getName(), busdriverName);
-                if (busDriverExist == null) {
-                    userService.save(busDriver);
-                    logger.info("added driver: " + busdriverName);
-                    addedBusDriverSum++;
-                } else {
-                    logger.info(" already exist driver: " + busdriverName);
-                }
-            }
-
-        } catch (Exception e) {
-            logger.warn(" exception: " + e.toString());
-        }
-        return ResultGenerator.genSuccessResult("addedBusMomSum: " + addedBusMomSum + "  ,addedBusDriverSum: " + addedBusDriverSum );
+                                                                String urlStr) {
+        String str = userService.getURLContentAndCreateBusMomAndDriver(urlStr);
+        return ResultGenerator.genSuccessResult(str);
     }
+
 }

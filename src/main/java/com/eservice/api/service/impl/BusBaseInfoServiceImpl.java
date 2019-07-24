@@ -1,5 +1,8 @@
 package com.eservice.api.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.dao.BusBaseInfoMapper;
@@ -168,5 +171,54 @@ public class BusBaseInfoServiceImpl extends AbstractService<BusBaseInfo> impleme
 
     public List<BusBaseInfo> listByNumber(){
         return busBaseInfoMapper.listByNumber();
+    }
+
+    public Integer getURLContentAndCreateBusBaseInfo(String urlStr){
+        Integer addedBusBaseInfoSum = 0;
+        String strFromUrl = CommonService.getUrlResponse(urlStr);
+        try {
+            JSONObject jsonObject= JSON.parseObject(strFromUrl);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            for (int i = 0; i < ja.size(); i++) {
+                BusBaseInfo busBaseInfo = new BusBaseInfo();
+                JSONObject jo = ja.getJSONObject(i);
+                String schoolPartition = jo.getString("area");
+                String number = jo.getString("id");
+                String plateNumber = jo.getString("plate_number");
+                String busMomName = jo.getString("bus_mom_name");
+
+                busBaseInfo.setSchoolPartition(schoolPartition);
+                busBaseInfo.setNumber(number);
+                busBaseInfo.setPlateNumber(plateNumber);
+
+                Class cl = Class.forName("com.eservice.api.model.user.User");
+                Field fieldUserAccount = cl.getDeclaredField("account");
+                User busMomExist = null;
+                busMomExist = userService.findBy(fieldUserAccount.getName(), busMomName);
+                if(busMomExist != null) {
+                    busBaseInfo.setBusMom(busMomExist.getId());
+                } else {
+                    logger.warn(" no busMom found by account: " + busMomName);
+                }
+                busBaseInfo.setCreateTime(new Date());
+                busBaseInfo.setValid(Constant.VALID_YES);
+
+                Class cl2 = Class.forName("com.eservice.api.model.bus_base_info.BusBaseInfo");
+                Field field = cl2.getDeclaredField("number");
+                BusBaseInfo busBaseInfoExist = busBaseInfoService.findBy(field.getName(), number);
+                if(busBaseInfoExist == null) {
+                    busBaseInfoService.save(busBaseInfo);
+                    logger.info("added busBaseInfo: " + busBaseInfo.getNumber() + " 号线");
+                    addedBusBaseInfoSum ++;
+                } else {
+                    logger.info(" already exist busBaseInfo: " +  busBaseInfo.getNumber());
+                }
+            }
+
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+            return 0;
+        }
+        return addedBusBaseInfoSum;
     }
 }

@@ -1,5 +1,8 @@
 package com.eservice.api.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
 import com.eservice.api.dao.BusStationsMapper;
@@ -136,4 +139,42 @@ public class BusStationsServiceImpl extends AbstractService<BusStations> impleme
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
+    public Integer getURLContentAndCreateBusStations(String urlStr) {
+        Integer addedBusStationSum = 0;
+        String strFromUrl = CommonService.getUrlResponse(urlStr);
+        try {
+            JSONObject jsonObject = JSON.parseObject(strFromUrl);
+            JSONArray ja = jsonObject.getJSONArray("result");
+            for (int i = 0; i < ja.size(); i++) {
+                BusStations busStations = new BusStations();
+                JSONObject jo = ja.getJSONObject(i);
+                String fareRate = jo.getString("fare_rate");
+                String stationName = jo.getString("station_name");
+                String remark = jo.getString("remark");
+
+                busStations.setStationName(stationName);
+                busStations.setFareRate(fareRate);
+                busStations.setRemark(remark);
+                busStations.setCreateTime(new Date());
+                busStations.setValid(Constant.VALID_YES);
+
+                Class cl = Class.forName("com.eservice.api.model.bus_stations.BusStations");
+                Field fieldUserAccount = cl.getDeclaredField("stationName");
+                BusStations busStationsExist = null;
+                busStationsExist = busStationsService.findBy(fieldUserAccount.getName(), stationName);
+                if (busStationsExist == null) {
+                    busStationsService.save(busStations);
+                    logger.info("added station: " + busStations.getStationName());
+                    addedBusStationSum++;
+                } else {
+                    logger.info(" already exist station: " + busStations.getStationName());
+                }
+            }
+
+        } catch (Exception e) {
+            logger.warn(" exception: " + e.toString());
+            return 0;
+        }
+        return addedBusStationSum;
+    }
 }

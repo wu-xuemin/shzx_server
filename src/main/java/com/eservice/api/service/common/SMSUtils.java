@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class SMSUtils {
 
     @Value("${passwordSMS}")
-    private String passwordSMS; //Shzx20191
+    private String passwordSMS; //Shzx20191  todo 按规则设密码
     private final static Logger logger = LoggerFactory.getLogger(SMSUtils.class);
     public void send( String[] phone, String msg) {
 
