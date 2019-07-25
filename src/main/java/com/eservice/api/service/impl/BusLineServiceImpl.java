@@ -424,6 +424,6 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
             logger.warn(" exception: " + e.toString());
             return (" exception: " + e.toString());
         }
-        return "addedBusLineSum " + addedBusLineSum + " is added";
+        return " addedBusLineSum " + addedBusLineSum + " is added";
     }
 }

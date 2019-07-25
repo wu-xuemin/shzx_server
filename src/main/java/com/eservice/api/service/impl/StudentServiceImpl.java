@@ -656,6 +656,6 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
             logger.warn(" exception: " + e.toString());
             return (" exception: " + e.toString());
         }
-        return "Finally, " + (addedStuSum - noRideBusStuSum) + " is added";
+        return " Finally, " + (addedStuSum - noRideBusStuSum) + " is added";
     }
 }

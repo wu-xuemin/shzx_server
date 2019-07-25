@@ -44,22 +44,22 @@ import java.util.List;
 public class StudentController {
     @Resource
     private StudentServiceImpl studentService;
+
     @Value("${student_img_dir}")
     private String studentImgDir;
+
     @Value("${url_style}")
     private String urlStyle;
+
     @Value("${student_img_url_prefix}")
     private String studentImgUrlPrefix;
+
     @Resource
     private CommonService commonService;
-    @Resource
-    private BanjiServiceImpl banjiService;
+
     @Resource
     private SyncStuService syncStuService;
-    @Resource
-    private BusStationsServiceImpl busStationsService;
-    @Resource
-    private BusLineServiceImpl busLineService;
+
     private final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     @ApiOperation("增加学生信息，同时保存学生头像")
@@ -365,19 +365,4 @@ public class StudentController {
         return ResultGenerator.genSuccessResult( addedStuSum + " added" );
     }
 
-    @ApiOperation("从上中URL获取所有数据，会替换旧数据")
-    @ApiImplicitParams({@ApiImplicitParam(paramType = "refresh",name = "password", value = "防止误操作，设置了密码 ")})
-    @PostMapping("/refreshAllDataFromURL")
-    public Result refreshAllDataFromURL(@RequestParam String password) {
-        //step0. 备份数据库，清除数据(乘车记录，学生老师班级校车信息等等)。
-
-        //step1 班级信息 (banji)
-        banjiService.getURLContentAndCreateBanji(null);
-
-        //step2 站点信息 (station_name/remark/fare_rate)
-
-        // 照片
-        //todo...
-        return ResultGenerator.genSuccessResult("detail info...");
-    }
 }

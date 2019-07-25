@@ -518,6 +518,6 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         } catch (Exception e) {
             logger.warn(" exception: " + e.toString());
         }
-        return "addedBzrSum " + addedBzrSum + " is added";
+        return " addedBzrSum " + addedBzrSum + " is added";
     }
 }
