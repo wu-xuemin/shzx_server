@@ -268,7 +268,11 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
             return true;
         }
     }
-
+	
+    public Banji getBanjiByGradeNameAndBanjiName(String gradeName,String banjiName) {
+        return banjiMapper.getBanjiByGradeNameAndBanjiName(gradeName, banjiName);
+    }
+	
     public BanjiInfo getBanjiInfoByBzr(String bzrAccount) {
         return banjiMapper.getBanjiInfoByBzr(bzrAccount);
     }
@@ -284,6 +288,7 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
      */
     public Integer getURLContentAndCreateBanji(String urlStr) {
         Integer addedBanjiSum = 0;
+        Integer updatedBanjiSum = 0;
         String strFromUrl = CommonService.getUrlResponse(urlStr);
         try {
             JSONObject jsonObject = JSON.parseObject(strFromUrl);
@@ -312,10 +317,24 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
                 }
 
                 /**
+                 * 班级不存在时，更新班级
                  * 班级不存在时，增加班级
                  */
-                if (banjiService.isBanjiExist(grade, banjiName)) {
-                    logger.info(" already exist banji: " + banji.getGrade() + "," + banji.getClassName());
+                Banji banjiExist = banjiService.getBanjiByGradeNameAndBanjiName(grade, banjiName);
+                if ( banjiExist != null) {
+                    logger.info(" already exist banji: " + grade + "," + banjiName);
+                    banjiExist.setGrade(grade);
+                    banjiExist.setClassName(banjiName);
+                    banjiExist.setCreateTime(new Date());
+                    banjiExist.setClassIdFromUrl(classId);
+                    if (userExist == null) {
+                        logger.warn("Can not find the user by account " + teacher_name);
+                    } else {
+                        banjiExist.setChargeTeacher(userExist.getId());
+                    }
+                    banjiService.update(banjiExist);
+                    updatedBanjiSum ++;
+                    logger.info("update banji: " + banjiExist.getGrade() + "," + banjiExist.getClassName());
                 } else {
                     banjiService.save(banji);
                     logger.info("Add banji: " + banji.getGrade() + "," + banji.getClassName());
@@ -326,6 +345,7 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         } catch (Exception e) {
             logger.warn(" exception: " + e.toString());
         }
+        logger.info( "updated: " + updatedBanjiSum + ", added: " + addedBanjiSum);
         return addedBanjiSum;
     }
 }

@@ -29,6 +29,8 @@ public interface BanjiMapper extends Mapper<Banji> {
 
     @Select("SELECT * from banji WHERE banji.grade = #{gradeName} and banji.class_name = #{banjiName} ")
     List<Banji> isBanjiExist(@Param("gradeName") String gradeName, @Param("banjiName")String banjiName);
+    @Select("SELECT * from banji WHERE banji.grade = #{gradeName} and banji.class_name = #{banjiName} ")
+    Banji getBanjiByGradeNameAndBanjiName(@Param("gradeName") String gradeName, @Param("banjiName")String banjiName);
 
     @Select("SELECT * from banji LEFT JOIN user on banji.charge_teacher = `user`.id where user.account = #{bzrAccount}")
     BanjiInfo getBanjiInfoByBzr(@Param("bzrAccount") String bzrAccount);

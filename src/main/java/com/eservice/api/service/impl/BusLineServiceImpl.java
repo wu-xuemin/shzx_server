@@ -266,7 +266,7 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
         for (BusLine blm : busLineListMorning) {
             //找到对应的放学线路
             BusLine busLineNoon = busLineService.findBy("name", blm.getName().replace(Constant.BUS_MODE_MORNING, Constant.BUS_MODE_AFTERNOON));
-            if (busLineListNoon == null) {
+            if (busLineNoon == null) {
                 logger.error("Can not find the noon line by name " + blm.getName().replace(Constant.BUS_MODE_MORNING, Constant.BUS_MODE_AFTERNOON));
                 continue;
             }
@@ -414,7 +414,7 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
             /**
              * 放学线路重新生成
              */
-//            busLineService.cleanAndCreateAfternoonBusLine(Constant.BUS_LINE_ZAOBAN_WUBAN_SAME);
+            busLineService.cleanAndCreateAfternoonBusLine(Constant.BUS_LINE_ZAOBAN_WUBAN_SAME);
             /**
              * 放学线路更新站点
              */

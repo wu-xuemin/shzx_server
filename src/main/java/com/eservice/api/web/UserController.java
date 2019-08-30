@@ -266,6 +266,16 @@ public class UserController {
                     return ResultGenerator.genFailResult("设备没有登陆权限！");
                 }
             }
+
+            // todo
+            /**
+             * 可以使用校车编号来登录
+             * 比如 1代表1号车的busMom
+             * 如果是数字编号，则转为
+             */
+            if (isNumeric(account)) {
+
+            }
             User user = userService.requestLogin(account, password);
             if (user == null) {
                 return ResultGenerator.genFailResult("账号或密码不正确！");
@@ -274,6 +284,15 @@ public class UserController {
 
             }
         }
+    }
+
+    private static boolean isNumeric(String str) {
+        for (int i = str.length(); --i >= 0; ) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @ApiOperation("上中系统单点登录如果是老师，返回老师以及其班级信息，非老师则返回用户信息")
