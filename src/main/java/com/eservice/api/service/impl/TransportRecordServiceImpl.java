@@ -1,6 +1,5 @@
 package com.eservice.api.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
@@ -12,11 +11,7 @@ import com.eservice.api.model.transport_record.TransportRecord;
 import com.eservice.api.model.transport_record.TransportRecordInfo;
 import com.eservice.api.service.TransportRecordService;
 import com.eservice.api.core.AbstractService;
-import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.common.Constant;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.apache.tomcat.util.bcel.Const;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -439,4 +434,15 @@ public class TransportRecordServiceImpl extends AbstractService<TransportRecord>
 
         return listPlannedStudents;
     }
+    public Result clearTodaysDataOfTheBus(@RequestParam String busLineNum) {
+
+        Date tody = new Date();
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        //step1. 先删除 picked_student_info
+        int n = transportRecordMapper.clearTodaysPSIDataOfTheBus(busLineNum, sdf1.format(tody));
+        //step2. 然后删除 transport_record
+        int m = transportRecordMapper.clearTodaysTRDataOfTheBus(busLineNum, sdf1.format(tody));
+        return ResultGenerator.genSuccessResult(n + " PSI(s) deleted, " + m + " tr(s) deleted");
+    }
+
 }

@@ -647,4 +647,13 @@ public class TransportRecordController {
         return ResultGenerator.genSuccessResult(allPickingInfo);
     }
 
+    @ApiOperation("Clear today's data of the bus transport" )
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "busLineNum", value = "线路编号", required = true)})
+    @PostMapping("/clearTodaysDataOfTheBus")
+    public Result clearTodaysDataOfTheBus(@RequestParam() String busLineNum) {
+        Result status = transportRecordService.clearTodaysDataOfTheBus(busLineNum);
+        logger.info("clearTodaysDataOfTheBus " + status.getMessage() );
+        return status;
+    }
 }
