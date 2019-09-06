@@ -225,4 +225,15 @@ public class BanjiController {
         BanjiInfo banjiInfo = banjiService.getBanjiInfoByBzr(bzrAccount);
         return ResultGenerator.genSuccessResult(banjiInfo);
     }
+
+    /**
+     * 检查班级数据： 检查班级的班主任是否为空。
+     * @return
+     */
+    @PostMapping("/checkBanjiData")
+    public Result checkBanjiData() {
+        List<Banji> banjiList = banjiService.checkBanjiData();
+
+        return  ResultGenerator.genSuccessResult(banjiList);
+    }
 }

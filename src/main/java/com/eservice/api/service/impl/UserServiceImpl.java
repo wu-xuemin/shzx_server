@@ -520,4 +520,16 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         }
         return " addedBzrSum " + addedBzrSum + " is added";
     }
+
+    public  List<User>  checkBusMomDriverData(){
+
+        List<User> userList = userMapper.checkBusMomDriverData();
+        return  userList;
+    }
+    public  List<User>  checkBzr(){
+
+        List<User> bzrList = userMapper.checkBzr();
+        return  bzrList;
+    }
+
 }

@@ -423,5 +423,15 @@ public class UserController {
         String str = userService.getURLContentAndCreateBusMomAndDriver(urlStr);
         return ResultGenerator.genSuccessResult(str);
     }
+	
+    /**
+     * 检查busMom/司机 数据： 检查头像是否为空。
+     * @return
+     */
+    @PostMapping("/checkBusMomDriverData")
+    public Result checkBusMomDriverData() {
+        List<User> userList = userService.checkBusMomDriverData();
 
+        return  ResultGenerator.genSuccessResult(userList);
+    }
 }

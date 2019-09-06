@@ -348,4 +348,10 @@ public class BanjiServiceImpl extends AbstractService<Banji> implements BanjiSer
         logger.info( "updated: " + updatedBanjiSum + ", added: " + addedBanjiSum);
         return addedBanjiSum;
     }
+
+    public  List<Banji>  checkBanjiData(){
+
+        List<Banji> banjiList = banjiMapper.checkBanjiData();
+        return  banjiList;
+    }
 }

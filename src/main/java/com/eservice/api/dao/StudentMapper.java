@@ -6,6 +6,7 @@ import com.eservice.api.model.student.StudentBusInfo;
 import com.eservice.api.model.student.StudentInfo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -32,4 +33,14 @@ public interface StudentMapper extends Mapper<Student> {
 
     @Delete("DELETE   from student where ( student.board_station_afternoon is NULL and student.board_station_morning is NULL)")
     Integer deleteStudentsNotRideSchoolBus();
+
+    @Select("  SELECT * from student st where st.head_img is null ")
+    List<Student> checkStudentImg();
+
+    @Select("  SELECT * from student st where" +
+            " (st.board_station_afternoon is null " +
+            "or st.board_station_morning is null " +
+            "or st.bus_line_afternoon is null " +
+            "or st.bus_line_morning is null ) ")
+    List<Student>checkStudentBus();
 }

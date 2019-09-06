@@ -20,4 +20,10 @@ public interface UserMapper extends Mapper<User> {
 
     @Select("select * from user where role_id = 5")
     List<User> findAllDriver();
+
+    @Select(" SELECT * from user u where u.head_image is null  and ( u.role_id = 3 or u.role_id =5)")
+    List<User> checkBusMomDriverData();
+
+    @Select(" SELECT * from user u where u.school_staff_code is null  and ( u.role_id = 4)")
+    List<User>checkBzr();
 }

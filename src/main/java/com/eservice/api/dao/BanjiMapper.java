@@ -38,4 +38,7 @@ public interface BanjiMapper extends Mapper<Banji> {
     // (10)班级也排在(9)之后
     @Select("SELECT * from banji ORDER BY  grade+0, class_name+0, substring_index(substring_index(class_name,\"(\",-1),\")\",1)+0")
     List<Banji> listByClassName();
+
+    @Select("SELECT * from banji  where banji.charge_teacher is NULL")
+    List<Banji> checkBanjiData();
 }

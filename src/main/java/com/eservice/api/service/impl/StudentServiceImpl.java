@@ -592,8 +592,8 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
             }
 
         } catch (Exception e) {
-            logger.warn(" exception: " + e.toString());
-            return (" exception: " + e.toString());
+            logger.warn(" exception: " + e.getMessage());
+            return (" exception: " + e.getMessage());
         }
         /**
          * 获取学生的校车编号，站点，电话信息（放到family字段）
@@ -653,9 +653,19 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
             logger.info( noRideBusStuSum + " student(s) not riding school bus deleted");
 
         } catch (Exception e) {
-            logger.warn(" exception: " + e.toString());
-            return (" exception: " + e.toString());
+            logger.warn(" exception: " + e.getMessage());
+            return (" exception: " + e.getMessage());
         }
-        return " Finally, " + (addedStuSum - noRideBusStuSum) + " is added";
+        return " Finally, " + (addedStuSum - noRideBusStuSum) + " student(s) added";
+    }
+
+    public List<Student> checkStudentImg(){
+        List<Student>  list = studentMapper.checkStudentImg();
+        return list;
+    }
+
+    public List<Student> checkStudentBus(){
+        List<Student>  list = studentMapper.checkStudentBus();
+        return list;
     }
 }
