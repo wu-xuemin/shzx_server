@@ -140,6 +140,19 @@ public class BusLineController {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
+    @ApiOperation("根据司机或busMom账号 来获得巴士线路等信息,每个司机/busMom都固定一辆校车，会返回固定一辆校车的上学和放学线路（busNumber相同）")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "busAccount", value = "巴士司机或者busMom账号，具有唯一性", required = true)})
+    @PostMapping("/getBusLineInfoByBusAccount")
+    public Result getBusLineInfoByBusAccount(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size,
+                                                   @RequestParam String busAccount) {
+        PageHelper.startPage(page, size);
+        List<BusLineInfo> list = busLineService.getBusLineInfoByBusAccount(busAccount);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+
     @ApiOperation("根据校区来获得该校区的所有巴士线路相关信息")
     @PostMapping("/getBusLineInfoBySchoolPartition")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "schoolPartition", value = "校区，目前只有“浦东”、“浦西” ", required = true)})

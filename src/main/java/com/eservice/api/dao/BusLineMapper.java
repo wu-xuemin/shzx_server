@@ -13,6 +13,7 @@ public interface BusLineMapper extends Mapper<BusLine> {
 
     List<BusLineInfo> getBusLineInfoByBusMomAccount(@Param("busMomAccount")String busMomAccount);
     List<BusLineInfo> getBusLineInfoByBusDriverAccount(@Param("busDriverAccount")String busDriverAccount);
+    List<BusLineInfo> getBusLineInfoByBusAccount(@Param("busAccount")String busAccount);
     List<BusLineInfo> getBusLineInfoBySchoolPartition(@Param("schoolPartition")String schoolPartition);
     List<StudentInfo> getStudents(@Param("busNumber")String busNumber,@Param("busMode")String busMode);
     BusLine getBusLineInfoByBusNumberAndBusMode( @Param("busNumber")String busNumber,@Param("busMode")String busMode);

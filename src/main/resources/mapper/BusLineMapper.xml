@@ -68,7 +68,6 @@
     and user_bus_mom.account = #{busMomAccount}
   </select>
 
-
   <select id="getBusLineInfoByBusDriverAccount" resultMap="BusLineInfoResultMap">
     SELECT
     bus_line.*,
@@ -90,6 +89,30 @@
     WHERE
     bus_line.valid = 1
     and user_bus_driver.account = #{busDriverAccount}
+  </select>
+
+
+  <select id="getBusLineInfoByBusAccount" resultMap="BusLineInfoResultMap">
+    SELECT
+    bus_line.*,
+    bus_base_info.*,
+    user_bus_mom.account AS bus_mom_account,
+    user_bus_driver.account AS bus_driver_account,
+    user_bus_mom.`name` AS bus_mom_name,
+    user_bus_mom.phone AS bus_mom_phone,
+    user_bus_mom.head_image AS bus_mom_head_img,
+    user_bus_driver.head_image AS bus_driver_head_img,
+    user_bus_driver.`name` AS bus_driver_name,
+    user_bus_driver.phone AS bus_driver_phone
+    FROM
+    bus_line
+    LEFT JOIN bus_base_info ON bus_line.bus_base_info = bus_base_info.id
+    LEFT JOIN `user` AS u ON bus_base_info.bus_mom = u.id
+    LEFT JOIN `user` AS user_bus_mom ON user_bus_mom.id = bus_base_info.bus_mom
+    LEFT JOIN `user` AS user_bus_driver ON user_bus_driver.id = bus_base_info.bus_driver
+    WHERE
+    bus_line.valid = 1
+    and (user_bus_driver.account = #{busAccount} or user_bus_mom.account = #{busAccount})
   </select>
 
   <select id="getBusLineInfoBySchoolPartition" resultMap="BusLineInfoResultMap">
