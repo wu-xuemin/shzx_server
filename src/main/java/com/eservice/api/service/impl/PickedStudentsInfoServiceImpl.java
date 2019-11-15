@@ -30,11 +30,14 @@ public class PickedStudentsInfoServiceImpl extends AbstractService<PickedStudent
                                                         String busStation,
                                                         String gradeName,
                                                         String className,
+                                                        String checkMode,
+                                                        String modeName,
+                                                        String flag,
                                                         String queryStartTime,
                                                         String queryFinishTime,
                                                         String keyWord
                                                         ) {
-        return pickedStudentsInfoMapper.selectStudentBus(busNumber, busStation, gradeName, className,queryStartTime,queryFinishTime,keyWord);
+        return pickedStudentsInfoMapper.selectStudentBus(busNumber, busStation, gradeName, className,checkMode,modeName,flag,queryStartTime,queryFinishTime,keyWord);
     }
 
     public List<PickedStudentsInfo> getPickedStudentInfo(String studentNumber,Integer transportRecordId){

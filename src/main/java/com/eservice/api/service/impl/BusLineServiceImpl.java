@@ -213,46 +213,114 @@ public class BusLineServiceImpl extends AbstractService<BusLine> implements BusL
     public void cleanAndCreateAfternoonBusLine(String busLineIDsNotReserve) {
         String strStationsNoon = null;
         List<BusLine> busLineListMorning = busLineService.getBusLinesByMode(Constant.BUS_MODE_MORNING);
-        List<BusLine> busLineListNoon = new ArrayList<>();
-        List<BusLine> busLineListNoonOld = busLineService.getBusLinesByMode(Constant.BUS_MODE_AFTERNOON);
-        for (BusLine bln: busLineListNoonOld) {
-            busLineService.deleteById(bln.getId());
-        }
-        logger.info(busLineListNoonOld.size() + " old noonLines cleaned ");
-
-        String[] stationsArrMorning;
-        //改 busBaseInfo, mode,name,stations,
-        for (BusLine blm: busLineListMorning) {
-            BusLine busLineNoon = new BusLine();
-            busLineNoon.setBusBaseInfo(blm.getBusBaseInfo());
-            busLineNoon.setMode(Constant.BUS_MODE_AFTERNOON);
-            busLineNoon.setName(blm.getName().replace(Constant.BUS_MODE_MORNING, Constant.BUS_MODE_AFTERNOON));
-            /**
-             * 站点倒个序 （默认除了1,8,10,11,16,17,20,31,41,60,67,74,86,97之外的都倒序）
-             */
-            if(isReserve(blm.getName(),busLineIDsNotReserve)){
-                stationsArrMorning = blm.getStations().split(",");
-                List<String> stationListNoon = new ArrayList<>();
-                for (int i = stationsArrMorning.length; i > 0; i--) {
-                    stationListNoon.add(stationsArrMorning[i - 1]);
+        List<BusLine> busLineListNoon = busLineService.getBusLinesByMode(Constant.BUS_MODE_AFTERNOON);
+//        for (BusLine bln: busLineListNoonOld) {
+//            busLineService.deleteById(bln.getId());
+//        }
+//        logger.info(busLineListNoonOld.size() + " old noonLines cleaned ");
+        if(busLineListNoon.size() == 0) {
+            String[] stationsArrMorning;
+            //改 busBaseInfo, mode,name,stations,
+            for (BusLine blm: busLineListMorning) {
+                BusLine busLineNoon = new BusLine();
+                busLineNoon.setBusBaseInfo(blm.getBusBaseInfo());
+                busLineNoon.setMode(Constant.BUS_MODE_AFTERNOON);
+                busLineNoon.setName(blm.getName().replace(Constant.BUS_MODE_MORNING, Constant.BUS_MODE_AFTERNOON));
+                /**
+                 * 站点倒个序 （默认除了1,8,10,11,16,17,20,31,41,60,67,74,86,97之外的都倒序）
+                 */
+                if(isReserve(blm.getName(),busLineIDsNotReserve)){
+                    stationsArrMorning = blm.getStations().split(",");
+                    List<String> stationListNoon = new ArrayList<>();
+                    for (int i = stationsArrMorning.length; i > 0; i--) {
+                        stationListNoon.add(stationsArrMorning[i - 1]);
+                    }
+                    for (int i = 0; i < stationListNoon.size(); i++) {
+                        if (i == 0) {
+                            strStationsNoon = stationListNoon.get(i);
+                        } else {
+                            strStationsNoon = strStationsNoon + "," + stationListNoon.get(i);
+                        }
+                    }
+                }else {
+                    strStationsNoon = blm.getStations();
                 }
-                for (int i = 0; i < stationListNoon.size(); i++) {
-                    if (i == 0) {
-                        strStationsNoon = stationListNoon.get(i);
-                    } else {
-                        strStationsNoon = strStationsNoon + "," + stationListNoon.get(i);
+
+                busLineNoon.setStations(strStationsNoon);
+                busLineNoon.setCreateTime(new Date());
+                busLineNoon.setValid(Constant.VALID_YES);
+                busLineService.save(busLineNoon);
+                busLineListNoon.add(busLineNoon);
+                logger.info("add 放学： " + busLineNoon.getName() + "id:" + busLineNoon.getId());
+            }
+        } else {
+            String[] stationsArrAfternoon;
+            //改 busBaseInfo, mode,name,stations,
+            for (BusLine blm: busLineListMorning) {
+                //由于上学线路已经更新，是所以放学按照上学来匹配
+                boolean isNew = true;
+                for (int i = 0; i < busLineListNoon.size(); i++) {
+                    if(blm.getBusBaseInfo().equals(busLineListNoon.get(i).getBusBaseInfo())) {
+                        //找到上学线路对应的放学线路,更新站点
+                        isNew = false;
+                        BusLine noonBusLine = busLineListNoon.get(i);
+                        /**
+                         * 站点倒个序 （默认除了1,8,10,11,16,17,20,31,41,60,67,74,86,97之外的都倒序）
+                         */
+                        if(isReserve(blm.getName(),busLineIDsNotReserve)){
+                            stationsArrAfternoon = blm.getStations().split(",");
+                            List<String> stationListNoon = new ArrayList<>();
+                            for (int j = stationsArrAfternoon.length; j > 0; j--) {
+                                stationListNoon.add(stationsArrAfternoon[j - 1]);
+                            }
+                            for (int k = 0; k < stationListNoon.size(); k++) {
+                                if (k == 0) {
+                                    strStationsNoon = stationListNoon.get(k);
+                                } else {
+                                    strStationsNoon = strStationsNoon + "," + stationListNoon.get(k);
+                                }
+                            }
+                        }else {
+                            strStationsNoon = blm.getStations();
+                        }
+                        noonBusLine.setStations(strStationsNoon);
+                        noonBusLine.setUpdateTime(new Date());
+                        busLineService.update(noonBusLine);
+                        logger.info("Update 放学： " + noonBusLine.getName() + "id:" + noonBusLine.getId());
                     }
                 }
-            }else {
-                strStationsNoon = blm.getStations();
+                if(isNew) {
+                    BusLine busLineNoon = new BusLine();
+                    busLineNoon.setBusBaseInfo(blm.getBusBaseInfo());
+                    busLineNoon.setMode(Constant.BUS_MODE_AFTERNOON);
+                    busLineNoon.setName(blm.getName().replace(Constant.BUS_MODE_MORNING, Constant.BUS_MODE_AFTERNOON));
+                    /**
+                     * 站点倒个序 （默认除了1,8,10,11,16,17,20,31,41,60,67,74,86,97之外的都倒序）
+                     */
+                    if(isReserve(blm.getName(),busLineIDsNotReserve)){
+                        stationsArrAfternoon = blm.getStations().split(",");
+                        List<String> stationListNoon = new ArrayList<>();
+                        for (int i = stationsArrAfternoon.length; i > 0; i--) {
+                            stationListNoon.add(stationsArrAfternoon[i - 1]);
+                        }
+                        for (int i = 0; i < stationListNoon.size(); i++) {
+                            if (i == 0) {
+                                strStationsNoon = stationListNoon.get(i);
+                            } else {
+                                strStationsNoon = strStationsNoon + "," + stationListNoon.get(i);
+                            }
+                        }
+                    }else {
+                        strStationsNoon = blm.getStations();
+                    }
+                    busLineNoon.setStations(strStationsNoon);
+                    busLineNoon.setCreateTime(new Date());
+                    busLineNoon.setValid(Constant.VALID_YES);
+                    busLineService.save(busLineNoon);
+                    busLineListNoon.add(busLineNoon);
+                    logger.info("add 放学： " + busLineNoon.getName() + "id:" + busLineNoon.getId());
+                }
             }
-
-            busLineNoon.setStations(strStationsNoon);
-            busLineNoon.setCreateTime(new Date());
-            busLineNoon.setValid(Constant.VALID_YES);
-            busLineService.save(busLineNoon);
-            busLineListNoon.add(busLineNoon);
-            logger.info("add 放学： " + busLineNoon.getName() + "id:" + busLineNoon.getId());
         }
     }
 

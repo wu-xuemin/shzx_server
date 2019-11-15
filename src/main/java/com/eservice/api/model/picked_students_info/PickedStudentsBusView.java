@@ -129,6 +129,7 @@ public class PickedStudentsBusView extends PickedStudentsInfo {
 
     private String studentStationsMorning;
     private String studentStationsAfternoon;
+    private String flag;
 
     public String getStudentStationsMorning() {
         return studentStationsMorning;
@@ -144,5 +145,13 @@ public class PickedStudentsBusView extends PickedStudentsInfo {
 
     public void setStudentStationsAfternoon(String studentStationsAfternoon) {
         this.studentStationsAfternoon = studentStationsAfternoon;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 }

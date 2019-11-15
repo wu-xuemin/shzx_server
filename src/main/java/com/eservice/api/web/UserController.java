@@ -1,7 +1,6 @@
 package com.eservice.api.web;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
@@ -12,7 +11,7 @@ import com.eservice.api.service.impl.BanjiServiceImpl;
 import com.eservice.api.service.impl.DeviceServiceImpl;
 import com.eservice.api.service.impl.UserServiceImpl;
 import com.eservice.api.service.park.SyncBusMomService;
-import com.eservice.api.service.park.model.WinVisitorRecord;
+import com.eservice.api.service.park.model.FaceUserInfo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -23,7 +22,10 @@ import org.apache.http.util.TextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -78,8 +80,7 @@ public class UserController {
 
     @ApiOperation("新增用户,用户照片上传(可选),如果是busMom/司机，则同步到人脸平台")
     @PostMapping("/add")
-    public Result addStaff(@RequestParam String user,
-                           String photoData) {
+    public Result addStaff(@RequestParam String user, String photoData) {
         String userStr = user;
         Boolean needSyncToFacePlatform = false;
         User userObj = JSON.parseObject(user, User.class);
@@ -95,14 +96,12 @@ public class UserController {
                  * 如果是busMom/司机，则同步到人脸平台
                  */
                 if (userObj.getRoleId() == Constant.USER_ROLE_BUSMOM) {
-                    repoId = BUSMOM_REPO_ID;
                     needSyncToFacePlatform = true;
                 } else if (userObj.getRoleId() == Constant.USER_ROLE_DRIVER) {
-                    repoId = DRIVER_REPO_ID;
                     needSyncToFacePlatform = true;
                 }
                 if (needSyncToFacePlatform) {
-                    if (syncBusMomService.uploadPic(base64RowData, userObj, repoId)) {
+                    if (syncBusMomService.addManagerInFace(base64RowData, userObj)) {
                         String fileNameWithPath = commonService.saveFile(userImgDir, base64RowData, userObj.getPhone(), userObj.getName());
                         if (fileNameWithPath != null) {
                             if (urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
@@ -178,7 +177,7 @@ public class UserController {
         if (!TextUtils.isEmpty(photoData)) {
             try {
                 String base64RowData = photoData.substring(photoData.indexOf(",") + 1);
-                if (syncBusMomService.uploadPic(base64RowData, userObj, BUSMOM_REPO_ID)) {
+                if (syncBusMomService.updateManagerInFace(base64RowData, userObj)) {
                     String fileNameWithPath = commonService.saveFile(userImgDir, base64RowData, userObj.getPhone(), userObj.getName());
                     if (fileNameWithPath != null) {
                         if (urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
@@ -328,13 +327,13 @@ public class UserController {
     @PostMapping("/syncBusMomPicToFacePlatform")
     public Result syncBusMomPicToFacePlatform() {
         List<User> platformBusMomList = userService.findAllBusMom();
-        return ResultGenerator.genSuccessResult(syncBusMomService.syncBusMomPicToFacePlatform(platformBusMomList));
+        return ResultGenerator.genSuccessResult(syncBusMomService.syncManagerPicToFacePlatform(platformBusMomList));
     }
 
     @PostMapping("/syncDriverPicToFacePlatform")
     public Result syncDriverPicToFacePlatform() {
         List<User> platformDriverList = userService.findAllDriver();
-        return ResultGenerator.genSuccessResult(syncBusMomService.syncDriverPicToFacePlatform(platformDriverList));
+        return ResultGenerator.genSuccessResult(syncBusMomService.syncManagerPicToFacePlatform(platformDriverList));
     }
 
     @PostMapping("/totalBusMomNumber")
@@ -345,7 +344,7 @@ public class UserController {
 
     @PostMapping("/totalBusMomFaceNumber")
     public Result totalBusMomFaceNumber() {
-        List<WinVisitorRecord> platformBusMomList = syncBusMomService.getBusMonList();
+        List<FaceUserInfo> platformBusMomList = syncBusMomService.getManagerList();
         return ResultGenerator.genSuccessResult(platformBusMomList.size());
     }
 
@@ -357,7 +356,7 @@ public class UserController {
 
     @PostMapping("/totalDriverFaceNumber")
     public Result totalDriverFaceNumber() {
-        List<WinVisitorRecord> platformBusMomList = syncBusMomService.getDriverList();
+        List<FaceUserInfo> platformBusMomList = syncBusMomService.getManagerList();
         return ResultGenerator.genSuccessResult(platformBusMomList.size());
     }
 

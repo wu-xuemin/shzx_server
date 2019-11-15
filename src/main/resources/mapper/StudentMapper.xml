@@ -141,7 +141,7 @@
     LEFT JOIN bus_stations as bus_stations_a ON bus_stations_a.id = student.board_station_afternoon
     LEFT JOIN bus_stations as bus_stations_m ON bus_stations_m.id = student.board_station_morning
     WHERE
---     student.valid = 1
+      student.valid = 1 and
 	  student.student_number  = #{studentNumber}
   </select>
 

@@ -13,6 +13,9 @@ public interface PickedStudentsInfoMapper extends Mapper<PickedStudentsInfo> {
                                                  @Param("busStation")String busStation,
                                                  @Param("gradeName")String gradeName,
                                                  @Param("className")String className,
+                                                 @Param("checkMode") String checkMode,
+                                                 @Param("modeName")String modeName,
+                                                 @Param("flag") String flag,
                                                  @Param("queryStartTime")String queryStartTime,
                                                  @Param("queryFinishTime")String queryFinishTime,
                                                  @Param("keyWord")String keyWord

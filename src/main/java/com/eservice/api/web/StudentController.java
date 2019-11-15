@@ -4,14 +4,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.eservice.api.core.Result;
 import com.eservice.api.core.ResultGenerator;
-import com.eservice.api.model.banji.Banji;
-import com.eservice.api.model.bus_line.BusLine;
-import com.eservice.api.model.bus_stations.BusStations;
 import com.eservice.api.model.student.Student;
 import com.eservice.api.model.student.StudentInfo;
 import com.eservice.api.service.common.CommonService;
 import com.eservice.api.service.common.Constant;
-import com.eservice.api.service.impl.*;
+import com.eservice.api.service.impl.StudentServiceImpl;
 import com.eservice.api.service.park.SyncStuService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,7 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -64,6 +64,7 @@ public class StudentController {
 
     @ApiOperation("增加学生信息，同时保存学生头像")
     @PostMapping("/add")
+    @Transactional
     public Result add(String student, String photoData) {
         Student studentObj = JSON.parseObject(student, Student.class);
         File dir = new File(studentImgDir);
@@ -75,7 +76,7 @@ public class StudentController {
         if(!TextUtils.isEmpty(photoData)) {
             try {
                 String base64RowData = photoData.substring(photoData.indexOf(",")+ 1);
-                if(syncStuService.uploadStuPic(base64RowData,studentObj)) {
+                if(syncStuService.addStudentInFace(base64RowData,studentObj)) {
                     fileNameWithPath = commonService.saveFile(studentImgDir, base64RowData, studentObj.getStudentNumber() , studentObj.getName());
                     if (fileNameWithPath != null) {
                         if(urlStyle.equals(Constant.URL_PATH_STYLE_RELATIVE)) {
@@ -97,7 +98,7 @@ public class StudentController {
                     }
                 } else {
                     message = "Upload to  face platform failed, student name: " + studentObj.getName();
-                    throw new RuntimeException();
+                    return ResultGenerator.genFailResult("照片添加人脸库失败，可能照片已经在库中");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -117,6 +118,7 @@ public class StudentController {
         if(student != null) {
             Student studentObj = JSON.parseObject(student, Student.class);
             //TODO:需要删除对应照片以及人脸平台中对应的学生
+
             studentObj.setValid(Constant.VALID_NO);
             studentService.update(studentObj);
         } else {
@@ -138,7 +140,7 @@ public class StudentController {
         if(photoData != null && !"".equals(photoData)) {
             try {
                 String base64RowData = photoData.substring(photoData.indexOf(",")+ 1);
-                if(syncStuService.uploadStuPic(base64RowData,studentObj)) {
+                if(syncStuService.updateStudentInFace(base64RowData,studentObj)) {
                     fileNameWithPath = commonService.saveFile(studentImgDir, base64RowData, studentObj.getStudentNumber(), studentObj.getName());
                     if (fileNameWithPath == null) {
                         message = "failed to save file, no student added of " + studentObj.getName();

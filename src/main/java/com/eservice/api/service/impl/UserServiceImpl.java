@@ -449,9 +449,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 busDriver.setValid(Constant.VALID_YES);
 
                 Class cl = Class.forName("com.eservice.api.model.user.User");
-                Field fieldUserAccount = cl.getDeclaredField("account");
+                Field fieldUserPhone = cl.getDeclaredField("phone");
                 User busMomExist = null;
-                busMomExist = userService.findBy(fieldUserAccount.getName(), busMomName);
+                busMomExist = userService.findBy(fieldUserPhone.getName(), busMomPhone);
                 if (busMomExist == null) {
                     userService.save(busMom);
                     logger.info("added busMom: " + busMom.getAccount());
@@ -461,7 +461,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
                 }
 
                 User busDriverExist = null;
-                busDriverExist = userService.findBy(fieldUserAccount.getName(), busdriverName);
+                busDriverExist = userService.findBy(fieldUserPhone.getName(), busdriverPhone);
                 if (busDriverExist == null) {
                     userService.save(busDriver);
                     logger.info("added driver: " + busdriverName);

@@ -34,6 +34,10 @@ public class CommonService {
     @Value("${debug.flag}")
     private String debugFlag;
 
+    private static String SHZX_URL_GET_BUS = "";
+    private static String SHZX_URL_GET_CLASS = "";
+    private static String SHZX_URL_GET_STUDENT = "";
+
     /**
      * @param path      保存文件的总路径
      * @param rowData   照片文件的base64
@@ -364,11 +368,30 @@ public class CommonService {
      * 从URL读取返回
      */
     public static String getUrlResponse(String urlStr) {
-
         URL url = null;
         HttpURLConnection httpConn = null;
         BufferedReader in = null;
         StringBuffer sb = new StringBuffer();
+
+        switch (urlStr) {
+            case Constant.SHZX_URL_GET_CLASS:
+                if(!SHZX_URL_GET_CLASS.equals("")) {
+                    return SHZX_URL_GET_CLASS;
+                }
+                break;
+            case Constant.SHZX_URL_GET_BUS:
+                if(!SHZX_URL_GET_BUS.equals("")) {
+                    return SHZX_URL_GET_BUS;
+                }
+                break;
+            case Constant.SHZX_URL_GET_STUDENT:
+                if(!SHZX_URL_GET_STUDENT.equals("")) {
+                    return SHZX_URL_GET_STUDENT;
+                }
+                break;
+                default:
+        }
+
         try{
             url = new URL(urlStr);
             in = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8") );
@@ -387,7 +410,18 @@ public class CommonService {
 
             }
         }
-
+        switch (urlStr) {
+            case Constant.SHZX_URL_GET_CLASS:
+                SHZX_URL_GET_CLASS = sb.toString();
+                break;
+            case Constant.SHZX_URL_GET_BUS:
+                SHZX_URL_GET_BUS =  sb.toString();
+                break;
+            case Constant.SHZX_URL_GET_STUDENT:
+                SHZX_URL_GET_STUDENT =  sb.toString();
+                break;
+            default:
+        }
         return sb.toString();
     }
 }

@@ -29,6 +29,7 @@
 		<result column="student_number" jdbcType="VARCHAR" property="studentNumber"/>
 		<result column="head_img" jdbcType="VARCHAR" property="headImg"/>
 		<result column="grade" jdbcType="VARCHAR" property="grade"/>
+		<result column="flag" jdbcType="VARCHAR" property="flag" />
 		<result column="class_name" jdbcType="VARCHAR" property="className"/>
 		<result column="bus_number" jdbcType="VARCHAR" property="busNumber"/>
 		<result column="bus_valid" jdbcType="VARCHAR" property="busValid"/>
@@ -43,6 +44,7 @@
 		(
 		SELECT
 		psi.*, tr.bus_line,
+	        tr.flag as flag,
 		tr.current_station,
 		bs.station_name,
 		bl.`mode` AS mode_name,
@@ -80,6 +82,15 @@
 		</if>
 		<if test="className != null and className != ''">
 			AND class_name = '${className}'
+		</if>
+		<if test="checkMode != null and checkMode != ''">
+			AND check_mode = '${checkMode}'
+		</if>
+		<if test="modeName != null and modeName != ''">
+			AND mode_name = '${modeName}'
+		</if>
+		<if test="flag != null and flag != ''">
+			AND flag = '${flag}'
 		</if>
 		<if test="queryStartTime!=null and queryStartTime != '' ">
 			and DATE_FORMAT(board_time,'%Y-%m-%d') &gt;= #{queryStartTime}

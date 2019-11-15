@@ -8,14 +8,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 /**
  * @author HT
@@ -142,4 +141,22 @@ public class Util {
         return todayEnd.getTime();
     }
 
+    /**
+     * 将Java对象转换成Map
+     * @param obj
+     * @return
+     * @throws Exception
+     */
+    public static Map objectToMap(Object obj) throws IllegalAccessException {
+        if (obj == null) {
+            return null;
+        }
+        Map map = new HashMap();
+        Field[] declaredFields = obj.getClass().getDeclaredFields();
+        for (Field field : declaredFields) {
+            field.setAccessible(true);
+            map.put(field.getName(), field.get(obj));
+        }
+        return map;
+    }
 }

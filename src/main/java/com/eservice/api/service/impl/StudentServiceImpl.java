@@ -572,22 +572,31 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
 
                 Class cl = Class.forName("com.eservice.api.model.banji.Banji");
                 Field field = cl.getDeclaredField("classIdFromUrl");
-                Banji banjiExist = banjiService.findBy(field.getName(), classId);
-                if(banjiExist == null) {
-                    logger.warn(" can not find banji by classId: " + classId);
-                } else {
-                    student.setBanji(banjiExist.getId());
+                try {
+                    Banji banjiExist = banjiService.findBy(field.getName(), classId);
+                    if(banjiExist == null) {
+                        logger.warn(" can not find banji by classId: " + classId);
+                    } else {
+                        student.setBanji(banjiExist.getId());
+                    }
+
+                } catch (Exception e) {
+                    logger.error("获取班级ID错误");
                 }
 
-                Class cl2 = Class.forName("com.eservice.api.model.student.Student");
-                Field fieldStuNum = cl2.getDeclaredField("studentNumber");
-                Student studentExist = studentService.findBy(fieldStuNum.getName(), stuNumber);
-                if(studentExist == null) {
-                    studentService.save(student);
-                    logger.info("added student: " + student.getName());
-                    addedStuSum ++;
-                } else {
-                    logger.info(" already exist student: " +  student.getName());
+                try {
+                    Class cl2 = Class.forName("com.eservice.api.model.student.Student");
+                    Field fieldStuNum = cl2.getDeclaredField("studentNumber");
+                    Student studentExist = studentService.findBy(fieldStuNum.getName(), stuNumber);
+                    if(studentExist == null) {
+                        studentService.save(student);
+                        logger.info("added student: " + student.getName());
+                        addedStuSum ++;
+                    } else {
+                        logger.info(" already exist student: " +  student.getName());
+                    }
+                }catch (Exception e) {
+                    logger.error("获取学生异常");
                 }
             }
 

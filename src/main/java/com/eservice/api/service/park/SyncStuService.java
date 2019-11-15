@@ -1,18 +1,16 @@
 package com.eservice.api.service.park;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.eservice.api.core.Result;
 import com.eservice.api.model.student.Student;
-import com.eservice.api.service.park.model.Condition;
-import com.eservice.api.service.park.model.RepoIdBean;
-import com.eservice.api.service.park.model.ResponseModel;
-import com.eservice.api.service.park.model.WinVisitorRecord;
+import com.eservice.api.service.park.model.FaceDTO;
+import com.eservice.api.service.park.model.FaceUserInfo;
 import com.eservice.api.service.util.Util;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +24,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 @Component
@@ -47,16 +44,9 @@ public class SyncStuService {
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
-     * Token
-     */
-    private String token;
-    /**
      * 员工列表
      */
-    private ArrayList<WinVisitorRecord> staffList = new ArrayList<>();
-
-    @Autowired
-    private TokenService tokenService;
+    private ArrayList<FaceUserInfo> staffList = new ArrayList<>();
 
     private ThreadPoolTaskExecutor mExecutor;
 
@@ -65,100 +55,42 @@ public class SyncStuService {
     /**
      * 每小时获取一次员工信息
      */
-    @Scheduled(initialDelay = 5000, fixedRate = 1000 * 60 * 60)
+    @Scheduled(initialDelay = 10000, fixedRate = 1000 * 60 * 10)
     public void fetchStaffScheduled() {
-        token = tokenService.getToken();
-        if (token != null) {
-            HashMap<String, Object> postParameters = new HashMap<>();
-            postParameters.put("start", 0);
-            postParameters.put("limit", 0);
-            //Condition
-            Condition condition = new Condition();
-            //"1"返回用户信息
-            condition.setType(1);
-            RepoIdBean idBean = new RepoIdBean();
-            List<Integer> repoIdList = new ArrayList<>();
-            repoIdList.add(STUDENT_REPO_ID);
-            idBean.setIn(repoIdList);
-            condition.setRepo_id(idBean);
-            postParameters.put("condition", condition);
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
-            headers.add(HttpHeaders.AUTHORIZATION, token);
-            String jsonString = JSON.toJSONString(postParameters);
-            jsonString = jsonString.replace("in", "$in");
-            jsonString = jsonString.replace("gte", "$gte");
-            HttpEntity httpEntity = new HttpEntity<>(jsonString, headers);
-            try {
-                ResponseEntity<String> responseEntity = restTemplate.postForEntity(PARK_BASE_URL + "/face/v1/framework/face/search", httpEntity, String.class);
-                if (responseEntity.getStatusCodeValue() == ResponseCode.OK) {
-                    String body = responseEntity.getBody();
-                    if (body != null) {
-                        processStaffResponse(body);
-                    } else {
-                        fetchStaffScheduled();
-                    }
-                }
-            } catch (HttpClientErrorException exception) {
-                if (exception.getStatusCode().value() == ResponseCode.TOKEN_INVALID) {
-                    token = tokenService.getToken();
-                    if (token != null) {
-                        fetchStaffScheduled();
-                    }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+        HttpEntity httpEntity = new HttpEntity<>(null, headers);
+        try {
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(PARK_BASE_URL + "/face/fetchFace", httpEntity, String.class);
+            if (responseEntity.getStatusCodeValue() == ResponseCode.OK) {
+                String body = responseEntity.getBody();
+                if (body != null) {
+                    processStaffResponse(body);
+                } else {
+                    fetchStaffScheduled();
                 }
             }
+        } catch (HttpClientErrorException exception) {
+            logger.error("Fetch student error.");
         }
     }
 
 
     private void processStaffResponse(String body) {
-        ResponseModel responseModel = JSONObject.parseObject(body, ResponseModel.class);
-        if (responseModel != null && responseModel.getResults() != null) {
-            ArrayList<WinVisitorRecord> tmpList = (ArrayList<WinVisitorRecord>)JSONArray.parseArray(responseModel.getResults(), WinVisitorRecord.class);
+        FeatureResponseData responseModel = JSONObject.parseObject(body, FeatureResponseData.class);
+        if (responseModel != null && responseModel.getCode() == ResponseCode.OK) {
+            ArrayList<FaceUserInfo> tmpList = responseModel.getData();
             if (tmpList != null && tmpList.size() > 0) {
-                if (mExecutor == null) {
-                    initExecutor();
-                }
-                mExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        HashSet<String> hashSet = new HashSet<>();
-                        ArrayList<WinVisitorRecord> qualityPassedList =  new ArrayList<>();
-                        for (WinVisitorRecord item: tmpList) {
-                            if(!item.isSuccess()) {
-                                logger.error("照片质量未通过学生：学号:{}, 姓名:{}", item.getMeta().getExternal_id(),item.getMeta().getName());
-                                continue;
-                            } else {
-                                qualityPassedList.add(item);
-                            }
-                            if(item.getMeta() == null) {
-                                logger.error("信息错误学生：ID:{}, URL:{}", item.getPerson_id_str(),item.getImage_uri());
-                            } else {
-                                if(item.getMeta().getExternal_id() == null || item.getMeta().getExternal_id().equals("")) {
-                                    logger.error("学号为空学生：{} {}", item.getMeta().getName(),item.getMeta().getExternal_id());
-                                } else if(!hashSet.contains(item.getMeta().getExternal_id())) {
-                                    hashSet.add(item.getMeta().getExternal_id());
-                                } else {
-                                    logger.error("学号重复的学生：{} {}", item.getMeta().getName(),item.getMeta().getExternal_id());
-                                }
-                            }
-                        }
-                        if(!SYNCING) {
-                            logger.info("The number of student：{} ==> {}", staffList.size(), qualityPassedList.size());
-                            staffList = qualityPassedList;
-                        }
+                ArrayList<FaceUserInfo> resultList = new ArrayList<>();
+                for (int i = 0; i < tmpList.size(); i++) {
+                    if(tmpList.get(i).getCardNum().toUpperCase().startsWith("G") || tmpList.get(i).getCardNum().toUpperCase().startsWith("Z")) {
+                        resultList.add(tmpList.get(i));
                     }
-                });
+                }
+                staffList = resultList;
+                logger.info("Student number: " + staffList.size());
             }
         }
-    }
-
-    private void initExecutor() {
-        mExecutor = new ThreadPoolTaskExecutor();
-        mExecutor.setCorePoolSize(2);
-        mExecutor.setMaxPoolSize(5);
-        mExecutor.setThreadNamePrefix("YTTPS-");
-        mExecutor.initialize();
     }
 
     public String syncStuPicToFacePlatform(List<Student> platformStuList) {
@@ -168,12 +100,12 @@ public class SyncStuService {
         ArrayList<Student> syncSuccessList = new ArrayList<>();
         ArrayList<Student> syncFailList = new ArrayList<>();
         ArrayList<Student> picNotExistList = new ArrayList<>();
-        List<WinVisitorRecord> facePlatformStuList = getStudentList();
+        List<FaceUserInfo> facePlatformStuList = getStudentList();
         logger.info("platformStuList size: " + platformStuList.size());
         for (int i = 0; i < platformStuList.size(); i++) {
             boolean exist = false;
             for (int j = 0; j < facePlatformStuList.size() && !exist; j++) {
-                if(facePlatformStuList.get(j).getMeta().getExternal_id().equals(platformStuList.get(i).getStudentNumber())) {
+                if(facePlatformStuList.get(j).getCardNum().equals(platformStuList.get(i).getStudentNumber())) {
                     exist = true;
                 }
             }
@@ -195,7 +127,8 @@ public class SyncStuService {
                 } else {
                     String picBase64Data = Util.getBase64ImgStr(picFile.getPath());
                     try {
-                        if(uploadStuPic(picBase64Data, needSyncStuList.get(i))) {
+                        //同步人脸
+                        if(addStudentInFace(picBase64Data, needSyncStuList.get(i))) {
                             syncSuccessList.add(needSyncStuList.get(i));
                         } else {
                             syncFailList.add(needSyncStuList.get(i));
@@ -237,37 +170,51 @@ public class SyncStuService {
         return result;
     }
 
-    public boolean uploadStuPic(String base64Data, Student stu) {
-        token = tokenService.getToken();
-        if (token != null) {
-            HashMap<String, Object> postParameters = new HashMap<>();
-            postParameters.put("repo_id", STUDENT_REPO_ID);
-            postParameters.put("image_content_base64", base64Data);
-            postParameters.put("image_type", 3);
-            WinVisitorRecord.MetaBean metaBean = new WinVisitorRecord.MetaBean();
-            metaBean.setExternal_id(stu.getStudentNumber());
-            metaBean.setName(stu.getName());
-            postParameters.put("meta", metaBean);
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
-            headers.add(HttpHeaders.AUTHORIZATION, token);
-            String jsonString = JSON.toJSONString(postParameters);
-            HttpEntity httpEntity = new HttpEntity<>(jsonString, headers);
-            ResponseEntity<String> responseEntity = restTemplate.postForEntity(PARK_BASE_URL + "/face/v1/framework/face", httpEntity, String.class);
-            if (responseEntity.getStatusCodeValue() == ResponseCode.OK) {
-                String body = responseEntity.getBody();
-                if (body != null) {
-                    ResponseModel responseModel = JSONObject.parseObject(body, ResponseModel.class);
-                    if(responseModel.getRtn() == 0) {
-                        return true;
-                    }
+    public boolean addStudentInFace(String base64Data, Student stu) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+        FaceDTO faceDTO = new FaceDTO();
+        faceDTO.setBase64(base64Data);
+        faceDTO.setCardNum(stu.getStudentNumber());
+        faceDTO.setName(stu.getName());
+        HttpEntity httpEntity = new HttpEntity<>(JSON.toJSONString(faceDTO), headers);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(PARK_BASE_URL + "/face/add/student", httpEntity, String.class);
+        if (responseEntity.getStatusCodeValue() == ResponseCode.OK) {
+            String body = responseEntity.getBody();
+            if (body != null) {
+                Result responseModel = JSONObject.parseObject(body, Result.class);
+                if(responseModel.getCode() == ResponseCode.OK) {
+                    return true;
+                } else {
+                    logger.error("Add student face in face platform : " + responseModel.getMessage());
                 }
             }
         }
         return false;
     }
 
-    public ArrayList<WinVisitorRecord> getStudentList() {
+    public boolean updateStudentInFace(String base64Data, Student stu) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+        FaceDTO faceDTO = new FaceDTO();
+        faceDTO.setBase64(base64Data);
+        faceDTO.setCardNum(stu.getStudentNumber());
+        faceDTO.setName(stu.getName());
+        HttpEntity httpEntity = new HttpEntity<>(JSON.toJSONString(faceDTO), headers);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(PARK_BASE_URL + "/face/update/student", httpEntity, String.class);
+        if (responseEntity.getStatusCodeValue() == ResponseCode.OK) {
+            String body = responseEntity.getBody();
+            if (body != null) {
+                Result responseModel = JSONObject.parseObject(body, Result.class);
+                if(responseModel.getCode() == ResponseCode.OK) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<FaceUserInfo> getStudentList() {
         return staffList;
     }
 }
